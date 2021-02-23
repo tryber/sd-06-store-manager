@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 
-const service = require('./services/productsService');
+const service = require('../services/productsService');
 
 const StatusCreated = 201;
 
@@ -22,6 +22,7 @@ router.post('/', async (request, response) => {
     if (error.err.code === 'invalid_data') {
       response.status(UnprocessableEntity).json(error);
     }
+
   }
 });
 
