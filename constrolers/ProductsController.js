@@ -47,8 +47,13 @@ ProductsController.put('/:id',
   }
 );
 
-// const errorFunction = (err, request, response, next) => {
+ProductsController.delete('/:id', validate.validateId, async (request, response) => {
+  const { id } = request.params;
+  const product = await Products.findById(id);
 
-// }
+  await Products.deleteProduct(id);
+
+  return response.status(status0).json(product);
+});
 
 module.exports = ProductsController;
