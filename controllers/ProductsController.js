@@ -16,7 +16,7 @@ const UNPROCESSABLE_ENTITY = 422;
 ProductsRouter.post('/', async (req, res) => {
   const { name, quantity } = req.body;
 
-  const validationResult = validateInsertData(name, quantity);
+  const validationResult = await validateInsertData(name, quantity);
 
   if (validationResult === 'is valid') {
     const product = await registerProduct(name, quantity);

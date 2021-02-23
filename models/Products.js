@@ -37,16 +37,22 @@ const updateProduct = async (name, quantity, id) => {
 };
 
 const deleteProduct = async (id) => {
-  const { name, quantity } = await connection()
+  const product = await connection()
     .then((db) => db.collection('products').findOne(ObjectId(id)));
-  await connection()
-    .then((db) => db.collection('products').deleteOne({ _id: ObjectId(id) }));
-  
-  return {
-    _id: id,
-    name,
-    quantity,
-  };
+
+  if (product) {
+    const { name, quantity } = product;
+
+    await connection()
+      .then((db) => db.collection('products').deleteOne({ _id: ObjectId(id) }));
+    
+    return {
+      _id: id,
+      name,
+      quantity,
+    };
+  }
+  throw 'product not found';
 };
 
 module.exports = {

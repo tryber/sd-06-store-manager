@@ -6,11 +6,12 @@ const nameLengthValidator = (nameToValidate) => {
   return nameToValidate.length > minimumNameLength;
 };
 
-const uniqueNameValidator = (nameToValidate) => {
-  const alreadyExists = connection()
+const uniqueNameValidator = async (nameToValidate) => {
+  const couldFind = await connection()
     .then((db) => db.collection('products').findOne({ name: nameToValidate }));
+  const alreadyExists = couldFind ? false : true;
 
-  return alreadyExists ? true : false;
+  return alreadyExists;
 };
 
 const quantityValueValidator = (quantityToValidate) => {
@@ -22,7 +23,7 @@ const quantityFormatValidator = (quantityToValidate) => {
   return typeof quantityToValidate === 'number';
 };
 
-const validateInsertData = (name, quantity) => {
+const validateInsertData = async (name, quantity) => {
   const isValid = 'is valid';
 
   if (!nameLengthValidator(name)) {
@@ -33,7 +34,8 @@ const validateInsertData = (name, quantity) => {
       },
     };
   }
-  if (!uniqueNameValidator(name)) {
+  const isUnique = await uniqueNameValidator(name);
+  if (!isUnique) {
     return {
       err: {
         code: 'invalid_data',
