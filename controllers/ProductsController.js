@@ -19,7 +19,7 @@ const validate = async (req, res) => {
   let object_answer;
 
   if (!name) {
-    message = 'nome não existe';
+    message = 'Inform a value for "name"';
     code = 'invalid_data';
     status_code = UNPROCESSABLE_ENTITY;
     object_answer = {
@@ -31,8 +31,9 @@ const validate = async (req, res) => {
     res.status(status_code).json(object_answer);
     return false;
   }
+  
   if (typeof name !== 'string') {
-    message = 'nome não é string';
+    message = '"name" is not a string';
     code = 'invalid_data';
     status_code = UNPROCESSABLE_ENTITY;
     object_answer = {
@@ -58,21 +59,8 @@ const validate = async (req, res) => {
     return false;
   }
 
-  if (!quantity) {
-    message = 'quantity não existe';
-    code = 'invalid_data';
-    status_code = SC_NOT_FOUND;
-    object_answer = {
-      err: {
-        code,
-        message,
-      }
-    };
-    res.status(status_code).json(object_answer);
-    return false;
-  }
-  if (typeof quantity === 'string') {
-    message = 'quantity must be a number';
+  if (quantity === undefined) {
+    message = '"quantity" do not exist';
     code = 'invalid_data';
     status_code = UNPROCESSABLE_ENTITY;
     object_answer = {
@@ -81,7 +69,7 @@ const validate = async (req, res) => {
         message,
       }
     };
-    res.status(status_code).json(object_answer);
+    res.status(UNPROCESSABLE_ENTITY).json(object_answer);
     return false;
   }
   if (quantity <= ZERO) {
@@ -97,6 +85,34 @@ const validate = async (req, res) => {
     res.status(status_code).json(object_answer);
     return false;
   }
+  if (typeof quantity === 'string') {
+    message = '"quantity" must be a number';
+    code = 'invalid_data';
+    status_code = UNPROCESSABLE_ENTITY;
+    object_answer = {
+      err: {
+        code,
+        message,
+      }
+    };
+    res.status(status_code).json(object_answer);
+    return false;
+  }
+  const alreadyExists = await ProductService.findByName(name);
+  if (alreadyExists) {
+    message = 'Product already exists';
+    code = 'invalid_data';
+    status_code = UNPROCESSABLE_ENTITY;
+    object_answer = {
+      err: {
+        code,
+        message,
+      }
+    };
+    res.status(status_code).json(object_answer);
+    return false;
+  }
+  
   return true;
 };
 
@@ -109,8 +125,14 @@ ProductsControllerRouter.get('/:id', async (req, res) => {
   const { id } = req.params;
 
   const products = await ProductService.findById(id);
-
-  if (!products) return res.status(SC_NOT_FOUND).json({message: 'products not found'});
+  
+  if (!products ) {
+    const errorMessage = {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    };
+    return res.status(UNPROCESSABLE_ENTITY).json({err: errorMessage});
+  }
 
   res.status(SC_OK).json(products);
 });
@@ -125,20 +147,32 @@ ProductsControllerRouter.post('/', async (req, res) => {
 });
 
 ProductsControllerRouter.put('/:id', async (req, res) => {
-  const { id } = req.params;
-  const { name, quantity } = req.body;
+  const isValid = await validate(req,res);
+  if (isValid) {
+    const { id } = req.params;
+    const { name, quantity } = req.body;
 
-  await ProductService.update(id, name, quantity);
+    const products = await ProductService.update(id, name, quantity);
 
-  res.status(SC_NO_CONTENT).end();
+    res.status(SC_OK).json(products);
+  }
 });
 
 ProductsControllerRouter.delete('/:id', async(req, res) => {
+  
   const { id } = req.params;
 
-  await ProductService.remove(id);
+  const products = await ProductService.remove(id);
 
-  res.status(SC_NO_CONTENT).end();
+  if (!products ) {
+    const errorMessage = {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    };
+    return res.status(UNPROCESSABLE_ENTITY).json({err: errorMessage});
+  }
+
+  res.status(SC_OK).json(products);
 });
 
 module.exports = ProductsControllerRouter;

@@ -24,25 +24,49 @@ const create = async (name, quantity) => {
 };
 
 const findById = async (id) => {
-  const getAllItens = await connection()
+  if(!ObjectId.isValid(id)) return null;
+  //se for um HEX recebe: null
+  //se for um HEX q existe: retorna o objeto todo
+  return await connection()
     .then(db => db.collection('products').findOne(ObjectId(id)));
-  // escrevendo 'products' antes do retorno
-  return {
-    products: getAllItens
-  };
+  // return {
+  //   products: getAllItens
+  // };
+  
+};
+
+const findByName = async (name) => {
+  return await connection().then(db => db.collection('products').findOne( { name } ));
+
 };
 
 const update = async (id, name, quantity) => {
-  return await connection().then(db => db.collection('products').updateOne(
+  if(!ObjectId.isValid(id)) return null;
+
+  // return await connection().then(db => db.collection('products').updateOne(
+  await connection().then(db => db.collection('products').updateOne(
     { _id: ObjectId(id) },
     { $set: { name, quantity } }
   ));
+
+  return {
+    _id: ObjectId(id),
+    name,
+    quantity
+  };
 };
 
-const remove = async (id, name) => {
-  return await connection().then(db => db.collection('products').deleteOne(
+const remove = async (id) => {
+  if(!ObjectId.isValid(id)) return null;
+  const check = await findById(id);
+  if (!check) {
+    return null; //console.log('nao existe');
+  }
+  // return await connection().then(db => db.collection('products').deleteOne(
+  await connection().then(db => db.collection('products').deleteOne(
     { _id: ObjectId(id) }
   ));
+  return check;
 };
 
 module.exports = {
@@ -51,4 +75,5 @@ module.exports = {
   findById,
   update,
   remove,
+  findByName,
 };

@@ -8,6 +8,10 @@ const findById = async (id) => {
   return await Product.findById(id);
 };
 
+const findByName = async (name) => {
+  return await Product.findByName(name);
+};
+
 const create = async (name, quantity) => {
   const product = await Product.create(name, quantity);
   return product;
@@ -29,4 +33,5 @@ module.exports = {
   findById,
   update,
   remove,
+  findByName,
 };
