@@ -1,28 +1,30 @@
 const Products = require('../../models/Products');
 
 const nameValidation = async (name, minChar) => {
-  const checkDb = await Products.findItem(name);
-  if (checkDb[0] && checkDb[0].name === name) return (
+  if (name.length < minChar) return (
     {
-      payload: { 
+      payload: {
         err: {
-          message: 'Product Already Exists', 
+          message: '"name" length must be at least 5 characters long', 
           code: 'invalid_data',
         }
       },
       error: { status: 422 }
     }
   );
-
-  if (name.length < minChar) return (
+  
+  const checkDb = await Products.findItem(name);
+  if (checkDb[0] && checkDb[0].name === name) return (
     {
-      err: {
-        message: 'name length must be at least 5 characters long', 
-        code: 'invalid_data',
+      payload: { 
+        err: {
+          message: 'Product already exists', 
+          code: 'invalid_data',
+        }
       },
+      error: { status: 422 }
     }
   );
-
   return false;
 };
 
@@ -31,7 +33,7 @@ const quantityValidation = (qnt) => {
     {
       payload: { 
         err: {
-          message: 'quantity must be a number', 
+          message: '"quantity" must be a number', 
           code: 'invalid_data',
         },
       },
@@ -43,7 +45,7 @@ const quantityValidation = (qnt) => {
     {
       payload: {
         err: {
-          message: 'quantity must be larger than or equal to 1', 
+          message: '"quantity" must be larger than or equal to 1', 
           code: 'invalid_data',
         },
       },

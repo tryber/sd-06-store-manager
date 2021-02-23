@@ -13,8 +13,14 @@ const findItem = async (nameToSearch) => {
 };
 
 const insertProduct = async (name, qnt) => {
-  return await connection().then((db) => db.
+  const { insertedId } = await connection().then((db) => db.
     collection(collection).insertOne({ name, quantity: qnt }));
+
+  return ({
+    _id: insertedId.toString(),
+    name,
+    quantity: qnt,
+  });
 };
 
 module.exports = {

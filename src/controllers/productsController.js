@@ -2,7 +2,7 @@ const { Router } = require('express');
 const ProductsService = require('../services/ProductsService');
 
 const productsRouter = Router();
-const SUCCESS = 200;
+const SUCCESS201 = 201;
 
 productsRouter.get('/', async (_req, res) => {
   const result = await ProductsService.getAll();
@@ -20,8 +20,7 @@ productsRouter.post('/', async (req, res) => {
     return res.status(error.status).json({ err });
   }
 
-  const { ops } = isError; 
-  return res.status(SUCCESS).json(...ops);
+  return res.status(SUCCESS201).json(isError);
 });
 
 module.exports = productsRouter;
