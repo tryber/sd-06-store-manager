@@ -1,4 +1,4 @@
-const { findByName } = require('../models/Products');
+const { findByName } = require('../services/productsServices');
 
 const UNPROCESSABLE = 422;
 const nameMinLength = 5;
@@ -17,8 +17,8 @@ module.exports = async (req, res, next) => {
     }
   });
 
-  const findName = await findByName(name);
-  if (findName !== null) return res.status(UNPROCESSABLE).send({
+  const nameFound = await findByName(name);
+  if (nameFound !== null) return res.status(UNPROCESSABLE).send({
     err: {
       code: 'invalid_data',
       message: 'Product already exists'
