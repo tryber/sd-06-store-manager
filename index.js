@@ -13,4 +13,10 @@ app.get('/', (_request, response) => {
 
 app.use('/', ProductsController);
 
+const quinhentos = 500;
+
+// app.use((err, req, res, next) => {
+//   res.status(quinhentos).json({ message: err.message });
+// });
+
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));

@@ -8,6 +8,14 @@ const findProductByName = async (name) => {
   return ProductsModel.findProductByName(name);
 };
 
+const findAllProducts = async () => {
+  return ProductsModel.findAllProducts();
+};
+
+const findProductById = async (id) => {
+  return ProductsModel.findProductById(id);
+};
+
 const checkNameSize = (name) => {
   const cinco = 5;
 
@@ -45,6 +53,8 @@ const checkQuantityString = (quantity) => {
 module.exports = {
   createProduct,
   findProductByName,
+  findAllProducts,
+  findProductById,
   checkNameSize,
   checkQuantityLessThanZero,
   checkQuantityEqualZero,

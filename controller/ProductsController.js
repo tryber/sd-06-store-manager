@@ -1,10 +1,13 @@
 const { Router } = require('express');
+const rescue = require('express-rescue');
+const { ObjectId } = require('mongodb');
 const ProductsService = require('../service/ProductsService');
 
 const router = Router();
 
 const quatrocentosEVinteEDois = 422;
 const duzentosEUm = 201;
+const duzentos = 200;
 
 router.post('/products', async(req, res) => {
   const { name, quantity } = req.body;
@@ -62,5 +65,37 @@ router.post('/products', async(req, res) => {
 
   return res.status(duzentosEUm).json(productCreated);
 });
+
+router.get('/products', rescue (async(req, res) => {
+  const allProducts = await ProductsService.findAllProducts();
+  return res.status(duzentos).json({ products: allProducts });
+}));
+
+router.get('/products/:id', rescue (async(req, res) => {
+  const { id } = req.params;
+
+
+  if(!ObjectId.isValid(id)) {
+    return res.status(quatrocentosEVinteEDois).json({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format'
+      }
+    });
+  }
+
+  const product = await ProductsService.findProductById(id);
+
+  if(!product) {
+    return res.status(quatrocentosEVinteEDois).json({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format'
+      }
+    });
+  }
+
+  return res.status(duzentos).json(product);
+}));
 
 module.exports = router;
