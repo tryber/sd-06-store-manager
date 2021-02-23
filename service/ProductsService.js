@@ -16,6 +16,10 @@ const findProductById = async (id) => {
   return ProductsModel.findProductById(id);
 };
 
+const updateProduct = async (id, name, quantity) => {
+  return ProductsModel.updateProduct(id, name, quantity);
+};
+
 const checkNameSize = (name) => {
   const cinco = 5;
 
@@ -55,6 +59,7 @@ module.exports = {
   findProductByName,
   findAllProducts,
   findProductById,
+  updateProduct,
   checkNameSize,
   checkQuantityLessThanZero,
   checkQuantityEqualZero,

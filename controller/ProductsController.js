@@ -98,4 +98,51 @@ router.get('/products/:id', rescue (async(req, res) => {
   return res.status(duzentos).json(product);
 }));
 
+router.put('/products/:id', rescue (async(req, res) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+
+  if(!ProductsService.checkNameSize(name)) {
+    return res.status(quatrocentosEVinteEDois).json({
+      err: {
+        code: 'invalid_data',
+        message: '"name" length must be at least 5 characters long'
+      }
+    });
+  }
+
+  if(!ProductsService.checkQuantityLessThanZero(quantity)) {
+    return res.status(quatrocentosEVinteEDois).json({
+      err: {
+        code: 'invalid_data',
+        message: '"quantity" must be larger than or equal to 1'
+      }
+    });
+  }
+
+  if(!ProductsService.checkQuantityEqualZero(quantity)) {
+    return res.status(quatrocentosEVinteEDois).json({
+      err: {
+        code: 'invalid_data',
+        message: '"quantity" must be larger than or equal to 1'
+      }
+    });
+  }
+
+  if(!ProductsService.checkQuantityString(quantity)) {
+    return res.status(quatrocentosEVinteEDois).json({
+      err: {
+        code: 'invalid_data',
+        message: '"quantity" must be a number'
+      }
+    });
+  }
+
+  await ProductsService.updateProduct(id, name, quantity);
+
+  const product = await ProductsService.findProductById(id);
+
+  return res.status(duzentos).json({ _id: id, name, quantity });
+}));
+
 module.exports = router;
