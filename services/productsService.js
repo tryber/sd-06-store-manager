@@ -7,7 +7,6 @@ const MINIMUM_LENGTH = 5;
 const MINIMUM_QUANTITY = 0;
 
 const validations = async (name, quantity, requestType) => {
-
   const doesTheProductExist = await model.getAProductByName(name);
   
   if (requestType === 'create' && doesTheProductExist) {
@@ -53,7 +52,6 @@ const validations = async (name, quantity, requestType) => {
 
 
 const createANewProduct = async (name, quantity) => {
-
   await validations(name, quantity, 'create');
 
   const newProduct = model.createAProduct(name, quantity);
@@ -62,14 +60,12 @@ const createANewProduct = async (name, quantity) => {
 };
 
 const getAllProducts = async () => {
-
   const products = await model.getAllProducts();
 
   return products;
 };
 
 const getAProductById = async (id) => {
-
   if (!ObjectId.isValid(id)) {
     throw {
       err: {
@@ -94,7 +90,6 @@ const getAProductById = async (id) => {
 };
 
 const updateAProduct = async (id, name, quantity) => {
-  
   await validations(name, quantity, 'update');
 
   const updatedProduct = await model.updateAProduct(id, name, quantity);
