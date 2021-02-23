@@ -8,7 +8,7 @@ const nameLengthValidator = (nameToValidate) => {
 
 const uniqueNameValidator = (nameToValidate) => {
   const alreadyExists = connection()
-    .then((db) => db.collection('products').findOne({ name: { $eq: nameToValidate } }));
+    .then((db) => db.collection('products').findOne({ name: nameToValidate }));
 
   return alreadyExists ? true : false;
 };
