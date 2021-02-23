@@ -11,14 +11,21 @@ const create = async (name, quantity) => {
   };
 };
 
+
+const getAll = async () => {
+  return await connection().then((db) => db.collection('products').find().toArray());
+};
+
 const findByName = async (name) => {
   return await connection()
     .then((db) => db.collection('products').findOne({ name }))
     .catch(err => console.error(err));
 };
 
-const getAll = async () => {
-  return await connection().then((db) => db.collection('products').find().toArray());
+const findById = async (id) => {
+  return await connection()
+    .then((db) => db.collection('products').findOne(ObjectID(id)))
+    .catch(err => console.error(err));
 };
 
 // const update = async (id, name) => {
@@ -35,5 +42,6 @@ const getAll = async () => {
 module.exports = {
   create,
   findByName,
-  getAll
+  getAll,
+  findById
 }; 

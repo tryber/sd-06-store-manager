@@ -30,10 +30,15 @@ const findByName = async (name) => {
 
 const getAll = async () => {
   const products = await Products.getAll();
-  return { products };
+  return products;
+};
+
+const findById = async (id) => {
+  return await Products.findById(id);
 };
 
 module.exports = {
   create,
-  getAll
+  getAll,
+  findById
 };

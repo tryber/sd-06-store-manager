@@ -24,6 +24,12 @@ router
   .get('/', async (req, res) => {
     const products = await Products.getAll();
 
+    res.status(SUCESS).json({ products });
+  })
+  .get('/:id', async (req, res) => {
+    const { id } = req.params;
+    const products = await Products.findById(id);
+
     res.status(SUCESS).json(products);
   });
 
