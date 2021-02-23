@@ -22,8 +22,17 @@ const getById = rescue(async (req, res) => {
   res.status(status.ok).json(responsePayload);
 });
 
+const updateProducts = rescue(async (req, res) => {
+  const { body } = req;
+  const { id } = req.params;
+
+
+  res.status(status.ok).send('updateProducts');
+});
+
 module.exports = {
   registerProduct,
   getAll,
   getById,
+  updateProducts
 };

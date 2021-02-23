@@ -37,6 +37,11 @@ const findById = async (id) => {
   return product;
 };
 
+const updateProduct = async ({body: {name, quantity}, id}) => {
+
+  return responsePayload;
+};
+
 module.exports = {
   registerProduct,
   getAll,
