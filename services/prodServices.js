@@ -39,15 +39,7 @@ const validateProduct = async (req, res, next) => {
     });
   }
 
-  if (!Number.isInteger(quantity)) {
-    return res.status(fourHundredTwentyTwo).json({
-      err: {
-        code: 'invalid_data',
-        message: '"quantity" must be a number'
-      },
-    });
-  }
-  else if (typeof quantity !== 'number') {
+  if (typeof quantity !== 'number') {
     return res.status(fourHundredTwentyTwo).json({
       err: {
         code: 'invalid_data',
