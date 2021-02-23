@@ -1,4 +1,9 @@
+const { ObjectId } = require('mongodb');
 const { getAllProducts } = require('../modules/productModules');
+
+  const zero = 0;
+  const five = 5;
+  const fourHundredTwentyTwo = 422;
 
 const validateProduct = async (req, res, next) => {
   const { name, quantity } = req.body;
@@ -6,10 +11,6 @@ const validateProduct = async (req, res, next) => {
   const products = await getAllProducts();
 
   const alreadyExists = await products.find((product) => product.name === name);
-
-  const zero = 0;
-  const five = 5;
-  const fourHundredTwentyTwo = 422;
 
   if (alreadyExists) {
     return res.status(fourHundredTwentyTwo).json(
@@ -59,6 +60,19 @@ const validateProduct = async (req, res, next) => {
   next();
 };
 
+const validateId = async (req, res, next) => {
+  const { id } = req.params;
+  if (!ObjectId.isValid(id)) return res.status(fourHundredTwentyTwo).json({
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    },
+  });
+  
+  next();
+}
+
 module.exports = {
   validateProduct,
+  validateId,
 };

@@ -6,7 +6,7 @@ const {
   createProduct,
   getProductById
 } = require('../modules/productModules');
-const { validateProduct } = require('../services/prodServices');
+const { validateProduct, validateId } = require('../services/prodServices');
 
 const twoHundred = 200;
 const twoHundredOne = 201;
@@ -22,19 +22,15 @@ ProductsRouter.get('/products', async (req, res) => {
   return res.status(twoHundred).send(allProducts);
 });
 
-ProductsRouter.get('/products/:id', async (req, res) => {
+ProductsRouter.get('/products/:id', validateId, async (req, res) => {
   const { id } = req.params;
-  const allProducts = await getAllProducts();
-  const existId = allProducts.find(product => product.id === id);
-  if (existId) {
-    return res.status(fourHundredTwentyTwo).json({
-      err: {
-        code: 'invalid_data',
-        message: 'Wrong id format',
-      },
-    });
-  }
   const productById = await getProductById(id);
+  if (!productById) return res.status(fourHundredTwentyTwo).json({
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    },
+  });
   return res.status(twoHundred).send(productById);
 });
 
