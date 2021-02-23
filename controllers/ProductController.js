@@ -8,8 +8,17 @@ const status200 = 200;
 const status201 = 201;
 
 ProductController.get('/', rescue( async (_req, res) => {
-  res.status(status200).json(await ProductServices.getAll());
+  const all = await ProductServices.getAll();
+  res.status(status200).json({ products: all });
 }));
+
+ProductController.get('/:id',
+  ProductValidator.productExists,
+  rescue( async (req, res) => {
+    const { id } = req.params;
+    res.status(status200).json(await ProductServices.getById(id));
+  })
+);
 
 ProductController.post('/',
   ProductValidator.productValidator,
