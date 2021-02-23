@@ -6,7 +6,7 @@ const getAll = async() => {
 
 const createProduct = async(name, quantity) => {
   return await connection().then(db => {
-    console.log("estou aqui");
+    console.log('estou aqui');
     return db.collection('products').insertOne({name, quantity});
   }
   );
