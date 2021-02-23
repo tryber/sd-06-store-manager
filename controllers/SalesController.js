@@ -23,12 +23,14 @@ SalesControllerRouter.get('/:id', async (req, res) => {
 });
 
 SalesControllerRouter.post('/', async (req, res) => {
-  const { quantity } = req.body.itensSold[0];
-  console.log(quantity);
+  const { itensSold } = req.body;
+  // console.log(itensSold);
+  // const { quantity } = req.body.itensSold[0];
+  // console.log(quantity);
   // console.log(req.body.itensSold[0].quantity);
   // const { quantity } = req.body;
 
-  const sales = await SaleService.create(quantity);
+  const sales = await SaleService.create(itensSold[0]);
   
   res.status(SC_OK).json(sales);
 });

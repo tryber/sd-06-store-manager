@@ -8,7 +8,6 @@ const SC_NOT_FOUND = 404;
 
 ProductsControllerRouter.get('/', async (_req, res) => {
   const products = await ProductService.getAll();
-
   res.status(SC_OK).json(products);
 });
 

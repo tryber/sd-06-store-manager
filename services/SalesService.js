@@ -8,8 +8,8 @@ const findById = async (id) => {
   return await Sale.findById(id);
 };
 
-const create = async (quantity) => {
-  const sale = await Sale.create(quantity);
+const create = async (itensSold) => {
+  const sale = await Sale.create(itensSold);
   return sale;
 };
 

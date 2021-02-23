@@ -2,18 +2,26 @@ const connection = require('./connection');
 const { ObjectId } = require('mongodb');
 
 const getAll = async () => {
-  return await connection().then(db => db.collection('sales').find().toArray());
+  // return await connection().then(db => db.collection('sales').find().toArray());
+  const getAllItens = await connection()
+    .then(db => db.collection('sales').find().toArray());
+    // escrevendo 'sales' antes do retorno
+  return {
+    sales: getAllItens
+  };
 };
 
-const create = async (quantity) => {
+const create = async (itensSold) => {
+
+  // console.log({itensSold});
   const { insertedId } = await connection()
-    .then(db => db.collection('sales').insertOne({ quantity }));
+    .then(db => db.collection('sales').insertOne({ itensSold }));
 
   return {
-    id: insertedId,
+    _id: insertedId,
     itensSold: [{
       productId: insertedId,
-      quantity
+      quantity: itensSold.quantity,
     }]
   };
 };
