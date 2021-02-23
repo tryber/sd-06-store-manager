@@ -3,9 +3,10 @@ const {
   createSale,
   findById,
   getSales,
-  updateProduct,
+  updateSale,
   deleteProduct } = require('../services/salesServices');
 const validateSales = require('../middlewares/validateSales');
+const { update } = require('../models/salesModel');
 
 const router = Router();
 
@@ -54,20 +55,18 @@ router.post('/', validateSales, async (req, res) => {
     return res.status(SUCCESS).send(newSale);
   } catch(e) {
     console.log(e);
-    res.status(DFT_ERROR).send(e);
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', validateSales, async (req, res) => {
   try {
-    const { name, quantity } = req.body;
+    const salesArray = [...req.body];
     const { id } = req.params;
-    const updatedProduct = await updateProduct({ name, quantity, id });
+    const updatedSale = await updateSale({ id, itensSold: salesArray });
 
-    return res.status(SUCCESS).send(updatedProduct);
+    return res.status(SUCCESS).send(updatedSale);
   } catch(e) {
     console.log(e);
-    res.status(DFT_ERROR).send(e);
   }
 });
 

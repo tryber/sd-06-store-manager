@@ -19,10 +19,9 @@ const deleteProduct = async (id) => {
   }
 };
 
-const updateProduct = async (product) => {
+const updateSale = async (sale) => {
   try {
-    await update(product);
-    return product;
+    return await update(sale);
   } catch(e) {
     console.log(e);
   }
@@ -59,6 +58,6 @@ module.exports = {
   getSales,
   findById,
   findByName,
-  updateProduct,
+  updateSale,
   deleteProduct
 };

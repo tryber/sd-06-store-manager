@@ -7,7 +7,6 @@ const create = async (sale) => {
     .then((db) => db.collection('sales').insertOne(newSale))
     .catch((err) => {
       console.log(err);
-      throw new Error(err);
     });
 
   return {
@@ -52,18 +51,18 @@ const findId = async (id) => {
   }
 };
 
-const update = async (product) => {
+const update = async (sale) => {
   try {
-    const { id, name, quantity } = product;
+    const { id, itensSold } = sale;
     const validId = ObjectID.isValid(id);
     if (validId === false) return validId;
     await connection()
-      .then((db) => db.collection('products')
-        .updateOne({ _id: ObjectID(id) }, { $set: { product } }));
+      .then((db) => db.collection('sales')
+        .updateOne({ _id: ObjectID(id) }, { $set: { itensSold } }));
 
-    return product;
+    return { _id: ObjectID(id), itensSold };
   } catch(e) {
-    throw new Error(e);
+    console.log(e);
   }
 };
 
