@@ -1,11 +1,7 @@
 const products = require('../models/products');
 
-const findNameProduct = async (name) => {
-  const product = await products.findNameProduct(name);
-  return product;
-};
-
-const dataValidate = (name, quantity) => {
+const dataValidate = async (name, quantity) => {
+  const productExist = await products.findNameProduct(name);
   const number5 = 5;
   const number0 = 0;
 
@@ -33,7 +29,7 @@ const dataValidate = (name, quantity) => {
     }
   };
 
-  if (findNameProduct(name)) return {
+  if (productExist) return {
     err: {
       message: 'Product already exists',
       codeStatus: 422,
@@ -45,7 +41,7 @@ const dataValidate = (name, quantity) => {
 };
 
 const create = async (name, quantity) => {
-  const errorMessage = dataValidate(name, quantity);
+  const errorMessage = await dataValidate(name, quantity);
 
   if (errorMessage) return errorMessage;
 
