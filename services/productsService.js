@@ -23,6 +23,7 @@ const validations = async (name, quantity, requestType) => {
   if (!doesTheProductExist) {
     throw {
       err: {
+        statusCode: 422,
         code: 'invalid_data',
         message: 'Wrong id format',
       },
