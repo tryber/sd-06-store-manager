@@ -18,7 +18,8 @@ const errorMessages = {
   smallName: '"name" length must be at least 5 characters long',
   lowQuantity: '"quantity" must be larger than or equal to 1',
   quantityAsNumber: '"quantity" must be a number',
-  productExists: 'Product already exists'
+  productExists: 'Product already exists',
+  wrongId: 'Wrong id format'
 };
 
 module.exports = {status, codeTranslator, errorMessages};

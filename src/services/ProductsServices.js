@@ -21,6 +21,24 @@ const registerProduct = async ({name, quantity}) => {
   return responsePayload;
 };
 
+const getAll = async () => {
+  const products = await models.getAll();
+
+  const responsePayload = {
+    products
+  };
+
+  return responsePayload;
+};
+
+const findById = async (id) => {
+  const product = await models.findById(id);
+
+  return product;
+};
+
 module.exports = {
   registerProduct,
+  getAll,
+  findById,
 };
