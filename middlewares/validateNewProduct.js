@@ -1,5 +1,3 @@
-const { findByName } = require('../services/productsServices');
-
 const UNPROCESSABLE = 422;
 const nameMinLength = 5;
 const zero = 0;
@@ -14,14 +12,6 @@ module.exports = async (req, res, next) => {
     err: {
       code: 'invalid_data',
       message: '"name" length must be at least 5 characters long'
-    }
-  });
-
-  const nameFound = await findByName(name);
-  if (nameFound !== null) return res.status(UNPROCESSABLE).send({
-    err: {
-      code: 'invalid_data',
-      message: 'Product already exists'
     }
   });
 

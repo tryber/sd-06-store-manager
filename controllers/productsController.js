@@ -1,6 +1,11 @@
 const { Router } = require('express');
-const { createProduct, findById, getAll } = require('../services/productsServices');
+const {
+  createProduct,
+  findById,
+  getAll,
+  updateProduct } = require('../services/productsServices');
 const validateNewProduct = require('../middlewares/validateNewProduct');
+const validateDuplicateProduct = require('../middlewares/validateDuplicateProduct');
 
 const router = Router();
 
@@ -40,12 +45,25 @@ router.get('/', async (_req, res) => {
   }
 });
 
-router.post('/', validateNewProduct, async (req, res) => {
+router.post('/', validateNewProduct, validateDuplicateProduct, async (req, res) => {
   try {
     const { name, quantity } = req.body;
     const newProduct = await createProduct({ name, quantity });
 
     return res.status(CREATED).send(newProduct);
+  } catch(e) {
+    console.log(e);
+    res.status(DFT_ERROR).send(e);
+  }
+});
+
+router.put('/:id', validateNewProduct, async (req, res) => {
+  try {
+    const { name, quantity } = req.body;
+    const { id } = req.params;
+    const updatedProduct = await updateProduct({ name, quantity, id });
+
+    return res.status(SUCCESS).send(updatedProduct);
   } catch(e) {
     console.log(e);
     res.status(DFT_ERROR).send(e);

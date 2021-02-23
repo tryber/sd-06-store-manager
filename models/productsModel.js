@@ -50,12 +50,27 @@ const findId = async (id) => {
   } catch(e) {
     throw new Error(e);
   }
+};
 
+const update = async (product) => {
+  try {
+    const { id, name, quantity } = product;
+    const validId = ObjectID.isValid(id);
+    if (validId === false) return validId;
+    await connection()
+      .then((db) => db.collection('products')
+        .updateOne({ _id: ObjectID(id) }, { $set: { product } }));
+
+    return product;
+  } catch(e) {
+    throw new Error(e);
+  }
 };
 
 module.exports = {
   create,
   findName,
   findId,
-  getProducts
+  getProducts,
+  update
 };
