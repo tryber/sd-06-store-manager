@@ -28,7 +28,7 @@ const findName = async (name) => {
   return result;
 };
 
-const getProducts = async () => {
+const getAll = async () => {
   try {
     const result = await connection()
       .then((db) => db.collection('products').find().toArray());
@@ -67,10 +67,20 @@ const update = async (product) => {
   }
 };
 
+const remove = async (id) => {
+  try {
+    return await connection()
+      .then((db) => db.collection('products').deleteOne({ _id: ObjectID(id) }));
+  } catch(e) {
+    throw new Error(e);
+  }
+};
+
 module.exports = {
   create,
   findName,
   findId,
-  getProducts,
-  update
+  getAll,
+  update,
+  remove
 };

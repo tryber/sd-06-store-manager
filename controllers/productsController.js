@@ -2,8 +2,9 @@ const { Router } = require('express');
 const {
   createProduct,
   findById,
-  getAll,
-  updateProduct } = require('../services/productsServices');
+  getProducts,
+  updateProduct,
+  deleteProduct } = require('../services/productsServices');
 const validateNewProduct = require('../middlewares/validateNewProduct');
 const validateDuplicateProduct = require('../middlewares/validateDuplicateProduct');
 
@@ -34,9 +35,9 @@ router.get('/:id', async (req, res) => {
 
 router.get('/', async (_req, res) => {
   try {
-    const getProducts = await getAll();
+    const products = await getProducts();
 
-    res.status(SUCCESS).send({ products: getProducts });
+    res.status(SUCCESS).send({ products });
   } catch(e) {
     res.status(DFT_ERROR).send({
       err: 'invalid_data',
@@ -64,6 +65,25 @@ router.put('/:id', validateNewProduct, async (req, res) => {
     const updatedProduct = await updateProduct({ name, quantity, id });
 
     return res.status(SUCCESS).send(updatedProduct);
+  } catch(e) {
+    console.log(e);
+    res.status(DFT_ERROR).send(e);
+  }
+});
+
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const findProduct = await findById(id);
+
+    if (findProduct === false) return res.status(UNPROCESSABLE).send({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format'
+      }
+    });
+    await deleteProduct(id);
+    res.status(SUCCESS).send(findProduct);
   } catch(e) {
     console.log(e);
     res.status(DFT_ERROR).send(e);

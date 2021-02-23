@@ -1,26 +1,31 @@
 const {
   create,
-  findName,
   findId,
-  getProducts,
-  update } = require('../models/productsModel');
+  findName,
+  getAll,
+  update,
+  remove } = require('../models/productsModel');
 
 const createProduct = async (product) => {
-  const createdProduct = await create(product);
+  await create(product);
+  return product;
+};
 
-  return createdProduct;
+const deleteProduct = async (id) => {
+  try {
+    return await remove(id);
+  } catch(e) {
+    console.log(e);
+  }
 };
 
 const updateProduct = async (product) => {
-  const updateProduct = await update(product);
-
-  return updateProduct;
-};
-
-const findByName = async (name) => {
-  const product = await findName(name);
-
-  return product;
+  try {
+    await update(product);
+    return product;
+  } catch(e) {
+    console.log(e);
+  }
 };
 
 const findById = async (id) => {
@@ -33,9 +38,15 @@ const findById = async (id) => {
   }
 };
 
-const getAll = async () => {
+const findByName = async (name) => {
+  const product = await findName(name);
+
+  return product;
+};
+
+const getProducts = async () => {
   try {
-    const products = await getProducts();
+    const products = await getAll();
 
     return products;
   } catch(e) {
@@ -45,8 +56,9 @@ const getAll = async () => {
 
 module.exports = {
   createProduct,
-  findByName,
   findById,
-  getAll,
-  updateProduct
+  findByName,
+  getProducts,
+  updateProduct,
+  deleteProduct
 };
