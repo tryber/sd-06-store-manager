@@ -79,4 +79,23 @@ router.put('/:id', async (request, response) => {
   }
 });
 
+router.delete('/:id', async (request, response) => {
+  try {
+    const { id } = request.params;
+
+    const removedProduct = await service.removeAProduct(id);
+
+    response.status(OK).json(removedProduct);
+
+  } catch (error) {
+    if (error.err.code === 'invalid_data') {
+      return response.status(UnprocessableEntity).json(error);
+    }
+
+    console.error(error);
+    
+    response.status(INTERNAL_SERVER_ERROR).json({ message: error });
+  }
+});
+
 module.exports = router;

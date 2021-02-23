@@ -56,7 +56,9 @@ const removeAProduct = async (id) => {
     return null;
   }
 
-  const removedProduct = connection('products')
+  const removedProduct = getAProductById(id);
+
+  await connection('products')
     .then((products) => products.deleteOne({ _id: ObjectId(id)}));
 
   return removedProduct;

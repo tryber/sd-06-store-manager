@@ -7,6 +7,7 @@ const MINIMUM_LENGTH = 5;
 const MINIMUM_QUANTITY = 0;
 
 const validations = async (name, quantity, requestType) => {
+
   const doesTheProductExist = await model.getAProductByName(name);
   
   if (requestType === 'create' && doesTheProductExist) {
@@ -97,9 +98,24 @@ const updateAProduct = async (id, name, quantity) => {
   return updatedProduct;
 };
 
+const removeAProduct = async (id) => {
+  const product = await model.removeAProduct(id);
+
+  if (!product) {
+    throw {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format',
+      }
+    };
+  }
+  return product;
+};
+
 module.exports = {
   createANewProduct,
   getAllProducts,
   getAProductById,
-  updateAProduct
+  updateAProduct,
+  removeAProduct
 };
