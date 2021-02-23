@@ -71,21 +71,21 @@ const validate = async (req, res) => {
     res.status(status_code).json(object_answer);
     return false;
   }
-  // if (typeof quantity !== 'number') {
-  //   message = 'quantity must be a number';
-  //   code = 'invalid_data';
-  //   status_code = UNPROCESSABLE_ENTITY;
-  //   object_answer = {
-  //     err: {
-  //       code,
-  //       message,
-  //     }
-  //   };
-  //   res.status(status_code).json(object_answer);
-  //   return false;
-  // }
+  if (typeof quantity !== 'number') {
+    message = 'quantity must be a number';
+    code = 'invalid_data';
+    status_code = UNPROCESSABLE_ENTITY;
+    object_answer = {
+      err: {
+        code,
+        message,
+      }
+    };
+    res.status(status_code).json(object_answer);
+    return false;
+  }
   if (quantity <= ZERO) {
-    message = '"quantity" bust be larger than or equal to 1';
+    message = '"quantity" must be larger than or equal to 1';
     code = 'invalid_data';
     status_code = UNPROCESSABLE_ENTITY;
     object_answer = {
