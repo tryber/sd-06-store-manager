@@ -2,7 +2,7 @@ const { Router } = require('express');
 const {
   createSale,
   findById,
-  getProducts,
+  getSales,
   updateProduct,
   deleteProduct } = require('../services/salesServices');
 const validateSales = require('../middlewares/validateSales');
@@ -12,21 +12,22 @@ const router = Router();
 const SUCCESS = 200;
 const CREATED = 201;
 const DFT_ERROR = 400;
+const NOT_FOUND = 404;
 const UNPROCESSABLE = 422;
 
 router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const findProduct = await findById(id);
+    const findSale = await findById(id);
 
-    if (findProduct === false) return res.status(UNPROCESSABLE).send({
+    if (findSale === false) return res.status(NOT_FOUND).send({
       err: {
-        code: 'invalid_data',
-        message: 'Wrong id format'
+        code: 'not_found',
+        message: 'Sale not found'
       }
     });
 
-    res.status(SUCCESS).send(findProduct);
+    res.status(SUCCESS).send(findSale);
   } catch(e) {
     console.log(e);
   }
@@ -34,9 +35,9 @@ router.get('/:id', async (req, res) => {
 
 router.get('/', async (_req, res) => {
   try {
-    const products = await getProducts();
+    const sales = await getSales();
 
-    res.status(SUCCESS).send({ products });
+    res.status(SUCCESS).send({ sales });
   } catch(e) {
     res.status(DFT_ERROR).send({
       err: 'invalid_data',

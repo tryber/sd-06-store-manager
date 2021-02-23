@@ -30,9 +30,9 @@ const updateProduct = async (product) => {
 
 const findById = async (id) => {
   try {
-    const product = await findId(id);
+    const sale = await findId(id);
 
-    return product;
+    return sale;
   } catch(e) {
     throw new Error(e);
   }
@@ -44,11 +44,11 @@ const findByName = async (name) => {
   return product;
 };
 
-const getProducts = async () => {
+const getSales = async () => {
   try {
-    const products = await getAll();
+    const sales = await getAll();
 
-    return products;
+    return sales;
   } catch(e) {
     throw new Error(e);
   }
@@ -56,9 +56,9 @@ const getProducts = async () => {
 
 module.exports = {
   createSale,
+  getSales,
   findById,
   findByName,
-  getProducts,
   updateProduct,
   deleteProduct
 };

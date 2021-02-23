@@ -16,6 +16,17 @@ const create = async (sale) => {
   };
 };
 
+const getAll = async () => {
+  try {
+    const result = await connection()
+      .then((db) => db.collection('sales').find().toArray());
+
+    return result;
+  } catch(e) {
+    throw new Error(e);
+  }
+};
+
 const findName = async (name) => {
   const result = await connection()
     .then((db) => db.collection('products').findOne({ name: name }))
@@ -27,23 +38,13 @@ const findName = async (name) => {
   return result;
 };
 
-const getAll = async () => {
-  try {
-    const result = await connection()
-      .then((db) => db.collection('products').find().toArray());
-
-    return result;
-  } catch(e) {
-    throw new Error(e);
-  }
-};
 
 const findId = async (id) => {
   try {
     const validId = ObjectID.isValid(id);
     if (validId === false) return validId;
     const result = await connection()
-      .then((db) => db.collection('products').findOne(ObjectID(id)));
+      .then((db) => db.collection('sales').findOne(ObjectID(id)));
 
     return result;
   } catch(e) {
