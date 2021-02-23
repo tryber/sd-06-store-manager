@@ -6,7 +6,7 @@ const router = Router();
 router.get('/', async (req, res) => {
   const products = await ProductsService.getAll();
 
-  res.status(200).json(products);
+  res.status(200).json({ products });
 });
 
 router.get('/:id', async (req, res) => {
