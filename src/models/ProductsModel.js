@@ -44,9 +44,20 @@ const findById = async (id) => {
     throw new throwError(status.unprocessableEntity, errorMessages.wrongId);
   });
 
-  console.log(product);
-
   return product;
+};
+
+const updateProduct = async (name, quantity, id) => {
+  const updatedProduct = await connection().then((db) => {
+    db
+      .collection(dbCollection)
+      .updateOne(
+        {_id: ObjectId(id)},
+        {$set: {name, quantity}}
+      );
+  });
+  return updatedProduct;
+
 };
 
 module.exports = {
@@ -54,4 +65,5 @@ module.exports = {
   findByName,
   getAll,
   findById,
+  updateProduct,
 };

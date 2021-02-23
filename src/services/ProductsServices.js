@@ -37,13 +37,21 @@ const findById = async (id) => {
   return product;
 };
 
-const updateProduct = async ({body: {name, quantity}, id}) => {
+const updateProduct = async (name, quantity, id) => {
+  await models.updateProduct(name, quantity, id);
 
-  return responsePayload;
+  const updatedProduct = {
+    _id: id,
+    name,
+    quantity,
+  };
+
+  return updatedProduct;
 };
 
 module.exports = {
   registerProduct,
   getAll,
   findById,
+  updateProduct
 };
