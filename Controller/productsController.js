@@ -2,8 +2,33 @@ const productsConnection = require('../Model/productsConnection');
 
 const codeErr = 422;
 const created = 201;
+const OK = 200;
 const nameLength = 5;
 const ZERO = 0;
+
+const getById = async (req, res) => {
+  const { id } = req.params;
+
+  const getId = await productsConnection.getById(id);
+  /* const findId = getId.filter((product) => product.id === id); */
+
+  if (!getId) {
+    return res.status(codeErr).json({ 'err': {
+      'code': 'invalid_data',
+      'message': 'Wrong id format'
+    } });
+  } else {
+    return res.status(OK).json(getId);
+  }
+};
+
+const getAll = async (_req, res) => {
+  
+  const allProducts = await productsConnection.getAllProducts();
+  console.log(allProducts);
+
+  return res.status(OK).json(allProducts);
+};
 
 const create = async (req, res) => {
   const { name, quantity } = req.body;
@@ -68,4 +93,6 @@ const create = async (req, res) => {
 
 module.exports = {
   create,
+  getAll,
+  getById,
 };
