@@ -13,6 +13,19 @@ router.get('/', async (_req, res) => {
   res.status(OK).json(items);
 });
 
+router.get('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const item = await productsService.findByIdProducts(id);
+
+    res.status(OK).json(item);
+  } catch (e) {
+    if (e.err.code === 'invalid_data') {
+      res.status(UnprocessableEntity).json(e);
+    }
+  }
+});
+
 router.post('/', async (req, res) => {
   try {
     const { name, quantity } = req.body;

@@ -1,7 +1,24 @@
 const products = require('../models/products');
+const { ObjectId } = require('mongodb');
 
 const getAllProducts = async () => {
   return await products.getAll();
+};
+
+const findByIdProducts = async (id) => {
+  const TWELVE = 12;
+  const item = (id.length < TWELVE) ? undefined : await products.findById(id);
+
+  if(!item) {
+    throw {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format'
+      }
+    };
+  };
+
+  return item;
 };
 
 const createProduct = async (name, quantity) => {
@@ -50,5 +67,6 @@ const createProduct = async (name, quantity) => {
 
 module.exports = {
   getAllProducts,
+  findByIdProducts,
   createProduct,
 };
