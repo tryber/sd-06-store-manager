@@ -4,8 +4,8 @@ const getAll = async () =>
   connection()
     .then((db) => db.collection('products').find().toArray());
 
-const create = async (name, quantity) =>
-  connection()
+const create = async (name, quantity) => 
+  await connection()
     .then((db) => 
       db.collection('products').insertOne({ name, quantity}));
 
