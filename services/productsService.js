@@ -8,19 +8,25 @@ const MINIMUM_QUANTITY = 0;
 
 const validations = async (name, quantity, requestType) => {
 
-  if (requestType === 'create') {
-
-    const doesTheProductExist = await model.getAProductByName({ name });
+  const doesTheProductExist = await model.getAProductByName({ name });
   
-    if (doesTheProductExist) {
-      throw { 
-        err: {
-          statusCode: 422,
-          code: 'invalid_data',
-          message: 'Product already exists',
-        }
-      };
-    }
+  if (requestType === 'create' && doesTheProductExist) {
+    throw { 
+      err: {
+        statusCode: 422,
+        code: 'invalid_data',
+        message: 'Product already exists',
+      }
+    };
+  }
+
+  if (!doesTheProductExist) {
+    throw {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format',
+      },
+    };
   }
 
   if (name.length < MINIMUM_LENGTH) {
@@ -53,6 +59,7 @@ const validations = async (name, quantity, requestType) => {
     };
   }
 };
+
 
 const createANewProduct = async (name, quantity) => {
 

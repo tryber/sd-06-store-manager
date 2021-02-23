@@ -56,7 +56,7 @@ const removeAProduct = async (id) => {
   }
 
   const removedProduct = connection('products')
-    .then((products) => products.deleteOne({ _id: Object(id)}));
+    .then((products) => products.deleteOne({ _id: ObjectId(id)}));
 
   return removedProduct;
 };
