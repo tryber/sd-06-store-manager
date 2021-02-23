@@ -7,7 +7,7 @@ const createProduct = async (name, quantity) => {
 
 const findProductByName = async (name) => {
   return connection()
-    .then((db) => db.collection(products).findOne({ name }));
+    .then((db) => db.collection('products').findOne({ name }));
 };
 
 module.exports = {

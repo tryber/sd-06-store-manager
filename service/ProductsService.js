@@ -47,5 +47,6 @@ module.exports = {
   findProductByName,
   checkNameSize,
   checkQuantityLessThanZero,
-  checkQuantityEqualZero
+  checkQuantityEqualZero,
+  checkQuantityString
 };

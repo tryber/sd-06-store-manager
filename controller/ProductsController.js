@@ -18,7 +18,9 @@ router.post('/products', async(req, res) => {
     });
   }
 
-  if(ProductsService.findProductByName(name)) {
+  const productExists = await ProductsService.findProductByName(name);
+
+  if(productExists) {
     return res.status(quatrocentosEVinteEDois).json({
       err: {
         code: 'invalid_data',
@@ -41,6 +43,15 @@ router.post('/products', async(req, res) => {
       err: {
         code: 'invalid_data',
         message: '"quantity" must be larger than or equal to 1'
+      }
+    });
+  }
+
+  if(!ProductsService.checkQuantityString(quantity)) {
+    return res.status(quatrocentosEVinteEDois).json({
+      err: {
+        code: 'invalid_data',
+        message: '"quantity" must be a number'
       }
     });
   }
