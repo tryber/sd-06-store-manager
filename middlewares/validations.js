@@ -2,33 +2,15 @@ const Products = require('../models/Products');
 const error = 422;
 const ZERO = 0;
 const FIVE = 5;
+const TWEENTYFOUR = 24;
 
-const productExists = {
-  err: {
-    code: 'invalid_data',
-    message: 'Product already exists'
-  }
-};
-
-const nameTooShort = {
-  err: {
-    code: 'invalid_data',
-    message: '"name" length must be at least 5 characters long'
-  }
-};
-
-const quantityTooSmall = {
-  err: {
-    code: 'invalid_data',
-    message: '"quantity" must be larger than or equal to 1'
-  }
-};
-
-const quantityNotNumber = {
-  err: {
-    code: 'invalid_data',
-    message: '"quantity" must be a number'
-  }
+const messageError = (string) => {
+  return {
+    err: {
+      code: 'invalid_data',
+      message: string,
+    }
+  };
 };
 
 const validateName = async (request, response, next) => {
@@ -36,11 +18,11 @@ const validateName = async (request, response, next) => {
   const getAllProducts = await Products.getAllProducts();
   const notFound = getAllProducts.filter((product) => product.name === name);
 
-  console.log(notFound);
+  if (notFound.length > ZERO) return response
+    .status(error).json(messageError('Product already exists'));
 
-  if (notFound.length > ZERO) return response.status(error).json(productExists);
-
-  if (name.length < FIVE) return response.status(error).json(nameTooShort);
+  if (name.length < FIVE) return response
+    .status(error).json(messageError('"name" length must be at least 5 characters long'));
 
   next();
 };
@@ -48,14 +30,26 @@ const validateName = async (request, response, next) => {
 const validateQuantity = (request, response, next) => {
   const { quantity } = request.body;
 
-  if (quantity <= ZERO) return response.status(error).json(quantityTooSmall);
+  if (quantity <= ZERO) return response
+    .status(error).json(messageError('"quantity" must be larger than or equal to 1'));
 
-  if (typeof quantity !== 'number') return response.status(error).json(quantityNotNumber);
+  if (typeof quantity !== 'number') return response
+    .status(error).json(messageError('"quantity" must be a number'));
   
+  next();
+};
+
+const validateId = (request, response, next) => {
+  const { id } = request.params;
+
+  if (id.length < TWEENTYFOUR) return response
+    .status(error).json(messageError('Wrong id format'));
+
   next();
 };
 
 module.exports = {
   validateName,
   validateQuantity,
+  validateId,
 };

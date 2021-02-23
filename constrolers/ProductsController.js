@@ -4,7 +4,8 @@ const Products = require('../models/Products');
 const validate = require('../middlewares/validations');
 
 const ProductsController = new Router();
-const status = 201;
+const status1 = 201;
+const status0 = 200;
 
 ProductsController.post('/',
   validate.validateName,
@@ -17,12 +18,21 @@ ProductsController.post('/',
       name,
       quantity,
     };
-    response.status(status).json(isertedProduct);
+    response.status(status1).json(isertedProduct);
   }
 );
 
-ProductsController.get('/', async (_request, response) => response.status(status)
-  .json(await Products.getAllProducts()));
+ProductsController.get('/', async (_request, response) => {
+  const allProducts = await Products.getAllProducts();
+  return response.status(status0).json({ products: allProducts });
+});
+
+ProductsController.get('/:id', validate.validateId, async (request, response) => {
+  const { id } = request.params;
+
+  const product = await Products.findById(id);
+  return response.status(status0).json(product);
+});
 
 // const errorFunction = (err, request, response, next) => {
 
