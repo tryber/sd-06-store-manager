@@ -1,5 +1,7 @@
 const model = require('../models/productsModel');
 
+const { ObjectId } = require('mongodb');
+
 const MINIMUM_LENGTH = 5;
 
 const MINIMUM_QUANTITY = 0;
@@ -56,6 +58,39 @@ const createANewProduct = async (name, quantity) => {
   return model.createAProduct(name, quantity);
 };
 
+const getAllProducts = async () => {
+  const products = await model.getAllProducts();
+
+  return products;
+};
+
+const getAProductById = async (id) => {
+
+  if (!ObjectId.isValid(id)) {
+    throw {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format',
+      }
+    };
+  }
+
+  const product = await model.getAProductById(id);
+
+  if (!product) {
+    throw {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format',
+      },
+    };
+  }
+
+  return product;
+};
+
 module.exports = {
   createANewProduct,
+  getAllProducts,
+  getAProductById
 };
