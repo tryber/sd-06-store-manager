@@ -1,15 +1,21 @@
 const rescue = require('express-rescue');
 const salesModel = require('../models/salesModel');
 
+const ok = 200;
+const noEntity = 422;
+const notFound = 404;
+const zero = 0;
+const maxIdLength = 12;
+
 const getAll = rescue(async (_req, res, _next) => {
   const response = await salesModel.getAll();
-  return res.status(200).json({ sales: response });
+  return res.status(ok).json({ sales: response });
 });
 
 const getById = rescue(async (req, res, _next) => {
   const { id } = req.params;
-  if (id.length < 12) {
-    return res.status(404).json({
+  if (id.length < maxIdLength) {
+    return res.status(notFound).json({
       err: {
         code: 'not_found',
         message: 'Sale not found',
@@ -17,14 +23,14 @@ const getById = rescue(async (req, res, _next) => {
     });
   }
   const sale = await salesModel.getById(id);
-  return res.status(200).json(sale);
+  return res.status(ok).json(sale);
 });
 
 const createSale = rescue(async (req, res, _next) => {
   const sale = req.body;
   sale.forEach((venda) => {
-    if (venda.quantity <= 0) {
-      return res.status(422).json({
+    if (venda.quantity <= zero) {
+      return res.status(noEntity).json({
         err: {
           code: 'invalid_data',
           message: 'Wrong product ID or invalid quantity',
@@ -32,7 +38,7 @@ const createSale = rescue(async (req, res, _next) => {
       });
     }
     if (typeof venda.quantity === 'string') {
-      return res.status(422).json({
+      return res.status(noEntity).json({
         err: {
           code: 'invalid_data',
           message: 'Wrong product ID or invalid quantity',
@@ -41,7 +47,7 @@ const createSale = rescue(async (req, res, _next) => {
     }
   });
   const insertedSale = await salesModel.createSale(sale);
-  return res.status(200).json(
+  return res.status(ok).json(
     { _id: insertedSale.insertedId, itensSold: sale },
   );
 });
@@ -49,8 +55,8 @@ const createSale = rescue(async (req, res, _next) => {
 const updateSale = rescue(async (req, res, _next) => {
   const { id } = req.params;
   const [{ productId, quantity }] = req.body;
-  if (quantity <= 0) {
-    return res.status(422).json({
+  if (quantity <= zero) {
+    return res.status(noEntity).json({
       err: {
         code: 'invalid_data',
         message: 'Wrong product ID or invalid quantity',
@@ -58,7 +64,7 @@ const updateSale = rescue(async (req, res, _next) => {
     });
   }
   if (typeof quantity !== 'number') {
-    return res.status(422).json({
+    return res.status(noEntity).json({
       err: {
         code: 'invalid_data',
         message: 'Wrong product ID or invalid quantity',
@@ -66,13 +72,13 @@ const updateSale = rescue(async (req, res, _next) => {
     });
   }
   await salesModel.updateSale(id, productId, quantity);
-  return res.status(200).json({ _id: id, itensSold: [{ productId, quantity }] });
+  return res.status(ok).json({ _id: id, itensSold: [{ productId, quantity }] });
 });
 
 const deleteSale = rescue(async (req, res, next) => {
   const { id } = req.params;
-  if (id.length < 12) {
-    return res.status(422).json({
+  if (id.length < maxIdLength) {
+    return res.status(noEntity).json({
       err: {
         code: 'invalid_data',
         message: 'Wrong sale ID format',
@@ -82,7 +88,7 @@ const deleteSale = rescue(async (req, res, next) => {
   const sale = await salesModel.getById(id);
   if (sale !== null) {
     await salesModel.deleteSale(id);
-    res.status(200).json({ deleted: true });
+    res.status(ok).json({ deleted: true });
     return next();
   }
 });
@@ -90,10 +96,9 @@ const deleteSale = rescue(async (req, res, next) => {
 const checkSale = rescue(async (req, res, _next) => {
   const { id } = req.params;
   const sale = await salesModel.getById(id);
-  console.log(id)
   if (sale === null) {
     await salesModel.deleteSale(id);
-    res.status(404).json({ not_found: true });
+    res.status(notFound).json({ not_found: true });
   }
 });
 
