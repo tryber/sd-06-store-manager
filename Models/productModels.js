@@ -18,7 +18,8 @@ const getAll = async () => {
 };
 
 const findById = async (id) => {
-  return await connection().then((db => db.collection('products').findOne({ _id: ObjectId(id) })));
+  return await connection().then((db => db.collection('products')
+    .findOne({ _id: ObjectId(id) })));
 };
 
 module.exports = {
