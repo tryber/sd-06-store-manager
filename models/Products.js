@@ -22,8 +22,37 @@ const getProductById = async (id) => {
     .then((db) => db.collection('products').findOne(ObjectId(id)));
 };
 
+const updateProduct = async (name, quantity, id) => {
+  await connection()
+    .then((db) => db.collection('products').updateOne(
+      { _id: ObjectId(id) },
+      { $set: { name, quantity } }
+    ));
+
+  return {
+    _id: id,
+    name,
+    quantity,
+  };
+};
+
+const deleteProduct = async (id) => {
+  const { name, quantity } = await connection()
+    .then((db) => db.collection('products').findOne(ObjectId(id)));
+  await connection()
+    .then((db) => db.collection('products').deleteOne({ _id: ObjectId(id) }));
+  
+  return {
+    _id: id,
+    name,
+    quantity,
+  };
+};
+
 module.exports = {
   registerProduct,
   getProducts,
   getProductById,
+  updateProduct,
+  deleteProduct,
 };

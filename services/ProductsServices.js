@@ -19,12 +19,47 @@ const quantityValueValidator = (quantityToValidate) => {
 };
 
 const quantityFormatValidator = (quantityToValidate) => {
-  return quantityToValidate.isInteger();
+  return typeof quantityToValidate === 'number';
+};
+
+const validateInsertData = (name, quantity) => {
+  const isValid = 'is valid';
+
+  if (!nameLengthValidator(name)) {
+    return {
+      err: {
+        code: 'invalid_data',
+        message: '"name" length must be at least 5 characters long',
+      },
+    };
+  }
+  if (!uniqueNameValidator(name)) {
+    return {
+      err: {
+        code: 'invalid_data',
+        message: 'Product already exists',
+      },
+    };
+  }
+  if (!quantityFormatValidator(quantity)) {
+    return {
+      err: {
+        code: 'invalid_data',
+        message: '"quantity" must be a number',
+      },
+    };
+  }
+  if (!quantityValueValidator(quantity)) {
+    return {
+      err: {
+        code: 'invalid_data',
+        message: '"quantity" must be larger than or equal to 1',
+      },
+    };
+  }
+  return isValid;
 };
 
 module.exports = {
-  nameLengthValidator,
-  uniqueNameValidator,
-  quantityValueValidator,
-  quantityFormatValidator,
+  validateInsertData,
 };
