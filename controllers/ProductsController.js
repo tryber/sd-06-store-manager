@@ -20,3 +20,16 @@ ProductsRouter.post('/', async (req, res) => {
   const { insertedId } = await ProductsModel.create(name, quantity);
   return res.status(201).json({ id: insertedId, name, quantity });
 });
+
+ProductsRouter.get('/', async (_req, res) => {
+  const products = await ProductsModel.getAll();
+  return res.status(200).json({ products });
+});
+
+ProductsRouter.get('/:id', async (req, res) => {
+  const { id } = req.params;
+  const product = await ProductsModel.getById(id);
+  if (!product) res.status(422).json({ message: "wrong id format" });
+  return res.status(200).json(product);
+});
+module.exports = ProductsRouter;
