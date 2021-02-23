@@ -1,9 +1,9 @@
 const { ObjectId } = require('mongodb');
 const { getAllProducts } = require('../modules/productModules');
 
-  const zero = 0;
-  const five = 5;
-  const fourHundredTwentyTwo = 422;
+const zero = 0;
+const five = 5;
+const fourHundredTwentyTwo = 422;
 
 const validateProduct = async (req, res, next) => {
   const { name, quantity } = req.body;
@@ -68,9 +68,9 @@ const validateId = async (req, res, next) => {
       message: 'Wrong id format',
     },
   });
-  
+
   next();
-}
+};
 
 module.exports = {
   validateProduct,
