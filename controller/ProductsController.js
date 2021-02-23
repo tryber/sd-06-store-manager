@@ -75,6 +75,10 @@ router.get('/products/:id', rescue(async (req, res) => {
 
 router.put('/products/:id', rescue (async (req, res) => {
   const { id } = req.params;
+  const { name, quantity } = req.body;
+
+  const insertedId = await ProductsService.updateProduct(id, { name, quantity });
+  return res.status(SUCCESS).json({ _id:insertedId, name, quantity });
 }));
 
 module.exports = router;
