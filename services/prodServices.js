@@ -1,4 +1,4 @@
-const { getAllProducts } = require("../modules/productModules");
+const { getAllProducts } = require('../modules/productModules');
 
 const validateProduct = async (req, res, next) => {
   const { name, quantity } = req.body;
@@ -14,40 +14,58 @@ const validateProduct = async (req, res, next) => {
   if (alreadyExists) {
     return res.status(fourHundredTwentyTwo).json(
       {
-        err: { code: 'invalid_data', message: 'Product already exists' },
+        err: {
+          code: 'invalid_data',
+          message: 'Product already exists'
+        },
       }
     );
   }
 
   if (name.length < five) {
     return res.status(fourHundredTwentyTwo).json({
-      err: { code: 'invalid_data', message: '"name" length must be at least 5 characters long' },
+      err: {
+        code: 'invalid_data',
+        message: '"name" length must be at least 5 characters long'
+      },
     });
   }
   if (typeof name !== 'string') {
     return res.status(fourHundredTwentyTwo).json({
-      err: { code: 'invalid_data', message: '"name" must be a string' },
+      err: {
+        code: 'invalid_data',
+        message: '"name" must be a string'
+      },
     });
   }
 
   if (!Number.isInteger(quantity)) {
     return res.status(fourHundredTwentyTwo).json({
-      err: { code: 'invalid_data', message: '"quantity" must be an integer' },
+      err: {
+        code: 'invalid_data',
+        message: '"quantity" must be an integer'
+      },
     });
   }
   if (typeof quantity !== 'number') {
     return res.status(fourHundredTwentyTwo).json({
-      err: { code: 'invalid_data', message: '"quantity" must be a number' },
+      err: {
+        code: 'invalid_data',
+        message: '"quantity" must be a number'
+      },
     });
   }
   if (quantity <= zero) {
     return res.status(fourHundredTwentyTwo).json({
-      err: { code: 'invalid_data', message: '"quantity" must be larger than or equal to 1' },
+      err: {
+        code: 'invalid_data',
+        message: '"quantity" must be larger than or equal to 1'
+      },
     });
   }
 
   next();
-}
+};
 
 module.exports = {
   validateProduct,

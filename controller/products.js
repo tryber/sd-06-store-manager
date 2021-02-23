@@ -2,7 +2,7 @@ const { Router } = require('express');
 
 const ProductsRouter = new Router();
 const { getAllProducts, createProduct } = require('../modules/productModules');
-const { checkName, checkQuantity, uniqueProduct, validateProduct } = require('../services/prodServices');
+const { validateProduct } = require('../services/prodServices');
 
 const twoHundred = 200;
 
