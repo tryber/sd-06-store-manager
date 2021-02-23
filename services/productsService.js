@@ -6,18 +6,21 @@ const MINIMUM_LENGTH = 5;
 
 const MINIMUM_QUANTITY = 0;
 
-const validations = async (name, quantity) => {
+const validations = async (name, quantity, requestType) => {
 
-  const doesTheProductExist = await model.getAProductByName({ name });
+  if (requestType === 'create') {
 
-  if (doesTheProductExist) {
-    throw { 
-      err: {
-        statusCode: 422,
-        code: 'invalid_data',
-        message: 'Product already exists',
-      }
-    };
+    const doesTheProductExist = await model.getAProductByName({ name });
+  
+    if (doesTheProductExist) {
+      throw { 
+        err: {
+          statusCode: 422,
+          code: 'invalid_data',
+          message: 'Product already exists',
+        }
+      };
+    }
   }
 
   if (name.length < MINIMUM_LENGTH) {
@@ -53,12 +56,15 @@ const validations = async (name, quantity) => {
 
 const createANewProduct = async (name, quantity) => {
 
-  await validations(name, quantity);
+  await validations(name, quantity, 'create');
+
+  const newProduct = model.createAProduct(name, quantity);
   
-  return model.createAProduct(name, quantity);
+  return newProduct;
 };
 
 const getAllProducts = async () => {
+
   const products = await model.getAllProducts();
 
   return products;
@@ -89,8 +95,18 @@ const getAProductById = async (id) => {
   return product;
 };
 
+const updateAProduct = async (id, name, quantity) => {
+  
+  await validations(name, quantity, 'update');
+
+  const updatedProduct = await model.updateAProduct(id, name, quantity);
+
+  return updatedProduct;
+};
+
 module.exports = {
   createANewProduct,
   getAllProducts,
-  getAProductById
+  getAProductById,
+  updateAProduct
 };

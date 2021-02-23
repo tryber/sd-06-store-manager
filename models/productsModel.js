@@ -32,14 +32,20 @@ const createAProduct = async (name, quantity) => {
   return { _id: product.insertedId, name, quantity };
 };
 
-const updateAProduct = async ({ id, name, quantity }) => {
+const updateAProduct = async (id, name, quantity) => {
   if (!ObjectId.isValid(id)) {
     return null;
   }
 
-  const updatedProduct = await connection('products').then((products) => {
+  await connection('products').then((products) => {
     products.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity }});
   });
+
+  const updatedProduct = {
+    _id: ObjectId(id),
+    name,
+    quantity, 
+  };
 
   return updatedProduct;
 };

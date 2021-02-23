@@ -46,7 +46,7 @@ router.get('/:id', async (request, response) => {
     response.status(OK).json(product);
 
   } catch (error) {
-    
+
     if (error.err.code === 'invalid data') {
       return response.status(UnprocessableEntity).json(error);
     }
@@ -54,6 +54,28 @@ router.get('/:id', async (request, response) => {
     console.error(error);
 
     response.status(INTERNAL_SERVER_ERROR).json({ message: error});
+  }
+});
+
+router.put('/:id', async (request, response) => {
+  try {
+    const { id } = request.params;
+
+    const { name, quantity } = request.body;
+
+    const updatedProduct = await service.updateAProduct(id, name, quantity);
+
+    return response.status(OK).json(updatedProduct);
+
+  } catch (error) {
+    if (error.err.code === 'invalid data') {
+
+      return response.status(UnprocessableEntity).json(error);
+    }
+
+    console.error(error);
+
+    response.status(INTERNAL_SERVER_ERROR).json({ message: error });
   }
 });
 
