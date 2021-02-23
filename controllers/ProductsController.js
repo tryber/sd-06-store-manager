@@ -9,10 +9,12 @@ ProductsRouter.post('/', async (req, res) => {
   quantity = Number(quantity);
 
   if (name.length < 5) {
-    return res.status(422).json({ message: "\"name\" length must be at least 5 characters long" });
+    return res.status(422)
+      .json({ message: "\"name\" length must be at least 5 characters long" });
   }
   if (quantity <= 0) {
-    return res.status(422).json({ message: "\"quantity\" must be larger than or equal to 1" });
+    return res.status(422)
+      .json({ message: "\"quantity\" must be larger than or equal to 1" });
   }
   if (typeof quantity === NaN) {
     return res.status(422).json({ message: "\"quantity must be a number" });
@@ -29,7 +31,17 @@ ProductsRouter.get('/', async (_req, res) => {
 ProductsRouter.get('/:id', async (req, res) => {
   const { id } = req.params;
   const product = await ProductsModel.getById(id);
-  if (!product) res.status(422).json({ message: "wrong id format" });
+  if (!product) return res.status(422).json({ message: "wrong id format" });
   return res.status(200).json(product);
 });
+
+ProductsRouter.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  const product = await ProductsModel.getById(id);
+  if (!product) return res.status(422).json()
+  if (!product) return res.status(422).json({ message: "wrong id format" });
+  await ProductsModel.delById(product._id);
+  return res.status(200).json(product);
+});
+
 module.exports = ProductsRouter;
