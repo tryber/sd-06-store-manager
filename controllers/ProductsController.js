@@ -71,7 +71,7 @@ const validate = async (req, res) => {
     res.status(status_code).json(object_answer);
     return false;
   }
-  if (typeof quantity !== 'number') {
+  if (typeof quantity === 'string') {
     message = 'quantity must be a number';
     code = 'invalid_data';
     status_code = UNPROCESSABLE_ENTITY;
