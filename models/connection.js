@@ -1,6 +1,8 @@
 const { MongoClient } = require('mongodb');
-
-const MONGO_DB_URL = 'mongodb://127.0.0.1:27017';
+// local
+// const MONGO_DB_URL = 'mongodb://127.0.0.1:27017';
+// Evaluator
+const MONGO_DB_URL = 'mongodb://mongodb:27017/StoreManager';
 const DBNAME = 'StoreManager';
 
 const connection = () =>

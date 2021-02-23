@@ -58,4 +58,5 @@ module.exports = {
   getAll,
   create,
   validate,
+  getById,
 };
