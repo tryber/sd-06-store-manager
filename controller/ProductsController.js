@@ -1,17 +1,55 @@
-const { MongoClient } = require('mongodb');
+const { Router } = require('express');
+const ProductsService = require('../service/ProductsService');
 
-const MONGODB_URL = 'mongodb://127.0.0.1:27017';
+const router = Router();
 
-const connection = () => {
-  return MongoClient.connect(MONGODB_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
-  .then((conn) => conn.db('musicClass'))
-  .catch((err) => {
-    console.error(err);
-    process.exit();
-  });
-}
+const quatrocentosEVinteEDois = 422;
+const duzentosEUm = 201;
 
-module.exports = connection;
+router.post('/products', async(req, res) => {
+  const { name, quantity } = req.body;
+
+  if(!ProductsService.checkNameSize(name)) {
+    return res.status(quatrocentosEVinteEDois).json({
+      err: {
+        code: 'invalid_data',
+        message: '"name" length must be at least 5 characters long'
+      }
+    });
+  }
+
+  if(ProductsService.findProductByName(name)) {
+    return res.status(quatrocentosEVinteEDois).json({
+      err: {
+        code: 'invalid_data',
+        message: 'Product already exists'
+      }
+    });
+  }
+
+  if(!ProductsService.checkQuantityLessThanZero(quantity)) {
+    return res.status(quatrocentosEVinteEDois).json({
+      err: {
+        code: 'invalid_data',
+        message: '"quantity" must be larger than or equal to 1'
+      }
+    });
+  }
+
+  if(!ProductsService.checkQuantityEqualZero(quantity)) {
+    return res.status(quatrocentosEVinteEDois).json({
+      err: {
+        code: 'invalid_data',
+        message: '"quantity" must be larger than or equal to 1'
+      }
+    });
+  }
+
+  await ProductsService.createProduct(name, quantity);
+
+  const productCreated = await ProductsService.findProductByName(name);
+
+  return res.status(duzentosEUm).json(productCreated);
+});
+
+module.exports = router;
