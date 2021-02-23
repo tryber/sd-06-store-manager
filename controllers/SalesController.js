@@ -3,14 +3,18 @@ const SaleService = require('../services/SalesService');
 
 const SalesControllerRouter = Router();
 const SC_OK = 200;
+const CREATED = 201;
 const SC_NO_CONTENT = 204;
 const SC_NOT_FOUND = 404;
+const UNPROCESSABLE_ENTITY = 422;
+const NAME_MIN_LENGHT = 5;
+const ZERO = 0;
 
 SalesControllerRouter.get('/', async (_req, res) => {
   const sales = await SaleService.getAll();
-
   res.status(SC_OK).json(sales);
 });
+
 
 SalesControllerRouter.get('/:id', async (req, res) => {
   const { id } = req.params;
@@ -24,15 +28,8 @@ SalesControllerRouter.get('/:id', async (req, res) => {
 
 SalesControllerRouter.post('/', async (req, res) => {
   const { itensSold } = req.body;
-  // console.log(itensSold);
-  // const { quantity } = req.body.itensSold[0];
-  // console.log(quantity);
-  // console.log(req.body.itensSold[0].quantity);
-  // const { quantity } = req.body;
-
   const sales = await SaleService.create(itensSold[0]);
-  
-  res.status(SC_OK).json(sales);
+  res.status(CREATED).json(sales);
 });
 
 SalesControllerRouter.put('/:id', async (req, res) => {

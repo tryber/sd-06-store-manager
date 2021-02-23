@@ -27,7 +27,12 @@ const create = async (itensSold) => {
 };
 
 const findById = async (id) => {
-  return await connection().then(db => db.collection('sales').findOne(ObjectId(id)));
+  const getAllItens = await connection()
+    .then(db => db.collection('sales').findOne(ObjectId(id)));
+
+  return {
+    sales: getAllItens
+  };
 };
 
 const update = async (id, quantity) => {
