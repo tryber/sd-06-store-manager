@@ -7,6 +7,8 @@ const app = express();
 const PORT = 3000;
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
 
+const FAIL = 500;
+
 app.use(bodyParser.json());
 
 // não remova esse endpoint, e para o avaliador funcionar
