@@ -30,7 +30,7 @@ const validateProduct = async (req, res, next) => {
       },
     });
   }
-  if (typeof name !== 'string') {
+  else if (typeof name !== 'string') {
     return res.status(fourHundredTwentyTwo).json({
       err: {
         code: 'invalid_data',
@@ -47,7 +47,7 @@ const validateProduct = async (req, res, next) => {
       },
     });
   }
-  if (typeof quantity !== 'number') {
+  else if (typeof quantity !== 'number') {
     return res.status(fourHundredTwentyTwo).json({
       err: {
         code: 'invalid_data',
@@ -55,7 +55,7 @@ const validateProduct = async (req, res, next) => {
       },
     });
   }
-  if (quantity <= zero) {
+  else if (quantity <= zero) {
     return res.status(fourHundredTwentyTwo).json({
       err: {
         code: 'invalid_data',
