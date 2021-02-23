@@ -6,7 +6,6 @@ const ZERO = 0;
 
 const validateProduct = async (req, res, next) => {
   const { name, quantity } = req.body;
-  console.log(await Products.checkName(name));
 
   if ( name.length < NAMELENGTH ) return res.status(STATUS422).json({ 'err': {
     'code': 'invalid_data',
@@ -27,9 +26,6 @@ const validateProduct = async (req, res, next) => {
     'code': 'invalid_data',
     'message': '\"quantity\" must be a number'
   } });
-
-  
-  
 
   return next();
 };
