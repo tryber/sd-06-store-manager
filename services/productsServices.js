@@ -11,8 +11,8 @@ const validateProduct = async (name, quantity, id ) => {
   if (typeof quantity === 'string') throw new Error('\"quantity\" must be a number');
 
   if (!id) {
-    const products = await Products.getAll();
-    products.map(prod => {
+    const data = await Products.getAll();
+    data.products.map(prod => {
       if (prod.name === name) {
         throw new Error('Product already exists');
       }
@@ -27,7 +27,7 @@ const getAll = async () => {
 
 const getById = async (id) => {
   const product = await Products.getById(id);
-  if (!product) throw new Error('Wrong id format');
+  if (!product) throw new Error;
   return product;
 };
 
@@ -43,7 +43,7 @@ const update = async (id, name, quantity) => {
 
 const remove = async (id) => {
   const product = await Products.getById(id);
-  if (!product) throw new Error('Wrong id format');
+  // if (!product) throw new Error('Wrong id format');
   return await Products.remove(id);
 };
 

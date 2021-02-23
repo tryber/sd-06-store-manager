@@ -310,6 +310,7 @@ describe('6 - Crie um endpoint para listar as vendas', () => {
       .then((responseOne) => {
         const { body } = responseOne;
         const responseAll = JSON.parse(body);
+        console.log(responseAll)
         const idSales = responseAll.sales[0]._id;
         const idFirstProductSales = responseAll.sales[0].itensSold[0].productId;
         const quantityFirstProductSales = responseAll.sales[0].itensSold[0].quantity;

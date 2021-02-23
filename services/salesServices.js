@@ -31,8 +31,10 @@ const update = async (id, sales) => {
 
 const remove = async (id) => {
   const sale = await Sales.getById(id);
+  console.log(sale);
   if (!sale) throw new Error;
-  return await Sales.remove(id);
+  await Sales.remove(id);
+  return sale;
 };
 
 

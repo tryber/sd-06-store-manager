@@ -2,11 +2,13 @@ const connection = require('./connection');
 const { ObjectId } = require('mongodb');
 
 const getAll = async () => {
-  return await connection().then(db => db.collection('products').find().toArray());
+  const data = await connection().then(db => db.collection('products').find().toArray());
+  return { products: data };
 };
 
 const getById = async (id) => {
-  return await connection().then(db => db.collection('products').findOne(ObjectId(id)));
+  return await connection().then(db => db.collection('products')
+    .findOne({ _id: ObjectId(id) }));
 };
 
 const update = async (id, name, quantity) => {
@@ -30,7 +32,7 @@ const create = async (name, quantity) => {
     .insertOne({ name, quantity }));
 
   return {
-    id: insertedId,
+    _id: insertedId,
     name,
     quantity
   };

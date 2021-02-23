@@ -2,7 +2,8 @@ const connection = require('./connection');
 const { ObjectId } = require('mongodb');
 
 const getAll = async () => {
-  return await connection().then(db => db.collection('sales').find().toArray());
+  const data = await connection().then(db => db.collection('sales').find().toArray());
+  return { sales: data };
 };
 
 const getById = async (id) => {
@@ -28,7 +29,7 @@ const create = async (sales) => {
     .insertOne({ itensSold: sales }));
 
   return {
-    id: insertedId,
+    _id: insertedId,
     itensSold: sales,
   };
 };
