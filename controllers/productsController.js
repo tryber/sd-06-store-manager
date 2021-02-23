@@ -53,7 +53,7 @@ router.get('/:id', async (request, response) => {
 
     console.error(error);
 
-    response.status(INTERNAL_SERVER_ERROR).json({ message: error});
+    response.status(UnprocessableEntity).json(error);
   }
 });
 
@@ -75,7 +75,7 @@ router.put('/:id', async (request, response) => {
 
     console.error(error);
 
-    response.status(INTERNAL_SERVER_ERROR).json({ message: error });
+    response.status(UnprocessableEntity).json(error);
   }
 });
 

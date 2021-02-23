@@ -8,7 +8,7 @@ const MINIMUM_QUANTITY = 0;
 
 const validations = async (name, quantity, requestType) => {
 
-  const doesTheProductExist = await model.getAProductByName({ name });
+  const doesTheProductExist = await model.getAProductByName(name);
   
   if (requestType === 'create' && doesTheProductExist) {
     throw { 
@@ -17,16 +17,6 @@ const validations = async (name, quantity, requestType) => {
         code: 'invalid_data',
         message: 'Product already exists',
       }
-    };
-  }
-
-  if (!doesTheProductExist) {
-    throw {
-      err: {
-        statusCode: 422,
-        code: 'invalid_data',
-        message: 'Wrong id format',
-      },
     };
   }
 

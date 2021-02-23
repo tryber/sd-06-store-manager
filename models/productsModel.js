@@ -19,9 +19,11 @@ const getAProductById = async (id) => {
   return product;
 };
 
-const getAProductByName = async ({ name }) => {
-  const product = connection('products').then((products) => products.findOne({ name }));
-
+const getAProductByName = async (name) => {
+  const product = await connection('products')
+    .then((products) => products.findOne({ name }));
+  console.log(name);
+  console.log(product);
   return product;
 };
 
