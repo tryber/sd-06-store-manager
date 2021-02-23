@@ -9,6 +9,25 @@ const createProduct = async ({ name, quantity }) => {
   return newProduct;
 };
 
+const searchProducts = async () => {
+  const allProduct = connection().then((db) =>
+    db.collection('products').find().toArray()
+  );
+
+  return allProduct;
+};
+
+const searchProduct = async (id) => {
+  const product = await connection().then((db) =>
+    db.collection('products').findOne({ _id: ObjectId(id) })
+  );
+
+  console.log(product, id);
+  return product;
+};
+
 module.exports = {
-  createProduct
+  createProduct,
+  searchProducts,
+  searchProduct
 };
