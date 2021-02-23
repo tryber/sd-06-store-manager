@@ -10,7 +10,7 @@ const DFT_ERROR = 400;
 
 router.post('/', validateNewProduct, async (req, res) => {
   const { name, quantity } = req.body;
-  const newProduct = await createProduct(name, quantity);
+  const newProduct = await createProduct({ name, quantity });
 
   return res.status(CREATED).send(newProduct);
 });

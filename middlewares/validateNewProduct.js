@@ -4,12 +4,12 @@ const UNPROCESSABLE = 422;
 const nameMinLength = 5;
 const zero = 0;
 
-module.exports = (req, res, next) => {
+module.exports = async (req, res, next) => {
   const { name, quantity } = req.body;
 
   if (
-    (!name || typeof name !== 'string')
-    || (typeof name === 'string' && name.length < nameMinLength)
+    (!name || typeof name !== 'string') ||
+    (typeof name === 'string' && name.length < nameMinLength)
   ) return res.status(UNPROCESSABLE).send({
     err: {
       code: 'invalid_data',
@@ -17,14 +17,18 @@ module.exports = (req, res, next) => {
     }
   });
 
-  if (findByName(name) !== null) return res.status(UNPROCESSABLE).send({
+  const findName = await findByName(name);
+  if (findName !== null) return res.status(UNPROCESSABLE).send({
     err: {
       code: 'invalid_data',
       message: 'Product already exists'
     }
   });
 
-  if (!quantity || typeof quantity !== 'number') return res.status(UNPROCESSABLE).send({
+  if (
+    (!quantity && quantity !== zero) ||
+    (typeof quantity !== 'number')
+  ) return res.status(UNPROCESSABLE).send({
     err: {
       code: 'invalid_data',
       message: '"quantity" must be a number'

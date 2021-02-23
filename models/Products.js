@@ -1,6 +1,6 @@
 const connection = require('./connection');
 
-const createProduct = async (req, res, product) => {
+const createProduct = async (product) => {
   const { name, quantity } = product;
   const { insertedId } = await connection()
     .then((db) => db.collection('products').insertOne(product));
@@ -14,7 +14,10 @@ const createProduct = async (req, res, product) => {
 
 const findByName = async (name) => {
   const product = await connection()
-    .then((db) => db.collection('products').findOne({ name: name }));
+    .then((db) => db.collection('products').findOne({ name: name }))
+    .catch((err) => {
+      console.error(err);
+    });
   console.log(product);
   return product;
 };
