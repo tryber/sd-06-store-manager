@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const ProductsService = require('../services/ProductsService');
-const { validateProduct } = require('../middlewares/validateProduct');
+const { validateProduct, validateProductUpdate } =
+  require('../middlewares/validateProduct');
 const { validateId } = require('../middlewares/validateId');
 
 const router = Router();
@@ -28,6 +29,15 @@ router.post('/',validateProduct, async (req, res) => {
   const product = await ProductsService.create(name, quantity);
 
   res.status(STATUS201).json(product);
+});
+
+router.put('/:id', validateProductUpdate, async (req, res) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+
+  const product = await ProductsService.update(id, name, quantity);
+
+  res.status(STATUS200).json(product);
 });
 
 module.exports = router;
