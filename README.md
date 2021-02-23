@@ -23,7 +23,7 @@ Aqui você vai encontrar os detalhes de como estruturar o desenvolvimento do seu
 - [Como desenvolver](#como-desenvolver)
   - [Padrões e conexões](#padrões-e-conexões)
   - [Conexão com o Banco](#conexão-com-o-banco)
-  - [Tabelas](#tabelas)
+  - [Coleções](#coleções)
 - [Requisitos do projeto](#requisitos-do-projeto)
   - [Linter](#linter)
   - [Lista de requisitos](#lista-de-requisitos)
@@ -108,8 +108,8 @@ Você deve utilizar o banco MongoDB para a gestão de dados. Além disso, a API 
 
 ## Data de Entrega
 
-  - Serão `X` dias de projeto.
-  - Data de entrega para avaliação final do projeto: `DD/MM/YYYY - 14:00h`.
+  - Serão `2` dias de projeto.
+  - Data de entrega para avaliação final do projeto: `03/03/2021 - 14:00h`.
 
 ---
 
@@ -180,7 +180,7 @@ Atenção :warning: Não rode o comando npm audit fix! Ele atualiza várias depe
   1. `git status` _(para verificar o que está em vermelho - fora do stage - e o que está em verde - no stage)_
   2. `git add` _(para adicionar arquivos ao stage do Git)_
   3. `git commit` _(para criar um commit com os arquivos que estão no stage do Git)_
-  5. `git push -u nome-da-branch` _(para enviar o commit para o repositório remoto na primeira vez que fizer o `push` de uma nova branch)_
+  5. `git push -u origin nome-da-branch` _(para enviar o commit para o repositório remoto na primeira vez que fizer o `push` de uma nova branch)_
   4. `git push` _(para enviar o commit para o repositório remoto após o passo anterior)_
 
 ---
@@ -229,9 +229,9 @@ const MONGO_DB_URL = 'mongodb://mongodb:27017/StoreManager';
 const DB_NAME = 'StoreManager';
 ```
 
-### Tabelas
+### Coleções
 
-O banco terá duas tabelas: produtos e vendas
+O banco terá duas coleções: produtos e vendas
 
 A tabela de produtos deverá ter o seguinte nome: `products`
 
