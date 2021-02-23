@@ -1,4 +1,5 @@
 const { Router } = require('express');
+const { ObjectId } = require('mongodb');
 // const productsModel = require('../models/productsModel');
 const Product = require('../services/productsServices');
 
@@ -6,6 +7,7 @@ const productsRouter = new Router();
 
 const SUCCESS = 200;
 const CREATED = 201;
+const ERR = 422;
 
 productsRouter.get('/', async (_req, res) => {
   const products = await Product.getAll();
@@ -17,7 +19,7 @@ productsRouter.post('/', Product.validate, async (req, res) => {
   res.status(CREATED).json(req.body);
 });
 
-productsRouter.get('/:id',async (req, res) => {
+productsRouter.get('/:id', Product.validateId, async (req, res) => {
   const { id } = req.params;
   const product = await Product.getById(id);
   if(!product) return res.status(ERR).json({
