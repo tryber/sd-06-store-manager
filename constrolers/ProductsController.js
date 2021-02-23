@@ -34,6 +34,19 @@ ProductsController.get('/:id', validate.validateId, async (request, response) =>
   return response.status(status0).json(product);
 });
 
+ProductsController.put('/:id',
+  validate.validateQuantity,
+  validate.validateName,
+  async (request, response) => {
+    const { id } = request.params;
+    const { name, quantity } = request.body;
+
+    await Products.updateProduct(id, name, quantity);
+
+    return response.status(status0).json({ _id: id, name, quantity });
+  }
+);
+
 // const errorFunction = (err, request, response, next) => {
 
 // }
