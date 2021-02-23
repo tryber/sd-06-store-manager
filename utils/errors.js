@@ -1,7 +1,7 @@
 const errorMessage = (msg) => {
   return {
     err: {
-      code: 'invalid-data',
+      code: 'invalid_data',
       message: msg
     }
   };
