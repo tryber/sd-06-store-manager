@@ -140,9 +140,35 @@ router.put('/products/:id', rescue (async(req, res) => {
 
   await ProductsService.updateProduct(id, name, quantity);
 
+  return res.status(duzentos).json({ _id: id, name, quantity });
+}));
+
+router.delete('/products/:id', rescue (async(req, res) => {
+  const { id } = req.params;
+
+  if(!ObjectId.isValid(id)) {
+    return res.status(quatrocentosEVinteEDois).json({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format'
+      }
+    });
+  }
+
   const product = await ProductsService.findProductById(id);
 
-  return res.status(duzentos).json({ _id: id, name, quantity });
+  if(!product) {
+    return res.status(quatrocentosEVinteEDois).json({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format'
+      }
+    });
+  }
+
+  await ProductsService.deleteProduct(id);
+
+  return res.status(duzentos).json(product);
 }));
 
 module.exports = router;

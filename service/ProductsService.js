@@ -20,6 +20,10 @@ const updateProduct = async (id, name, quantity) => {
   return ProductsModel.updateProduct(id, name, quantity);
 };
 
+const deleteProduct = async (id, name, quantity) => {
+  return ProductsModel.deleteProduct(id);
+};
+
 const checkNameSize = (name) => {
   const cinco = 5;
 
@@ -60,6 +64,7 @@ module.exports = {
   findAllProducts,
   findProductById,
   updateProduct,
+  deleteProduct,
   checkNameSize,
   checkQuantityLessThanZero,
   checkQuantityEqualZero,
