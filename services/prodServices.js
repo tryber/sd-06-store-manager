@@ -43,7 +43,7 @@ const validateProduct = async (req, res, next) => {
     return res.status(fourHundredTwentyTwo).json({
       err: {
         code: 'invalid_data',
-        message: '"quantity" must be an integer'
+        message: '"quantity" must be a number'
       },
     });
   }
