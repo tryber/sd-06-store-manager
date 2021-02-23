@@ -1,3 +1,3 @@
-const { Router } = require('express');
+// const { Router } = require('express');
 
-const SalesController = new Router();
+// const SalesController = new Router();

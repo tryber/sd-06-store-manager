@@ -12,6 +12,6 @@ app.get('/', (_request, response) => {
 
 app.use(bodyParser.json());
 app.use('/products', ProductsController);
-app.use('/sales', SalesController);
+// app.use('/sales', SalesController);
 
 app.listen(PORT, () => console.log('App listening on PORT %s', PORT));
