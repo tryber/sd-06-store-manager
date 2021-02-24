@@ -17,7 +17,6 @@ const validate = async (req, res) => {
   let code;
   let status_code;
   let object_answer;
-  // console.log(productId);
   if (!productId) {
     message = 'Inform a value for "name"';
     code = 'invalid_data';
@@ -98,22 +97,6 @@ const validate = async (req, res) => {
     res.status(status_code).json(object_answer);
     return false;
   }
-
-  // const alreadyExists = await SalesService.findById(productId);
-  // if (alreadyExists) {
-  //   message = 'Product already exists';
-  //   code = 'invalid_data';
-  //   status_code = UNPROCESSABLE_ENTITY;
-  //   object_answer = {
-  //     err: {
-  //       code,
-  //       message,
-  //     }
-  //   };
-  //   res.status(status_code).json(object_answer);
-  //   return false;
-  // }
-  
   return true;
 };
 
@@ -125,12 +108,8 @@ SalesControllerRouter.get('/', async (_req, res) => {
 
 SalesControllerRouter.get('/:id', async (req, res) => {
   const { id } = req.params;
-
   const sales = await SaleService.findById(id);
 
-  // if (!sales) return res.status(SC_NOT_FOUND).json({message: 'sales not found'});
-
-  // res.status(SC_OK).json(sales);
   if (!sales ) {
     const errorMessage = {
       code: 'not_found',
@@ -147,7 +126,6 @@ SalesControllerRouter.post('/', async (req, res) => {
   const isValid = await validate(req,res);
   if (isValid) {
     const array = req.body;
-    // console.log(array.length);
     const sales = await SaleService.create(array);
     res.status(SC_OK).json(sales);
   }
@@ -156,22 +134,14 @@ SalesControllerRouter.post('/', async (req, res) => {
 SalesControllerRouter.put('/:id', async (req, res) => {
   const isValid = await validate(req,res);
   if (isValid) {
-    const { id } = req.params;
-    // const { quantity } = req.body[0];
-  
+    const { id } = req.params;  
     const sales = await SaleService.update(id, req.body);
-
-    // res.status(SC_NO_CONTENT).end();
     res.status(SC_OK).json(sales);
   }
 });
 
 SalesControllerRouter.delete('/:id', async(req, res) => {
   const { id } = req.params;
-
-  // await SaleService.remove(id);
-
-  // res.status(SC_NO_CONTENT).end();
   console.log(id);
   const sales = await SaleService.remove(id);
 
