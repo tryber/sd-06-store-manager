@@ -3,7 +3,8 @@ const { create,
   getProductCount, 
   getAll, 
   getProductById, 
-  updateProduct} = require('../models/ProductModel');
+  updateProduct,
+  deleteProduct} = require('../models/ProductModel');
 
 const {ObjectId} = require('mongodb');
 
@@ -107,5 +108,18 @@ ProductsController.put('/:id', async (req, res) => {
  
 });
 
+ProductsController.delete('/:id', async (req, res) => {
+  const id = req.params.id;
+  if(ObjectId.isValid(id)){
+    const deletedProduct = await getProductById(id);
+    await deleteProduct(id);
+    return res.status(STATUS_OK).json(deletedProduct);
+  }
+  return res.status(STATUS_UNPROCESSABLE).json({
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong id format'
+    }});;
+});
 
 module.exports = ProductsController;
