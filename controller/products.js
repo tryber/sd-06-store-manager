@@ -7,16 +7,22 @@ const {
   getProductById,
   editProduct
 } = require('../modules/productModules');
-const { validateProduct, validateId, checkAlreadyExists } = require('../services/prodServices');
+const {
+  validateProduct,
+  validateId,
+  checkAlreadyExists
+} = require('../services/prodServices');
 
 const twoHundred = 200;
 const twoHundredOne = 201;
 const fourHundredTwentyTwo = 422;
 
-ProductsRouter.post('/products', validateProduct, checkAlreadyExists, async (req, res) => {
-  await createProduct(req.body);
-  return res.status(twoHundredOne).json(req.body);
-});
+ProductsRouter.post(
+  '/products', validateProduct, checkAlreadyExists, async (req, res) => {
+    await createProduct(req.body);
+    return res.status(twoHundredOne).json(req.body);
+  }
+);
 
 ProductsRouter.get('/products', async (_req, res) => {
   const allProducts = await getAllProducts();

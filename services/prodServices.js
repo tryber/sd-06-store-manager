@@ -71,9 +71,9 @@ const checkAlreadyExists = async (_req, res, next) => {
       }
     );
   }
-  
+
   next();
-}
+};
 
 module.exports = {
   checkAlreadyExists,
