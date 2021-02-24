@@ -1,8 +1,8 @@
 const services = require('../Services/productServices');
 const { Router } = require('express');
-const productValidation = require('../Utils/productValidation');
-const idValidate = require('../Utils/idValidation');
-const testDuplicated = require('../Utils/testDuplicated');
+const productValidation = require('../Utils/Products/productValidation');
+const idValidate = require('../Utils/Products/idValidation');
+const testDuplicated = require('../Utils/Products/testDuplicated');
 
 const router = new Router;
 const CREATED = 201;

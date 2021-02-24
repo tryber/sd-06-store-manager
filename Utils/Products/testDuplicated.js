@@ -1,4 +1,4 @@
-const connection = require('../Models/connection');
+const connection = require('../../Models/connection');
 
 const NONE = 0;
 const UNCREATED = 422;
