@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const {
   createProduct,
-  findById,
+  findProductById,
   getProducts,
   updateProduct,
   deleteProduct } = require('../services/productsServices');
@@ -18,7 +18,7 @@ const UNPROCESSABLE = 422;
 router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const findProduct = await findById(id);
+    const findProduct = await findProductById(id);
 
     if (findProduct === false) return res.status(UNPROCESSABLE).send({
       err: {
@@ -74,7 +74,7 @@ router.put('/:id', validateNewProduct, async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const findProduct = await findById(id);
+    const findProduct = await findProductById(id);
 
     if (findProduct === false) return res.status(UNPROCESSABLE).send({
       err: {

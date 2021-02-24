@@ -5,6 +5,7 @@ const {
   getAll,
   update,
   remove } = require('../models/salesModel');
+const {updateProduct, findProductById } = require('./productsServices');
 
 const createSale = async (sale) => {
   const newSale = await create(sale);
@@ -13,6 +14,18 @@ const createSale = async (sale) => {
 
 const deleteSale = async (id) => {
   try {
+    const saleArray = await findId(id);
+    saleArray.itensSold.forEach(async (sale) => {
+      const { productId, quantity } = sale;
+      const product = await findProductById(productId);
+
+      const editProduct = {
+        id: productId,
+        name: product.name,
+        quantity: product.quantity + quantity };
+
+      await updateProduct(editProduct);
+    });
     return await remove(id);
   } catch(e) {
     console.log(e);

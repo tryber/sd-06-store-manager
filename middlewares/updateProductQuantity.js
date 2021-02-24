@@ -1,21 +1,24 @@
-const { getProducts, updateProduct, findById } = require('../services/productsServices');
+const {
+  updateProduct,
+  findProductById } = require('../services/productsServices');
 
-const UNPROCESSABLE = 422;
+const NOT_FOUND = 404;
 const zero = 0;
 
-module.exports = async (req, _res, next) => {
-  const { id } = req.params;
+module.exports = async (req, res, next) => {
   const array = [...req.body];
-  const products = await getProducts();
 
   array.forEach(async (sale) => {
     const { productId, quantity } = sale;
-    const product = await findById(productId);
+    const product = await findProductById(productId);
 
     const editProduct = {
       id: productId,
       name: product.name,
       quantity: product.quantity - quantity };
+
+    if (editProduct.quantity < zero) return res.status(NOT_FOUND).send({
+      err: { code: 'stock_problem', message: 'Such amount is not permitted to sell' } });
 
     await updateProduct(editProduct);
   });

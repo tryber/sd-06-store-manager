@@ -69,19 +69,6 @@ const update = async (sale) => {
 
 const remove = async (id) => {
   try {
-    const saleArray = await connection()
-      .then((db) => db.collection('sales').findOne(ObjectID(id)));
-    saleArray.itensSold.forEach(async (sale) => {
-      const { productId, quantity } = sale;
-      const product = await productsModel.findId(productId);
-
-      const editProduct = {
-        id: productId,
-        name: product.name,
-        quantity: product.quantity + quantity };
-
-      await productsModel.update(editProduct);
-    });
     const result = await connection()
       .then((db) => db.collection('sales').deleteOne({ _id: ObjectID(id) }));
 

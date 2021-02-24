@@ -28,7 +28,7 @@ const updateProduct = async (product) => {
   }
 };
 
-const findById = async (id) => {
+const findProductById = async (id) => {
   try {
     const product = await findId(id);
 
@@ -56,7 +56,7 @@ const getProducts = async () => {
 
 module.exports = {
   createProduct,
-  findById,
+  findProductById,
   findByName,
   getProducts,
   updateProduct,
