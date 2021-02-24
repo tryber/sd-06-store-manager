@@ -1,4 +1,5 @@
-const { findByName } = require('../models/store');
+const { findByName, findById } = require('../models/store');
+const { ObjectId } = require('mongodb');
 
 const validateCreate = async (req, res, next) => {
   const { name, quantity } = req.body;
@@ -43,7 +44,23 @@ const validateCreate = async (req, res, next) => {
 
   next();
 };
+const rightId = async (req, res, next) => {
+  const { id } = req.params;
+  const err = 422;
+  if (!ObjectId.isValid(id)) {
+    return res.status(err)
+      .json({ err: { code: 'invalid_data', message: 'Wrong id format' } });
+  }
+  const check = await findById(id);
+  if (!check) {
+    return res.status(err)
+      .json({ err: { code: 'invalid_data', message: 'Wrong id format' } });
+  }
+  console.log(check);
+  next();
+};
 
 module.exports = {
-  validateCreate
+  validateCreate,
+  rightId
 };
