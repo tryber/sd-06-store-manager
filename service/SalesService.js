@@ -16,8 +16,8 @@ const findSaleById = async (id) => {
   SalesModel.findSaleById(id);
 };
 
-const updateSale = async (itens) => {
-  SalesModel.updateSale(itens);
+const updateSale = async (id, itens) => {
+  SalesModel.updateSale(id, itens);
 };
 
 const deleteSale = async (id) => {
@@ -54,6 +54,7 @@ module.exports = {
   findSaleByItensSold,
   findAllSales,
   updateSale,
+  findSaleById,
   checkQuantityLessThanZero,
   checkQuantityEqualZero,
   checkQuantityString

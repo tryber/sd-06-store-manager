@@ -107,7 +107,7 @@ router.put('/sales/:id', rescue (async(req, res) => {
     });
   }
 
-  await SalesService.updateSale(itens);
+  await SalesService.updateSale(id, itens);
 
   const sale = await SalesService.findSaleById(id);
 

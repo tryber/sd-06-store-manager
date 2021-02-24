@@ -19,10 +19,10 @@ const findAllSales = async () => {
 
 const findSaleById = async (id) => {
   return connection()
-    .then((db) => db.collection('sales').findOne({_id: ObjectId(id) }));
+    .then((db) => db.collection('sales').findOne({ _id: ObjectId(id) }));
 };
 
-const updateSale = async (itens) => {
+const updateSale = async (id, itens) => {
   return connection()
     .then((db) => {
       db.collection('sales')
