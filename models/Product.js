@@ -20,43 +20,62 @@ async function findById(id) {
   return queryResult;
 }
 
+async function findByName(name) {
+  const db = await connection();
+  const queryResult = await db
+    .collection('products')
+    .findOne(
+      { name },
+    );
+
+  return queryResult;
+}
+
 async function create(name, quantity) {
   const db = await connection();
-
-  const queryResult = await db
+  const { insertedId } = await db
     .collection('products')
     .insertOne({ name, quantity });
 
-  console.log(queryResult);
-  return queryResult;
+  return {
+    _id: insertedId,
+    name,
+    quantity,
+  };
 }
 
 async function update(id, name, quantity) {
   const db = await connection();
-  const queryResult = db
+  const queryResult = await db
     .collection('products')
-    .updateOne(
-      { _id: ObjectId(id)},
+    .findOneAndUpdate(
+      { _id: ObjectId(id) },
       { $set: { name, quantity } },
+      { returnOriginal: false },
     );
-  
-  return queryResult;
+
+  if (!queryResult.value) return null;
+
+  return queryResult.value;
 }
 
 async function remove(id) {
   const db = await connection();
   const queryResult = await db
     .collection('products')
-    .deleteOne(
+    .findOneAndDelete(
       { _id: ObjectId(id) },
     );
   
-  return queryResult;
+  if (!queryResult.value) return null;
+  
+  return queryResult.value;
 }
 
 module.exports = {
   getAll,
   findById,
+  findByName,
   create,
   update,
   remove,

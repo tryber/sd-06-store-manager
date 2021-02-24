@@ -3,7 +3,10 @@ const bodyParser = require('body-parser');
 const ProductsController = require('./controllers/ProductsController');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+
+const LOCALHOST_PORT = 3000;
+const PORT = process.env.PORT || LOCALHOST_PORT;
+const UNPROCESSABLE_ENTITY = 422;
 
 app.use(bodyParser.json());
 
@@ -13,5 +16,9 @@ app.get('/', (_request, response) => {
 });
 
 app.use('/products', ProductsController);
+
+app.use((error, request, response, next) => {
+  response.status(UNPROCESSABLE_ENTITY).json(error);
+});
 
 app.listen(PORT, () => console.log(`App listening on port ${PORT}`));
