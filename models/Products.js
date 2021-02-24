@@ -11,9 +11,9 @@ const getAll = async () => {
     .then((db) => db.collection('products').find().toArray());
 };
 
-const getByName = async (parameter) => {
+const getByName = async (name) => {
   return await connection()
-    .then((db) => db.collection('products').find({ parameter }).toArray());
+    .then((db) => db.collection('products').find({ name }).toArray());
 };
 
 const findById = async (id) => {

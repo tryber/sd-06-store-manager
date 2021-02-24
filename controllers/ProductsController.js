@@ -1,12 +1,33 @@
 const { Router } = require('express');
 const rescue = require('express-rescue');
 const Products = require('../models/Products');
-const productValidation = require('../schemas/productValidation');
+const { productValidation } = require('../schemas/productValidation');
 
 const router = new Router();
 
 const ERROR = 422;
 const SUCCESS = 201;
+const OK = 200;
+
+router.get('/', rescue(async (_req, res) => {
+  const fetchedProduct = await Products.getAll();
+
+  return res.status(OK).json({ products: fetchedProduct });
+}));
+
+router.get('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+  
+    const fetchedProduct = await Products.findById(id);
+
+    return res.status(OK).json(fetchedProduct);
+  } catch (err) {
+    return res.status(ERROR).json({
+      err: { code: 'invalid_data', message: 'Wrong id format' }
+    });
+  }
+});
 
 router.post('/', productValidation, rescue(async (req, res) => {
   const { name, quantity } = req.body;
@@ -20,20 +41,6 @@ router.post('/', productValidation, rescue(async (req, res) => {
 
   await Products.create(name, quantity);
   return res.status(SUCCESS).json({ name, quantity });
-}));
-
-router.get('/', rescue(async (_req, res) => {
-  const fetchedProduct = await Products.getAll();
-
-  return res.status(ERROR).json(fetchedProduct);
-}));
-
-router.get('/:id', rescue(async (req, res) => {
-  const { id } = req.params;
-
-  const fetchedProduct = await Products.findById(id);
-
-  return res.status(ERROR).json(fetchedProduct);
 }));
 
 module.exports = router;
