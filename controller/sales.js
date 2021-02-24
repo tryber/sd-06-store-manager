@@ -1,7 +1,10 @@
 const { Router } = require('express');
 const salesModules = require('../modules/salesModules');
 const { ObjectId } = require('mongodb');
-const { validateSales, validateId } = require('../services/salesServices');
+const {
+  validateSales,
+  validateId,
+  validateDeleteId } = require('../services/salesServices');
 
 const salesRouter = new Router();
 
@@ -48,16 +51,9 @@ salesRouter.put('/:id', validateId, validateSales, async (req, res) => {
   res.status(SUCESS).json(saleUpdated);
 });
 
-salesRouter.delete('/:id', validateId, async (req, res) => {
+salesRouter.delete('/:id', validateDeleteId, async (req, res) => {
   const { id } = req.params;
   const saleDeleted = await salesModules.getSaleById(id);
-
-  if (!saleDeleted) return res.status(invalidData).json({
-    err: {
-      code: 'invalid_data',
-      message: 'Wrong sale ID format',
-    }
-  });
 
   await salesModules.deleteSale(id);
 
