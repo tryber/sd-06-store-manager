@@ -3,8 +3,12 @@ const {
   searchProducts,
   searchProduct,
   updateProductById,
-  deleteProductById
+  deleteProductById,
 } = require('../models/products');
+
+const {
+  createSale
+} = require('../models/sales');
 
 const Ok = 200;
 const Created = 201;
@@ -79,10 +83,28 @@ const deleteProdut = async (req, res) => {
 };
 
 
+const createSales = async (req, res) => {
+  const products = req.body;
+
+  const DbNewSale = await createSale(req.body);
+
+  const productsSold = products.map(item => ({
+    productId: item.productId,
+    quantity: item.quantity
+  }));
+
+  return res.status(Ok).json({
+    _id: DbNewSale.ops[0]._id,
+    itensSold: productsSold
+  });
+};
+
+
 module.exports = {
   createProduts,
   searchAllProduts,
   searchOneProdut,
   updateProdut,
-  deleteProdut
+  deleteProdut,
+  createSales
 };
