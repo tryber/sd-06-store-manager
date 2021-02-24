@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const productsRouter = require('./controllers/productsRouter');
+const productsRouter = require('./routes/productsRouter');
 
 const app = express();
 app.use(bodyParser.json());
