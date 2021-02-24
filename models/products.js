@@ -1,4 +1,3 @@
-const products = require('../routes/productRoute');
 const connection = require('./connection');
 
 const queryByName = async (collection, name) => {
