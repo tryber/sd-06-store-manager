@@ -29,4 +29,23 @@ ProductController.post('/',
   })
 );
 
+ProductController.put('/:id',
+  ProductValidator.productEditValidator,
+  rescue( async (req, res) => {
+    const { name, quantity } = req.body;
+    const { id } = req.params;
+    const newProduct = await ProductServices.putProduct({ id, name, quantity });
+    res.status(status200).json(newProduct);
+  })
+);
+
+ProductController.delete('/:id',
+  ProductValidator.productExists,
+  rescue( async (req, res) => {
+    const { id } = req.params;
+    const oldProduct = await ProductServices.getById(id);
+    await ProductServices.deleteProduct(id);
+    res.status(status200).json(oldProduct);
+  }));
+
 module.exports = ProductController;

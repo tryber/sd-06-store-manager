@@ -24,9 +24,29 @@ const postProduct = async ({ name, quantity }) => {
   };
 };
 
+const putProduct = async ({ id, name, quantity }) => {
+  const { insertedId } = await connect().then((db) => db.collection('products').updateOne(
+    { _id: ObjectId(id) },
+    { $set: { name, quantity } }
+  ));
+  return {
+    _id: insertedId,
+    name,
+    quantity
+  };
+};
+
+const deleteProduct = async (id) => {
+  return await connect().then((db) => db.collection('products').deleteOne(
+    { _id: ObjectId(id) }
+  ));
+};
+
 module.exports = {
   getAll,
   getById,
   getByName,
+  putProduct,
   postProduct,
+  deleteProduct,
 };
