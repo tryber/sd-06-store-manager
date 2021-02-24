@@ -1,9 +1,14 @@
 const { Router } = require('express');
-const { create } = require('../models/ProductModel');
-const { getProductCount } = require('../models/ProductModel');
+const { create, 
+  getProductCount, 
+  getAll, 
+  getProductById } = require('../models/ProductModel');
+
+const {ObjectId} = require('mongodb');
 
 const ProductsController = new Router();
 const STATUS_CREATED = 201;
+const STATUS_OK = 200;
 const STATUS_UNPROCESSABLE= 422;
 const MIN_LENGTH = 5;
 const ZERO = 0;
@@ -48,5 +53,24 @@ ProductsController.post('/', async (req, res) => {
 
   return res.status(STATUS_CREATED).json(register);
 });
+
+ProductsController.get('/', async (req, res) => { 
+  const allProducts = await getAll();
+  return res.status(STATUS_OK).json({'products': allProducts});
+});
+
+ProductsController.get('/:id', async (req, res) => {
+  const id = req.params.id;
+  if(ObjectId.isValid(id)){
+    const product = await getProductById(id);
+    return res.status(STATUS_OK).json(product);
+  }
+  return res.status(STATUS_UNPROCESSABLE).json({
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong id format'
+    }});;
+});
+
 
 module.exports = ProductsController;
