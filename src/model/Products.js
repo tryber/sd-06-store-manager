@@ -22,20 +22,20 @@ const findByName = async (name) => {
 
 // Add New Product
 const create = async (name, quantity) => {
-  const { id } = await connection()
+  const { insertedId } = await connection()
     .then((db) => db.collection('products').insertOne({ name, quantity}))
     .catch(err => console.error(err));
-  return { _id: id, name, quantity };
+  return { _id: insertedId, name, quantity };
 };
 
 // Update Product
 const update = async (id, name, quantity) => {
-  await connection()
+  const { insertedId } = await connection()
     .then((db) => db.collection('products').updateOne(
       { _id: ObjectId(id) },
       { $set: { name, quantity } },
     ).catch(err => console.error(err)));
-  return { _id: id, name, quantity };
+  return { _id: insertedId, name, quantity };
 };
 
 // Remove Product

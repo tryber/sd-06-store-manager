@@ -15,26 +15,22 @@ ProductsController.get('/', async (req, res) => {
 // Find Product by ID
 ProductsController.get('/:id', async (req, res) => {
   const { id } = req.params;
-  const result = await Service.findById(id);
-  const { status } = result;
+  const { status, result } = await Service.findById(id);
   if (status === 'NOK') {
     return res.status(UNPROCESSABLE_ENTITY).json(responseError(result));
   }
-  const { product } = result;
-  res.status(OK).json(product);
+  res.status(OK).json(result);
 });
 
 // Create New Product
 ProductsController.post('/', async (req, res) => {
   const { name, quantity } = req.body;
 
-  const result = await Service.create(name, quantity);
-  const { status } = result;
+  const { status, result } = await Service.create(name, quantity);
   if (status === 'NOK') {
     return res.status(UNPROCESSABLE_ENTITY).json(responseError(result));
   }
-  const { product } = result;
-  res.status(CREATED).json(product);
+  res.status(CREATED).json(result);
 });
 
 // Update Product
@@ -42,31 +38,26 @@ ProductsController.put('/:id', async (req, res) => {
   const { id } = req.params;
   const { name, quantity } = req.body;
 
-  const result = await Service.update(id, name, quantity);
-  const { status } = result;
+  const { status, result } = await Service.update(id, name, quantity);
   if (status === 'NOK') {
     return res.status(UNPROCESSABLE_ENTITY).json(responseError(result));
   }
-  const { product } = result;
-  res.status(OK).json(product);
+  res.status(OK).json(result);
 });
 
 // Delete Product
 ProductsController.delete('/:id', async (req, res) => {
   const { id } = req.params;
   
-  const result = await Service.remove(id);
-  const { status } = result;
+  const { status, result } = await Service.remove(id);
   if (status === 'NOK') {
     return res.status(UNPROCESSABLE_ENTITY).json(responseError(result));
   }
-  const { product } = result;
-  res.status(OK).json(product);
+  res.status(OK).json(result);
 });
 
 
-const responseError = (result) => {
-  const { message } = result;
+const responseError = (message) => {
   return { err: { code: 'invalid_data', message } };
 };
 

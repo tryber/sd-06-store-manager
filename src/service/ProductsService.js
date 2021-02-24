@@ -8,33 +8,33 @@ const getAll = async () => {
 
 // Return Product by ID
 const findById = async (id) => {
-  // console.log('id', id);
-  // console.log(validateId(id));
+  console.log('id', id);
+  console.log(validateId(id));
   if (validateId(id)) {
-    const product = await Product.findById(id);
-    if (product) return { status: 'OK', product};
+    const result = await Product.findById(id);
+    if (result) return { status: 'OK', result};
   }
-  return { status: 'NOK', message: 'Wrong id format' };
+  return { status: 'NOK', result: 'Wrong id format' };
 };
 
 // Add new Product
 const create = async (name, quantity) => {
   const validation = await validateProduct('create', name, quantity);
   if (validation === 'OK') {
-    const product = await Product.create(name, quantity);
-    return { status: 'OK', product };
+    const result = await Product.create(name, quantity);
+    return { status: 'OK', result };
   } 
-  return { status: 'NOK', message: validation };
+  return { status: 'NOK', result: validation };
 };
 
 // Update Product
 const update = async (id, name, quantity) => {
   const validationMessage = await validateProduct('update', name, quantity);
   if (validationMessage === 'OK' && validateId(id)) {
-    const product = await Product.update(id, name, quantity);
-    return { status: 'OK', product };
+    const result = await Product.update(id, name, quantity);
+    return { status: 'OK', result };
   } 
-  return { status: 'NOK', message: validationMessage };
+  return { status: 'NOK', result: validationMessage };
 };
 
 // Remove Product
@@ -44,7 +44,7 @@ const remove = async (id) => {
     Product.remove(id);
     return { status: 'OK', product};
   }
-  return { status: 'NOK', message: 'Wrong id format' };
+  return { status: 'NOK', result: 'Wrong id format' };
 };
 
 
