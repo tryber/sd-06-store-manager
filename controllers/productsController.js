@@ -52,4 +52,14 @@ router.put('/:id', idValidation, nameAndQuantityValidation, async (req, res) => 
   res.status(OK).json(product);
 });
 
+router.delete('/:id', idValidation, async (req, res) => {
+  const { id } = req.params;
+
+  const deletedProduct = await productsService.findProductById(id);
+
+  await productsService.removeProduct(id);
+
+  res.status(OK).json(deletedProduct);
+});
+
 module.exports = router;
