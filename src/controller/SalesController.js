@@ -26,7 +26,7 @@ SalesController.get('/', async (req, res) => {
 
 // Create New Sale
 SalesController.post('/', async (req, res) => {
-  const { itensSold } = req.body;
+  const itensSold = req.body;
 
   const { status, result } = await Service.create(itensSold);
   if (status === 'NOK') {

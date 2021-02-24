@@ -6,35 +6,36 @@ const getAll = async () => {
   return await connection().then((db) => db.collection('sales').find().toArray());
 };
 
-// // Find by Id Products
+// // Find by Id Sales
 // const findById = async (id) => {
 //   return await connection()
 //     .then((db) => db.collection('sales').findOne(ObjectId(id)))
 //     .catch( (error) => console.error(error)) ;
 // };
 
-// Add New Product
+// Add New Sale
 const create = async (itensSold) => {
+  
   const { id } = await connection()
     .then((db) => db.collection('sales').insertOne({ itensSold }))
     .catch(err => console.error(err));
-  return { id, itensSold };
+  return { _id: id, itensSold };
 };
 
-// // Update Product
+// // Update Sale
 // const update = async (id, name, quantity) => {
 //   await connection()
-//     .then((db) => db.collection('products').updateOne(
+//     .then((db) => db.collection('Sales').updateOne(
 //       { _id: ObjectId(id) },
 //       { $set: { name, quantity } },
 //     ).catch(err => console.error(err)));
 //   return { id, name, quantity };
 // };
 
-// // Remove Product
+// // Remove Sale
 // const remove = async (id) => {
 //   return await connection()
-//     .then((db) => db.collection('products').deleteOne({ _id: ObjectId(id) }))
+//     .then((db) => db.collection('Sales').deleteOne({ _id: ObjectId(id) }))
 //     .catch(err => console.error(err));
 // };
 
