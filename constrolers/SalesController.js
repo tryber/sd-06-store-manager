@@ -29,4 +29,14 @@ SalesController.get('/', async (_request, response) => {
   response.status(status0).json({ sales });
 });
 
+SalesController.put('/:id', validate.validateQuantity, async (request, response) => {
+  const { id } = request.params;
+  const sale = request.body;
+
+  await Sales.updateSale(id, sale);
+  const result = await Sales.findById(id);
+
+  response.status(status0).json(result);
+});
+
 module.exports = SalesController;
