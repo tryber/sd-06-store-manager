@@ -2,7 +2,7 @@ const connection = require('./connection');
 
 const createSale = async (data) => {
   const sale = await connection()
-  .then((db) => db.collection('sales').insertOne({ itensSold: data }));
+    .then((db) => db.collection('sales').insertOne({ itensSold: data }));
   const { insertedId } = sale;
   return {
     _id: insertedId,
@@ -12,4 +12,4 @@ const createSale = async (data) => {
 
 module.exports = {
   createSale,
-}
+};

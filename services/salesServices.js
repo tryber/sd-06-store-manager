@@ -24,15 +24,7 @@ const validateId = async (req, res, next) => {
   req.body.forEach( async (item) => {
     const { productId } = item;
     const product = await getProductById(productId);
-    if (!ObjectId.isValid(productId)) {
-      return res.status(twoHundredTwentyTwo).json({
-        err: {
-          code: 'invalid_data',
-          message: 'Wrong product ID or invalid quantity'
-        }
-      });
-    }
-    else if (!product) {
+    if (!ObjectId.isValid(productId) || !product) {
       return res.status(twoHundredTwentyTwo).json({
         err: {
           code: 'invalid_data',
@@ -48,4 +40,4 @@ const validateId = async (req, res, next) => {
 module.exports = {
   validateId,
   validateSale,
-}
+};
