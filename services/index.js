@@ -46,6 +46,19 @@ const validateProduct = async (req, res, next) => {
 
 };
 
+const validateId = async (req, res, next) => {
+  const { id } = req.params;
+  if (!ObjectId.isValid(id)) return res.status(invalidData).json({
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    },
+  });
+
+  next();
+};
+
 module.exports = {
   validateProduct,
+  validateId,
 };

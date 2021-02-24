@@ -3,7 +3,7 @@ const app = express();
 const port = 3000;
 
 const bodyParser = require('body-parser');
-const productsRouter = require('./controller/products');
+const { productsRouter } = require('./controller/products');
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
