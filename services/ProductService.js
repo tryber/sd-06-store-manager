@@ -70,12 +70,10 @@ const findById = async (id) => {
     };
     return result;
   } catch {
-    {
-      let err = new Error();
-      err.statuscode = onErrorMsg.statuscode;
-      err.message = onErrorMsg.err;
-      throw err;
-    };
+    let err = new Error();
+    err.statuscode = onErrorMsg.statuscode;
+    err.message = onErrorMsg.err;
+    throw err;
   };
 };
 

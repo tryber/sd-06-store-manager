@@ -9,28 +9,9 @@ const validateFields = async (products) => {
   const isOK = products
     .some(product => (typeof product.quantity !== 'number' || product.quantity < ONE) );
 
-  if (isOK) return { 
+  if (isOK) return {
     status, code, httpcode: 422, msg: 'Wrong product ID or invalid quantity' 
   };
-
-  // if (product.name.length < MIN_CHARS) return { 
-  //   status, code, httpcode: 422, msg: 'Wrong product ID or invalid quantity' 
-  // };
-  
-  // if (typeof product.quantity !== 'number') return { 
-  //   status, code, httpcode: 422, msg: '"quantity" must be a number' 
-  // };
-
-  // if (parseInt(product.quantity) < ONE) return { 
-  //   status, code, httpcode: 422, msg: '"quantity" must be larger than or equal to 1' 
-  // };
-
-  // if (product.name) {
-  //   const nameExists = await ProductsModel.findByName(product.name);
-  //   if (nameExists) return { 
-  //     status, code, httpcode: 422, msg: 'Product already exists' 
-  //   };
-  // }
 
   return { status: true };
 };
@@ -46,7 +27,7 @@ const insertProducts = async (products) => {
     };
     throw err;
   };
-
+  
   const insertedId = await SalesModel.insertProducts(products);
   return {
     _id: insertedId,
@@ -54,6 +35,35 @@ const insertProducts = async (products) => {
   };
 };
 
+const getAll = async () => await SalesModel.getAll();
+
+const findById = async (id) => {
+  const onErrorMsg = {
+    statuscode: 404, 
+    err: { 
+      code: 'not_found', 
+      message: 'Sale not found'
+    } };
+
+  try {
+    const sale = await SalesModel.findById(id);
+    if (!sale) {
+      let err = new Error();
+      err.statuscode = onErrorMsg.statuscode;
+      err.message = onErrorMsg.err;
+      throw err;
+    };
+    return sale;
+  } catch {
+    let err = new Error();
+    err.statuscode = onErrorMsg.statuscode;
+    err.message = onErrorMsg.err;
+    throw err;
+  };
+};
+
 module.exports = {
   insertProducts,
+  getAll,
+  findById,
 };

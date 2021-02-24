@@ -10,11 +10,11 @@ const insertProducts = async (products) => {
   return insertedId;
 };
 
-// const getAll = async () => await conn()
-//   .then(db => db.collection('sales').find({}).toArray());
+const getAll = async () => await conn()
+  .then(db => db.collection('sales').find({}).toArray());
 
-// const findById = async (id) => await conn()
-//   .then(db => db.collection('sales').findOne(ObjectId(id)));
+const findById = async (id) => await conn()
+  .then(db => db.collection('sales').findOne(ObjectId(id)));
 
 // const updateProduct = async (id, name, quantity) => {
 //   const { modifiedCount } = await conn()
@@ -33,8 +33,8 @@ const insertProducts = async (products) => {
 module.exports = {
   // findByName,
   insertProducts,
-  // getAll,
-  // findById,
+  getAll,
+  findById,
   // updateProduct,
   // deleteProduct,
 };
