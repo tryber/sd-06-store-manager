@@ -1,9 +1,22 @@
+const { request } = require('express');
 const { ObjectId } = require('mongodb');
 
 const model = require('../models/salesModel');
 
-const validations = (body) => {
-  body.forEach(({ productId, quantity }) => {
+const validId = (id) => ObjectId.isValid(id);
+
+const validations = (bodyOrAnId, requestType) => {
+
+  if (requestType === 'delete') {
+
+    const sale = getASaleById(bodyOrAnId);
+
+    saleNotFoundValidation(sale);
+
+    return sale;
+  }
+
+  bodyOrAnId.forEach(({ productId, quantity }) => {
     if (!Number.isInteger(quantity) || quantity < 1) {
       throw {
         err: {
@@ -40,6 +53,7 @@ const getAllSales = async () => {
 };
 
 const getASaleById = async (id) => {
+
   if (!ObjectId.isValid(id)) {
     throw {
       err: {
@@ -58,28 +72,46 @@ const getASaleById = async (id) => {
 
 const createASale = async (body) => {
   
+  validations(body);
+
   const createdSale = await model.createASale(body);
 
-  validations(body);
-   
   return createdSale;
 };
 
 const updateASale = async (id, body) => {
 
-  const updatedSale = await model.updateASale(id, body);
-  
+  const saleThatShouldBeUpdated = await model.getASaleById(id);
+
+  saleNotFoundValidation(saleThatShouldBeUpdated);
+
   validations(body);
+
+  const updatedSale = await model.updateASale(id, body);
 
   return updatedSale; 
 };
 
 const removeASale = async (id) => {
-  const removedSale = await model.removeASale(id);
 
-  saleNotFoundValidation(removedSale);
+  const isValid = validId(id);
+  
+  if (!isValid) {
+    throw {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong sale ID format'
+      }
+    };
+  }
 
-  return removedSale;
+  const saleThatShouldBeRemoved = await model.getASaleById(id);
+
+  validations(id, 'delete');
+
+  await model.removeASale(id);
+
+  return saleThatShouldBeRemoved;
 };
 
 module.exports = {

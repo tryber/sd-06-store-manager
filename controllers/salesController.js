@@ -27,12 +27,12 @@ router.get('/:id', async (request, response) => {
     response.status(OK).json(sale);
   } catch (error) {
     if (error.err.code === 'not_found') {
-      return response.status(NOT_FOUND).json({ message: error });
+      return response.status(NOT_FOUND).json(error);
     }
 
     console.error(error);
 
-    response.status(INTERNAL_SERVER_ERROR).json({ message: error });
+    response.status(INTERNAL_SERVER_ERROR).json(error);
   }
 });
 
@@ -41,54 +41,60 @@ router.post('/', async (request, response) => {
     const { body } = request;
 
     const newSale = await service.createASale(body);
-
+    
     response.status(OK).json(newSale);
   } catch (error) {
+
     if (error.err.code === 'invalid_data') {
       return response.status(UnprocessableEntity).json(error);
     }
 
     console.error(error);
 
-    response.status(INTERNAL_SERVER_ERROR).json({ message: error });
+    response.status(INTERNAL_SERVER_ERROR).json(error);
   }
 });
 
 router.put('/:id', async (request, response) => {
+  const { id } = request.params;
+
+  const { body } = request;
+
   try {
-    const { id } = request.params;
-
-    const { body } = request;
-
     const updatedSale = await service.updateASale(id, body);
 
-    response.status(OK).json(updatedSale);
+    return response.status(OK).json(updatedSale);
+
   } catch (error) {
+
+    console.log(error.message);
+
     if (error.err.code === 'invalid_data') {
       return response.status(UnprocessableEntity).json(error);
     }
 
-    console.error(error);
-
-    response.status(INTERNAL_SERVER_ERROR).json({ message: error });
+    response.status(INTERNAL_SERVER_ERROR).json(error);
   }
 });
 
 router.delete('/:id', async (request, response) => {
+  const { id } = request.params;
+
   try {
-    const { id } = request.params;
 
     const removedSale = await service.removeASale(id);
 
-    response.status(OK).json(removedSale);
+    return response.status(OK).json(removedSale);
+
   } catch (error) {
+
+    console.error(error.message);
+
     if (error.err.code === 'invalid_data') {
       return response.status(UnprocessableEntity).json(error);
     }
 
-    console.error(error);
-
-    response.status(UnprocessableEntity).json({ message: error});
+    return response.status(UnprocessableEntity).json(error);
   }
 });
 
