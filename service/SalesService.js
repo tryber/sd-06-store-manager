@@ -5,23 +5,23 @@ const createSale = async (sale) => {
 };
 
 const findSaleByItensSold = async (itens) => {
-  SalesModel.findSaleByItensSold(itens);
+  return SalesModel.findSaleByItensSold(itens);
 };
 
 const findAllSales = async () => {
-  SalesModel.findAllSales();
+  return SalesModel.findAllSales();
 };
 
 const findSaleById = async (id) => {
-  SalesModel.findSaleById(id);
+  return SalesModel.findSaleById(id);
 };
 
 const updateSale = async (id, itens) => {
-  SalesModel.updateSale(id, itens);
+  return SalesModel.updateSale(id, itens);
 };
 
 const deleteSale = async (id) => {
-  SalesModel.deleteSale(id);
+  return SalesModel.deleteSale(id);
 };
 
 const checkQuantityLessThanZero = (quantity) => {
@@ -54,6 +54,7 @@ module.exports = {
   findSaleByItensSold,
   findAllSales,
   updateSale,
+  deleteSale,
   findSaleById,
   checkQuantityLessThanZero,
   checkQuantityEqualZero,

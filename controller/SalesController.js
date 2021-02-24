@@ -47,7 +47,7 @@ router.post('/sales', rescue (async(req, res) => {
 
 router.get('/sales', rescue (async(req, res) => {
   const allSales = await SalesService.findAllSales();
-  return res.status(duzentos).json(allSales);
+  return res.status(duzentos).json({sales: allSales});
 }));
 
 router.get('/sales/:id', rescue (async(req, res) => {
