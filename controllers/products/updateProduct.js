@@ -1,5 +1,5 @@
-const { products } = require('../services');
-const { status } = require('../utils/dictionary');
+const { products } = require('../../services');
+const { status } = require('../../utils/dictionary');
 
 module.exports = async (req, res, next) => {
   try {
