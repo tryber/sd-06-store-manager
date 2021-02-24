@@ -6,7 +6,6 @@ const addToUpdateQuantityToMissingProducts =
   require('../utils/addToUpdateQuantityToMissingProducts');
 
 const updateProductsQuantity = require('../utils/updateProductsQuantity');
-const addToUpdateQuantityToProducts = require('../utils/addToUpdateQuantityToProducts');
 const addProductOrUpdateProductList = require('../utils/addProductOrUpdateProductList');
 
 const baseMessage = 'Wrong product ID or invalid quantity';
