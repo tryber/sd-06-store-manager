@@ -22,12 +22,21 @@ const searchProduct = async (id) => {
     db.collection('products').findOne({ _id: ObjectId(id) })
   );
 
-  console.log(product, id);
+  return product;
+};
+
+const updateProductById = async (name, quantity, id) => {
+  const product = await connection().then((db) =>
+    db.collection('products')
+      .updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } })
+  );
+
   return product;
 };
 
 module.exports = {
   createProduct,
   searchProducts,
-  searchProduct
+  searchProduct,
+  updateProductById
 };

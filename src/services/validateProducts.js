@@ -11,16 +11,15 @@ const createProduct = async (name) => {
   );
 
   if (nameProduct !== null) {
-
     return nameProduct.name;
   }
 };
 
 const validateProduts = async (req, res, next) => {
   const {name, quantity} = req.body;
+  const method = req.route.methods.put;
 
   const nameExist = await createProduct(name);
-  // console.log(nameTrueOrFalse);
 
   if (name && name.length < MINIMUM_LENGTH) {
     return res.status(UNPROCESSABLE_ENTITY).json({
@@ -31,7 +30,7 @@ const validateProduts = async (req, res, next) => {
     });
   }
 
-  if (name && name === nameExist) {
+  if (!method && name && name === nameExist) {
     return res.status(UNPROCESSABLE_ENTITY).json({
       err: {
         code: 'invalid_data',

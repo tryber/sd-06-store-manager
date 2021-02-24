@@ -1,7 +1,8 @@
 const {
   createProduct,
   searchProducts,
-  searchProduct
+  searchProduct,
+  updateProductById
 } = require('../models/products');
 
 const Ok = 200;
@@ -41,8 +42,22 @@ const searchOneProdut = async (req, res) => {
 };
 
 
+const updateProdut = async (req, res) => {
+  const { name, quantity } = req.body;
+  const { id } = req.params;
+
+  const product = await updateProductById(name, quantity, id);
+
+  return res.status(Ok).json({
+    _id: id,
+    name,
+    quantity
+  });
+};
+
 module.exports = {
   createProduts,
   searchAllProduts,
-  searchOneProdut
+  searchOneProdut,
+  updateProdut
 };
