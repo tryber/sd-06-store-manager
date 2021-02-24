@@ -1,6 +1,7 @@
+const { ObjectId } = require('mongodb');
 const Products = require('../../models/Products');
 
-const nameValidation = async (name, minChar) => {
+const nameValidation = async (name, minChar, update=false) => {
   if (name.length < minChar) return (
     {
       payload: {
@@ -13,8 +14,8 @@ const nameValidation = async (name, minChar) => {
     }
   );
   
-  const checkDb = await Products.findItem(name);
-  if (checkDb[0] && checkDb[0].name === name) return (
+  const checkDb = await Products.findByName(name);
+  if (checkDb[0] && checkDb[0].name === name && !update) return (
     {
       payload: { 
         err: {
@@ -56,7 +57,37 @@ const quantityValidation = (qnt) => {
   return false;
 };
 
+const idValidation = async (id) => {
+  if (!ObjectId.isValid(id)) return (
+    {
+      payload: {
+        err: {
+          message: 'Wrong id format', 
+          code: 'invalid_data',
+        },
+      },
+      error: { status: 422 }
+    }
+  );
+
+  const searchResult = await Products.findById(id);
+  if (!searchResult) return (
+    {
+      payload: {
+        err: {
+          message: 'Wrong id format', 
+          code: 'invalid_data',
+        },
+      },
+      error: { status: 422 }
+    }
+  );
+
+  return searchResult;
+};
+
 module.exports = {
   nameValidation,
   quantityValidation,
+  idValidation,
 };
