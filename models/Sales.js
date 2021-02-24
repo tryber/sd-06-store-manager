@@ -12,6 +12,18 @@ const create = async (sale) => {
   };
 };
 
+const getAll = async () => {
+  return await connection()
+    .then((db) => db.collection('sales').find().toArray());
+};
+
+const findById = async (id) => {
+  return await connection()
+    .then((db) => db.collection('sales').findOne(ObjectId(id)));
+};
+
 module.exports = {
-  create
+  create,
+  getAll,
+  findById
 };
