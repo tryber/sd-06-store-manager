@@ -19,12 +19,11 @@ const getAll = async () => {
 
 // Add new Product
 const create = async (itensSold) => {
-  // const validation = await validateProduct('create', name, quantity);
-  // if (validation === 'OK') {
-  const result = await Sales.create(itensSold);
-  return { status: 'OK', result };
-  // } 
-  // return { status: 'NOK', result };
+  if (validateSale(itensSold)) {
+    const result = await Sales.create(itensSold);
+    return { status: 'OK', result };
+  }
+  return { status: 'NOK', result: 'Wrong product ID or invalid quantity' };
 };
 
 // // Update Product
@@ -65,25 +64,18 @@ const create = async (itensSold) => {
 //   return (id.length === lengthId && id !== undefined);
 // };
 
-// // Validation Product fields
-// const validateProduct = async (typeOperation, name, quantity) => {
-//   const nameMaxLength = 5;
-//   const zero = 0;
-  
-//   if (!name || name.length < nameMaxLength) {
-//     return '"name" length must be at least 5 characters long';
-//   };
-//   if (typeOperation === 'create' && await existProductName(name)) {
-//     return 'Product already exists';
-//   };
-//   if ((!quantity && quantity !== zero) || typeof(quantity) !== 'number') {
-//     return '"quantity" must be a number';
-//   };
-//   if (!quantity || quantity <= zero || !Number.isInteger(quantity)) {
-//     return '"quantity" must be larger than or equal to 1';
-//   };
-//   return 'OK';
-// };
+// Validation Sale fields
+const validateSale = (itensSold) => {
+  const ZERO = 0;
+  let resultOk = true;
+  itensSold.forEach(item => {
+    if (!item.quantity || item.quantity < ZERO 
+      || item.quantity === ZERO || !Number.isInteger(item.quantity)) {
+      resultOk = false;
+    };
+  });
+  return resultOk;
+};
 
 module.exports = {
   getAll,

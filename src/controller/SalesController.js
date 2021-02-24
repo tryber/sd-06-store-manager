@@ -29,10 +29,12 @@ SalesController.post('/', async (req, res) => {
   const itensSold = req.body;
 
   const { status, result } = await Service.create(itensSold);
+  // console.log('status', status);
+  // console.log('result', result);
   if (status === 'NOK') {
     return res.status(UNPROCESSABLE_ENTITY).json(responseError(result));
   }
-  res.status(CREATED).json(result);
+  res.status(OK).json(result);
 });
 
 // // Update Sale
