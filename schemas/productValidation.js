@@ -1,5 +1,3 @@
-const { ObjectId } = require('mongodb');
-
 module.exports = {
   productValidation: (req, res, next) => {
     const { name, quantity } = req.body;

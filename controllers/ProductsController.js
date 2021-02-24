@@ -44,4 +44,20 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+router.put('/:id', productValidation, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, quantity } = req.body;
+
+    await Products.update(id, name, quantity);
+    const modifiedProduct = await Products.findById(id);
+
+    return res.status(OK).json(modifiedProduct);
+  } catch (err) {
+    return res.status(ERROR).json({
+      err: { code: 'invalid_data', message: 'Wrong id format' }
+    });
+  }
+});
+
 module.exports = router;
