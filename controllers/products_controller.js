@@ -39,4 +39,20 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.put('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, quantity } = req.body;
+
+    await productsService.updateProduct(id, name, quantity);
+    const get = await productsService.findByIdProducts(id);
+
+    res.status(OK).json(get);
+  } catch (e) {
+    if (e.err.code === 'invalid_data') {
+      res.status(UnprocessableEntity).json(e);
+    }
+  }
+});
+
 module.exports = router;

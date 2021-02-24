@@ -65,8 +65,43 @@ const createProduct = async (name, quantity) => {
   return await products.create(name, quantity);
 };
 
+const updateProduct = async (id, name, quantity) => {
+  const FIVE = 5;
+  const ZERO = 0;
+
+  if(name.length < FIVE) {
+    throw {
+      err: {
+        code: 'invalid_data',
+        message: '"name" length must be at least 5 characters long'
+      }
+    };
+  };
+
+  if(quantity <= ZERO) {
+    throw {
+      err: {
+        code: 'invalid_data',
+        message: '"quantity" must be larger than or equal to 1'
+      }
+    };
+  }
+
+  if(typeof quantity !== 'number') {
+    throw {
+      err: {
+        code: 'invalid_data',
+        message: '"quantity" must be a number'
+      }
+    };
+  }
+
+  return await products.update(id, name, quantity);
+};
+
 module.exports = {
   getAllProducts,
   findByIdProducts,
   createProduct,
+  updateProduct,
 };
