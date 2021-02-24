@@ -4,7 +4,7 @@ const { validateProduct } = require('../services');
 
 const productsRouter = new Router();
 
-const statusSucess = 200;
+const findSucess = 200;
 const createSucess = 201;
 
 productsRouter.post('/', validateProduct, async (req, res) => {
@@ -14,15 +14,15 @@ productsRouter.post('/', validateProduct, async (req, res) => {
 
 productsRouter.get('/', async (_req, res) => {
   const allProducts = await productsModules.getAllProducts();
-  res.status(statusSucess).json(allProducts);
+  res.status(findSucess).json(allProducts);
 });
 
-productsRouter.get('/:id', async (_req, res) => {
+productsRouter.get('/:id', async (req, res) => {
   const id = parseInt(req.params, 10);
-  const allProducts = await productsModules.getAllProducts();
-  const productFound = allProducts.find((product) => product.id === id);
   
-  res.status(statusSucess).json(productFound);
+  const productFound = productsModules.getProductById(id);
+  
+  res.status(findSucess).json(productFound);
 });
 
 module.exports = productsRouter;
