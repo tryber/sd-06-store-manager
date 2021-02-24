@@ -1,5 +1,4 @@
 const products = require('../models/products');
-const { ObjectId } = require('mongodb');
 
 const getAllProducts = async () => {
   return await products.getAll();
