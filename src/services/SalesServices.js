@@ -45,9 +45,9 @@ const updateSale = async (id, sale) => {
 };
 
 const deleteSale = async (id) => {
-
+  
   const deletedSale = await getById(id);
-
+  
   if(!deletedSale) {
     throw new throwError(status.notFound, errorMessages.wrongSaleID);
   }

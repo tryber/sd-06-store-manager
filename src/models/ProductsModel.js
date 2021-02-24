@@ -65,10 +65,11 @@ const deleteProduct = async (id) => {
     db
       .collection(dbCollection)
       .deleteOne({_id: ObjectId(id)});
-  });
-
-  console.log(responsePayload.deletedCount);
+  }).catch(err => {
+    throw new throwError(status.unprocessableEntity, errorMessages.wrongId);
+  });;
   return responsePayload;
+
 };
 
 module.exports = {

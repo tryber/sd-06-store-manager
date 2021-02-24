@@ -53,7 +53,9 @@ const deleteSale = async (id) => {
     db
       .collection(dbCollection)
       .deleteOne({_id: ObjectId(id)});
-  });
+  }).catch(err => {
+    throw new throwError(status.unprocessableEntity, errorMessages.wrongId);
+  });;;
 
   return responsePayload;
 };
