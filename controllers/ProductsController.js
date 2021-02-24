@@ -33,19 +33,17 @@ ProductController.get('/', async (_request, response) => {
   return response.status(STATUS_200).json({ products: allProd });
 });
 
-ProductController.get('/:id', rescue(async (request, response) => {
-  const { id } = request.params;
-  const productId = await ProductService.getProdById(id);
-  if (!productId) return response.status(STATUS_422).json({ err:
-    { code: 'invalid_data', message: 'Wrong id format' }
-  });
-  return response.status(STATUS_200).json(productId);
-}));
-
-ProductController.use((err, _request, response, _next) => {
-  return response.status(STATUS_422).json({ err:
-    { code: 'invalid_data', message: 'Wrong id format' }
-  });
+ProductController.get('/:id', async (request, response) => {
+  try {
+    const { id } = request.params;
+    const productId = await ProductService.getProdById(id);
+    if (!productId) throw new Error('error');
+    return response.status(STATUS_200).json(productId);
+  } catch (err) {
+    response.status(STATUS_422).json({ err:
+      { code: 'invalid_data', message: 'Wrong id format' }
+    });
+  }
 });
 
 module.exports = ProductController;
