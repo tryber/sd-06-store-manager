@@ -77,8 +77,19 @@ const getById = async (id) => {
   return result;
 };
 
+const upDate = async (id, name, quantity) => {
+  const errorMessage = await dataValidate(name, quantity);
+
+  if (errorMessage) return errorMessage;
+
+  const productUpdated = await products.upDate(id, name, quantity);
+
+  return productUpdated;
+};
+
 module.exports = {
   create,
   getAll,
   getById,
+  upDate,
 };
