@@ -7,7 +7,7 @@ const SUCCESS = 201;
 router.post('/', validateProduct, validateName, async (req, res) => {
   const { name, quantity } = req.body;
   const productCreated = await ProductsService.createProductService(name, quantity);
-  res.status(SUCCESS).json(productCreated);
+  return res.status(SUCCESS).json(productCreated);
 });
 
 module.exports = router;
