@@ -8,7 +8,7 @@ const nameExists = 'Product already exists';
 const quantityErrorMessage = '"quantity" must be larger than or equal to 1';
 const quantityTypeErrorMessage = '"quantity" must be a number';
 
-const isValid = async (name, quantity) => {
+const isValid = (name, quantity) => {
   if (name.length < minNameLength) return nameLengthErrorMessage;
   if (!Number.isInteger(quantity)) return quantityTypeErrorMessage;
   if (quantity <= nullQuantity) return quantityErrorMessage;
