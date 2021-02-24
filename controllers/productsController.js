@@ -1,11 +1,6 @@
 const connection = require('../models/connection');
 const { ObjectId } = require('mongodb');
-const {
-  getAllProducts,
-  findProductFromDb,
-  updateProductFromDb,
-  deleteProductFromDb,
-} = require('../models/productsModel');
+const Products = require('../models/Products');
 
 const status_ue = 422;
 const status_c = 201;
@@ -38,9 +33,8 @@ const saveProduct = async (req, res) => {
     return res.status(status_ue).json(error);
   }
   
-  const products = await connection().then((db) => {
-    return db.collection('products').find({}).toArray();
-  });
+  const products = await Products.getAll();
+
   const productsNames = products.map((p) => p.name);
   if (productsNames.includes(name)) {
     error.err.message = 'Product already exists';
@@ -48,17 +42,17 @@ const saveProduct = async (req, res) => {
   }
   
   const product = { '_id': ObjectId(), ...data };
-  connection().then((db) => db.collection('products').insertOne(product));
+  await Products.create(product);
 
   return res.status(status_c).json(product);
 };
 
 const getProducts = async (_req, res) => {
-  const products = await getAllProducts();
+  const products = await Products.getAll();
 
   if (!products) {
     error.err.message = 'Couldn\'t find any product';
-    res.status(status_ue).json(error);
+    return res.status(status_ue).json(error);
   }
 
   return res.status(status_s).json({ products });
@@ -73,7 +67,7 @@ const getProductById = async (req, res) => {
     return res.status(status_ue).json(error);
   }
 
-  const product = await findProductFromDb(id);
+  const product = await Products.find(id);
 
   return res.status(status_s).json(product);
 };
@@ -106,7 +100,7 @@ const updateProduct = async (req, res) => {
     return res.status(status_ue).json(error);
   }
 
-  const updatedProduct = await updateProductFromDb(id, name, quantity);
+  const updatedProduct = await Products.update(id, name, quantity);
 
   if (!updatedProduct) {
     error.err.message = 'Product not found';
@@ -125,9 +119,9 @@ const deleteProduct = async (req, res) => {
     return res.status(status_ue).json(error);
   }
 
-  const productToDelete = await findProductFromDb(id);
+  const productToDelete = await Products.find(id);
 
-  await deleteProductFromDb(id);
+  await Products.remove(id);
 
   return res.status(status_s).json(productToDelete);
 };
