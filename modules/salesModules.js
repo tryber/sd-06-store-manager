@@ -16,7 +16,11 @@ const createSale = async (data) => {
   };
 };
 
+const getSaleById = (id) =>
+  connection().then((db) => db.collection('sales').findOne(ObjectId(id)));
+
 module.exports = {
   getAllSales,
   createSale,
+  getSaleById
 };
