@@ -1,9 +1,12 @@
-const { Router } = require('express');
+const { Router, request, response } = require('express');
 const ProductService = require('../services/ProductsService');
 const ProductController = new Router();
+const rescue = require('express-rescue');
 
 const STATUS_422 = 422;
 const STATUS_201 = 201;
+const STATUS_200 = 200;
+const STATUS_404 = 404;
 
 ProductController.post('/', async(request, response) => {
   const { name, quantity } = request.body;
@@ -23,6 +26,26 @@ ProductController.post('/', async(request, response) => {
   const add = await ProductService.addProd(name, quantity);
   return response.status(STATUS_201).json(add);
 
+});
+
+ProductController.get('/', async (_request, response) => {
+  const allProd = await ProductService.getProd();
+  return response.status(STATUS_200).json(allProd);
+});
+
+ProductController.get('/:id', rescue(async (request, response) => {
+  const { id } = request.params;
+  const productId = await ProductService.getProdById(id);
+  if (!productId) return response.status(STATUS_422).json({ err:
+    { code: 'invalid_data', message: 'Wrong id format' }
+  });
+  return response.status(STATUS_200).json(productId);
+}));
+
+ProductController.use((err, _request, response, _next) => {
+  response.status(STATUS_404).json({ err:
+    { code: 'invalid_data', message: 'Wrong id format' }
+  });
 });
 
 module.exports = ProductController;

@@ -6,6 +6,11 @@ const getProd = async () => {
   return allProducts;
 };
 
+const getProdById = async (id) => {
+  const oneProduct = await Products.getProductsById(id);
+  return oneProduct;
+};
+
 const verifyAll = async (name, quantity) => {
   const verifiedName = verifyName(name);
   const verifiedQuantity = verifyQuantity(quantity);
@@ -18,4 +23,4 @@ const addProd = async (name, quantity) => {
   return product;
 };
 
-module.exports = { addProd, getProd, verifyAll };
+module.exports = { addProd, getProd, verifyAll, getProdById };
