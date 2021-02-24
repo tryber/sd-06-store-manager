@@ -10,7 +10,7 @@ router.post('/', validateProduct, validateName, async (req, res) => {
 
   const productCreated = await createProductService(name, quantity);
 
-  res.status(SUCESS).json(productCreated);
+  return res.status(SUCESS).json(productCreated);
 });
 
 module.exports = router; 
