@@ -4,7 +4,7 @@ const CreateSaleService = require('../services/CreateSaleService');
 const ListSalesService = require('../services/ListSalesService');
 const FindSaleByIDService = require('../services/FindSaleByIDService');
 const UpdateSaleService = require('../services/UpdateSaleService');
-// const DeleteProductByIDService = require('../services/DeleteProductByIDService');
+const DeleteSaleByIDService = require('../services/DeleteSaleByIDService');
 
 class SalesController {
   async create(request, response) {
@@ -68,9 +68,9 @@ class SalesController {
     const { id: saleID } = request.params;
 
     const salesModel = new Sales();
-    const deleteProductByIDService = new DeleteProductByIDService(salesModel);
+    const deleteSaleByIDService = new DeleteSaleByIDService(salesModel);
 
-    const deletedSale = await deleteProductByIDService.execute(saleID);
+    const deletedSale = await deleteSaleByIDService.execute(saleID);
 
     const SUCCESS = 200;
 

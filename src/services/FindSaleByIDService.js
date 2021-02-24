@@ -13,17 +13,6 @@ class FindSaleByIDService {
     try {
       saleInfo = await this.SalesModel.findByID(id);
     } catch (err) {
-      const message = 'Wrong id format';
-
-      const errorInfo = {
-        message,
-        code: INVALID_DATA
-      };
-
-      throw new AppError(errorInfo, BAD_DATA);
-    }
-
-    if (!saleInfo) {
       const message = 'Sale not found';
 
       const errorInfo = {
