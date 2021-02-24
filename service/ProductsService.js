@@ -12,13 +12,18 @@ const createProduct = async (name, quantity) => {
   return Products.createProduct(name, quantity);
 };
 
-const updateProduct = async (id, data) => {
-  return Products.updateProduct(id, data);
+const updateProduct = async (id, name, quantity) => {
+  return Products.updateProduct(id, name, quantity);
+};
+
+const deleteProduct = async (id) => {
+  return Products.deleteProduct(id);
 };
 
 module.exports = {
   createProduct,
   getAll,
   getById,
-  updateProduct
+  updateProduct,
+  deleteProduct
 };

@@ -15,7 +15,7 @@ const createProduct = async (name, quantity) => {
   return create.insertedId;
 };
 
-const updateProduct = async (id, { name, quantity }) => {
+const updateProduct = async (id, name, quantity) => {
   const update = await connection().then(
     (db) => db.collection('products').updateOne(
       { _id: ObjectId(id) },
@@ -25,9 +25,17 @@ const updateProduct = async (id, { name, quantity }) => {
   return update.insertedId;
 };
 
+const deleteProduct = async(id) => {
+  const remove = await connection().then(
+    (db) => db.collection('products').deleteOne({ _id: ObjectId(id) })
+  );
+  return remove;
+};
+
 module.exports = {
   createProduct,
   getAll,
   getById,
-  updateProduct
+  updateProduct,
+  deleteProduct
 };
