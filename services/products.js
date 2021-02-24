@@ -17,8 +17,17 @@ const getProducts = async (id) => {
   return productsList;
 };
 
+const updateProduct = async (id, body) => {
+  const product = await getProducts(id);
+  const updatedProduct = { ...product, ...body };
+  await validateProduct(updatedProduct);
+  await products.updateProduct('products', id, updatedProduct);
+  return updatedProduct;
+};
+
 module.exports = {
   createProduct,
   findByName,
   getProducts,
+  updateProduct,
 };
