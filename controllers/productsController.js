@@ -47,10 +47,6 @@ router.get('/:id', async (request, response) => {
 
   } catch (error) {
 
-    if (error.err.code === 'invalid data') {
-      return response.status(UnprocessableEntity).json(error);
-    }
-
     console.error(error);
 
     response.status(UnprocessableEntity).json(error);
@@ -68,10 +64,6 @@ router.put('/:id', async (request, response) => {
     return response.status(OK).json(updatedProduct);
 
   } catch (error) {
-    if (error.err.code === 'invalid data') {
-
-      return response.status(UnprocessableEntity).json(error);
-    }
 
     console.error(error);
 
