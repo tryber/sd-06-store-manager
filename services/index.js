@@ -5,7 +5,7 @@ const maxLength = 5;
 const ZERO = 0;
 const invalidData = 422;
 
-const productExists = async (req, res) => {
+const productExists = async (req, res, next) => {
   const { name } = req.body;
   const allProducts = await productsModules.getAllProducts();
 
@@ -15,6 +15,8 @@ const productExists = async (req, res) => {
       message: 'Product already exists',
     }});
   };
+
+  next();
 };
 
 const validateProduct = async (req, res, next) => {

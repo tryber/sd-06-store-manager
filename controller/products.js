@@ -48,4 +48,19 @@ productsRouter.put('/:id', validateId, validateProduct, async (req, res) => {
   res.status(SUCESS).json(productUpdated);
 });
 
+productsRouter.delete('/:id', validateId, async (req, res) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+  
+  await productsModules.updateProduct(id, name, quantity);
+
+  const productUpdated = {
+    _id: ObjectId(id),
+    name,
+    quantity,
+  };
+
+  res.status(SUCESS).json(productUpdated);
+});
+
 module.exports = { productsRouter };
