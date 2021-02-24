@@ -12,11 +12,12 @@ const UNPROCESSABLE_ENTITY = 422;
 
 routes.get('/:id', rescue(async (req, res) => {
   const { id } = req.params;
-  const product = await products.findById(id);
+  const searchedProduct = await products.findById(id);
 
-  if (!product) return res.status(NOT_FOUND).json({ message: 'Not found' });
+  if (searchedProduct === null || searchedProduct.err)
+    return res.status(UNPROCESSABLE_ENTITY).json(searchedProduct);
 
-  res.status(OK).json(product);
+  res.status(OK).json(searchedProduct);
 }));
 
 routes.route('/')

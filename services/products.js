@@ -26,17 +26,19 @@ const getAll = async () => {
 };
 
 const findById = async (id) => {
-  
-  if (id.length !== idMongoLength) return {
+  const errorObject = {
     err: {
       code: 'invalid_data',
       message: 'Wrong id format',
     }
   };
-  
+
+
+  if (id.length !== idMongoLength) return errorObject;
+
   const product = await products.findById(id);
 
-  if (!product) return null;
+  if (!product) return errorObject;
   
   return product;
 };
