@@ -2,6 +2,7 @@ const products = require('../models/products');
 
 const minNameLength = 5;
 const nullQuantity = 0;
+const idMongoLength = 24;
 const nameLengthErrorMessage = '"name" length must be at least 5 characters long';
 const nameExists = 'Product already exists';
 const quantityErrorMessage = '"quantity" must be larger than or equal to 1';
@@ -19,16 +20,24 @@ const isValid = async (name, quantity) => {
 };
 
 const getAll = async () => {
-  const products = await products.getAll();
+  const productsArray = await products.getAll();
 
-  return products;
+  return productsArray;
 };
 
 const findById = async (id) => {
+  
+  if (id.length !== idMongoLength) return {
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    }
+  };
+  
   const product = await products.findById(id);
 
   if (!product) return null;
-
+  
   return product;
 };
 

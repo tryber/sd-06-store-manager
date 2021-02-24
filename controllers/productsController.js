@@ -20,10 +20,10 @@ routes.get('/:id', rescue(async (req, res) => {
 }));
 
 routes.route('/')
-  .get(rescue(async (req, res) => {
-    const products = await products.getAll();
+  .get(rescue(async (_req, res) => {
+    const productsArray = await products.getAll();
 
-    res.status(OK).json(products);
+    res.status(OK).json({ products: productsArray });
   }))
   .post(rescue(async (req, res) => {
     const { name, quantity } = req.body;
