@@ -30,7 +30,7 @@ ProductController.post('/', async(request, response) => {
 
 ProductController.get('/', async (_request, response) => {
   const allProd = await ProductService.getProd();
-  return response.status(STATUS_200).json(allProd);
+  return response.status(STATUS_200).json({ products: allProd });
 });
 
 ProductController.get('/:id', rescue(async (request, response) => {
