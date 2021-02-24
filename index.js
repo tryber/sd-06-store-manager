@@ -17,6 +17,11 @@ app.get('/', (_request, response) => {
 
 app.post('/products', rescue(ProductController.createProduct));
 
+app.get('/products', rescue(ProductController.getAllProduct));
+
+app.get('/products/:id', rescue(ProductController.getProductById));
+
+
 app.use((error, req, res, next) => {
   console.log(error);
   return res.status(ERROR).json({ message: 'Erro Interno!' });

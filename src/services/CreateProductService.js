@@ -14,11 +14,6 @@ const createProduct = async (name, quantity) => {
       message: 'Product already exists'
     }}];;
 
-  // if (quantity !== parseInt(quantity, 10)) return [UNPROCESS, {err: 
-  //   {code: 'invalid_data',
-  //     message: '\"quantity\" must be a integer number'
-  //   }}];
-
   if (name.length < FIVE) return [UNPROCESS, {err: 
     {code: 'invalid_data',
       message: '\"name\" length must be at least 5 characters long'

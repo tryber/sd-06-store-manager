@@ -21,7 +21,16 @@ const getByName = async (name) => {
   return productResponse;
 };
 
+const getAllProduct = async () => {
+
+  const productResponse = await connection()
+    .then((db) => db.collection(collectionName).find().toArray());
+
+    return productResponse;
+}
+
 module.exports = {
   createProduct,
   getByName,
+  getAllProduct,
 };
