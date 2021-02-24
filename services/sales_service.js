@@ -24,7 +24,8 @@ const findByIdSales = async (id) => {
 const createSale = async (products) => {
   const ZERO = 0;
 
-  const validation = products.some(elem => (elem.quantity <= ZERO || typeof elem.quantity !== 'number'));
+  const validation = products
+    .some(elem => (elem.quantity <= ZERO || typeof elem.quantity !== 'number'));
 
   if(validation) {
     throw {
@@ -41,7 +42,8 @@ const createSale = async (products) => {
 const updateSale = async (id, itensSold) => {
   const ZERO = 0;
 
-  const validation = itensSold.some(elem => (elem.quantity <= ZERO || typeof elem.quantity !== 'number'));
+  const validation = itensSold
+    .some(elem => (elem.quantity <= ZERO || typeof elem.quantity !== 'number'));
 
   if(validation) {
     throw {
