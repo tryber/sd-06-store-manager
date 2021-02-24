@@ -43,7 +43,7 @@ ProductController.get('/:id', rescue(async (request, response) => {
 }));
 
 ProductController.use((err, _request, response, _next) => {
-  response.status(STATUS_422).json({ err:
+  return response.status(STATUS_422).json({ err:
     { code: 'invalid_data', message: 'Wrong id format' }
   });
 });
