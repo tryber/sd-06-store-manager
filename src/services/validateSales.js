@@ -5,16 +5,6 @@ const UNPROCESSABLE_ENTITY = 422;
 const connection = require('../database');
 const { ObjectId } = require('mongodb');
 
-// const createProduct = async (name) => {
-//   const nameProduct = await connection().then((db) =>
-//     db.collection('products').findOne({ name })
-//   );
-
-//   if (nameProduct !== null) {
-//     return nameProduct.name;
-//   }
-// };
-
 const validateSales = async (req, res, next) => {
   const sales = req.body;
 

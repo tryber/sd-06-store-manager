@@ -3,7 +3,7 @@ const { ObjectId } = require('mongodb');
 
 const createSale = async (body) => {
   const newSale = await connection().then((db) =>
-    db.collection('collection').insertOne({ itensSold: body })
+    db.collection('sales').insertOne({ itensSold: body })
   );
 
   return newSale;
@@ -11,7 +11,7 @@ const createSale = async (body) => {
 
 const allSales = async () => {
   const sales = await connection().then((db) =>
-    db.collection('collection').find().toArray()
+    db.collection('sales').find().toArray()
   );
 
   return sales;
@@ -19,7 +19,7 @@ const allSales = async () => {
 
 const filterSaleById = async (id) => {
   const sale = await connection().then((db) =>
-    db.collection('collection').findOne({ _id: ObjectId(id) })
+    db.collection('sales').findOne({ _id: ObjectId(id) })
   );
 
   return sale;
