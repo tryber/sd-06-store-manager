@@ -9,7 +9,8 @@ const {
 const {
   createSale,
   allSales,
-  filterSaleById
+  filterSaleById,
+  updateSale
 } = require('../models/sales');
 
 const Ok = 200;
@@ -122,6 +123,18 @@ const SearchSaleById = async (req, res) => {
 };
 
 
+const updateSaleById = async (req, res) => {
+  const { id } = req.params;
+
+  await updateSale(req.body, id);
+
+  const saleUpdate = await filterSaleById(id);
+
+  return res.status(Ok).json(saleUpdate);
+};
+
+
+
 module.exports = {
   createProduts,
   searchAllProduts,
@@ -130,5 +143,6 @@ module.exports = {
   deleteProdut,
   createSales,
   searchAllSales,
-  SearchSaleById
+  SearchSaleById,
+  updateSaleById
 };

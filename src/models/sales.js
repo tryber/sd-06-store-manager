@@ -25,9 +25,19 @@ const filterSaleById = async (id) => {
   return sale;
 };
 
+const updateSale = async (body, id) => {
+  const sale = await connection().then((db) =>
+    db.collection('sales')
+      .updateOne({ _id: ObjectId(id) }, { $set: { itensSold: body }  })
+  );
+
+  return sale;
+};
+
 module.exports = {
   createSale,
   allSales,
-  filterSaleById
+  filterSaleById,
+  updateSale
 };
 
