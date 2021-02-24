@@ -6,13 +6,24 @@ const getAll = async () => {
   return await Product.getAll();
 };
 
+// Return Product by ID
+const findById = async (id) => {
+  console.log('id', id);
+  console.log(validateId(id));
+  if (validateId(id)) {
+    const product = await Product.findById(id);
+    if (product) return { status: 'OK', product};
+  }
+  return { status: 'NOK', message: 'Wrong id format' };
+};
+
 // Add new Product
 const create = async (name, quantity) => {
   const validation = await validateProduct(name, quantity);
 
   let response = {};
   if (validation === 'OK') {
-    product = await Product.create(name, quantity);
+    const product = await Product.create(name, quantity);
     response = { status: 'OK', product };
   } else {
     response = { status: 'NOK', message: validation };
@@ -29,6 +40,12 @@ const getByname = async (name) => {
 const existProductName = async (name) => {
   const product = await getByname(name);
   return product;
+};
+
+// Validation Id
+const validateId = (id) => {
+  const lengthId = 24;
+  return (id.length === lengthId && id !== undefined);
 };
 
 // Validation Product fields
@@ -53,5 +70,6 @@ const validateProduct = async (name, quantity) => {
 
 module.exports = {
   getAll,
+  findById,
   create,
 };
