@@ -1,10 +1,11 @@
-const connection = require('../models/connection');
 const { ObjectId } = require('mongodb');
 const Products = require('../models/Products');
+const Sales = require('../models/Sales');
 
 const status_ue = 422;
 const status_c = 201;
 const status_s = 200;
+const status_nf = 404;
 const error = {
   err: {
     code: 'invalid_data',
@@ -47,9 +48,49 @@ const createSale = async (req, res) => {
     await Products.update(p.productId, name, p.quantity);
   });
 
+  await Sales.create(sales);
+
   return res.status(status_s).json(sales);
+};
+
+const getSales = async (_req, res) => {
+  const sales = await Sales.getAll();
+
+  if (!sales) {
+    error.err.code = 'not_found';
+    error.err.message = 'Sale not found';
+
+    return res.status(status_nf).json(error);
+  }
+
+  return res.status(status_s).json({ sales });
+};
+
+const getSale = async (req, res) => {
+  const { id } = req.params;
+
+  const validId = ObjectId.isValid(id);
+  if (!validId) {
+    error.err.code = 'not_found';
+    error.err.message = 'Sale not found';
+
+    return res.status(status_nf).json(error);
+  }
+
+  const sale = await Sales.find(id);
+
+  if (!sale) {
+    error.err.code = 'not_found';
+    error.err.message = 'Sale not found';
+
+    return res.status(status_nf).json(error);
+  }
+
+  return res.status(status_s).json(sale);
 };
 
 module.exports = {
   createSale,
+  getSale,
+  getSales,
 };
