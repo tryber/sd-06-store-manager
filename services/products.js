@@ -8,10 +8,10 @@ const quantityErrorMessage = '"quantity" must be larger than or equal to 1';
 const quantityTypeErrorMessage = '"quantity" must be a number';
 
 const isValid = async (name, quantity) => {
-  const checkUnique = await products.findByName(productName);
+  const checkUnique = await products.findByName(name);
 
   if (name.length < minNameLength) return nameLengthErrorMessage;
-  if (checkunique) return nameExists;
+  if (checkUnique) return nameExists;
   if (!Number.isInteger(quantity)) return quantityTypeErrorMessage;
   if (quantity <= nullQuantity) return quantityErrorMessage;
 
@@ -33,7 +33,7 @@ const findById = async (id) => {
 };
 
 const create = async (productName, quantity) => {
-  const validOrErrorMessage = isValid(productName, quantity);
+  const validOrErrorMessage = await isValid(productName, quantity);
   if (validOrErrorMessage !== true) return {
     err: {
       code: 'invalid_data',
