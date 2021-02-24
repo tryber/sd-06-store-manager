@@ -31,7 +31,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   const productById = await productsService.getById(req.params.id);
 
-  if (!productById) return res.status(clientError).json({ productById });
+  if (productById.err) return res.status(clientError).json(productById);
 
   return res.status(statusOk).json(productById);
 });

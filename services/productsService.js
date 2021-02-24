@@ -58,7 +58,14 @@ const getAll = async () => {
 };
 
 const getById = async (id) => {
-  const result = await products.getById(ObjectId(id));
+  if (!ObjectId.isValid(id)) return {
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong id format'
+    }
+  };
+
+  const result = await products.getById(id);
 
   if (!result) return {
     err: {
