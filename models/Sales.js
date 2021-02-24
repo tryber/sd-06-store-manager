@@ -23,8 +23,43 @@ const create = async (arraySales) => {
   };
 };
 
+const update = async (id, productId, quantity) => {
+  await connection().then(db => db.collection('sales').updateOne(
+    { _id: ObjectId(id) },
+    { $set: {
+      'itensSold.$[elemento].quantity': quantity
+    },
+    },
+    { arrayFilters: [ { 'elemento.productId': productId }]}
+  ));
+
+  return {
+    _id: id,
+    'itensSold': [{
+      productId,
+      quantity
+    }]
+  };
+};
+
 module.exports = {
   getAll,
   getById,
-  create
+  create,
+  update
 };
+
+// const update = async (id, productId, quantity) => {
+//   await connection().then(db => db.collection('sales').updateOne(
+//     { _id: ObjectId(id) , 'itensSold.$[]'},
+//     { $set:{ 'itensSold': { quantity: quantity }} }
+//   ));
+
+//   return {
+//     _id: id,
+//     'itensSold': {
+//       productId,
+//       quantity
+//     }
+//   };
+// };

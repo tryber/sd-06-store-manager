@@ -31,4 +31,13 @@ router.post('/', validateSale, async (req, res) => {
   res.status(STATUS200).json(sale);
 });
 
+router.put('/:id', validateSale, async (req, res) => {
+  const { id } = req.params;
+  const [ { productId, quantity } ] = req.body;
+
+  const sale = await SalesService.update(id, productId, quantity);
+
+  res.status(STATUS200).json(sale);
+});
+
 module.exports = router;
