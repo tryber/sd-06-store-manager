@@ -2,7 +2,8 @@ const {
   createProduct,
   searchProducts,
   searchProduct,
-  updateProductById
+  updateProductById,
+  deleteProductById
 } = require('../models/products');
 
 const Ok = 200;
@@ -55,9 +56,33 @@ const updateProdut = async (req, res) => {
   });
 };
 
+
+const deleteProdut = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const { _id, name, quantity } = await deleteProductById(id);
+
+    return res.status(Ok).json({
+      _id,
+      name,
+      quantity
+    });
+  } catch {
+    return res.status(UNPROCESSABLE_ENTITY).json({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format'
+      }
+    });
+  }
+};
+
+
 module.exports = {
   createProduts,
   searchAllProduts,
   searchOneProdut,
-  updateProdut
+  updateProdut,
+  deleteProdut
 };
