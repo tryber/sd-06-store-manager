@@ -12,8 +12,19 @@ const getById = async (id) => {
   return Sales.getById(id);
 };
 
+const updateSale = async (id, productData) => {
+  console.log('product data service', productData);
+  return Sales.updateSale(id, productData);
+};
+
+const deleteSale = async (id) => {
+  return Sales.deleteSale(id);
+};
+
 module.exports = {
   registerSale,
   getAll,
   getById,
+  updateSale,
+  deleteSale
 };

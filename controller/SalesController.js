@@ -58,4 +58,49 @@ router.get('/sales/:id', rescue (async (req, res) => {
   return res.status(SUCCESS).json(sale);
 }));
 
+router.put('/sales/:id', rescue (async (req, res) => {
+  const { id } = req.params;
+  const products = req.body;
+  console.log('products controller', products);
+
+  /*   const quantity = products.map((product) => product.quantity);
+  const isNotValid = quantity.some((item) => item <= ZERO || typeof item !== 'number');
+
+  if (isNotValid) {
+    return res.status(ERROR)
+      .json({err: {
+        code: 'invalid_data',
+        message: 'Wrong product ID or invalid quantity'
+      } });
+  } */
+
+  const insertedId = await SalesService.updateSale(id);
+  return res.status(SUCCESS).json({ _id:insertedId, itensSold:products });
+}));
+
+router.delete('/sales/:id', rescue (async (req, res) => {
+  const { id } = req.params;
+
+  if (!ObjectId.isValid(id)) {
+    return res.status(ERROR)
+      .json({err: { 
+        code: 'invalid_data',  
+        message: 'Wrong sale ID format' 
+      } });
+  }
+
+  const deletedSale = await SalesService.getById(id);
+
+  if (!ObjectId.isValid(id)) {
+    return res.status(ERROR)
+      .json({err: { 
+        code: 'invalid_data',  
+        message: 'Wrong sale ID format' 
+      } });
+  }
+
+  await SalesService.deleteSale(id);
+  res.status(SUCCESS).json(deletedSale);
+}));
+
 module.exports = router;
