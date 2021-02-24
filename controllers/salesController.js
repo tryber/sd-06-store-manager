@@ -53,7 +53,7 @@ router.post('/', validateSales, updateProductQuantity, async (req, res) => {
     const salesArray = [...req.body];
     const newSale = await createSale(salesArray);
 
-    res.status(SUCCESS).send(newSale);
+    return res.status(SUCCESS).send(newSale);
   } catch(e) {
     console.log(e);
   }
