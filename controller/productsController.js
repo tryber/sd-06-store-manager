@@ -40,7 +40,6 @@ productsRouter.put('/:id', Product.validate, async (req, res) => {
 productsRouter.delete('/:id', Product.idValidation, async (req, res) => {
   const { id } = req.params;
   const product = await Product.getById(id);
-  console.log(product);
   if(!product) return res.status(ERR).json({
     err: {
       code: 'invalid_data',
