@@ -6,8 +6,8 @@ const { validateId } = require('../middlewares/validateId');
 
 const router = Router();
 
-const STATUS201 = 201;
 const STATUS200 = 200;
+const STATUS201 = 201;
 
 router.get('/', async (req, res) => {
   const products = await ProductsService.getAll();
