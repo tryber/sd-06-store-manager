@@ -8,21 +8,6 @@ const fourHundredTwentyTwo = 422;
 const validateProduct = async (req, res, next) => {
   const { name, quantity } = req.body;
 
-  const products = await getAllProducts();
-
-  const alreadyExists = await products.find((product) => product.name === name);
-
-  if (alreadyExists) {
-    return res.status(fourHundredTwentyTwo).json(
-      {
-        err: {
-          code: 'invalid_data',
-          message: 'Product already exists'
-        },
-      }
-    );
-  }
-
   if (name.length < five) {
     return res.status(fourHundredTwentyTwo).json({
       err: {
@@ -72,7 +57,26 @@ const validateId = async (req, res, next) => {
   next();
 };
 
+const checkAlreadyExists = async (_req, res, next) => {
+  const products = await getAllProducts();
+  const alreadyExists = await products.find((product) => product.name === name);
+
+  if (alreadyExists) {
+    return res.status(fourHundredTwentyTwo).json(
+      {
+        err: {
+          code: 'invalid_data',
+          message: 'Product already exists'
+        },
+      }
+    );
+  }
+  
+  next();
+}
+
 module.exports = {
+  checkAlreadyExists,
   validateProduct,
   validateId,
 };

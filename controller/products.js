@@ -4,20 +4,21 @@ const ProductsRouter = new Router();
 const {
   getAllProducts,
   createProduct,
-  getProductById
+  getProductById,
+  editProduct
 } = require('../modules/productModules');
-const { validateProduct, validateId } = require('../services/prodServices');
+const { validateProduct, validateId, checkAlreadyExists } = require('../services/prodServices');
 
 const twoHundred = 200;
 const twoHundredOne = 201;
 const fourHundredTwentyTwo = 422;
 
-ProductsRouter.post('/products', validateProduct, async (req, res) => {
+ProductsRouter.post('/products', validateProduct, checkAlreadyExists, async (req, res) => {
   await createProduct(req.body);
   return res.status(twoHundredOne).json(req.body);
 });
 
-ProductsRouter.get('/products', async (req, res) => {
+ProductsRouter.get('/products', async (_req, res) => {
   const allProducts = await getAllProducts();
   return res.status(twoHundred).send({ products: allProducts});
 });
@@ -32,6 +33,14 @@ ProductsRouter.get('/products/:id', validateId, async (req, res) => {
     },
   });
   return res.status(twoHundred).send(productById);
+});
+
+ProductsRouter.put('/products/:id', validateId, validateProduct, async (req, res) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+  await editProduct(id, name, quantity);
+  const editedProduct = await getProductById(id);
+  return res.status(twoHundred).send(editedProduct);
 });
 
 module.exports = { ProductsRouter };
