@@ -1,7 +1,6 @@
 const { ObjectId } = require('mongodb');
-const productsRouter = require('../controllers/productsController');
 const Products = require('../models/Products');
-const helpers = require('./helpers');
+const helpers = require('./helpers/ProductsHelper');
 
 const getAll = async () => {
   const result = await Products.getAll();
