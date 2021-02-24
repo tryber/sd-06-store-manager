@@ -55,4 +55,19 @@ router.put('/:id', async (req, res) => {
   }
 });
 
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const deleted = await productsService.findByIdProducts(id);
+    await productsService.deleteProduct(id);
+
+    res.status(OK).json(deleted);
+  } catch (e) {
+    if (e.err.code === 'invalid_data') {
+      res.status(UnprocessableEntity).json(e);
+    }
+  }
+});
+
 module.exports = router;

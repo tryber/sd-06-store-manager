@@ -99,9 +99,26 @@ const updateProduct = async (id, name, quantity) => {
   return await products.update(id, name, quantity);
 };
 
+const deleteProduct = async (id) => {
+  const TWELVE = 12;
+  const item = (id.length < TWELVE) ? undefined : await products.findById(id);
+
+  if(!item) {
+    throw {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format'
+      }
+    };
+  };
+
+  return await products.remove(id);
+};
+
 module.exports = {
   getAllProducts,
   findByIdProducts,
   createProduct,
   updateProduct,
+  deleteProduct,
 };
