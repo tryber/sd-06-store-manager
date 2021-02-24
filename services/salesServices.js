@@ -2,6 +2,7 @@ const { ObjectId } = require('mongodb');
 const { getProductById } = require('../modules/productModules');
 
 const zero = 0;
+const fourHundredFour = 404;
 const twoHundredTwentyTwo = 422;
 
 const validateSale = (req, res, next) => {
@@ -20,7 +21,7 @@ const validateSale = (req, res, next) => {
   next();
 };
 
-const validateId = async (req, res, next) => {
+const validateProductId = async (req, res, next) => {
   req.body.forEach( async (item) => {
     const { productId } = item;
     const product = await getProductById(productId);
@@ -37,7 +38,20 @@ const validateId = async (req, res, next) => {
   next();
 };
 
+const validateSaleId = async (req, res, next) => {
+  const { id } = req.params;
+  if (!ObjectId.isValid(id)) return res.status(fourHundredFour).json({
+    err: {
+      code: 'not_found',
+      message: 'Sale not found',
+    }
+  });
+
+  next();
+};
+
 module.exports = {
-  validateId,
+  validateProductId,
   validateSale,
+  validateSaleId,
 };
