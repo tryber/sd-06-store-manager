@@ -8,7 +8,7 @@ const createProduct = (data) =>
   connection().then((db) => db.collection('products').insertOne(data));
 
 const getProductById = (id) =>
-  connection().then((db) => db.collection('products').findOne(ObjectId(id)));
+  connection().then((db) => db.collection('products').findOne({ _id: ObjectId(id) }));
 
 module.exports = {
   getAllProducts,

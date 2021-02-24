@@ -33,7 +33,7 @@ const validateProduct = async (req, res, next) => {
   if (quantity <= ZERO) {
     return res.status(invalidData).json( { err: {
       code: 'invalid_data',
-      message: '"quantity" must be larger then or equal to 1',
+      message: '"quantity" must be larger than or equal to 1',
     }});
   } else if (typeof quantity !== 'number') {
     return res.status(invalidData).json( { err: {
