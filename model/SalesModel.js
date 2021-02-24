@@ -22,11 +22,11 @@ const findSaleById = async (id) => {
     .then((db) => db.collection('sales').findOne({ _id: ObjectId(id) }));
 };
 
-const updateSale = async (id, itens) => {
+const updateSale = async (id, itensSold) => {
   return connection()
     .then((db) => {
       db.collection('sales')
-        .updateOne({ _id: Object(id) }, { $set: {itensSold: itens} });
+        .updateOne({ _id: ObjectId(id) }, { $set: {itensSold} });
     });
 };
 

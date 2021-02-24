@@ -78,9 +78,9 @@ router.get('/sales/:id', rescue (async(req, res) => {
 
 router.put('/sales/:id', rescue (async(req, res) => {
   const { id } = req.params;
-  const itens = req.body;
+  const itensSold = req.body;
 
-  if(itens.some((item) => SalesService.checkQuantityLessThanZero(item.quantity))) {
+  if(itensSold.some((item) => SalesService.checkQuantityLessThanZero(item.quantity))) {
     return res.status(quatrocentosEVinteEDois).json({
       err: {
         code: 'invalid_data',
@@ -89,7 +89,7 @@ router.put('/sales/:id', rescue (async(req, res) => {
     });
   }
 
-  if(itens.some((item) => SalesService.checkQuantityEqualZero(item.quantity))) {
+  if(itensSold.some((item) => SalesService.checkQuantityEqualZero(item.quantity))) {
     return res.status(quatrocentosEVinteEDois).json({
       err: {
         code: 'invalid_data',
@@ -98,7 +98,7 @@ router.put('/sales/:id', rescue (async(req, res) => {
     });
   }
 
-  if(itens.some((item) => SalesService.checkQuantityString(item.quantity))) {
+  if(itensSold.some((item) => SalesService.checkQuantityString(item.quantity))) {
     return res.status(quatrocentosEVinteEDois).json({
       err: {
         code: 'invalid_data',
@@ -107,7 +107,7 @@ router.put('/sales/:id', rescue (async(req, res) => {
     });
   }
 
-  await SalesService.updateSale(id, itens);
+  await SalesService.updateSale(id, itensSold);
 
   const sale = await SalesService.findSaleById(id);
 

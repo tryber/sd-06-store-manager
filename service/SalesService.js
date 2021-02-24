@@ -16,8 +16,8 @@ const findSaleById = async (id) => {
   return SalesModel.findSaleById(id);
 };
 
-const updateSale = async (id, itens) => {
-  return SalesModel.updateSale(id, itens);
+const updateSale = async (id, itensSold) => {
+  return SalesModel.updateSale(id, itensSold);
 };
 
 const deleteSale = async (id) => {
