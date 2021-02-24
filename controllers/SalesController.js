@@ -63,4 +63,18 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+router.put('/:id', salesValidation, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const products = req.body;
+
+    await Sales.update(id, products);
+    const modifiedSale = await Sales.findById(id);
+
+    return res.status(OK).json(modifiedSale);
+  } catch (err) {
+    return res.status(ERROR).json(ERROR_MESSAGE);
+  }
+});
+
 module.exports = router;
