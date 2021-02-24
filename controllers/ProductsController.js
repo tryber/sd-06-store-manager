@@ -9,6 +9,21 @@ const ERROR = 422;
 const SUCCESS = 201;
 const OK = 200;
 
+router.post('/', productValidation, rescue(async (req, res) => {
+  const { name, quantity } = req.body;
+  const data = await Products.getByName(name);
+
+  if(data) {
+    return res.status(ERROR).json({
+      err: { code: 'invalid_data', message: 'Product already exists' }
+    });
+  }
+
+  await Products.create(name, quantity);
+  const productInserted = await Products.getByName(name);
+  return res.status(SUCCESS).json(productInserted);
+}));
+
 router.get('/', rescue(async (_req, res) => {
   const fetchedProduct = await Products.getAll();
 
@@ -28,19 +43,5 @@ router.get('/:id', async (req, res) => {
     });
   }
 });
-
-router.post('/', productValidation, rescue(async (req, res) => {
-  const { name, quantity } = req.body;
-  const data = await Products.getByName(name);
-
-  if(data.length) {
-    return res.status(ERROR).json({
-      err: { code: 'invalid_data', message: 'Product already exists' }
-    });
-  }
-
-  await Products.create(name, quantity);
-  return res.status(SUCCESS).json({ name, quantity });
-}));
 
 module.exports = router;

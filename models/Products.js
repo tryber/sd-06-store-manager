@@ -13,7 +13,7 @@ const getAll = async () => {
 
 const getByName = async (name) => {
   return await connection()
-    .then((db) => db.collection('products').find({ name }).toArray());
+    .then((db) => db.collection('products').findOne({ name }));
 };
 
 const findById = async (id) => {
