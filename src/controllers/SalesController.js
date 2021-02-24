@@ -49,8 +49,9 @@ class SalesController {
     const { id } = request.params;
     const itensSold = request.body;
 
+    const productModel = new Product();
     const salesModel = new Sales();
-    const updateSaleService = new UpdateSaleService(salesModel);
+    const updateSaleService = new UpdateSaleService(salesModel, productModel);
 
     const saleToUpdate = {
       id,
@@ -68,7 +69,8 @@ class SalesController {
     const { id: saleID } = request.params;
 
     const salesModel = new Sales();
-    const deleteSaleByIDService = new DeleteSaleByIDService(salesModel);
+    const productModel = new Product();
+    const deleteSaleByIDService = new DeleteSaleByIDService(salesModel, productModel);
 
     const deletedSale = await deleteSaleByIDService.execute(saleID);
 

@@ -3,8 +3,9 @@ const { INVALID_DATA } = require('../errors/codes');
 const { BAD_DATA, NOT_FOUND } = require('../errors/status');
 
 class DeleteSaleByIDService {
-  constructor(SalesModel) {
+  constructor(SalesModel, ProductModel) {
     this.SalesModel = SalesModel;
+    this.ProductModel = ProductModel;
   }
 
   async execute(id) {
@@ -35,6 +36,26 @@ class DeleteSaleByIDService {
     }
 
     await this.SalesModel.deleteByID(id);
+
+    const { itensSold } = saleInfo;
+
+    for await (const product of itensSold) {
+      const { productId, quantity: backFromDeletedSaleQuantity } = product;
+
+      const currentProductInfo = await this.ProductModel.findByID(productId);
+
+      const { quantity: toUpdateQuantity } = currentProductInfo;
+
+      const newQuantity = toUpdateQuantity + backFromDeletedSaleQuantity;
+
+      const updatedProductInfo = {
+        ...currentProductInfo,
+        id: productId,
+        quantity: newQuantity,
+      };
+
+      await this.ProductModel.update(updatedProductInfo);
+    }
 
     return saleInfo;
   }

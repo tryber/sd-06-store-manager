@@ -1,8 +1,9 @@
 const AppError = require('../errors/AppError');
-const { INVALID_DATA } = require('../errors/codes');
-const { BAD_DATA } = require('../errors/status');
+const { INVALID_DATA, STOCK_PROBLEM } = require('../errors/codes');
+const { BAD_DATA, NOT_FOUND } = require('../errors/status');
 
 const baseMessage = 'Wrong product ID or invalid quantity';
+const stockMsg = 'Such amount is not permitted to sell';
 
 class CreateSaleService {
   constructor(SalesModel, ProductModel) {
@@ -36,14 +37,13 @@ class CreateSaleService {
       }
     }
 
-
     if (!allProductsHaveValidIDsAndQuantities) {
       const errorInfo = {
-        message: baseMessage,
-        code: INVALID_DATA
+        message: stockMsg,
+        code: STOCK_PROBLEM
       };
 
-      throw new AppError(errorInfo, BAD_DATA);
+      throw new AppError(errorInfo, NOT_FOUND);
     }
 
     for await (const product of products) {
