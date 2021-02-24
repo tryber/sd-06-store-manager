@@ -24,7 +24,7 @@ const createSale = async (req, res) => {
   const products = await Products.getAll();
   
   const productsIds = products.map(p => p._id.toString());
-  const ids = data.map(p => p.productId);
+  const ids = data.map(s => s.productId);
   const validId = ids.every(id => productsIds.includes(id));
 
   const ZERO = 0;
@@ -89,8 +89,45 @@ const getSale = async (req, res) => {
   return res.status(status_s).json(sale);
 };
 
+const updateSale = async (req, res) => {
+  const data = req.body;
+  const { id } = req.params;
+  error.err.code = 'invalid_data';
+  
+  if (!data) {
+    error.err.message = 'Couldn\'t find any sale';
+    return res.status(status_ue).json(error);
+  }
+
+  const sales = await Sales.getAll();
+  const salesIds = sales.map(s => s.productId);
+  const validId = salesIds.includes(data.productId);
+
+  const ZERO = 0;
+  const validQuantity = data.every((s) => {
+    return s.quantity > ZERO && typeof(s.quantity) === 'number';
+  });
+  
+  if (!validQuantity || !validId) {
+    error.err.message = 'Wrong product ID or invalid quantity';
+    return res.status(status_ue).json(error);
+  }
+
+  // logic to update in case the request comes with more than one item
+  let bigSale = await Sales.find(id);
+  let itemsSold = bigSale.itensSold;
+  const saleToUpdate = itemsSold.find((s, i) => s.productId === data[i].productId);
+  const newSale = data.find(s => s.productId === saleToUpdate.productId);
+  const updatedItemsSold = itemsSold.filter(s => s.productId !== saleToUpdate.productId);
+  await Sales.update(id, [...updatedItemsSold, newSale]);
+  const updatedSale = await Sales.find(id);
+
+  return res.status(status_s).json(updatedSale);
+};
+
 module.exports = {
   createSale,
   getSale,
   getSales,
+  updateSale,
 };

@@ -13,8 +13,18 @@ async function find(id) {
   return await connection().then(db => db.collection('sales').findOne(ObjectId(id)));
 }
 
+async function update(id, sale) {
+  return await connection().then((db) => {
+    return db.collection('sales').updateOne(
+      { _id: ObjectId(id) },
+      { $set: { itensSold: sale } },
+    );
+  });
+}
+
 module.exports = {
   getAll,
   create,
   find,
+  update,
 };

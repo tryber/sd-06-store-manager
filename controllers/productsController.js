@@ -1,6 +1,10 @@
 const { ObjectId } = require('mongodb');
 const Products = require('../models/Products');
 
+const {
+  verifyQuantity,
+} = require('../aux/verifications');
+
 const status_ue = 422;
 const status_c = 201;
 const status_s = 200;
@@ -20,17 +24,9 @@ const saveProduct = async (req, res) => {
     error.err.message = '"name" length must be at least 5 characters long';
     return res.status(status_ue).json(error);
   }
-  
-  if (typeof(quantity) === 'string') {
-    error.err.message = '"quantity" must be a number';
-    return res.status(status_ue).json(error);
-  }
-  
-  const ZERO = 0;
-  if (quantity <= ZERO) {
-    error.err.message = '"quantity" must be larger than or equal to 1';
-    return res.status(status_ue).json(error);
-  }
+
+  const vQuantity = verifyQuantity(quantity);
+  if (!vQuantity.isValid) return res.status(vQuantity.status).json(vQuantity.error);
   
   const products = await Products.getAll();
 
@@ -81,17 +77,9 @@ const updateProduct = async (req, res) => {
     error.err.message = '"name" length must be at least 5 characters long';
     return res.status(status_ue).json(error);
   }
-  
-  if (typeof(quantity) === 'string') {
-    error.err.message = '"quantity" must be a number';
-    return res.status(status_ue).json(error);
-  }
-  
-  const ZERO = 0;
-  if (quantity <= ZERO) {
-    error.err.message = '"quantity" must be larger than or equal to 1';
-    return res.status(status_ue).json(error);
-  }
+
+  const vQuantity = verifyQuantity(quantity);
+  if (!vQuantity.isValid) return res.status(vQuantity.status).json(vQuantity.error);
 
   const validId = ObjectId.isValid(id);
   if (!validId) {
