@@ -1,0 +1,7 @@
+const CREATED = 201;
+const UNPROCESSABLE_ENTITY = 422;
+
+module.exports = {
+  CREATED,
+  UNPROCESSABLE_ENTITY,
+};
