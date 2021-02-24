@@ -1,15 +1,15 @@
-const { Router, request, response } = require('express');
+const { Router } = require('express');
 const Products = require('../models/Products');
 // const rescue = require('express-rescue');
-const validate = require('../middlewares/validations');
+const validateProducts = require('../middlewares/ProductsValidations');
 
 const ProductsController = new Router();
 const status1 = 201;
 const status0 = 200;
 
 ProductsController.post('/',
-  validate.validateName,
-  validate.validateQuantity,
+  validateProducts.validateName,
+  validateProducts.validateQuantity,
   async (request, response) => {
     const { name, quantity } = request.body;
     const { insertedId } = await Products.insertProduct(name, quantity);
@@ -27,7 +27,7 @@ ProductsController.get('/', async (_request, response) => {
   return response.status(status0).json({ products: allProducts });
 });
 
-ProductsController.get('/:id', validate.validateId, async (request, response) => {
+ProductsController.get('/:id', validateProducts.validateId, async (request, response) => {
   const { id } = request.params;
 
   const product = await Products.findById(id);
@@ -35,8 +35,8 @@ ProductsController.get('/:id', validate.validateId, async (request, response) =>
 });
 
 ProductsController.put('/:id',
-  validate.validateQuantity,
-  validate.validateName,
+  validateProducts.validateQuantity,
+  validateProducts.validateName,
   async (request, response) => {
     const { id } = request.params;
     const { name, quantity } = request.body;
@@ -47,13 +47,16 @@ ProductsController.put('/:id',
   }
 );
 
-ProductsController.delete('/:id', validate.validateId, async (request, response) => {
-  const { id } = request.params;
-  const product = await Products.findById(id);
+ProductsController.delete('/:id',
+  validateProducts.validateId,
+  async (request, response) => {
+    const { id } = request.params;
+    const product = await Products.findById(id);
 
-  await Products.deleteProduct(id);
+    await Products.deleteProduct(id);
 
-  return response.status(status0).json(product);
-});
+    return response.status(status0).json(product);
+  }
+);
 
 module.exports = ProductsController;
