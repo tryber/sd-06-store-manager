@@ -5,8 +5,8 @@ const { ObjectId } = require('mongodb');
 const getAllProducts = () => 
   connection().then((db) => db.collection('products').find().toArray());
 
-const createProduct = (data) =>
-  connection().then((db) => db.collection('products').insertOne(data));
+const createProduct = (name, quantity) =>
+  connection().then((db) => db.collection('products').insertOne({ name, quantity }));
 
 module.exports = {
   getAllProducts,

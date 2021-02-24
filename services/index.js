@@ -1,19 +1,50 @@
-// const invalidData = 422;
+const productsModules = require('../modules/productsModules');
 
-// const validateProduct = (req, res, next) => {
-//   const { name, quantity } = req.body;
+const maxLength = 5;
+const ZERO = 0;
+const invalidData = 422;
 
-//   if (typeof name !== String || name.length <= 5) {
-//     return res.status(invalidData).json({ err: {
-//       code: 'invalid_data',
-//       message: '"name" length must be at least 5 characters long',
-//     }}
-//     );
-//   };
+const validateProduct = async (req, res, next) => {
+  const { name, quantity } = req.body;
 
-//   return next();
-// };
+  const allProducts = await productsModules.getAllProducts();
 
-// exports.module = {
-//   validateProduct,
-// };
+  if (name.length <= maxLength) {
+    return res.status(invalidData).json( { err: {
+      code: 'invalid_data',
+      message: '"name" length must be at least 5 characters long',
+    }});
+  } else if (typeof name !== String) {
+    return res.status(invalidData).json( { err: {
+      code: 'invalid_data',
+      message: '"name" length must be a string',
+    }});
+  }
+
+  
+  if (allProducts.find((product) => product.name === name) !== undefined) {
+    return res.status(invalidData).json( { err: {
+      code: 'invalid_data',
+      message: 'Product already exists',
+    }});
+  };
+
+  if (quantity <= ZERO) {
+    return res.status(invalidData).json( { err: {
+      code: 'invalid_data',
+      message: '"quantity" must be larger then or equal to 1',
+    }});
+  } else if (typeof quantity !== Number) {
+    return res.status(invalidData).json( { err: {
+      code: 'invalid_data',
+      message: '"quantity" must be a number',
+    }});
+  };
+
+  next();
+
+};
+
+module.exports = {
+  validateProduct,
+};
