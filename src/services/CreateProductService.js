@@ -4,7 +4,7 @@ const UNPROCESS = 422;
 const SUCESS = 201;
 
 const ZERO = 0;
-// const ONE = 1;
+const ONE = 1;
 const FIVE = 5;
 
 const createProduct = async (name, quantity) => {
@@ -15,7 +15,10 @@ const createProduct = async (name, quantity) => {
       message: 'Product already exists'
     }}];;
 
-  // if (!quantity / ONE !== quantity) return 'quantity nao é um numero inteiro';
+  if (quantity !== parseInt(quantity, 10)) return [UNPROCESS, {err: 
+    {code: 'invalid_data',
+      message: '\"quantity\" must be a integer number'
+    }}];
 
   if (name.length < FIVE) return [UNPROCESS, {err: 
     {code: 'invalid_data',
