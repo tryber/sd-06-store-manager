@@ -5,7 +5,8 @@ const {
   getAllProducts,
   createProduct,
   getProductById,
-  editProduct
+  editProduct,
+  deleteProduct
 } = require('../modules/productModules');
 const {
   validateProduct,
@@ -47,6 +48,13 @@ ProductsRouter.put('/products/:id', validateId, validateProduct, async (req, res
   await editProduct(id, name, quantity);
   const editedProduct = await getProductById(id);
   return res.status(twoHundred).send(editedProduct);
+});
+
+ProductsRouter.delete('/products/:id', validateId, async (req, res) => {
+  const { id } = req.params;
+  const deletedProduct = getProductById(id);
+  await deleteProduct(id);
+  return res.status(twoHundred).send(deletedProduct);
 });
 
 module.exports = { ProductsRouter };
