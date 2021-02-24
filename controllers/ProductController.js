@@ -21,7 +21,6 @@ router.get('/:id', rescue(async (req, res) => {
   const { id } = req.params;
   const product = await ProductService.findById(id);
 
-  if (product.err) return res.status(product.statuscode).json({ err: product.err });
   return res.status(SUCCESS).json(product);
 }));
 
