@@ -28,7 +28,14 @@ const update = async (id, newName, newQuantity) =>
       } },
       { returnOriginal: false },
     ))
-    .then((result) => result['value']);
+    .then((result) => result.value);
+
+const deleteProduct = async (id) => 
+  connection()
+    .then((db) => db.collection('products').findOneAndDelete(
+      { _id: ObjectId(id) },
+    ))
+    .then((result) => result.value);
 
 module.exports = {
   getAll,
@@ -36,4 +43,5 @@ module.exports = {
   findByName,
   create,
   update,
+  deleteProduct,
 };

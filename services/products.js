@@ -76,7 +76,13 @@ const create = async (productName, quantity) => {
 
 const update = async (id, updateProduct) => {
   const { name, quantity } = updateProduct;
-  const validOrErrorMessage = await isValid(name, quantity);
+  const validOrErrorMessage = isValid(name, quantity);
+  const errorObject = {
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    }
+  };
 
   if (validOrErrorMessage !== true) return {
     err: {
@@ -87,7 +93,26 @@ const update = async (id, updateProduct) => {
 
   const updatedProduct = await products.update(id, name, quantity);
 
+  if (!updatedProduct) return errorObject;
+
   return updatedProduct;
+};
+
+const deleteProduct = async (id) => {
+  const errorObject = {
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    }
+  };
+
+  if (id.length !== idMongoLength) return errorObject;
+
+  const deleteProduct = await products.deleteProduct(id);
+  
+  if (!deleteProduct) return errorObject;
+
+  return deleteProduct;
 };
 
 module.exports = {
@@ -95,4 +120,5 @@ module.exports = {
   findById,
   create,
   update,
+  deleteProduct,
 };

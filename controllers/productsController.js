@@ -29,6 +29,16 @@ routes.route('/:id')
       .json(productToUpdate);
 
     res.status(OK).json(productToUpdate);
+  }))
+  .delete(rescue(async (req, res) => {
+    const { id } = req.params;
+    const productToDelete = await products.deleteProduct(id);
+
+    if (productToDelete === null || productToDelete.err)
+      return res.status(UNPROCESSABLE_ENTITY)
+        .json(productToDelete);
+
+    res.status(OK).json(productToDelete);
   }));
 
 routes.route('/')
