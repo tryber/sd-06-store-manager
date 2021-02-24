@@ -48,19 +48,13 @@ productsRouter.put('/:id', validateId, validateProduct, async (req, res) => {
   res.status(SUCESS).json(productUpdated);
 });
 
-// productsRouter.delete('/:id', validateId, async (req, res) => {
-//   const { id } = req.params;
-//   const { name, quantity } = req.body;
-  
-//   await productsModules.updateProduct(id, name, quantity);
+productsRouter.delete('/:id', validateId, async (req, res) => {
+  const { id } = req.params;
+  const productDeleted = await productsModules.getProductById(id);
 
-//   const productUpdated = {
-//     _id: ObjectId(id),
-//     name,
-//     quantity,
-//   };
+  await productsModules.deleteProduct(id);
 
-//   res.status(SUCESS).json(productUpdated);
-// });
+  res.status(SUCESS).json(productDeleted);
+});
 
 module.exports = { productsRouter };
