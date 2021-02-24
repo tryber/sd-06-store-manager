@@ -1,7 +1,9 @@
 const ProductsServices = require('../services/ProductsServices');
 const rescue = require('express-rescue');
-const {status} = require('../errorHandler/utils/status');
+const {status, errorMessages} = require('../errorHandler/utils/status');
 const { response } = require('express');
+const { throwError } = require('../errorHandler/errorHandler');
+
 
 const registerProduct = rescue(async (req, res) => {
   const { body } = req;
@@ -32,9 +34,30 @@ const updateProducts = async (req, res) => {
   res.status(status.ok).json(responsePayload);
 };
 
+const deleteProduct = rescue(async (req, res) => {
+  const { id } = req.params;
+
+  const hasProduct = await ProductsServices.findById(id);
+
+  if(!hasProduct) throw new throwError(status.unprocessableEntity, errorMessages.wrongId);
+
+  await ProductsServices.deleteProduct(id);
+
+  const {name, quantity} = hasProduct;
+
+  const responsePayload = {
+    _id: id,
+    name,
+    quantity
+  };
+
+  res.status(status.ok).json(responsePayload);
+});
+
 module.exports = {
   registerProduct,
   getAll,
   getById,
-  updateProducts
+  updateProducts,
+  deleteProduct
 };

@@ -10,7 +10,6 @@ const validateRegisterProduct = rescue((req, _res, next) => {
   const minValue = 0;
 
   if(!validate.nameValidation(name, minLength)) {
-    console.log('nome muito pequeno');
     throw new throwError(status.unprocessableEntity, errorMessages.smallName);
   };
 
@@ -25,6 +24,25 @@ const validateRegisterProduct = rescue((req, _res, next) => {
   next();
 });
 
+const validateRegisterSale = rescue((req, _res, next) => {
+  const sales = req.body;
+
+  const minValue = 0;
+
+  sales.forEach(sale => {
+    if(!validate.quantityValidation(sale.quantity, minValue)) {
+      throw new throwError(status.unprocessableEntity, errorMessages.wrongIdOrQuantity);
+    };
+
+    if(!validate.quantityTypeValidation(sale.quantity)) {
+      throw new throwError(status.unprocessableEntity, errorMessages.wrongIdOrQuantity);
+    }
+  });
+  
+  next();
+});
+
 module.exports = {
-  validateRegisterProduct
+  validateRegisterProduct,
+  validateRegisterSale
 };

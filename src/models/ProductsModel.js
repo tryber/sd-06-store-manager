@@ -60,10 +60,22 @@ const updateProduct = async (name, quantity, id) => {
 
 };
 
+const deleteProduct = async (id) => {
+  const responsePayload = await connection().then((db) => {
+    db
+      .collection(dbCollection)
+      .deleteOne({_id: ObjectId(id)});
+  });
+
+  console.log(responsePayload.deletedCount);
+  return responsePayload;
+};
+
 module.exports = {
   registerProduct,
   findByName,
   getAll,
   findById,
   updateProduct,
+  deleteProduct,
 };

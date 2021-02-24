@@ -6,11 +6,12 @@ const status = {
   unauthorized: 401,
   paymentRequired: 402,
   forbidden: 403,
-  notFount: 404,
+  notFound: 404,
   unprocessableEntity: 422
 };
 
 const codeTranslator = {
+  404: 'not_found',
   422: 'invalid_data',
 };
 
@@ -19,7 +20,10 @@ const errorMessages = {
   lowQuantity: '"quantity" must be larger than or equal to 1',
   quantityAsNumber: '"quantity" must be a number',
   productExists: 'Product already exists',
-  wrongId: 'Wrong id format'
+  wrongId: 'Wrong id format',
+  wrongIdOrQuantity: 'Wrong product ID or invalid quantity',
+  saleNotFound: 'Sale not found',
+  wrongSaleID: 'Wrong sale ID format'
 };
 
 module.exports = {status, codeTranslator, errorMessages};
