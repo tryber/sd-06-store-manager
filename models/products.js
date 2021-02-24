@@ -33,7 +33,13 @@ const updateProduct = async (collection, id, data) => {
   );
 };
 
+const deleteProduct = async (collection, id) => {
+  const db = await connection(collection);
+  return (await db.findOneAndDelete({ _id: ObjectId(id)}))['value'];
+};
+
 module.exports = {
+  deleteProduct,
   insertProduct,
   queryByName,
   queryProducts,
