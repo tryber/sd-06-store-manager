@@ -25,7 +25,7 @@ const validateFields = async (product) => {
       status, code, httpcode: 422, msg: 'Product already exists' 
     };
   }
-  
+
   return { status: true };
 };
 
