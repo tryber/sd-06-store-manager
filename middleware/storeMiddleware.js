@@ -3,7 +3,6 @@ const { ObjectId } = require('mongodb');
 
 const validateCreate = async (req, res, next) => {
   const { name, quantity } = req.body;
-  const checkName = await findByName(name);
   const nameArray = name.split('');
   const err = 422;
   const minimo = 5;
@@ -17,14 +16,7 @@ const validateCreate = async (req, res, next) => {
         message: '"name" length must be at least 5 characters long'
       }
     });
-  if (checkName > zero) return res.
-    status(err).
-    json({
-      err: {
-        code: 'invalid_data',
-        message: 'Product already exists'
-      }
-    });
+
   if (quantity <= zero) return res.
     status(err).
     json({
@@ -44,6 +36,23 @@ const validateCreate = async (req, res, next) => {
 
   next();
 };
+const nameExist = async (req, res, next) => {
+  const { name } = req.body;
+  const checkName = await findByName(name);
+  const err = 422;
+  const zero = 0;
+
+  if (checkName > zero) return res.
+    status(err).
+    json({
+      err: {
+        code: 'invalid_data',
+        message: 'Product already exists'
+      }
+    });
+  next();
+};
+
 const rightId = async (req, res, next) => {
   const { id } = req.params;
   const err = 422;
@@ -56,11 +65,11 @@ const rightId = async (req, res, next) => {
     return res.status(err)
       .json({ err: { code: 'invalid_data', message: 'Wrong id format' } });
   }
-  console.log(check);
   next();
 };
 
 module.exports = {
   validateCreate,
-  rightId
+  rightId,
+  nameExist
 };

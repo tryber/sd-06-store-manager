@@ -12,9 +12,13 @@ const ProductList = async () => {
 const findById = async (id) => {
   return await Store.findById(id);
 };
+const update = async (id, name, quantity) => {
+  return await Store.update(id, name, quantity);
+};
 
 module.exports = {
   createProduct,
   ProductList,
-  findById
+  findById,
+  update
 };
