@@ -99,8 +99,73 @@ const create = async (req, res) => {
   }
 };
 
+const update = async (req, res) => {
+  const {id} = req.params;
+  const edit = req.body;
+
+  const findId = productsConnection.getById(id);
+  console.log(findId);
+  
+  /* const product = findId.concat(
+    {
+      name: edit.name,
+      quantity: edit.quantity,
+    }
+  );
+  console.log(product); */
+
+  const { name, quantity } = edit;
+
+  if (!quantity) {
+    return res.status(codeErr)
+      .json({ 'err': {
+        'code': 'invalid_data',
+        'message': '"quantity" must be larger than or equal to 1'
+      } });
+  }
+  if (quantity <= ZERO ) {
+    return res.status(codeErr)
+      .json({ 'err': {
+        'code': 'invalid_data',
+        'message': '"quantity" must be larger than or equal to 1'
+      } });
+  } 
+  if (typeof quantity !== 'number') {
+    return res.status(codeErr)
+      .json({ 'err': {
+        'code': 'invalid_data',
+        'message': '"quantity" must be a number'
+      } });
+  }
+
+  if (!name) {
+    return res.status(codeErr)
+      .json({ 'err': {
+        'code': 'invalid_data',
+        'message': '"name" length must be at least 5 characters long'
+      } });
+  }
+  if (typeof name !== 'string' ) {
+    return res.status(codeErr)
+      .json({ 'err': {
+        'code': 'invalid_data',
+        'message': '"name" length must be at least 5 characters long'
+      } });
+  }
+  if (name.length < nameLength) {
+    return res.status(codeErr)
+      .json({ 'err': {
+        'code': 'invalid_data',
+        'message': '"name" length must be at least 5 characters long'
+      } });
+  }
+
+  res.status(OK).json({id, name, quantity});
+};
+
 module.exports = {
   getAll,
   getById,
   create,
+  update,
 };
