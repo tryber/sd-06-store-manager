@@ -1,7 +1,10 @@
+const { ObjectId } = require('mongodb');
 const ProductService = require('../service/ProductService');
 const errorMessages = require('../dictionary/errorMessages');
 const codeMessages = require('../dictionary/codeMessages');
 const statusCodes = require('../dictionary/statusCodes');
+
+
 
 const validateName = async (request, response, next) => {
   const product = request.body;
@@ -27,6 +30,36 @@ const validateName = async (request, response, next) => {
       {
         err: {
           message: errorMessages.PRODUCT_ALREADY_EXISTS,
+          code: codeMessages.INVALID_DATA,
+        }
+      }
+    );
+  }
+
+  next();
+};
+
+const validateProductExistence = async (request, response, next) => {
+  const { id } = request.params;
+
+  if (!ObjectId.isValid(id)) {
+    return response.status(statusCodes.UNPROCESSABLE_ENTITY).json(
+      {
+        err: {
+          message: errorMessages.WRONG_ID_FORMAT,
+          code: codeMessages.INVALID_DATA,
+        }
+      }
+    );
+  }
+
+  const productsFound = await ProductService.findProductById(id);
+
+  if (!productsFound) {
+    return response.status(statusCodes.UNPROCESSABLE_ENTITY).json(
+      {
+        err: {
+          message: errorMessages.WRONG_ID_FORMAT,
           code: codeMessages.INVALID_DATA,
         }
       }
@@ -68,5 +101,6 @@ const validateQuantity = (request, response, next) => {
 
 module.exports = {
   validateName,
+  validateProductExistence,
   validateQuantity,
 };

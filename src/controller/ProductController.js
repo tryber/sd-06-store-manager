@@ -1,7 +1,11 @@
 const { Router } = require('express');
 const rescue = require('express-rescue');
 const ProductService = require('../service/ProductService');
-const { validateName, validateQuantity } = require('../middlewares/validations');
+const {
+  validateName,
+  validateProductExistence,
+  validateQuantity
+} = require('../middlewares/validations');
 const statusCodes = require('../dictionary/statusCodes');
 
 const ProductController = new Router();
@@ -16,5 +20,21 @@ ProductController.post(
 
     response.status(statusCodes.CREATED).json(createdProduct[0]);
   }));
+
+ProductController.get(
+  '/:id',
+  validateProductExistence,
+  rescue(async (request, response) => {
+    const { id } = request.params;
+    const foundProduct = await ProductService.findProductById(id);
+
+    response.status(statusCodes.OK).json(foundProduct);
+  }));
+
+ProductController.get('/', rescue(async (request, response) => {
+  const products = await ProductService.findAllProducts();
+
+  response.status(statusCodes.OK).json({ products });
+}));
 
 module.exports = ProductController;
