@@ -4,7 +4,7 @@ const Sales = require('../services/salesService');
 const salesRouter = new Router();
 
 const SUCCESS = 200;
-const ERR = 422;
+const NOTFOUND = 422;
 
 salesRouter.get('/', async (_req, res) => {
   const sales = await Sales.getAll();
@@ -16,15 +16,16 @@ salesRouter.post('/', Sales.idValidation, Sales.validate,  async (req, res) => {
   res.status(SUCCESS).json(sale);
 });
 
-salesRouter.get('./:id', Sales.idValidation, async (req, res) => {
+salesRouter.get('/:id', Sales.saleIdValidation, async (req, res) => {
   const { id } = req.params;
   const sale = await Sales.getById(id);
-  if(!sale) return res.status(ERR).json({
+  if(!sale) return res.status(NOTFOUND).json({
     err: {
       code: 'not_found',
-      message: 'sale not found',
+      message: 'Sale not found',
     }
   });
+  res.status(SUCCESS).json(sale);
 });
 
 module.exports = salesRouter;

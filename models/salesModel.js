@@ -16,7 +16,8 @@ const create = async (data) => {
 };
 
 const getById = async (id) => {
-  return await connection().then((db) => db.collection('sales').findOne(ObjectId(id)));
+  return await connection().then((db) => db.collection('sales')
+    .findOne({_id: ObjectId(id) }));
 };
 
 module.exports = {

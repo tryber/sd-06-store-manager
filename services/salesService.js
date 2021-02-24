@@ -4,6 +4,7 @@ const { ObjectId } = require('mongodb');
 
 const ERR = 422;
 const zero = 0;
+const NOTFOUND = 404;
 
 const getAll = async () => await salesModel.getAll();
 
@@ -58,10 +59,22 @@ const idValidation = async (req, res, next) => {
   next();
 };
 
+const saleIdValidation = async (req, res, next) => {
+  const { id } = req.params;
+  if(!ObjectId.isValid(id)) return res.status(NOTFOUND).json({
+    err: {
+      code: 'not_found',
+      message: 'Sale not found',
+    }
+  });
+  next();
+};
+
 module.exports = {
   getAll,
   create,
   validate,
   idValidation,
   getById,
+  saleIdValidation,
 };
