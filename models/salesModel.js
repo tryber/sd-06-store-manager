@@ -68,8 +68,10 @@ const update = async (sale) => {
 
 const remove = async (id) => {
   try {
-    return await connection()
-      .then((db) => db.collection('products').deleteOne({ _id: ObjectID(id) }));
+    const result = await connection()
+      .then((db) => db.collection('sales').deleteOne({ _id: ObjectID(id) }));
+
+    return result.deletedCount;
   } catch(e) {
     throw new Error(e);
   }

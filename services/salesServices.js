@@ -11,7 +11,7 @@ const createSale = async (sale) => {
   return newSale;
 };
 
-const deleteProduct = async (id) => {
+const deleteSale = async (id) => {
   try {
     return await remove(id);
   } catch(e) {
@@ -59,5 +59,5 @@ module.exports = {
   findById,
   findByName,
   updateSale,
-  deleteProduct
+  deleteSale
 };
