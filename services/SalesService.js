@@ -9,6 +9,7 @@ const findById = async (id) => {
 };
 
 const create = async (itensSold) => {
+  console.log('passa pelo service antes de ir para o Sale');
   const sale = await Sale.create(itensSold);
   return sale;
 };

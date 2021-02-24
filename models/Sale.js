@@ -13,39 +13,60 @@ const getAll = async () => {
 
 const create = async (itensSold) => {
 
-  // console.log({itensSold});
-  const { insertedId } = await connection()
+  const retorno = await connection()
     .then(db => db.collection('sales').insertOne({ itensSold }));
-
-  return {
-    _id: insertedId,
-    itensSold: [{
-      productId: insertedId,
-      quantity: itensSold.quantity,
-    }]
-  };
+  // const { insertedId } = await connection()
+  //   .then(db => db.collection('sales').insertOne({ itensSold }));
+  const { insertedId } = retorno;
+  
+  // return {
+  //   _id: insertedId,
+  //   itensSold: [{
+  //     productId: itensSold[i].productId,
+  //     quantity: itensSold[i].quantity,
+  //   }]
+  // };
+  return retorno.ops[0];
+ 
 };
 
 const findById = async (id) => {
-  const getAllItens = await connection()
+  if(!ObjectId.isValid(id)) return null;
+
+  return await connection()
     .then(db => db.collection('sales').findOne(ObjectId(id)));
 
-  return {
-    sales: getAllItens
-  };
+  // return {
+  //   sales: getAllItens
+  // };
 };
 
 const update = async (id, quantity) => {
-  return await connection().then(db => db.collection('sales').updateOne(
+  if(!ObjectId.isValid(id)) return null;
+  //return
+  const retorno = await connection().then(db => db.collection('sales').updateOne(
     { _id: ObjectId(id) },
     { $set: { quantity } }
   ));
+  
+  // return {
+  //   _id: ObjectId(id),
+  //   id,
+  //   quantity
+  // };
+  return retorno.ops[0];
 };
 
 const remove = async (id) => {
-  return await connection().then(db => db.collection('sales').deleteOne(
+  if(!ObjectId.isValid(id)) return null;
+  const check = await findById(id);
+  if (!check) {
+    return null; //console.log('nao existe');
+  }
+  await connection().then(db => db.collection('sales').deleteOne(
     { _id: ObjectId(id) }
   ));
+  return check;
 };
 
 module.exports = {

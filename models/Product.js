@@ -13,6 +13,7 @@ const getAll = async () => {
 };
 
 const create = async (name, quantity) => {
+  console.log(name, quantity);
   const { insertedId } = await connection()
     .then(db => db.collection('products').insertOne({ name, quantity }));
 

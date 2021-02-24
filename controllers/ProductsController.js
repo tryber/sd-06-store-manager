@@ -142,6 +142,7 @@ ProductsControllerRouter.post('/', async (req, res) => {
   if (isValid) {
     const { name, quantity } = req.body;
     const products = await ProductService.create(name, quantity);
+    // console.log(products);
     res.status(CREATED).json(products);
   }
 });
