@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const productsController = require('./Controller/productsController');
+const salesController = require('./Controller/salesController');
 
 const app = express();
 const PORT = 3000;
@@ -13,10 +14,14 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
+// products rotas
 app.get('/products/:id', productsController.getById);
 app.put('/products/:id', productsController.update);
 app.delete('/products/:id', productsController.remove);
 app.get('/products', productsController.getAll);
 app.post('/products', productsController.create);
+
+// sales rotas
+app.post('/sales', salesController.create);
 
 app.listen(PORT, () => console.log(`Ouvindo a porta ${PORT}`));
