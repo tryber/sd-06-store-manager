@@ -1,9 +1,10 @@
-const express = require('express')
+const express = require('express');
 const rescue = require('express-rescue');
 const bodyParser = require('body-parser');
 
-const app = express()
-const port = 3000
+const app = express();
+const PORT = 3000;
+const ERROR = 500;
 
 app.use(bodyParser.json());
 const ProductController = require('./src/controllers/ProductController');
@@ -18,7 +19,7 @@ app.post('/products', rescue(ProductController.createProduct));
 
 app.use((error, req, res, next) => {
   console.log(error);
-  return res.status(500).json({ message: 'Erro Interno!' });
+  return res.status(ERROR).json({ message: 'Erro Interno!' });
 });
 
-app.listen(port, () => console.log(`Example app listening on port port!`));
+app.listen(PORT, () => console.log('Example app listening on port port!'));
