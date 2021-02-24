@@ -29,7 +29,7 @@ const update = async (id, data) => {
 
 const remove = async (id) => {
   return await connection().then((db) => db.collection('products')
-    .deleteOne(ObjectId(id)));
+    .deleteOne({ _id: ObjectId(id) }));
 };
 
 module.exports = {
