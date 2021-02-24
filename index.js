@@ -3,6 +3,7 @@ const app = express();
 const port = 3000;
 const bodyParser = require('body-parser');
 const ProductsController = require('./controller/ProductsController');
+const SalesController = require('./controller/SalesController');
 
 app.use(bodyParser.json());
 
@@ -11,7 +12,7 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
-app.use('/', ProductsController);
+app.use('/', ProductsController, SalesController);
 
 const quinhentos = 500;
 
