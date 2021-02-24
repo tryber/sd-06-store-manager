@@ -20,12 +20,17 @@ const getSaleById = (id) =>
   connection().then((db) => db.collection('sales').findOne(ObjectId(id)));
 
 const updateSale = (id, data) =>
-  connection().then((db) => db.collection('products')
+  connection().then((db) => db.collection('sales')
     .updateOne({ _id: ObjectId(id) }, { $set: { itensSold: data }}));
+    
+const deleteSale = (id) =>
+  connection().then((db) => db.collection('sales')
+    .deleteOne({ _id: ObjectId(id) }));
 
 module.exports = {
   getAllSales,
   createSale,
   getSaleById,
   updateSale,
+  deleteSale,
 };
