@@ -54,12 +54,14 @@ const findId = async (id) => {
 
 const update = async (product) => {
   try {
-    const { id, name, quantity } = product;
+    const { id } = product;
     const validId = ObjectID.isValid(id);
     if (validId === false) return validId;
     await connection()
       .then((db) => db.collection('products')
-        .updateOne({ _id: ObjectID(id) }, { $set: { product } }));
+        .updateOne({ _id: ObjectID(id) }, { $set: {
+          name: product.name, quantity: product.quantity
+        } }));
 
     return product;
   } catch(e) {

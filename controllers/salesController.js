@@ -6,6 +6,7 @@ const {
   updateSale,
   deleteSale } = require('../services/salesServices');
 const validateSales = require('../middlewares/validateSales');
+const updateProductQuantity = require('../middlewares/updateProductQuantity');
 
 const router = Router();
 
@@ -47,7 +48,7 @@ router.get('/', async (_req, res) => {
   }
 });
 
-router.post('/', validateSales, async (req, res) => {
+router.post('/', validateSales, updateProductQuantity, async (req, res) => {
   try {
     const salesArray = [...req.body];
     const newSale = await createSale(salesArray);
@@ -58,7 +59,7 @@ router.post('/', validateSales, async (req, res) => {
   }
 });
 
-router.put('/:id', validateSales, async (req, res) => {
+router.put('/:id', validateSales, updateProductQuantity, async (req, res) => {
   try {
     const salesArray = [...req.body];
     const { id } = req.params;
@@ -90,7 +91,6 @@ router.delete('/:id', async (req, res) => {
       }
     });
 
-    console.log(deletedCount);
     return res.status(SUCCESS).send(findSale);
   } catch(e) {
     console.log(e);

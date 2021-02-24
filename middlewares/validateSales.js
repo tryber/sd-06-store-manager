@@ -1,5 +1,3 @@
-const { findByName } = require('../services/productsServices');
-
 const UNPROCESSABLE = 422;
 const zero = 0;
 
