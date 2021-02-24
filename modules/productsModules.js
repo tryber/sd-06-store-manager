@@ -10,8 +10,13 @@ const createProduct = (data) =>
 const getProductById = (id) =>
   connection().then((db) => db.collection('products').findOne(ObjectId(id)));
 
+const updateProduct = (id, name, quantity) =>
+  connection().then((db) => db.collection('products')
+    .updateOne({ _id: ObjectId(id) }, { $set: { name, quantity }}));
+
 module.exports = {
   getAllProducts,
   createProduct,
   getProductById,
+  updateProduct,
 };
