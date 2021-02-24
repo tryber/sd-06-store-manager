@@ -41,7 +41,26 @@ const validateId = async (req, res, next) => {
   return next();
 };
 
+const validateIdDelete = async (req, res, next) => {
+  const { id } = req.params;
+
+  if (! ObjectId.isValid(id)) return res.status(STATUS422).json({ 'err': {
+    'code': 'invalid_data',
+    'message': 'Wrong sale ID format'
+  } }); 
+
+  const sale = await Sales.getById(id);
+
+  if (!sale) return res.status(STATUS422).json({ 'err': {
+    'code': 'invalid_data',
+    'message': 'Wrong sale ID format'
+  } });
+
+  return next();
+};
+
 module.exports = {
   validateSale,
-  validateId
+  validateId,
+  validateIdDelete
 };

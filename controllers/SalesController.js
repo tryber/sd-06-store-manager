@@ -1,5 +1,6 @@
 const { Router } = require('express');
-const { validateSale, validateId } = require('../middlewares/validateSale');
+const { validateSale,
+  validateId, validateIdDelete } = require('../middlewares/validateSale');
 const SalesService = require('../services/SalesService');
 
 const router = Router();
@@ -36,6 +37,14 @@ router.put('/:id', validateSale, async (req, res) => {
   const [ { productId, quantity } ] = req.body;
 
   const sale = await SalesService.update(id, productId, quantity);
+
+  res.status(STATUS200).json(sale);
+});
+
+router.delete('/:id', validateIdDelete, async (req, res) => {
+  const { id } = req.params;
+
+  const sale = await SalesService.remove(id);
 
   res.status(STATUS200).json(sale);
 });

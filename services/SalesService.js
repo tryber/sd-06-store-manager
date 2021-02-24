@@ -18,9 +18,14 @@ const update = async (id, productId, quantity) => {
   return Sales.update(id, productId, quantity);
 };
 
+const remove = async (id) => {
+  return Sales.remove(id);
+};
+
 module.exports = {
   getAll,
   getById,
   create,
-  update
+  update,
+  remove
 };
