@@ -25,19 +25,21 @@ const validateFields = async (product) => {
       status, code, httpcode: 422, msg: 'Product already exists' 
     };
   }
-
+  
   return { status: true };
 };
 
 const insertProduct = async (product) => {
-
   const validate = await validateFields(product);
-  if (!validate.status) return {
-    statuscode: validate.httpcode, 
-    err: { 
+  if (!validate.status) {
+    let err = new Error();
+    err.statuscode = validate.httpcode;
+    err.message = { 
       code: validate.code, 
       message: validate.msg
-    } };
+    };
+    throw err;
+  };
     
   const newId = await ProductsModel.insertProduct(product);
   const { name, quantity } = product;
@@ -60,22 +62,34 @@ const findById = async (id) => {
 
   try {
     const result = await ProductsModel.findById(id);
-    if (!result) return onErrorMsg;
+    if (!result) {
+      let err = new Error();
+      err.statuscode = onErrorMsg.statuscode;
+      err.message = onErrorMsg.err;
+      throw err;
+    };
     return result;
   } catch {
-    return onErrorMsg; 
+    {
+      let err = new Error();
+      err.statuscode = onErrorMsg.statuscode;
+      err.message = onErrorMsg.err;
+      throw err;
+    };
   };
 };
 
 const updateProduct = async (id, name, quantity) => {
-
   const validate = await validateFields({name, quantity});
-  if (!validate.status) return {
-    statuscode: validate.httpcode, 
-    err: { 
+  if (!validate.status) {
+    let err = new Error();
+    err.statuscode = validate.httpcode;
+    err.message = { 
       code: validate.code, 
       message: validate.msg
-    } };
+    };
+    throw err;
+  };
 
   const modifiedCount = await ProductsModel.updateProduct(id, name, quantity);
   if (modifiedCount === ZERO) return { 
@@ -90,7 +104,6 @@ const updateProduct = async (id, name, quantity) => {
 
 const deleteProduct = async (id) => {
   const product = await findById(id);
-  if (product.err) return product;
   await ProductsModel.deleteProduct(id);
   return product;
 };
