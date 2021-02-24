@@ -66,10 +66,32 @@ const findById = async (id) => {
   };
 };
 
+const updateProduct = async (id, name, quantity) => {
+  const ZERO = 0;
+
+  const validate = await validateFields({name, quantity});
+  if (!validate.status) return {
+    statuscode: validate.httpcode, 
+    err: { 
+      code: validate.code, 
+      message: validate.msg
+    } };
+
+  const modifiedCount = await ProductsModel.updateProduct(id, name, quantity);
+  if (modifiedCount === ZERO) return { 
+    statuscode: 422, 
+    err: { 
+      code, 
+      message: 'No changes'
+    }
+  }; 
+  return true;
+};
 
 module.exports = {
   insertProduct,
   validateFields,
   getAll,
   findById,
+  updateProduct,
 };

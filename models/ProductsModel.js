@@ -15,11 +15,22 @@ const getAll = async () => await conn()
 
 const findById = async (id) => await conn()
   .then(db => db.collection('products').findOne(ObjectId(id)));
-  // .catch(err => new Error(err));
+
+const updateProduct = async (id, name, quantity) => {
+  const { modifiedCount } = await conn()
+    .then(db => db.collection('products').updateOne({_id: ObjectId(id)}, {
+      $set: {
+        name,
+        quantity,
+      }
+    }));
+  return +modifiedCount;
+};
 
 module.exports = {
   findByName,
   insertProduct,
   getAll,
   findById,
+  updateProduct,
 };

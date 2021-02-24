@@ -9,7 +9,6 @@ router.post('/', async (req, res) => {
   const product = await ProductService.insertProduct(req.body);
 
   if (product.err) return res.status(product.statuscode).json({ err: product.err });
-  
   return res.status(CREATED).json(product);
 });
 
@@ -23,8 +22,16 @@ router.get('/:id', async (req, res) => {
   const product = await ProductService.findById(id);
 
   if (product.err) return res.status(product.statuscode).json({ err: product.err });
-
   return res.status(SUCCESS).json(product);
+});
+
+router.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+  const product = await ProductService.updateProduct(id, name, quantity);
+
+  if (product.err) return res.status(product.statuscode).json({ err: product.err });
+  return res.status(SUCCESS).json({ _id: id, name, quantity });
 });
 
 module.exports = router;
