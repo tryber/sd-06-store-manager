@@ -1,4 +1,4 @@
-const { error, validations } = require('../dictionary');
+const { error, validations } = require('../../dictionary');
 
 module.exports = (name) => {
   if (!name) throw new Error(error.invalidProductNameSize);

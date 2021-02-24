@@ -1,7 +1,5 @@
-const validateProductName = require('./validateProductName');
-const validateQuantity = require('./validateQuantity');
+const validateProduct = require('./validateProduct');
 
 module.exports = {
-  validateProductName,
-  validateQuantity,
+  validateProduct,
 };

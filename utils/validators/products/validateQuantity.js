@@ -1,4 +1,4 @@
-const { error, validations } = require('../dictionary');
+const { error, validations } = require('../../dictionary');
 
 module.exports = (quantity) => {
   if (typeof quantity !== 'number') throw new Error(error.invalidProductQuantityType);

@@ -4,11 +4,7 @@ const controllers = require('../controllers');
 
 const products = express.Router();
 
-products.post('/',
-  middlewares.validateProduct,
-  middlewares.checkNameAvailability,
-  controllers.createProduct
-);
+products.post('/', controllers.createProduct);
 
 products.use(middlewares.handleError);
 
