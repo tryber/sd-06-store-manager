@@ -19,20 +19,32 @@ const productRepeat = async (name) => {
   return true;
 };
 
-const create = async (name, quantity) => {
-  const produto = await model.create(name, quantity);
+const productCreate = async (name, quantity) => {
+  const produto = await model.createProduct(name, quantity);
   return produto;
 };
 
-const getAll = async () => {
+const getAllProducts = async () => {
   const products = await model.getAllProducts();
   return products;
+};
+
+const findByIdProducts = async (id) => {
+  const product = await model.findByIdProducts(id);
+  return product;
+};
+
+const updateProduct = async (id, name, quantity) => {
+  const product = await model.updateProduct(id, name, quantity);
+  return product;
 };
 
 module.exports = {
   quantityValid,
   nameValid,
   productRepeat,
-  create,
-  getAll
+  productCreate,
+  getAllProducts,
+  findByIdProducts,
+  updateProduct
 };

@@ -11,8 +11,19 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
-app.get('/products', controller.getAll);
+app.get('/products', controller.getAllProducts);
+app.get('/products/:id', controller.findByIdProducts);
+app.post('/products', controller.createProduct);
+app.put('/products/:id', controller.updateProduct);
 
-app.post('/products', controller.create);
+app.delete('/products/:id', (req, res) => res.send('4 - deletar um produto'));
+
+app.post('/sales', (req, res) => res.send('5 - cadastrar vendas'));
+
+app.get('/sales/:id', (req, res) => res.send('6 - listar as vendas'));
+
+app.put('/sales/:id', (req, res) => res.send('7 - atualizar uma venda'));
+
+app.delete('/sales/:id', (req, res) => res.send('8 - deletar uma venda'));
 
 app.listen(PORT, () => console.log(`Example app listening on PORT ${PORT}!`));
