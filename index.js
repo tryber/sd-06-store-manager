@@ -2,6 +2,7 @@ const express = require('express');
 const Products = require('./models/Products');
 const ProductsController = require('./controllers/ProductsController');
 const bodyParser = require('body-parser');
+const { put } = require('frisby');
 
 const app = express();
 const port = 3000;
