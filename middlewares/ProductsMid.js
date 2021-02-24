@@ -10,7 +10,7 @@ const validateProduct = (req, res, next) => {
 
   if (!name || name.length < FIVE) return res.status(UNPROCESSABLE).json({ err: {
     code: 'invalid_data',
-    message: '"name" length must be at least 6 characters long',
+    message: '"name" length must be at least 5 characters long',
   }
   });
       
