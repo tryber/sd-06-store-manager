@@ -10,9 +10,12 @@ app.get('/', (_request, response) => {
 
 const bodyParser = require('body-parser');
 const { ProductsRouter } = require('./controller/products');
+const { SalesRouter } = require('./controller/sales');
 
 app.use(bodyParser.json());
 
 app.use('/', ProductsRouter);
+
+app.use('/', SalesRouter);
 
 app.listen(port, () => console.log(`Listening to ${port}`));
