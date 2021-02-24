@@ -3,7 +3,8 @@ const {
   createProduct,
   ProductList,
   findById,
-  update
+  update,
+  remove
 } = require('../service/productService');
 
 const productController = new Router();
@@ -39,6 +40,15 @@ productController.put('/:id', validateCreate, async (req, res) => {
   const productUp = await update(id, name, quantity);
 
   res.status(okay).json({ _id: id, name: name, quantity: quantity });
+});
+productController.delete('/:id', rightId, async (req, res) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+  const okay = 200;
+  const removeProduct = await remove(id);
+
+  res.status(okay).json(removeProduct); // Lembrar de perguntar ao ZAmbelli sobre essa saida.
+
 });
 
 module.exports = productController;
