@@ -6,7 +6,7 @@ const createProduct = async (name, quantity) => {
     .then((db) => db.collection('products').insertOne({name, quantity}));
   
   return {
-    id: insertedId,
+    _id: insertedId,
     name,
     quantity,
   };
