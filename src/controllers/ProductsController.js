@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { create, update } = require('../models/ProductModel');
+const { create, update, exclude } = require('../models/ProductModel');
 const { getProductCount, getAll, getById } = require('../models/ProductModel');
 const { ObjectId } = require('mongodb');
 
@@ -114,6 +114,22 @@ ProductsController.put('/:id', async (req, res) => {
   await update(id, name, quantity);
   const updatedProduct = await getById(id);
   return res.status(STATUS_OK).json(updatedProduct);
+});
+
+// Requisito 4
+ProductsController.delete('/:id', async (req, res) => {
+  const id = req.params.id;
+  if (!ObjectId.isValid(id)) {
+    return res.status(STATUS_UNPROCESSABLE)
+      .json({
+        err: {
+          code: 'invalid_data',
+          message: 'Wrong id format'
+        }});
+  }
+  const deletedProduct = await getById(id);
+  await exclude(id);
+  return res.status(STATUS_OK).json(deletedProduct);
 });
 
 module.exports = ProductsController;
