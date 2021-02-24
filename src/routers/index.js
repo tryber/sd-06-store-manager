@@ -13,5 +13,7 @@ router.put('/products/:id', validateProducts, controllers.updateProdut);
 router.delete('/products/:id', controllers.deleteProdut);
 
 router.post('/sales', validateSales, controllers.createSales);
+router.get('/sales', controllers.searchAllSales);
+router.get('/sales/:id', controllers.SearchSaleById);
 
 module.exports = router;

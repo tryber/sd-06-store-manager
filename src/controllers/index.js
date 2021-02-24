@@ -7,11 +7,14 @@ const {
 } = require('../models/products');
 
 const {
-  createSale
+  createSale,
+  allSales,
+  filterSaleById
 } = require('../models/sales');
 
 const Ok = 200;
 const Created = 201;
+const NOT_FOUND = 404;
 const UNPROCESSABLE_ENTITY = 422;
 
 const createProduts = async (req, res) => {
@@ -84,19 +87,38 @@ const deleteProdut = async (req, res) => {
 
 
 const createSales = async (req, res) => {
-  const products = req.body;
 
   const DbNewSale = await createSale(req.body);
 
-  const productsSold = products.map(item => ({
-    productId: item.productId,
-    quantity: item.quantity
-  }));
+  return res.status(Ok).json(DbNewSale.ops[0]);
+};
+
+
+const searchAllSales = async (_req, res) => {
+  const sales = await allSales();
 
   return res.status(Ok).json({
-    _id: DbNewSale.ops[0]._id,
-    itensSold: productsSold
+    sales: sales
   });
+};
+
+
+const SearchSaleById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const sales = await filterSaleById(id);
+
+    return res.status(Ok).json(sales);
+
+  } catch {
+    return res.status(NOT_FOUND).json({
+      err: {
+        code: 'not_found',
+        message: 'Sale not found'
+      }
+    });
+  }
 };
 
 
@@ -106,5 +128,7 @@ module.exports = {
   searchOneProdut,
   updateProdut,
   deleteProdut,
-  createSales
+  createSales,
+  searchAllSales,
+  SearchSaleById
 };
