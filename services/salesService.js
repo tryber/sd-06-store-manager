@@ -14,6 +14,8 @@ const getById = async (id) => await salesModel.getById(id);
 
 const update = async (id, data) => await salesModel.update(id, data);
 
+const remove = async (id) => await salesModel.remove(id);
+
 const validate = (req, res, next) => {
   req.body.forEach((item) => {
     const { quantity } = item;
@@ -72,6 +74,18 @@ const saleIdValidation = async (req, res, next) => {
   next();
 };
 
+const deleteIdValidation = async (req, res, next) => {
+  const { id } = req.params;
+  if(!ObjectId.isValid(id)) return res.status(ERR).json({
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong sale ID format'
+    }
+  });
+  next();
+};
+
+
 module.exports = {
   getAll,
   create,
@@ -80,4 +94,6 @@ module.exports = {
   getById,
   saleIdValidation,
   update,
+  remove,
+  deleteIdValidation,
 };

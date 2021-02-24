@@ -35,4 +35,12 @@ salesRouter.put('/:id', Sales.validate, Sales.saleIdValidation, async (req, res)
   res.status(SUCCESS).json(sale);
 });
 
+salesRouter.delete('/:id', Sales.deleteIdValidation,
+  async (req, res) => {
+    const { id } = req.params;
+    const sale = await Sales.getById(id);
+    await Sales.remove(id);
+    return res.status(SUCCESS).json(sale);
+  });
+
 module.exports = salesRouter;
