@@ -20,18 +20,18 @@ const getAll = async () => {
 };
 
 const getById = async (id) => {
-  if (!ObjectId.isValid(id)) {
-    return ({
-      err: {
-        code: 'invalid_data',
-        message: 'Wrong id format'
-      }});
-  }
   const product = await connection()
-    .then((db) => db.collection('products').findOne(ObjectId(id)));
-  console.log(product);
+    .then((db) => db.collection('products').findOne({_id: ObjectId(id) }));
   return product;
-  
+
+};
+
+const update = async (id, name, quantity ) => {
+  const product = await connection()
+    .then((db) => db.collection('products').updateOne(
+      db.collection('products').findOne({_id: ObjectId(id) }),
+      {$set:{ name, quantity }},));
+  return product;
 };
 
 module.exports = {
@@ -39,4 +39,5 @@ module.exports = {
   getProductCount,
   getAll,
   getById,
+  update,
 };
