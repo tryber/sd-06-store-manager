@@ -1,5 +1,10 @@
 const { Router } = require('express');
-const { createSale, getAllSales, getSaleById, editSale } = require('../modules/salesModules');
+const {
+  createSale,
+  getAllSales,
+  getSaleById,
+  editSale
+} = require('../modules/salesModules');
 const {
   validateSale,
   validateProductId,
