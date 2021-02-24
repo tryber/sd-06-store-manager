@@ -26,8 +26,8 @@ const getAllProduct = async () => {
   const productResponse = await connection()
     .then((db) => db.collection(collectionName).find().toArray());
 
-    return productResponse;
-}
+  return productResponse;
+};
 
 module.exports = {
   createProduct,
