@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-
+const productsControl = require('./controllers/');
 
 const app = express();
 const SUCCESS = 200;
@@ -12,8 +12,6 @@ app.get('/', (_request, response) => {
   response.status(SUCCESS).send();
 });
 
-app.get('/products', (_request, response) => {
-  response.status(422).send('vamoooos');
-});
+app.use('/products', productsControl);
 
 app.listen(DOOR,()=>console.log(`ON --- PORTA ---${DOOR}`));
