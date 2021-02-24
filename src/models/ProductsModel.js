@@ -9,11 +9,27 @@ const createProduct = async (name, quantity) => {
     id: insertedId,
     name,
     quantity,
-  };;
+  };
 };
 
 const getAllProducts = async() => {
-  return await connection().then((db) => db.collection('products').find().toArray());
+  return { products: await connection()
+    .then((db) => db.collection('products').find().toArray())};
+};
+
+const findByIdProduct = async(id) => {
+  return await connection().then((db) => db.collection('products').findOne(ObjectId(id)));
+};
+
+const updateByIdProduct = async(id, name, quantity) => {
+  const { insertedId } = await connection()
+    .then((db) => db.collection('products')
+      .updateOne({_id: ObjectId},{ $set:{name, quantity}}));
+  return {
+    id: insertedId,
+    name,
+    quantity,
+  };
 };
 
 const findByName = async (name) => {
@@ -25,5 +41,7 @@ const findByName = async (name) => {
 module.exports = {
   createProduct,
   getAllProducts,
+  findByIdProduct,
+  updateByIdProduct,
   findByName,
 };
