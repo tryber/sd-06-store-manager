@@ -4,6 +4,7 @@ const port = 3000;
 
 const bodyParser = require('body-parser');
 const { productsRouter } = require('./controller/products');
+const { salesRouter } = require('./controller/sales');
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
@@ -12,5 +13,6 @@ app.get('/', (_request, response) => {
 
 app.use(bodyParser.json());
 app.use('/products', productsRouter);
+app.use('/sales', salesRouter);
 
 app.listen(port, () => console.log(`Listening to port ${port}`));

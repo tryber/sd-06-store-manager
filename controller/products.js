@@ -1,7 +1,10 @@
 const { Router } = require('express');
 const { ObjectId } = require('mongodb');
 const productsModules = require('../modules/productsModules');
-const { validateProduct, validateId, productExists } = require('../services');
+const {
+  validateProduct,
+  validateId,
+  productExists } = require('../services/productsServices');
 
 const productsRouter = new Router();
 
