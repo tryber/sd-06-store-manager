@@ -40,7 +40,7 @@ ProductController.get('/:id', async (request, response) => {
     if (!productId) throw new Error('error');
     return response.status(STATUS_200).json(productId);
   } catch (err) {
-    response.status(STATUS_422).json({ err:
+    return response.status(STATUS_200).json({ err:
       { code: 'invalid_data', message: 'Wrong id format' }
     });
   }
