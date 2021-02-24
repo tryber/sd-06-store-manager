@@ -18,9 +18,22 @@ const create = async (product) =>
     )
     .then((result) => result);
 
+const update = async (id, newName, newQuantity) =>
+  connection()
+    .then((db) => db.collection('products').findOneAndUpdate(
+      { _id: ObjectId(id) },
+      { $set: {
+        name: newName,
+        quantity: newQuantity,
+      } },
+      { returnOriginal: false },
+    ))
+    .then((result) => result['value']);
+
 module.exports = {
   getAll,
   findById,
   findByName,
   create,
+  update,
 };
