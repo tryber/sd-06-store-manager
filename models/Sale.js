@@ -41,32 +41,47 @@ const findById = async (id) => {
   // };
 };
 
-const update = async (id, quantity) => {
+const update = async (id, body) => {
+  console.log(body);
   if(!ObjectId.isValid(id)) return null;
-  //return
-  const retorno = await connection().then(db => db.collection('sales').updateOne(
-    { _id: ObjectId(id) },
-    { $set: { quantity } }
-  ));
+  
+  
+  const updateSale = await connection().
+    then(db => db.collection('sales').updateOne(
+      { _id: ObjectId(id) },
+      { $set: { itensSold: body } }
+    ))
+    .then(() => ({ _id: id, itensSold: body }));
   
   // return {
   //   _id: ObjectId(id),
   //   id,
   //   quantity
   // };
-  return retorno.ops[0];
+
+  // return {
+  //   _id: insertedId,
+  //   itensSold: [{
+  //     productId: itensSold[i].productId,
+  //     quantity: itensSold[i].quantity,
+  //   }]
+  // };
+  return updateSale;
+  
 };
 
 const remove = async (id) => {
+  console.log('oi',id);
   if(!ObjectId.isValid(id)) return null;
-  const check = await findById(id);
-  if (!check) {
-    return null; //console.log('nao existe');
-  }
-  await connection().then(db => db.collection('sales').deleteOne(
+  // const check = await findById(id);
+  // if (!check) {
+  //   return null; //console.log('nao existe');
+  // }
+  
+  return await connection().then(db => db.collection('sales').deleteOne(
     { _id: ObjectId(id) }
   ));
-  return check;
+  // return check;
 };
 
 module.exports = {

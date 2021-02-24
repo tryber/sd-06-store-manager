@@ -14,8 +14,8 @@ const create = async (itensSold) => {
   return sale;
 };
 
-const update = async (id, quantity) => {
-  return await Sale.update(id, quantity);
+const update = async (id, body) => {
+  return await Sale.update(id, body);
 };
 
 const remove = async (id) => {
