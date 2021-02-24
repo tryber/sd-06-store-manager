@@ -94,7 +94,7 @@ router.delete('/:id', async (request, response) => {
       return response.status(UnprocessableEntity).json(error);
     }
 
-    return response.status(UnprocessableEntity).json(error);
+    return response.status(INTERNAL_SERVER_ERROR).json(error);
   }
 });
 
