@@ -4,7 +4,7 @@ const Products = require('../services/ProductsService');
 const router = new Router();
 const SUCESS = 200;
 const CREATED = 201;
-const INVALID_DATA = 422;
+const UNPROCESSABLE_ENTITY = 422;
 
 router
   .post('/', async (req, res) => {
@@ -12,7 +12,7 @@ router
 
     const product = await Products.create(name, quantity);
 
-    if (product.message) return res.status(INVALID_DATA).json(
+    if (product.message) return res.status(UNPROCESSABLE_ENTITY).json(
       { err: {
         code: 'invalid_data',
         message: product.message
@@ -28,9 +28,44 @@ router
   })
   .get('/:id', async (req, res) => {
     const { id } = req.params;
-    const products = await Products.findById(id);
+    const product = await Products.findById(id);
 
-    res.status(SUCESS).json(products);
+    if (product.message) return res.status(UNPROCESSABLE_ENTITY).json({
+      err: {
+        code: 'invalid_data',
+        message: product.message
+      }
+    });
+
+    res.status(SUCESS).json(product);
+  })
+  .put('/:id', async (req, res) => {
+    const { id } = req.params;
+    const { name, quantity } = req.body;
+
+    const updatedProduct = await Products.update(id, name, quantity);
+
+    if (updatedProduct.message) return res.status(UNPROCESSABLE_ENTITY).json(
+      { err: {
+        code: 'invalid_data',
+        message: updatedProduct.message
+      }}
+    );
+
+    res.status(SUCESS).json(updatedProduct);
+  })
+  .delete('/:id', async (req, res) => {
+    const { id } = req.params;
+    const deletedProduct = await Products.remove(id);
+
+    if (deletedProduct.message) return res.status(UNPROCESSABLE_ENTITY).json({
+      err: {
+        code: 'invalid_data',
+        message: deletedProduct.message
+      }
+    });
+
+    res.status(SUCESS).json(deletedProduct);
   });
 
 

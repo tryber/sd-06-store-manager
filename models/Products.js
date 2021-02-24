@@ -28,20 +28,30 @@ const findById = async (id) => {
     .catch(err => console.error(err));
 };
 
-// const update = async (id, name) => {
-//   return await connection().then((db) => db.collection('recipes').updateOne(
-//     { _id: ObjectID(id) },
-//     { $set: { name } }
-//   ));
-// };
+const update = async (id, name, quantity) => {
+  const { insertedId } = await connection()
+    .then((db) => db.collection('products').updateOne(
+      { _id: ObjectID(id) },
+      { $set: { name, quantity} }
+    ));
 
-// const remove = async (id) => {
-//   return await connection().then((db) => db.collection('recipes').deleteOne( { _id: ObjectID(id) } ));
-// };
+  return {
+    id: insertedId,
+    name,
+    quantity
+  };
+};
+
+const remove = async (id) => {
+  return await connection()
+    .then((db) => db.collection('products').deleteOne( { _id: ObjectID(id) } ));
+};
 
 module.exports = {
   create,
   findByName,
   getAll,
-  findById
+  findById,
+  update,
+  remove
 }; 

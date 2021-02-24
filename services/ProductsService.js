@@ -1,16 +1,11 @@
 const Products = require('../models/Products');
 
-const create = async (name, quantity) => {
+const productValidation = async (name, quantity) => {
   const nameLength = 5;
   const zero = 0;
-  const isNameAlreadyUsed = await findByName(name);
 
   if (!name || name.length < nameLength) {
     return {message: '"name" length must be at least 5 characters long'};
-  };
-
-  if (isNameAlreadyUsed) {
-    return {message: 'Product already exists'};
   };
 
   if ((!quantity && quantity !== zero) || typeof(quantity) !== 'number') {
@@ -20,6 +15,19 @@ const create = async (name, quantity) => {
   if (!quantity || quantity <= zero || !Number.isInteger(quantity)) {
     return {message: '"quantity" must be larger than or equal to 1'};
   };
+
+  return null;
+};
+
+const create = async (name, quantity) => {
+  const isDataInvalid = await productValidation(name, quantity);
+  const isNameAlreadyUsed = await findByName(name);
+
+  if (isNameAlreadyUsed) {
+    return {message: 'Product already exists'};
+  };
+
+  if (isDataInvalid) return isDataInvalid;
 
   return await Products.create(name, quantity);
 };
@@ -34,11 +42,38 @@ const getAll = async () => {
 };
 
 const findById = async (id) => {
-  return await Products.findById(id);
+  const idLength = 24;
+  const productById = await Products.findById(id);
+
+  if (id.length !== idLength) return { message: 'Wrong id format'};
+
+  if (!productById) return { message: 'Wrong id format' };
+
+  return productById;
+};
+
+const update = async (id, name, quantity) => {
+  const isDataInvalid = await productValidation(name, quantity);
+
+  if (isDataInvalid) return isDataInvalid;
+
+  return await Products.update(id, name, quantity);
+};
+
+const remove = async (id) => {
+  const product = await findById(id);
+
+  if (product.message) return product;
+
+  await Products.remove(id);
+
+  return product;
 };
 
 module.exports = {
   create,
   getAll,
-  findById
+  findById,
+  update,
+  remove
 };
