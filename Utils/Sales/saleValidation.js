@@ -7,7 +7,8 @@ module.exports = async (req, res, next) => {
   const { productId, quantity } = sale;
 
   if(!sale.length) {
-    if(!productId || productId.length !== IDLENGTH ) {
+    if(!productId || productId.length !== IDLENGTH ||
+        quantity <= ZERO || typeof(quantity) !== 'number') {
       const err = {
         code: 'invalid_data',
         message: 'Wrong product ID or invalid quantity'
@@ -15,24 +16,6 @@ module.exports = async (req, res, next) => {
 
       return res.status(UNCREATED).send({ err: err });
     };
-
-    if(quantity <= ZERO) {
-      const err = {
-        code: 'invalid_data',
-        message: 'Wrong product ID or invalid quantity'
-      };
-
-      return res.status(UNCREATED).send({ err: err });
-    }
-
-    if(typeof(quantity) !== 'number') {
-      const err = {
-        code: 'invalid_data',
-        message: 'Wrong product ID or invalid quantity'
-      };
-
-      return res.status(UNCREATED).send({ err: err });
-    }
   }
 
   if(sale.length > ZERO) {
