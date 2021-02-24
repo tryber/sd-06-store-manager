@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const salesModules = require('../modules/salesModules');
 const { ObjectId } = require('mongodb');
-const { validateSales } = require('../services/salesServices');
+const { validateSales, validateId } = require('../services/salesServices');
 
 const salesRouter = new Router();
 
@@ -18,7 +18,7 @@ salesRouter.get('/', async (_req, res) => {
   res.status(SUCESS).json({ sales: allSales });
 });
 
-salesRouter.get('/:id', async (req, res) => {
+salesRouter.get('/:id', validateId, async (req, res) => {
   const { id } = req.params;
 
   const saleFound = await salesModules.getSaleById(id);
@@ -33,5 +33,19 @@ salesRouter.get('/:id', async (req, res) => {
   res.status(SUCESS).json(saleFound);
 });
 
+salesRouter.put('/:id', validateSales, async (req, res) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+  
+  await productsModules.updateProduct(id, name, quantity);
+
+  const productUpdated = {
+    _id: ObjectId(id),
+    name,
+    quantity,
+  };
+
+  res.status(SUCESS).json(productUpdated);
+});
 
 module.exports = { salesRouter };

@@ -19,6 +19,10 @@ const createSale = async (data) => {
 const getSaleById = (id) =>
   connection().then((db) => db.collection('sales').findOne(ObjectId(id)));
 
+const updateSale = (id, productId, quantity) =>
+  connection().then((db) => db.collection('products')
+    .updateOne({ _id: ObjectId(id) }, { $set: { name, quantity }}));
+
 module.exports = {
   getAllSales,
   createSale,
