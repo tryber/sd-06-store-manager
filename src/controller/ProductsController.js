@@ -51,9 +51,22 @@ ProductsController.put('/:id', async (req, res) => {
   res.status(OK).json(product);
 });
 
+// Delete Product
+ProductsController.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  
+  const result = await Service.remove(id);
+  const { status } = result;
+  if (status === 'NOK') {
+    return res.status(UNPROCESSABLE_ENTITY).json(responseError(result));
+  }
+  const { product } = result;
+  res.status(OK).json(product);
+});
 
-const responseError = (error) => {
-  const { message } = error;
+
+const responseError = (result) => {
+  const { message } = result;
   return { err: { code: 'invalid_data', message } };
 };
 

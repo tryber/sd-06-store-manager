@@ -37,6 +37,17 @@ const update = async (id, name, quantity) => {
   return { status: 'NOK', message: validationMessage };
 };
 
+// Remove Product
+const remove = async (id) => {
+  const product = await Product.findById(id);
+  if (product) {
+    Product.remove(id);
+    return { status: 'OK', product};
+  }
+  return { status: 'NOK', message: 'Wrong id format' };
+};
+
+
 // Get Product By Name
 const getByname = async (name) => {
   return await Product.findByName(name);
@@ -79,4 +90,5 @@ module.exports = {
   findById,
   create,
   update,
+  remove,
 };
