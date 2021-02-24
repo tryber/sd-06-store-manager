@@ -8,7 +8,6 @@ const router = new Router();
 
 const ERROR = 422;
 const NOT_FOUND = 404;
-const SUCCESS = 201;
 const OK = 200;
 
 const ERROR_MESSAGE = {
@@ -17,6 +16,10 @@ const ERROR_MESSAGE = {
 
 const SALE_NOT_FOUND = {
   err: { code: 'not_found', message: 'Sale not found' },
+};
+
+const SALE_NOT_REMOVED = {
+  err: { code: 'invalid_data', message: 'Wrong sale ID format' },
 };
 
 router.post('/', salesValidation, async (req, res) => {
@@ -74,6 +77,22 @@ router.put('/:id', salesValidation, async (req, res) => {
     return res.status(OK).json(modifiedSale);
   } catch (err) {
     return res.status(ERROR).json(ERROR_MESSAGE);
+  }
+});
+
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const saleToRemove = await Sales.findById(id);
+
+    if (!saleToRemove) {
+      return res.status(ERROR).json(SALE_NOT_REMOVED);
+    }
+
+    await Sales.remove(id);
+    return res.status(OK).json(saleToRemove);
+  } catch (err) {
+    return res.status(ERROR).json(SALE_NOT_REMOVED);
   }
 });
 

@@ -30,9 +30,15 @@ const update = async (id, sale) => {
     ));
 };
 
+const remove = async (id) => {
+  return await connection()
+    .then((db) => db.collection('sales').deleteOne({ _id: ObjectId(id) }));
+};
+
 module.exports = {
   create,
   getAll,
   findById,
-  update
+  update,
+  remove
 };
