@@ -19,7 +19,7 @@ const getByName = async (name) => {
 
 const getById = async (id) => {
   const getId = connection()
-    .then((db) => db.collection('products').findOne(ObjectId(id)));
+    .then((db) => db.collection('products').findOne({_id: ObjectId(id)}));
   return getId;
 };
 
@@ -29,9 +29,15 @@ const create = async (name, quantity) => {
   return creation;
 };
 
+const remove = async (id) => {
+  return connection()
+    .then((db) => db.collection('products').deleteOne({_id: ObjectId(id)})); 
+};
+
 module.exports = {
   getAll,
   getByName,
   getById,
   create,
+  remove,
 };

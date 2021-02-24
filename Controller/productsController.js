@@ -6,6 +6,10 @@ const created = 201;
 const OK = 200;
 const nameLength = 5;
 const ZERO = 0;
+const errLenght = {
+  'code': 'invalid_data',
+  'message': '"name" length must be at least 5 characters long'
+};
 
 const getAll = async (_req, res) => {
   
@@ -65,24 +69,15 @@ const create = async (req, res) => {
 
   if (!name) {
     return res.status(codeErr)
-      .json({ 'err': {
-        'code': 'invalid_data',
-        'message': '"name" length must be at least 5 characters long'
-      } });
+      .json({ 'err': errLenght });
   }
   if (typeof name !== 'string' ) {
     return res.status(codeErr)
-      .json({ 'err': {
-        'code': 'invalid_data',
-        'message': '"name" length must be at least 5 characters long'
-      } });
+      .json({ 'err': errLenght });
   }
   if (name.length < nameLength) {
     return res.status(codeErr)
-      .json({ 'err': {
-        'code': 'invalid_data',
-        'message': '"name" length must be at least 5 characters long'
-      } });
+      .json({ 'err': errLenght });
   }
 
   const checkName = await productsConnection.getByName(name);
@@ -104,15 +99,6 @@ const update = async (req, res) => {
   const edit = req.body;
 
   const findId = productsConnection.getById(id);
-  console.log(findId);
-  
-  /* const product = findId.concat(
-    {
-      name: edit.name,
-      quantity: edit.quantity,
-    }
-  );
-  console.log(product); */
 
   const { name, quantity } = edit;
 
@@ -140,27 +126,38 @@ const update = async (req, res) => {
 
   if (!name) {
     return res.status(codeErr)
-      .json({ 'err': {
-        'code': 'invalid_data',
-        'message': '"name" length must be at least 5 characters long'
-      } });
+      .json({ 'err': errLenght });
   }
   if (typeof name !== 'string' ) {
     return res.status(codeErr)
-      .json({ 'err': {
-        'code': 'invalid_data',
-        'message': '"name" length must be at least 5 characters long'
-      } });
+      .json({ 'err': errLenght });
   }
   if (name.length < nameLength) {
     return res.status(codeErr)
-      .json({ 'err': {
-        'code': 'invalid_data',
-        'message': '"name" length must be at least 5 characters long'
-      } });
+      .json({ 'err': errLenght });
   }
 
   res.status(OK).json({id, name, quantity});
+};
+
+const remove = async (req, res) => {
+  const {id} = req.params;
+
+  if (!ObjectId.isValid(id)) return res.status(codeErr).json({ err: {
+    code: 'invalid_data',
+    message: 'Wrong id format'
+  } });
+
+  const findId = await productsConnection.getById(id);
+  
+  if (!findId) return res.status(codeErr).json({ err: {
+    code: 'invalid_data',
+    message: 'Wrong id format'
+  } });
+  
+  const removeId = await productsConnection.remove(id);
+
+  return res.status(OK).json(findId);
 };
 
 module.exports = {
@@ -168,4 +165,5 @@ module.exports = {
   getById,
   create,
   update,
+  remove,
 };
