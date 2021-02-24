@@ -1,4 +1,5 @@
 const productsConnection = require('../Model/productsConnection');
+const { ObjectId } = require('mongodb');
 
 const codeErr = 422;
 const created = 201;
@@ -6,11 +7,26 @@ const OK = 200;
 const nameLength = 5;
 const ZERO = 0;
 
+const getAll = async (_req, res) => {
+  
+  const allProducts = await productsConnection.getAll();
+  /* console.log(allProducts); */
+
+  if (allProducts) return res.status(OK).json({ products: allProducts});
+};
+
 const getById = async (req, res) => {
   const { id } = req.params;
 
+  const validId = ObjectId.isValid(id);
+  
+  if (validId !== true) {
+    return res.status(codeErr).json({ 'err': {
+      'code': 'invalid_data',
+      'message': 'Wrong id format'
+    } });
+  }
   const getId = await productsConnection.getById(id);
-  /* const findId = getId.filter((product) => product.id === id); */
 
   if (!getId) {
     return res.status(codeErr).json({ 'err': {
@@ -20,14 +36,6 @@ const getById = async (req, res) => {
   } else {
     return res.status(OK).json(getId);
   }
-};
-
-const getAll = async (_req, res) => {
-  
-  const allProducts = await productsConnection.getAllProducts();
-  console.log(allProducts);
-
-  return res.status(OK).json(allProducts);
 };
 
 const create = async (req, res) => {
@@ -78,7 +86,7 @@ const create = async (req, res) => {
   }
 
   const checkName = await productsConnection.getByName(name);
-  
+
   if (checkName) {
     return res.status(codeErr)
       .json({ 'err': {
@@ -92,7 +100,7 @@ const create = async (req, res) => {
 };
 
 module.exports = {
-  create,
   getAll,
   getById,
+  create,
 };

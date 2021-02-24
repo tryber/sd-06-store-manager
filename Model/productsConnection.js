@@ -1,21 +1,15 @@
 const connection = require('./connection');
 const { ObjectId } = require('mongodb');
 
-const create = async (name, quantity) => {
-  const creation = connection()
-    .then((db) => db.collection('products').insertOne({name, quantity}));
-  return creation;
-};
-
-const getAllProducts = async () => {
-  connection().then((db) => db.collection('products').find().toArray())
-    .then((products) => {
+const getAll = async () => {
+  return connection().then((db) => db.collection('products').find().toArray())
+    .then((products) =>
       products.map(({ _id, name, quantity }) => ({
         id: _id,
         name,
         quantity,
-      }));
-    });
+      }))
+    );
 };
 
 const getByName = async (name) => {
@@ -29,9 +23,15 @@ const getById = async (id) => {
   return getId;
 };
 
+const create = async (name, quantity) => {
+  const creation = connection()
+    .then((db) => db.collection('products').insertOne({name, quantity}));
+  return creation;
+};
+
 module.exports = {
-  create,
-  getAllProducts,
+  getAll,
   getByName,
   getById,
+  create,
 };

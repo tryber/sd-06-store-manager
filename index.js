@@ -13,11 +13,8 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
-app.use('/products/:id', productsController.getById);
-
-app.use('/products', productsController.create);
-app.use('/products', productsController.getAll);
-
-
+app.get('/products/:id', productsController.getById);
+app.get('/products', productsController.getAll);
+app.post('/products', productsController.create);
 
 app.listen(PORT, () => console.log(`Ouvindo a porta ${PORT}`));
