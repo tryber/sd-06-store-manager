@@ -1,10 +1,10 @@
 const { MongoClient } = require('mongodb');
 
 // Conexão do banco local. Alterar ao dar push.
-// const MONGO_DB_URL = 'mongodb://localhost:27017/StoreManager';
+const MONGO_DB_URL = 'mongodb://localhost:27017/StoreManager';
 
 // Conexao para o avalidor do github funcionar normalmente.
-const MONGO_DB_URL = 'mongodb://mongodb:27017/StoreManager';
+// const MONGO_DB_URL = 'mongodb://mongodb:27017/StoreManager';
 
 const DB_NAME = 'StoreManager';
 

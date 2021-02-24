@@ -1,7 +1,8 @@
 const { Router } = require('express');
 const productsService = require('../services/productsService');
-const { productValidation } = require('../middlewares/productValidation');
+const { nameAndQuantityValidation } = require('../middlewares/nameAndQuantityValidation');
 const { idValidation } = require('../middlewares/idValidation');
+const { nameExistValidation } = require('../middlewares/nameExistValidation');
 
 const router = Router();
 
@@ -22,7 +23,7 @@ router.get('/:id', idValidation, async (req, res) => {
   res.status(OK).json(productById);
 });
 
-router.post('/', productValidation, async (req, res) => {
+router.post('/', nameExistValidation, nameAndQuantityValidation, async (req, res) => {
   const { name, quantity } = req.body;
 
   const { insertedId } = await productsService.createNewProduct(name, quantity);
@@ -36,5 +37,19 @@ router.post('/', productValidation, async (req, res) => {
   res.status(CREATED).json(product);
 });
 
+router.put('/:id', idValidation, nameAndQuantityValidation, async (req, res) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+
+  await productsService.updateProduct(id, name, quantity);
+
+  const product = {
+    _id: id,
+    name,
+    quantity
+  };
+
+  res.status(OK).json(product);
+});
 
 module.exports = router;
