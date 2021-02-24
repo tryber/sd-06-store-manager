@@ -18,4 +18,15 @@ SalesController.post('/', validate.validateQuantity, async (request, response) =
   return response.status(status0).json(insertedSale);
 });
 
+SalesController.get('/:id', validate.saleExists, async (request, response) => {
+  const { id } = request.params;
+
+  response.status(status0).json(await Sales.findById(id));
+});
+
+SalesController.get('/', async (_request, response) => {
+  const sales = await Sales.getAllSales();
+  response.status(status0).json({ sales });
+});
+
 module.exports = SalesController;
