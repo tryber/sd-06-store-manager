@@ -62,6 +62,6 @@ SalesController.post('/', async (req, res) => {
 //     }}
 //   );
 //   res.status(SUCCESS).json(product);
-});
+// });
 
-module.exports = ProductController;
+module.exports = SalesController;
