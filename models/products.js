@@ -1,9 +1,5 @@
 const connection = require('./connection');
-
-const queryByName = async (collection, name) => {
-  const db = await connection(collection);
-  return await db.findOne({ name });
-};
+const { ObjectId } = require('mongodb');
 
 const insertProduct = async (collection, product) => {
   const { name, quantity } = product;
@@ -12,7 +8,25 @@ const insertProduct = async (collection, product) => {
   return { _id: result.insertedId, name, quantity };
 };
 
+const queryByName = async (collection, name) => {
+  const db = await connection(collection);
+  return await db.findOne({ name });
+};
+
+const queryProducts = async (collection, id) => {
+  try {
+    const db = await connection(collection);
+    return id
+      ? await db.findOne({ _id: ObjectId(id) })
+      : { products: await db.find().toArray() };
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
+};
+
 module.exports = {
-  queryByName,
   insertProduct,
+  queryByName,
+  queryProducts,
 };

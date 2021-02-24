@@ -1,8 +1,6 @@
+const { error, magicNumbers } = require('../utils/dictionary');
 const { products } = require('../models');
 const { validateProduct } = require('../utils/validators');
-const { error } = require('../utils/dictionary');
-
-const findByName = async (name) => products.queryByName('products', name);
 
 const createProduct = async (product) => {
   await validateProduct(product);
@@ -11,7 +9,16 @@ const createProduct = async (product) => {
   return products.insertProduct('products', product);
 };
 
+const findByName = async (name) => products.queryByName('products', name);
+
+const getProducts = async (id) => {
+  const productsList = await products.queryProducts('products', id);
+  if (productsList.length === magicNumbers.zero) throw new Error(error.invalidId);
+  return productsList;
+};
+
 module.exports = {
-  findByName,
   createProduct,
+  findByName,
+  getProducts,
 };

@@ -7,6 +7,9 @@ const STATUS = {
 
 module.exports = {
   error : {
+    invalidId: handleMessage(
+      'Wrong id format', STATUS.unpEntity
+    ),
     invalidProductName: handleMessage(
       'Product already exists', STATUS.unpEntity
     ),
@@ -28,6 +31,10 @@ module.exports = {
   status: {
     badRequest: 400,
     created: 201,
+    ok: 200,
     unpEntity: 422,
+  },
+  magicNumbers: {
+    zero: 0,
   }
 };
