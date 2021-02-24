@@ -33,19 +33,18 @@ salesRouter.get('/:id', validateId, async (req, res) => {
   res.status(SUCESS).json(saleFound);
 });
 
-salesRouter.put('/:id', validateSales, async (req, res) => {
+salesRouter.put('/:id', validateId, validateSales, async (req, res) => {
   const { id } = req.params;
-  const { name, quantity } = req.body;
-  
-  await productsModules.updateProduct(id, name, quantity);
+  const data = req.body;
 
-  const productUpdated = {
+  await salesModules.updateSale(id, data);
+
+  const saleUpdated = {
     _id: ObjectId(id),
-    name,
-    quantity,
+    itensSold: data,
   };
 
-  res.status(SUCESS).json(productUpdated);
+  res.status(SUCESS).json(saleUpdated);
 });
 
 module.exports = { salesRouter };
