@@ -42,15 +42,40 @@ const postProducts = async (req, res, next) => {
   const copyBody = { ...body };
 
   await productsModel.addProduct(copyBody);
-  // console.log('body', body);
-  // console.log('copyBody', copyBody);
 
   res.locals.objAdicionado = copyBody;
 
   next();
 };
 
+const findIdAndResError = async (req, res, next) => {
+  const { resError } = resErrorPai(res);
+  const { id } = req.params;
+
+  const message = 'Wrong id format';
+  const error422 = 422;
+  
+  try {
+    const ola = await productsModel.findById(id);
+    if (!resError(
+      !ola,
+      message,
+      error422
+    )) return;
+    res.locals.objProductId = ola;
+  } catch {
+    resError(
+      true,
+      message,
+      error422
+    );
+    return;
+  }
+  next();
+};
+
 module.exports = {
   validationProductsBody,
-  postProducts
+  postProducts,
+  findIdAndResError
 };

@@ -11,10 +11,6 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
-app.use(bodyParser.json());
-
-app.use('/products', productsRouter);
-
 app.use((req, _res, next) => {
   console.log({
     data: new Date(),
@@ -23,6 +19,10 @@ app.use((req, _res, next) => {
   });
   next();
 });
+
+app.use(bodyParser.json());
+
+app.use('/products', productsRouter);
 
 app.use((err, _req, res, _next) => res.send(`erro: ${err.message}`));
 
