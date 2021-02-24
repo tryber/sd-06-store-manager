@@ -40,4 +40,12 @@ router.put('/:id', validateProductUpdate, async (req, res) => {
   res.status(STATUS200).json(product);
 });
 
+router.delete('/:id', validateId, async(req, res) => {
+  const { id } = req.params;
+
+  const deletedProduct = await ProductsService.remove(id);
+
+  res.status(STATUS200).json(deletedProduct);
+});
+
 module.exports = router;

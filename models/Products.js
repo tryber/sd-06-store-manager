@@ -44,10 +44,25 @@ const checkName = async (name) => {
   return false;
 };
 
+const remove = async (id) => {
+  const { name, quantity } = await connection().then(db => db.collection('products')
+    .findOne(ObjectId(id)));
+  
+  await connection().then(db => db.collection('products')
+    .deleteOne({ _id: ObjectId(id)}));
+
+  return {
+    _id: id,
+    name: name,
+    quantity: quantity
+  };
+};
+
 module.exports = {
   getAll,
   getById,
   create,
   checkName,
-  update
+  update,
+  remove
 };
