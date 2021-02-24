@@ -1,27 +1,19 @@
 const Sales = require('../model/SalesModel');
-const Products = require('./ProductsService');
 
-const getRegisterProducts = async () => {
-  const registeredProducts =  await Products.getAll();
-  return registeredProducts;
+const registerSale = async (productData) => {
+  return Sales.registerSale(productData);
 };
 
-const getProductIdAndQuantity = async () => {
-  const soldProduct = getRegisterProducts.products.map((product) => ([
-    {
-      productId: product._id,
-      quantity: product.quantity,
-    }
-  ]));
-  console.log('retorno getProductIdAndQuantity', soldProduct);
-  return soldProduct;
+const getAll = async () => {
+  return Sales.getAll();
 };
 
-const registerSale = async () => {
-  const registeredProductsIdAndQuantity = getProductIdAndQuantity();
-  return Sales.registerSale({ itenSold: registeredProductsIdAndQuantity });
+const getById = async (id) => {
+  return Sales.getById(id);
 };
 
 module.exports = {
-  registerSale
+  registerSale,
+  getAll,
+  getById,
 };
