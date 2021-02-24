@@ -9,6 +9,10 @@ const ERROR = 422;
 const SUCCESS = 201;
 const OK = 200;
 
+const ERROR_MESSAGE = {
+  err: { code: 'invalid_data', message: 'Wrong id format' },
+};
+
 router.post('/', productValidation, rescue(async (req, res) => {
   const { name, quantity } = req.body;
   const data = await Products.getByName(name);
@@ -37,16 +41,12 @@ router.get('/:id', async (req, res) => {
     const fetchedProduct = await Products.findById(id);
 
     if (!fetchedProduct) {
-      return res.status(ERROR).json({
-        err: { code: 'invalid_data', message: 'Wrong id format' }
-      });
+      return res.status(ERROR).json(ERROR_MESSAGE);
     }
 
     return res.status(OK).json(fetchedProduct);
   } catch (err) {
-    return res.status(ERROR).json({
-      err: { code: 'invalid_data', message: 'Wrong id format' }
-    });
+    return res.status(ERROR).json(ERROR_MESSAGE);
   }
 });
 
@@ -60,9 +60,7 @@ router.put('/:id', productValidation, async (req, res) => {
 
     return res.status(OK).json(modifiedProduct);
   } catch (err) {
-    return res.status(ERROR).json({
-      err: { code: 'invalid_data', message: 'Wrong id format' }
-    });
+    return res.status(ERROR).json(ERROR_MESSAGE);
   }
 });
 
@@ -80,9 +78,7 @@ router.delete('/:id', async (req, res) => {
     await Products.remove(id);
     return res.status(OK).json(productToRemove);
   } catch (err) {
-    return res.status(ERROR).json({
-      err: { code: 'invalid_data', message: 'Wrong id format' }
-    });
+    return res.status(ERROR).json(ERROR_MESSAGE);
   }
 });
 
