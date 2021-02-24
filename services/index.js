@@ -1,4 +1,5 @@
 const productsModules = require('../modules/productsModules');
+const { ObjectId } = require('mongodb');
 
 const maxLength = 5;
 const ZERO = 0;
@@ -14,7 +15,7 @@ const validateProduct = async (req, res, next) => {
       code: 'invalid_data',
       message: '"name" length must be at least 5 characters long',
     }});
-  } else if (typeof name !== String) {
+  } else if (typeof name !== 'string') {
     return res.status(invalidData).json( { err: {
       code: 'invalid_data',
       message: '"name" length must be a string',
@@ -34,7 +35,7 @@ const validateProduct = async (req, res, next) => {
       code: 'invalid_data',
       message: '"quantity" must be larger then or equal to 1',
     }});
-  } else if (typeof quantity !== Number) {
+  } else if (typeof quantity !== 'number') {
     return res.status(invalidData).json( { err: {
       code: 'invalid_data',
       message: '"quantity" must be a number',

@@ -1,7 +1,5 @@
 const connection = require('./connection');
 
-const { ObjectId } = require('mongodb');
-
 const getAllProducts = () => 
   connection().then((db) => db.collection('products').find().toArray());
 
