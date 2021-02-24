@@ -5,21 +5,19 @@ const { SaleValidator } = require('../middlewares');
 
 const SaleController = new Router();
 const status200 = 200;
-const status404 = 404;
-const status422 = 422;
 
 SaleController.get('/', rescue( async (_req, res) => {
   const all = await SaleServices.getAll();
   res.status(status200).json(all);
 }));
 
-SaleController.get('/:id', rescue( async (req, res) => {
-  try {
-    const sale = await SaleServices.getById(req.params.id);
+SaleController.get('/:id',
+  SaleValidator.saleIdExists,
+  rescue( async (req, res) => {
+    const { id } = req.params;
+    const sale = await SaleServices.getById(id);
     res.status(status200).json(sale);
-  } catch (err) {
-    res.status(status404).json({ err: { code: 'not_found', message: 'Sale not found' } });
-  }})
+  })
 );
 
 SaleController.post('/',
@@ -40,17 +38,13 @@ SaleController.put('/:id',
   })
 );
 
-SaleController.delete('/:id', rescue(async (req, res) => {
-  try {
+SaleController.delete('/:id',
+  SaleValidator.saleDeleteById,
+  rescue(async (req, res) => {
     const { id } = req.params;
     const oldSale = await SaleServices.getById(id);
     await SaleServices.deleteSale(id);
     res.status(status200).json(oldSale);
-  } catch (err) {
-    res.status(status422).json({
-      err: { code: 'invalid_data', message: 'Wrong sale ID format' }
-    });
-  }
-}));
+  }));
 
 module.exports = SaleController;
