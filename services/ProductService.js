@@ -1,5 +1,6 @@
 const ProductsModel = require('../models/ProductsModel');
 const code = 'invalid_data';
+const ZERO = 0;
 
 const validateFields = async (product) => {
   const status = false;
@@ -67,7 +68,6 @@ const findById = async (id) => {
 };
 
 const updateProduct = async (id, name, quantity) => {
-  const ZERO = 0;
 
   const validate = await validateFields({name, quantity});
   if (!validate.status) return {
@@ -88,10 +88,18 @@ const updateProduct = async (id, name, quantity) => {
   return true;
 };
 
+const deleteProduct = async (id) => {
+  const product = await findById(id);
+  if (product.err) return product;
+  await ProductsModel.deleteProduct(id);
+  return product;
+};
+
 module.exports = {
   insertProduct,
   validateFields,
   getAll,
   findById,
   updateProduct,
+  deleteProduct,
 };
