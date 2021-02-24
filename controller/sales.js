@@ -7,6 +7,7 @@ const salesRouter = new Router();
 
 const SUCESS = 200;
 const NOT_FOUND = 404;
+const invalidData = 422;
 
 salesRouter.post('/', validateSales, async (req, res) =>  {
   const sale = await salesModules.createSale(req.body);
@@ -47,9 +48,16 @@ salesRouter.put('/:id', validateId, validateSales, async (req, res) => {
   res.status(SUCESS).json(saleUpdated);
 });
 
-salesRouter.delete('/:id', validateId, async (req, res) => {
+salesRouter.delete('/:id', async (req, res) => {
   const { id } = req.params;
   const saleDeleted = await salesModules.getSaleById(id);
+
+  if (!saleDeleted) return res.status(invalidData).json({
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong sale ID format',
+    }
+  });
 
   await salesModules.deleteSale(id);
 
