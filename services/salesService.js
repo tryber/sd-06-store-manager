@@ -54,7 +54,7 @@ const getAllSales = async () => {
 
 const getASaleById = async (id) => {
 
-  if (!ObjectId.isValid(id)) {
+  if (!validId(id)) {
     throw {
       err: {
         code: 'not_found',
