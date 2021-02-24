@@ -4,7 +4,7 @@ const controllers = require('../controllers/sales');
 
 const sales = express.Router();
 
-
+sales.post('/', controllers.createSale);
 
 sales.use(middlewares.handleError);
 
