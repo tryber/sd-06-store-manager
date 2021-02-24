@@ -19,7 +19,7 @@ ProductsRouter.post('/products', validateProduct, async (req, res) => {
 
 ProductsRouter.get('/products', async (req, res) => {
   const allProducts = await getAllProducts();
-  return res.status(twoHundred).send(allProducts);
+  return res.status(twoHundred).send({ products: allProducts});
 });
 
 ProductsRouter.get('/products/:id', validateId, async (req, res) => {
