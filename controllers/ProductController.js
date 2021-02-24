@@ -6,16 +6,11 @@ const CREATED = 201;
 const SUCCESS = 200;
 
 router.post('/', async (req, res) => {
-  const validate = await ProductService.validateFields(req.body);
-  if (!validate.status) return res.status(validate.httpcode).json({ 
-    err: { 
-      code: validate.code, 
-      message: validate.msg
-    } });
+  const product = await ProductService.insertProduct(req.body);
 
-  const newProduct = await ProductService.insertProduct(req.body);
+  if (product.err) return res.status(product.statuscode).json({ err: product.err });
   
-  return res.status(CREATED).json(newProduct);
+  return res.status(CREATED).json(product);
 });
 
 router.get('/', async (req, res) => {

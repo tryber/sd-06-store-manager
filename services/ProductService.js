@@ -1,17 +1,6 @@
 const ProductsModel = require('../models/ProductsModel');
 const code = 'invalid_data';
 
-const insertProduct = async (product) => {
-  const newId = await ProductsModel.insertProduct(product);
-  const { name, quantity } = product;
-  return {
-    _id: newId,
-    name,
-    quantity,
-  };
-};
-
-
 const validateFields = async (product) => {
   const status = false;
   const MIN_CHARS = 5;
@@ -37,6 +26,25 @@ const validateFields = async (product) => {
   }
 
   return { status: true };
+};
+
+const insertProduct = async (product) => {
+
+  const validate = await validateFields(product);
+  if (!validate.status) return {
+    statuscode: validate.httpcode, 
+    err: { 
+      code: validate.code, 
+      message: validate.msg
+    } };
+    
+  const newId = await ProductsModel.insertProduct(product);
+  const { name, quantity } = product;
+  return {
+    _id: newId,
+    name,
+    quantity,
+  };
 };
 
 const getAll = async () => await ProductsModel.getAll();
