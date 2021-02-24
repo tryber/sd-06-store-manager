@@ -26,7 +26,7 @@ const validations = (bodyOrAnId, requestType) => {
       };
     }
     
-    if (!ObjectId.isValid(productId)) {
+    if (!validId(productId)) {
       throw {
         err: {
           code: 'not_found',
