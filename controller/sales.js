@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { createSale, getAllSales, getSaleById } = require('../modules/salesModules');
+const { createSale, getAllSales, getSaleById, editSale } = require('../modules/salesModules');
 const {
   validateSale,
   validateProductId,
@@ -30,6 +30,13 @@ SalesRouter.get('/sales/:id', validateSaleId, async (req, res) => {
 
 SalesRouter.post('/sales', validateSale, validateProductId, async (req, res) => {
   const sale = await createSale(req.body);
+  return res.status(twoHundred).json(sale);
+});
+
+SalesRouter.put('/sales/:id', validateSaleId, validateSale, async (req, res) => {
+  const { id } = req.params;
+  await editSale(id, req.body);
+  const sale = await getSaleById(id);
   return res.status(twoHundred).json(sale);
 });
 
