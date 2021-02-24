@@ -1,6 +1,6 @@
 const service = require('../services/service');
 
-const ok = 200;
+const OK = 200;
 const created = 201;
 const invalidParams = 422;
 const zero = 0;
@@ -36,7 +36,7 @@ const createProduct = async (req, res) => {
 
 const getAllProducts = async (_req, res) => {
   const products = await service.getAllProducts();
-  res.status(ok).json({ products: products });
+  res.status(OK).json({ products: products });
 };
 
 const findByIdProducts = async (req, res) => {
@@ -44,7 +44,7 @@ const findByIdProducts = async (req, res) => {
   if(id.length !== vinteQuatro) return res.status(invalidParams).json(wrongId);
   const product = await service.findByIdProducts(id);
   if (!product)  return res.status(invalidParams).json(wrongId);;
-  res.status(ok).json(product);
+  res.status(OK).json(product);
 };
 
 const updateProduct = async (req, res) => {
@@ -58,12 +58,24 @@ const updateProduct = async (req, res) => {
   if(!product === null)return res.status(invalidParams)
     .json({ message: 'produto not found' });
   await service.updateProduct(id, name, quantity);
-  res.status(ok).json({ _id: id, name, quantity });
+  res.status(OK).json({ _id: id, name, quantity });
+};
+
+const deleteProduct = async (req, res) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+  if(id.length !== vinteQuatro) return res.status(invalidParams).json(wrongId);
+  const product = await service.findByIdProducts(id);
+  if(!product === null)return res.status(invalidParams)
+    .json({ message: 'produto not found' });
+  await service.deleteProduct(id, name, quantity);
+  res.status(OK).json({ _id: id, name, quantity });    
 };
 
 module.exports = {
   createProduct,
   getAllProducts,
   findByIdProducts,
-  updateProduct
+  updateProduct,
+  deleteProduct
 };

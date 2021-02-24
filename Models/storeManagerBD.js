@@ -26,6 +26,11 @@ const updateProduct = (id, name, quantity) =>
   )
   );
 
+const deleteProduct = async (id) => {
+  connection()
+    .then((db) => db.collection('products').deleteOne({ _id: ObjectId(id) }));
+};
+
 // const repeatFind = async (name) => {
 //   const repeated = await connection()
 //     .then((db) => db.collection('products').find({name: name}));
@@ -37,5 +42,6 @@ module.exports = {
   // repeatFind,
   getAllProducts,
   findByIdProducts,
-  updateProduct
+  updateProduct,
+  deleteProduct
 };
