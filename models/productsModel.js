@@ -1,20 +1,20 @@
 const connection = require('./connection');
 const { ObjectId } = require('mongodb');
-const productsRouter = require('../controllers/productsRouter');
+
+const status_ue = 422;
+const status_c = 201;
+const status_s = 200;
+const error = {
+  err: {
+    code: 'invalid_data',
+    message: ''
+  }
+};
 
 const saveProduct = async (req, res) => {
   const data = req.body;
   const product = { '_id': ObjectId(), ...data };
   const { name, quantity } = data;
-  const status_ue = 422;
-  const status_c = 201;
-  
-  const error = {
-    err: {
-      code: 'invalid_data',
-      message: ''
-    }
-  };
   
   const SIX = 6;
   if (name.length < SIX) {
@@ -44,9 +44,35 @@ const saveProduct = async (req, res) => {
   
   connection().then((db) => db.collection('products').insertOne(product));
   
-  res.status(status_c).json(product);
+  return res.status(status_c).json(product);
+};
+
+const getProducts = async (_req, res) => {
+  const products = await connection().then((db) => {
+    return db.collection('products').find({}).toArray();
+  });
+
+  return res.status(status_s).json({ products });
+};
+
+const getProductById = async (req, res) => {
+  const { id } = req.params;
+
+  const validId = ObjectId.isValid(id);
+  if (!validId) {
+    error.err.message = 'Wrong id format';
+    return res.status(status_ue).json(error);
+  }
+
+  const product = await connection().then((db) => {
+    return db.collection('products').findOne(ObjectId(id));
+  });
+
+  return res.status(status_s).json(product);
 };
 
 module.exports = {
   saveProduct,
+  getProducts,
+  getProductById,
 };
