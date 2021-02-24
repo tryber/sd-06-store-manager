@@ -51,4 +51,17 @@ ProductController.put('/:id', async (req, res) => {
   res.status(SUCCESS).json(product);
 });
 
+// Desafio 4 - Deletar um produto pelo id
+ProductController.delete('/:id', async (req, res)  => {
+  const { id } = req.params;
+  const product = await ProductService.deleteByIdProduct(id);
+  if (product.message) return res.status(UNPROCESSABLEENTITY).json(
+    { err: {
+      code: 'invalid_data',
+      message: product.message
+    }}
+  );
+  res.status(SUCCESS).json(product);
+});
+
 module.exports = ProductController;

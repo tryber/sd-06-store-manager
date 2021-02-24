@@ -1,3 +1,4 @@
+const ProductController = require('../controllers/ProductController');
 const Product = require('../models/ProductsModel');
 const { validationCreate, validationUpdate, validationId } = require('./Validations');
 
@@ -23,10 +24,17 @@ const updateByIdProduct = async (id, name, quantity) => {
   return await Product.updateByIdProduct(id, name, quantity);
 };
 
+const deleteByIdProduct = async (id) => {
+  const product = findByIdProduct(id);
+  await Product.deleteByIdProduct(id);
+  return product;
+};
+
 module.exports = {
   createProduct,
   getAllProducts,
   findByIdProduct,
   updateByIdProduct,
+  deleteByIdProduct,
 };
 
