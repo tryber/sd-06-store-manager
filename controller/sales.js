@@ -48,7 +48,7 @@ salesRouter.put('/:id', validateId, validateSales, async (req, res) => {
   res.status(SUCESS).json(saleUpdated);
 });
 
-salesRouter.delete('/:id', async (req, res) => {
+salesRouter.delete('/:id', validateId, async (req, res) => {
   const { id } = req.params;
   const saleDeleted = await salesModules.getSaleById(id);
 
