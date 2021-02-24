@@ -5,11 +5,11 @@ const connection =  require('../index.js');
 const collectionName = 'sales';
 
 class Product {
-  async create(itemsSold) {
+  async create(itensSold) {
     const db = await connection();
 
     const queryInfo = await db.collection(collectionName).insertOne({
-      itemsSold,
+      itensSold,
     });
 
     const [newSale] = queryInfo.ops;
@@ -33,11 +33,11 @@ class Product {
     return saleInfo;
   }
 
-  async update({ id, itemsSold }) {
+  async update({ id, itensSold }) {
     const db = await connection();
 
     const newSale = {
-      itemsSold
+      itensSold
     };
 
     await db.collection(collectionName).updateOne(

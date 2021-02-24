@@ -1,6 +1,6 @@
 const AppError = require('../errors/AppError');
 const { INVALID_DATA } = require('../errors/codes');
-const { BAD_DATA } = require('../errors/status');
+const { BAD_DATA, NOT_FOUND } = require('../errors/status');
 
 class UpdateProductService {
   constructor(ProductModel) {
@@ -13,7 +13,7 @@ class UpdateProductService {
     try {
       productInfo = await this.ProductModel.findByID(id);
     } catch (err) {
-      const message = 'Wrong id format';
+      const message = 'Wrong sale id format';
 
       const errorInfo = {
         message,

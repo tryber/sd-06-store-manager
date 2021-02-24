@@ -32,7 +32,7 @@ class ProductController {
 
     const SUCCESS = 200;
 
-    return response.status(SUCCESS).json(products);
+    return response.status(SUCCESS).json({ products });
   }
 
   async show(request, response) {
@@ -63,7 +63,7 @@ class ProductController {
 
     const newProductInfo = await updateProductService.execute(productToUpdate);
 
-    const UPDATED = 201;
+    const UPDATED = 200;
 
     return response.status(UPDATED).json(newProductInfo);
   }

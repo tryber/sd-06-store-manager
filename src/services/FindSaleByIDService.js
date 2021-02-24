@@ -23,6 +23,17 @@ class FindSaleByIDService {
       throw new AppError(errorInfo, NOT_FOUND);
     }
 
+    if (!saleInfo) {
+      const message = 'Sale not found';
+
+      const errorInfo = {
+        message,
+        code: NOT_FOUND_CODE
+      };
+
+      throw new AppError(errorInfo, NOT_FOUND);
+    }
+
     return saleInfo;
   }
 }

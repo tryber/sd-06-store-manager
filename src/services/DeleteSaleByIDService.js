@@ -13,7 +13,7 @@ class DeleteSaleByIDService {
     try {
       saleInfo = await this.SalesModel.findByID(id);
     } catch (err) {
-      const message = 'Wrong id format';
+      const message = 'Wrong sale ID format';
 
       const errorInfo = {
         message,
@@ -24,7 +24,7 @@ class DeleteSaleByIDService {
     }
 
     if (!saleInfo) {
-      const message = 'Product not found';
+      const message = 'Sale not found';
 
       const errorInfo = {
         message,

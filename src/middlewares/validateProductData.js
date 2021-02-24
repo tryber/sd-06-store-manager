@@ -9,7 +9,7 @@ function validateProductData(request, _response, next) {
   const nameIsValid = typeof name === 'string' && name.length >= MIN_NAME_LENGTH;
 
   if (!nameIsValid) {
-    const message = '"name" length should be at least 5 characters long';
+    const message = '"name" length must be at least 5 characters long';
 
     const errorInfo = {
       message,
@@ -36,7 +36,7 @@ function validateProductData(request, _response, next) {
   const quantityIsOfValidSize = quantity >= MIN_QUANTITY;
 
   if (!quantityIsOfValidSize) {
-    const message = '"quantity" must be a larger than or equal to 1';
+    const message = '"quantity" must be larger than or equal to 1';
 
     const errorInfo = {
       message,

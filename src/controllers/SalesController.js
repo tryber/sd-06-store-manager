@@ -16,7 +16,7 @@ class SalesController {
 
     const newSale = await createSaleService.execute(products);
 
-    const CREATED = 201;
+    const CREATED = 200;
 
     return response.status(CREATED).json(newSale);
   }
@@ -25,11 +25,11 @@ class SalesController {
     const salesModel = new Sales();
     const listSalesService = new ListSalesService(salesModel);
 
-    const products = await listSalesService.execute();
+    const sales = await listSalesService.execute();
 
     const SUCCESS = 200;
 
-    return response.status(SUCCESS).json(products);
+    return response.status(SUCCESS).json({ sales });
   }
 
   async show(request, response) {
@@ -47,21 +47,21 @@ class SalesController {
 
   async update(request, response) {
     const { id } = request.params;
-    const itemsSold = request.body;
+    const itensSold = request.body;
 
     const salesModel = new Sales();
     const updateSaleService = new UpdateSaleService(salesModel);
 
     const saleToUpdate = {
       id,
-      itemsSold,
+      itensSold,
     };
 
-    const newProductInfo = await updateSaleService.execute(saleToUpdate);
+    const updatedSales = await updateSaleService.execute(saleToUpdate);
 
-    const UPDATED = 201;
+    const UPDATED = 200;
 
-    return response.status(UPDATED).json(newProductInfo);
+    return response.status(UPDATED).json(updatedSales);
   }
 
   async delete(request, response) {

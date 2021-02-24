@@ -1,15 +1,15 @@
 const AppError = require('../errors/AppError');
 const { INVALID_DATA } = require('../errors/codes');
-const { BAD_DATA } = require('../errors/status');
+const { BAD_DATA, NOT_FOUND } = require('../errors/status');
 
 const baseMessage = 'Wrong product ID or invalid quantity';
 
-class UpdateProductService {
+class UpdateSaleService {
   constructor(SalesModel) {
     this.SalesModel = SalesModel;
   }
 
-  async execute({ itemsSold, id }) {
+  async execute({ itensSold, id }) {
     let saleInfo;
 
     try {
@@ -24,7 +24,7 @@ class UpdateProductService {
     }
 
     if (!saleInfo) {
-      const message = 'Product not found';
+      const message = 'Sale not found';
 
       const errorInfo = {
         message,
@@ -36,7 +36,7 @@ class UpdateProductService {
 
     const toUpdateSale = {
       id,
-      itemsSold,
+      itensSold,
     };
 
     const updatedSales = await this.SalesModel.update(toUpdateSale);
@@ -45,4 +45,4 @@ class UpdateProductService {
   }
 }
 
-module.exports = UpdateProductService;
+module.exports = UpdateSaleService;
