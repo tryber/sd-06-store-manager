@@ -2,6 +2,7 @@ const { Router } = require('express');
 
 const productsModel = require('../models/productsModel');
 const {
+  validationProductsBodyAndNameExists,
   validationProductsBody,
   postProducts,
   findIdAndResError
@@ -22,9 +23,21 @@ productsRouter.get('/:id', findIdAndResError, async (_req, res) => {
   res.status(status).json(res.locals.objProductId);
 });
 
-productsRouter.post('/', validationProductsBody, postProducts, async (_req, res) => {
-  const status = 201;
-  res.status(status).json(res.locals.objAdicionado);
-});
+productsRouter.post('/',
+  validationProductsBodyAndNameExists,
+  postProducts,
+  async (_req, res) => {
+    const status = 201;
+    res.status(status).json(res.locals.objAdicionado);
+  }
+);
+
+productsRouter.put('/:id',
+  validationProductsBody,
+  async (_req, res) => {
+    const status = 200;
+    res.status(status).json();
+  }
+);
 
 module.exports = productsRouter;
