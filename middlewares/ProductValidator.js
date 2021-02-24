@@ -1,4 +1,4 @@
-const { StoreManagerModel } = require('../models');
+const { ProductsModel } = require('../models');
 const { ObjectId } = require('mongodb');
 
 const status422 = 422;
@@ -20,7 +20,7 @@ const productExists = async (req, res, next) => {
 const productValidator = async (req, res, next) => {
   const { name, quantity } = req.body;
 
-  const nameExists = await StoreManagerModel.getByName(name);
+  const nameExists = await ProductsModel.getByName(name);
   if (nameExists && name === nameExists.name) return res.status(status422).json({
     err: {
       code: 'invalid_data', message: 'Product already exists'

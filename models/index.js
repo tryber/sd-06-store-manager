@@ -1,5 +1,7 @@
-const StoreManagerModel = require('./StoreManagerModel');
+const ProductsModel = require('./ProductsModel');
+const SalesModel = require('./SalesModel');
 
 module.exports = {
-  StoreManagerModel,
+  SalesModel,
+  ProductsModel,
 };

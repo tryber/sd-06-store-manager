@@ -6,7 +6,9 @@ const getAll = async () => {
 };
 
 const getById = async (id) => {
-  return await connect().then((db) => db.collection('products').findOne(ObjectId(id)));
+  const productId = await connect().then((db) => db.collection('products')
+    .findOne(ObjectId(id)));
+  return productId;
 };
 
 const getByName = async (name) => {
