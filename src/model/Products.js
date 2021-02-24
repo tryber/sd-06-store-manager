@@ -20,15 +20,22 @@ const findByName = async (name) => {
     .catch(err => console.error(err));
 };
 
+// Add New Product
 const create = async (name, quantity) => {
-  const { insertedId } = await connection().then((db) => db.collection('products')
-    .insertOne({ name, quantity}));
+  const { id } = await connection()
+    .then((db) => db.collection('products').insertOne({ name, quantity}))
+    .catch(err => console.error(err));
+  return { id, name, quantity };
+};
 
-  return {
-    id: insertedId,
-    name,
-    quantity,
-  };
+// Update Product
+const update = async (id, name, quantity) => {
+  await connection()
+    .then((db) => db.collection('products').updateOne(
+      { _id: ObjectId(id) },
+      { $set: { name, quantity } },
+    ).catch(err => console.error(err)));
+  return { id, name, quantity };
 };
 
 module.exports = {
@@ -36,4 +43,5 @@ module.exports = {
   findById,
   findByName,
   create,
+  update,
 };

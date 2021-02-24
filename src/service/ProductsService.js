@@ -8,8 +8,8 @@ const getAll = async () => {
 
 // Return Product by ID
 const findById = async (id) => {
-  console.log('id', id);
-  console.log(validateId(id));
+  // console.log('id', id);
+  // console.log(validateId(id));
   if (validateId(id)) {
     const product = await Product.findById(id);
     if (product) return { status: 'OK', product};
@@ -19,16 +19,22 @@ const findById = async (id) => {
 
 // Add new Product
 const create = async (name, quantity) => {
-  const validation = await validateProduct(name, quantity);
-
-  let response = {};
+  const validation = await validateProduct('create', name, quantity);
   if (validation === 'OK') {
     const product = await Product.create(name, quantity);
-    response = { status: 'OK', product };
-  } else {
-    response = { status: 'NOK', message: validation };
-  }
-  return response;
+    return { status: 'OK', product };
+  } 
+  return { status: 'NOK', message: validation };
+};
+
+// Update Product
+const update = async (id, name, quantity) => {
+  const validationMessage = await validateProduct('update', name, quantity);
+  if (validationMessage === 'OK' && validateId(id)) {
+    const product = await Product.update(id, name, quantity);
+    return { status: 'OK', product };
+  } 
+  return { status: 'NOK', message: validationMessage };
 };
 
 // Get Product By Name
@@ -49,14 +55,14 @@ const validateId = (id) => {
 };
 
 // Validation Product fields
-const validateProduct = async (name, quantity) => {
+const validateProduct = async (typeOperation, name, quantity) => {
   const nameMaxLength = 5;
   const zero = 0;
   
   if (!name || name.length < nameMaxLength) {
     return '"name" length must be at least 5 characters long';
   };
-  if (await existProductName(name)) {
+  if (typeOperation === 'create' && await existProductName(name)) {
     return 'Product already exists';
   };
   if ((!quantity && quantity !== zero) || typeof(quantity) !== 'number') {
@@ -72,4 +78,5 @@ module.exports = {
   getAll,
   findById,
   create,
+  update,
 };

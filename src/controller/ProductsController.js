@@ -37,6 +37,21 @@ ProductsController.post('/', async (req, res) => {
   res.status(CREATED).json(product);
 });
 
+// Update Product
+ProductsController.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+
+  const result = await Service.update(id, name, quantity);
+  const { status } = result;
+  if (status === 'NOK') {
+    return res.status(UNPROCESSABLE_ENTITY).json(responseError(result));
+  }
+  const { product } = result;
+  res.status(OK).json(product);
+});
+
+
 const responseError = (error) => {
   const { message } = error;
   return { err: { code: 'invalid_data', message } };
