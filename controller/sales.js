@@ -1,6 +1,10 @@
 const { Router } = require('express');
 const { createSale, getAllSales, getSaleById } = require('../modules/salesModules');
-const { validateSale, validateProductId, validateSaleId } = require('../services/salesServices');
+const {
+  validateSale,
+  validateProductId,
+  validateSaleId
+} = require('../services/salesServices');
 
 const SalesRouter = new Router();
 
@@ -22,7 +26,7 @@ SalesRouter.get('/sales/:id', validateSaleId, async (req, res) => {
     },
   });
   return res.status(twoHundred).send(saleById);
-})
+});
 
 SalesRouter.post('/sales', validateSale, validateProductId, async (req, res) => {
   const sale = await createSale(req.body);

@@ -15,7 +15,7 @@ const getAllSales = async () => connection()
   .then((db) => db.collection('sales').find().toArray());
 
 const getSaleById = async (id) => connection()
-.then((db) => db.collection('sales').findOne(ObjectId(id)));
+  .then((db) => db.collection('sales').findOne(ObjectId(id)));
 
 module.exports = {
   createSale,
