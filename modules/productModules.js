@@ -16,7 +16,7 @@ const editProduct = async (id, name, quantity) => connection()
   ));
 
 const deleteProduct = async (id) => connection()
-  .then((db) => db.collection('products').deleteOne(ObjectId(id)));
+  .then((db) => db.collection('products').deleteOne({ _id: ObjectId(id) }));
 
 module.exports = {
   getAllProducts,

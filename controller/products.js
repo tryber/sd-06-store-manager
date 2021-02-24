@@ -52,7 +52,13 @@ ProductsRouter.put('/products/:id', validateId, validateProduct, async (req, res
 
 ProductsRouter.delete('/products/:id', validateId, async (req, res) => {
   const { id } = req.params;
-  const deletedProduct = getProductById(id);
+  const deletedProduct = await getProductById(id);
+  if (!deletedProduct) return res.status(fourHundredTwentyTwo).json({
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    },
+  });
   await deleteProduct(id);
   return res.status(twoHundred).send(deletedProduct);
 });
