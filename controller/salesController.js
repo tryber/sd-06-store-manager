@@ -28,4 +28,11 @@ salesRouter.get('/:id', Sales.saleIdValidation, async (req, res) => {
   res.status(SUCCESS).json(sale);
 });
 
+salesRouter.put('/:id', Sales.validate, Sales.saleIdValidation, async (req, res) => {
+  const { id } = req.params;
+  await Sales.update(id, req.body);
+  const sale = await Sales.getById(id);
+  res.status(SUCCESS).json(sale);
+});
+
 module.exports = salesRouter;

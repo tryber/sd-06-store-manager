@@ -12,6 +12,8 @@ const create = async (data) => await salesModel.create(data);
 
 const getById = async (id) => await salesModel.getById(id);
 
+const update = async (id, data) => await salesModel.update(id, data);
+
 const validate = (req, res, next) => {
   req.body.forEach((item) => {
     const { quantity } = item;
@@ -77,4 +79,5 @@ module.exports = {
   idValidation,
   getById,
   saleIdValidation,
+  update,
 };
