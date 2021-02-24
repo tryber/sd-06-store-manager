@@ -87,9 +87,23 @@ const upDate = async (id, name, quantity) => {
   return productUpdated;
 };
 
+const exclude = async (id) => {
+  const result = await products.exclude(id);
+
+  if (!result) return {
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong id format'
+    }
+  };
+
+  return result;
+};
+
 module.exports = {
   create,
   getAll,
   getById,
   upDate,
+  exclude,
 };

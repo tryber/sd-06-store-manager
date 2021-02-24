@@ -29,7 +29,9 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-  const productById = await productsService.getById(req.params.id);
+  const { id } = req.params;
+
+  const productById = await productsService.getById(id);
 
   if (productById.err) return res.status(status422).json(productById);
 
@@ -49,6 +51,16 @@ router.put('/:id', async (req, res) => {
     } });
 
   return res.status(status200).json(result);
+});
+
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+
+  const productExcluded = await productsService.exclude(id);
+
+  if (productExcluded.err) return res.status(status422).json(productExcluded);
+
+  return res.status(status200).json(productExcluded);
 });
 
 module.exports = router;
