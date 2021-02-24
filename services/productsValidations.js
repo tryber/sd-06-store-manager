@@ -1,7 +1,7 @@
 const productsModel = require('../models/productsModel');
 const resErrorPai = require('./useful/resError');
 
-const validationProductsBodyFather = (validationNameExists) => {
+const fatherValidationProductsBody = (validationNameExists) => {
   const validationProductsBody = async (req, res, next) => {
     const { name, quantity } = req.body;
     const { resError } = resErrorPai(res);
@@ -55,36 +55,52 @@ const postProducts = async (req, res, next) => {
   next();
 };
 
-const findIdAndResError = async (req, res, next) => {
-  const { resError } = resErrorPai(res);
-  const { id } = req.params;
-
-  const message = 'Wrong id format';
-  const error422 = 422;
+const fatherFindIdAndTreatError = (updateProduct) => {
+  const findIdAndTreatError = async (req, res, next) => {
+    const { resError } = resErrorPai(res);
+    const { id } = req.params;
   
-  try {
-    const ola = await productsModel.findById(id);
-    const bollError = resError(
-      !ola,
-      message,
-      error422
-    );
-    if (!bollError) return;
-    res.locals.objProductId = ola;
-  } catch {
-    resError(
-      true,
-      message,
-      error422
-    );
-    return;
-  }
+    const message = 'Wrong id format';
+    const error422 = 422;
+    
+    try {
+      if (updateProduct) {
+        const { body } = req;
+        await productsModel.updateForId(id, body);
+      }
+      const ola = await productsModel.findById(id);
+      const bollError = resError(
+        !ola,
+        message,
+        error422
+      );
+      if (!bollError) return;
+      res.locals.objProductId = ola;
+    } catch {
+      resError(
+        true,
+        message,
+        error422
+      );
+      return;
+    }
+    next();
+  };
+  return findIdAndTreatError;
+};
+
+const putProducts = async (req, res, next) => {
+  const { id } = req.params;
+  
+  console.log(req.body);
   next();
 };
 
 module.exports = {
-  validationProductsBodyAndNameExists: validationProductsBodyFather(true),
-  validationProductsBody: validationProductsBodyFather(false),
+  validationProductsBodyAndNameExists: fatherValidationProductsBody(true),
+  validationProductsBody: fatherValidationProductsBody(false),
   postProducts,
-  findIdAndResError
+  findIdAndTreatError: fatherFindIdAndTreatError(false),
+  updateProductAndFindIdAndTreatError: fatherFindIdAndTreatError(true),
+  putProducts
 };

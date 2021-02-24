@@ -5,7 +5,9 @@ const {
   validationProductsBodyAndNameExists,
   validationProductsBody,
   postProducts,
-  findIdAndResError
+  findIdAndTreatError,
+  putProducts,
+  updateProductAndFindIdAndTreatError
 } = require('../services/productsValidations');
 
 const productsRouter = Router();
@@ -18,7 +20,7 @@ productsRouter.get('/', async (_req, res) => {
   });
 });
 
-productsRouter.get('/:id', findIdAndResError, async (_req, res) => {
+productsRouter.get('/:id', findIdAndTreatError, async (_req, res) => {
   const status = 200;
   res.status(status).json(res.locals.objProductId);
 });
@@ -34,9 +36,10 @@ productsRouter.post('/',
 
 productsRouter.put('/:id',
   validationProductsBody,
-  async (_req, res) => {
+  updateProductAndFindIdAndTreatError,
+  async (_req, res) => {    
     const status = 200;
-    res.status(status).json();
+    res.status(status).json(res.locals.objProductId);
   }
 );
 
