@@ -1,4 +1,5 @@
 const ProductsModel = require('../models/ProductsModel');
+const code = 'invalid_data';
 
 const insertProduct = async (product) => {
   const newId = await ProductsModel.insertProduct(product);
@@ -10,8 +11,8 @@ const insertProduct = async (product) => {
   };
 };
 
+
 const validateFields = async (product) => {
-  const code = 'invalid_data';
   const status = false;
   const MIN_CHARS = 5;
   const ONE = 1;
@@ -38,7 +39,29 @@ const validateFields = async (product) => {
   return { status: true };
 };
 
+const getAll = async () => await ProductsModel.getAll();
+
+const findById = async (id) => {
+  const onErrorMsg = {
+    statuscode: 422, 
+    err: { 
+      code, 
+      message: 'Wrong id format'
+    } };
+
+  try {
+    const result = await ProductsModel.findById(id);
+    if (!result) return onErrorMsg;
+    return result;
+  } catch {
+    return onErrorMsg; 
+  };
+};
+
+
 module.exports = {
   insertProduct,
   validateFields,
+  getAll,
+  findById,
 };
