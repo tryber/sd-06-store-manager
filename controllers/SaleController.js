@@ -43,7 +43,8 @@ SaleController.put('/:id',
 SaleController.delete('/:id', rescue(async (req, res) => {
   try {
     const { id } = req.params;
-    const oldSale = await SaleServices.deleteSale(id);
+    const oldSale = await SaleServices.getById(id);
+    await SaleServices.deleteSale(id);
     res.status(status200).json(oldSale);
   } catch (err) {
     res.status(status422).json({

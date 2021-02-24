@@ -8,7 +8,8 @@ const getAll = async () => {
 };
 
 const getById = async (id) => {
-  return await connect().then((db) => db.collection('sales').findOne(ObjectId(id)));
+  return await connect().then((db) => db.collection('sales')
+    .findOne({ _id: ObjectId(id) }));
 };
 
 const postSale = async (sale) => {
