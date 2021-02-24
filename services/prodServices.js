@@ -58,6 +58,7 @@ const validateId = async (req, res, next) => {
 };
 
 const checkAlreadyExists = async (_req, res, next) => {
+  const { name } = req.body;
   const products = await getAllProducts();
   const alreadyExists = await products.find((product) => product.name === name);
 
