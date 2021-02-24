@@ -5,10 +5,20 @@ const maxLength = 5;
 const ZERO = 0;
 const invalidData = 422;
 
+const productExists = async (req, res) => {
+  const { name } = req.body;
+  const allProducts = await productsModules.getAllProducts();
+
+  if (allProducts.find((product) => product.name === name) !== undefined) {
+    return res.status(invalidData).json( { err: {
+      code: 'invalid_data',
+      message: 'Product already exists',
+    }});
+  };
+};
+
 const validateProduct = async (req, res, next) => {
   const { name, quantity } = req.body;
-
-  const allProducts = await productsModules.getAllProducts();
 
   if (name.length <= maxLength) {
     return res.status(invalidData).json( { err: {
@@ -21,14 +31,6 @@ const validateProduct = async (req, res, next) => {
       message: '"name" length must be a string',
     }});
   }
-
-  
-  if (allProducts.find((product) => product.name === name) !== undefined) {
-    return res.status(invalidData).json( { err: {
-      code: 'invalid_data',
-      message: 'Product already exists',
-    }});
-  };
 
   if (quantity <= ZERO) {
     return res.status(invalidData).json( { err: {
@@ -61,4 +63,5 @@ const validateId = async (req, res, next) => {
 module.exports = {
   validateProduct,
   validateId,
+  productExists,
 };

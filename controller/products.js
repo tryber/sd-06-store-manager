@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const { ObjectId } = require('mongodb');
 const productsModules = require('../modules/productsModules');
-const { validateProduct, validateId } = require('../services');
+const { validateProduct, validateId, productExists } = require('../services');
 
 const productsRouter = new Router();
 
@@ -9,7 +9,7 @@ const SUCESS = 200;
 const createSucess = 201;
 const invalidData = 422;
 
-productsRouter.post('/', validateProduct, async (req, res) => {
+productsRouter.post('/', productExists, validateProduct, async (req, res) => {
   await productsModules.createProduct(req.body);
   res.status(createSucess).json(req.body);
 });
