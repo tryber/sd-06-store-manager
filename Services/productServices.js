@@ -18,9 +18,14 @@ const updateById = async (id, name, quantity) => {
   return await models.updateById(id, name, quantity);
 };
 
+const deleteById = async (id) => {
+  return await models.deleteById(id);
+};
+
 module.exports = {
   create,
   getAll,
   findById,
-  updateById
+  updateById,
+  deleteById
 };

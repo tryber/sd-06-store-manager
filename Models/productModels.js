@@ -38,9 +38,20 @@ const updateById = async (id, name, quantity) => {
   return updatedProduct;
 };
 
+const deleteById = async (id) => {
+  const deletedProduct = await connection().then((db => db.collection('products')
+    .findOne({ _id: ObjectId(id) })));
+
+  await connection().then((db => db.collection('products')
+    .deleteOne({ _id: ObjectId(id) })));
+
+  return deletedProduct;
+};
+
 module.exports = {
   create,
   getAll,
   findById,
-  updateById
+  updateById,
+  deleteById
 };
