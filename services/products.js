@@ -1,9 +1,19 @@
 const products = require('../models/products');
 
+const minNameLength = 5;
+const nullQuantity = 0;
+const nameLengthErrorMessage = '"name" length must be at least 5 characters long';
+const nameExists = 'Product already exists';
+const quantityErrorMessage = '"quantity" must be larger than or equal to 1';
+const quantityTypeErrorMessage = '"quantity" must be a number';
 
-const isValid = (name, quantity) => {
-  if (!name || typeof name !== 'string') return false;
-  if (!quantity || !Number.isInteger(quantity)) return false;
+const isValid = async (name, quantity) => {
+  const checkUnique = await products.findByName(productName);
+
+  if (name.length < minNameLength) return nameLengthErrorMessage;
+  if (checkunique) return nameExists;
+  if (!Number.isInteger(quantity)) return quantityTypeErrorMessage;
+  if (quantity <= nullQuantity) return quantityErrorMessage;
 
   return true;
 };
@@ -23,9 +33,13 @@ const findById = async (id) => {
 };
 
 const create = async (productName, quantity) => {
-  const isProductValid = isValid(productName, quantity);
-
-  if (!isProductValid) return false;
+  const validOrErrorMessage = isValid(productName, quantity);
+  if (validOrErrorMessage !== true) return {
+    err: {
+      code: 'invalid_data',
+      message: validOrErrorMessage,
+    }
+  };
 
   const { insertedId } = await products.create({ name: productName, quantity });
 

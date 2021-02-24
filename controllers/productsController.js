@@ -3,8 +3,10 @@ const routes = require('express').Router();
 const rescue = require('express-rescue');
 
 const OK = 200;
+const CREATED = 201;
 const BAD_REQUEST = 400;
 const NOT_FOUND = 404;
+const UNPROCESSABLE_ENTITY = 422;
 
 
 
@@ -27,10 +29,10 @@ routes.route('/')
     const { name, quantity } = req.body;
     const createdProduct = await products.create(name, quantity);
     
-    if (!createdProduct) return res.status(BAD_REQUEST)
-      .json({ message: 'Unsubmittable data' });
+    if (createdProduct.err) return res.status(UNPROCESSABLE_ENTITY)
+      .json(createdProduct);
 
-    res.status(OK).json(createdProduct);
+    res.status(CREATED).json(createdProduct);
   }));
 
 module.exports = routes;
