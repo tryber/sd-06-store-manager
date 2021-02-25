@@ -69,7 +69,7 @@ routerProducts.delete('/:id', async (req, res) => {
   try {
     const deleteProduct = await products.deleteProduct(req.params.id);
     res.status(status200).json(deleteProduct);
-  } catch (err) {
+  } catch {
     res.status(status422).json({
       err: {
         code: 'invalid_data',

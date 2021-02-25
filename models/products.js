@@ -15,7 +15,7 @@ const getAllProducts = async () => getConnection('products')
 const getProductById = async (id) => getConnection('products')
   .then((db) => db.findOne(ObjectID(id)));
 
-const deleteProduct = async (id) => getConnection('product')
+const deleteProduct = async (id) => getConnection('products')
   .then((db) => db.deleteOne({ _id: ObjectId(id) }));
 
 module.exports = {
