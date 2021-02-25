@@ -5,14 +5,6 @@ const getAllProducts = async () =>
   await connection()
     .then(db => db.collection('products').find().toArray());
 
-// .then((products) =>
-//   products.map(({ _id, name, quantity}) => ({
-//     _id,
-//     name,
-//     quantity,
-//   }))
-// );
-
 const createProduct = async (name, quantity) => {
   const { insertedId } = await connection()
     .then(db => db.collection('products').insertOne({ name, quantity }));
@@ -32,6 +24,11 @@ const getById = async (id) => {
     .then(db => db.collection('products').findOne(ObjectId(id)));
 };
 
+const updateProduct = async (id, name, quantity) => {
+  return await connection()
+    .then(db => db.collection('products')
+      .updateOne( {_id: ObjectId(id) }, { $set: { name: name, quantity: quantity } }));
+};
 
 
 module.exports = {
@@ -39,4 +36,5 @@ module.exports = {
   getAllProducts,
   getByName,
   getById,
+  updateProduct,
 };

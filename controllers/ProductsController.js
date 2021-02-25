@@ -8,13 +8,12 @@ const {
   createProductService,
   getAllProductsService,
   getByIdService,
+  updateProductService,
 } = require('../service/ProductsService');
 
 const router = Router();
 const CREATED = 201;
 const SUCCESS = 200;
-
-
 
 router.post('/', validateProduct, validateName, async (req, res) => {
   const { name, quantity } = req.body;
@@ -35,6 +34,14 @@ router.get('/:id', validateId, async (req, res) => {
   const product = await getByIdService(id);
 
   return res.status(SUCCESS).json(product);
+});
+
+router.put('/:id', validateProduct, async(req, res) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+  const updated = await updateProductService(id, name, quantity);
+
+  return res.status(SUCCESS).json(updated);
 });
 
 module.exports = router; 

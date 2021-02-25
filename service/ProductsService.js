@@ -20,8 +20,19 @@ const getByIdService = async (id) => {
   return product;
 };
 
+const updateProductService = async (id, name, quantity) => {
+  await ProductsModel.updateProduct(id, name, quantity);
+
+  return ({
+    id,
+    name,
+    quantity,
+  });
+};
+
 module.exports = {
   createProductService,
   getAllProductsService,
   getByIdService,
+  updateProductService
 };
