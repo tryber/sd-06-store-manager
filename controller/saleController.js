@@ -4,14 +4,19 @@ const {
   ProductList,
   findById,
   update,
-  remove
+  remove,
+  createSales
 } = require('../service/storeService');
 
-const productController = new Router();
+const saleController = new Router();
 const { ObjectId } = require('mongodb');
-const { validateCreate, rightId, nameExist } = require('../middleware/storeMiddleware');
+const {
+  validateCreate,
+  rightId, nameExist,
+  checkQuantitySold
+} = require('../middleware/storeMiddleware');
 
-productController.get('/', async (_req, res) => {
+/*productController.get('/', async (_req, res) => {
   const list = await ProductList();
   const okay = 200;
   res.status(okay).json({ products: list });
@@ -24,15 +29,15 @@ productController.get('/:id', rightId, async (req, res) => {
 
   res.status(okay).json(productById);
 });
-
-productController.post('/', validateCreate, nameExist, async (req, res) => {
-  const deBoa = 201;
-  const product = req.body;
-  const { ops } = await createProduct(product);
+*/
+saleController.post('/', checkQuantitySold, async (req, res) => {
+  const deBoa = 200;
+  const products = req.body;
+  const { ops } = await createSales(products);
 
   res.status(deBoa).json(ops[0]);
 });
-productController.put('/:id', validateCreate, async (req, res) => {
+/*productController.put('/:id', validateCreate, async (req, res) => {
   const { id } = req.params;
   const { name, quantity } = req.body;
   const okay = 200;
@@ -48,5 +53,5 @@ productController.delete('/:id', rightId, async (req, res) => {
 
   res.status(okay).json(deleData);
 });
-
-module.exports = productController;
+*/
+module.exports = saleController;

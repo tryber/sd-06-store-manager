@@ -36,6 +36,22 @@ const validateCreate = async (req, res, next) => {
 
   next();
 };
+const checkQuantitySold = (req, res, next) => {
+  const [{ quantity }] = req.body;
+  const err = 422;
+  const zero = 0;
+
+  if (quantity <= zero || typeof quantity !== 'number') return res.
+    status(err).
+    json({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong product ID or invalid quantity'
+      }
+    });
+  next();
+};
+
 const nameExist = async (req, res, next) => {
   const { name } = req.body;
   const checkName = await findByName(name);
@@ -71,5 +87,6 @@ const rightId = async (req, res, next) => {
 module.exports = {
   validateCreate,
   rightId,
-  nameExist
+  nameExist,
+  checkQuantitySold
 };

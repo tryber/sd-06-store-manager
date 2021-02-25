@@ -1,6 +1,7 @@
 const Store = require('../models/store');
 const { ObjectId } = require('mongodb');
 
+//Product
 const createProduct = async (product) => {
   return await Store.createProduct(product);
 };
@@ -18,10 +19,21 @@ const update = async (id, name, quantity) => {
 const remove = async (id) => {
   return await Store.remove(id);
 };
+
+//Sales
+const createSales = async (products) => {
+  return await Store.createSales(products);
+};
+const findSalesById = async (Sales) => {
+  return await Store.findSalesById(Sales);
+};
+
 module.exports = {
   createProduct,
   ProductList,
   findById,
   update,
-  remove
+  remove,
+  createSales,
+  findSalesById
 };
