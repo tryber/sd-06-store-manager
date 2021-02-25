@@ -40,4 +40,15 @@ routerProducts.get('/:id', async (req, res) => {
   }
 });
 
+routerProducts.put('/:id', async (req, res) => {
+  const { name, quantity } = req.body;
+  const { id } = req.params;
+  try {
+    const updatedProduct = await products.updateProduct(id, name, quantity);
+    return res.status(status200).json(updatedProduct);
+  } catch (err) {
+    return res.status(err.status).json({ err });
+  }
+});
+
 module.exports = routerProducts;
