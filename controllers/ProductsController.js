@@ -30,7 +30,7 @@ router.get('/:id', validateId, async(req, res) => {
 
   const productById = await getByIdServices(id);
 
-  return res.status(OK).json({ products: productById});
+  return res.status(OK).json({ products: productById });
 });
 
 module.exports = router; 
