@@ -1,14 +1,12 @@
-// const { products } = require('../../services');
+const { sales } = require('../../services');
 const { status } = require('../../utils/dictionary');
-// const handleMessage = require('../utils/dictionary/handleMessage');
 
 module.exports = async (req, res, next) => {
   try {
-    // const { body } = req;  
-    // const newProduct = await products.createProduct(body);
-    return res.status(200).json({ m: 'chegando' });
+    const { body } = req;  
+    const newSale = await sales.createSale(body);
+    return res.status(status.ok).json(newSale);
   } catch (err) {
-    // err.message = handleMessage(err.message);
     return next(err);
   }
 };

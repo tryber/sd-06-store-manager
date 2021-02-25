@@ -23,6 +23,9 @@ module.exports = {
       '"quantity" must be a number', STATUS.unpEntity
     ),
     unexpected: handleMessage('Unexpected error'),
+    invalidSaleIdOrQuantity: handleMessage(
+      'Wrong product ID or invalid quantity', STATUS.unpEntity
+    ),
   },
   validations: {
     nameSize: 5,

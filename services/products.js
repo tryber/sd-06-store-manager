@@ -1,12 +1,12 @@
 const { error, magicNumbers } = require('../utils/dictionary');
-const { products } = require('../models');
+const { products, utils } = require('../models');
 const { validateProduct } = require('../utils/validators');
 
 const createProduct = async (product) => {
   await validateProduct(product);
   const isNameTaken = await findByName(product.name);
   if (isNameTaken) throw new Error(error.invalidProductName);
-  return products.insertProduct('products', product);
+  return utils.insertToDb('products', product);
 };
 
 const findByName = async (name) => products.queryByName('products', name);
