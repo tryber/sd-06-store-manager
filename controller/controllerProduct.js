@@ -41,11 +41,25 @@ routerProducts.get('/:id', async (req, res) => {
 });
 
 routerProducts.put('/:id', verifyProduct, async (req, res) => {
-  const { name, quantity } = req.body;
-  const { id } = req.params;
+  const allProducts = await products.getAllProducts();
+  const productById = await products.getProductById(req.params.id);
+  if (!productById) {
+    return res.status(status422).json({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format',
+      },
+    });
+  }
   try {
-    const updatedProduct = await products.updateProduct(id, name, quantity);
-    return res.status(status200).json(updatedProduct);
+    const updatedProduct = allProducts.map((product) => {
+      if (product.id === productById) {
+        return { ...req.body, id: productById };
+      }
+      return product;
+    });
+    await products.createProduct(updatedProduct);
+    res.status(status200).json({ ...req.body, id: productById });
   } catch (err) {
     return res.status(err.status).json({ err });
   }
