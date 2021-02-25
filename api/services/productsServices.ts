@@ -17,7 +17,7 @@ export const getAll = async () => {
     response.body = {};
   } else {
     response.status = 200;
-    response.body = requestResponse;
+    response.body = { products: requestResponse }; 
   }
 
   return response;
@@ -26,12 +26,14 @@ export const getAll = async () => {
 export const getById = async ({ id }: props) => {
   const response = { status: 0, body: {} };
   const requestResponse = await productsModel.getById({ id })
-  if(requestResponse === null) {
-    response.status = 400;
-    response.body = { message: "Product does not exist yet" };
-  } else if(requestResponse.error) {
-    response.status = 400;
-    response.body = requestResponse;
+  if(requestResponse.error) {
+    response.status = 422;
+    response.body = {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format',
+      }
+    }
   } else {
     response.status = 200;
     response.body = requestResponse;
@@ -50,20 +52,20 @@ export const create = async ({ name, quantity }: props) => {
         message: '\"name\" length must be at least 5 characters long',
       }
     }
-  } else if(!validationQuantity(quantity)) {
-    response.status = 422;
-    response.body = {
-      err: {
-        code: 'invalid_data',
-        message: '\"quantity\" must be larger than or equal to 1',
-      }
-    }
   } else if(typeof(quantity) !== 'number') {
     response.status = 422;
     response.body = {
       err: {
         code: 'invalid_data',
         message: '\"quantity\" must be a number',
+      }
+    }
+  } else if(!validationQuantity(quantity)) {
+    response.status = 422;
+    response.body = {
+      err: {
+        code: 'invalid_data',
+        message: '\"quantity\" must be larger than or equal to 1',
       }
     }
   } else {
@@ -77,7 +79,7 @@ export const create = async ({ name, quantity }: props) => {
         }
       }
     } else {
-      response.status = 200;
+      response.status = 201;
       response.body = {
         _id: requestResponse,
         name,
@@ -99,20 +101,20 @@ export const update = async ({ id, name, quantity }: props) => {
         message: '\"name\" length must be at least 5 characters long',
       }
     }
-  } else if(!validationQuantity(quantity)) {
-    response.status = 422;
-    response.body = {
-      err: {
-        code: 'invalid_data',
-        message: '\"quantity\" must be larger than or equal to 1',
-      }
-    }
   } else if(typeof(quantity) !== 'number') {
     response.status = 422;
     response.body = {
       err: {
         code: 'invalid_data',
         message: '\"quantity\" must be a number',
+      }
+    }
+  } else if(!validationQuantity(quantity)) {
+    response.status = 422;
+    response.body = {
+      err: {
+        code: 'invalid_data',
+        message: '\"quantity\" must be larger than or equal to 1',
       }
     }
   } else {

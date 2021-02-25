@@ -3,14 +3,11 @@ import { ObjectId } from 'mongodb'
 
 interface IDocument {
   id?: string
-  name?: string
-  quantity?: number
+  itensSold?: { productId: string, quantity: number }[]
 }
 
 const collection = dbConnection()
-.then((db) => db.collection(process.env.PRODUCTS_TABLE_NAME))
-
-collection.then(collection => collection.createIndex({ "name": 1 }, {unique: true}))
+.then((db) => db.collection(process.env.SALES_TABLE_NAME))
 
 export const getAll = () => {
   return collection
@@ -24,19 +21,19 @@ export const getById = ({ id }: IDocument) => {
     .catch((_err) => ({ error: 'Was not possible to perform query' }))
 }
 
-export const create = async ({ name, quantity }: IDocument) => {
-  const newDocument = { name: name, quantity: quantity };
+export const create = async ({ itensSold }: IDocument) => {
+  const newDocument = { itensSold: itensSold };
   return await collection
     .then((collection) => collection.insertOne(newDocument))
     .then((createdDocument) => createdDocument.insertedId)
     .catch((_err) => ({ error: 'Was not possible to perform query' }))
 }
 
-export const update = async ({ id, name, quantity }: IDocument) => {
-  const newDocument = { name: name, quantity: quantity };
+export const update = async ({ id, itensSold }: IDocument) => {
+  const newDocument = { itensSold: itensSold };
   return await collection
     .then((collection) => collection.updateOne({ _id: ObjectId(id) },
-      { $set: { name: newDocument.name, quantity: newDocument.quantity } }))
+      { $set: { itensSold: newDocument.itensSold } }))
     .catch((_err) => ({ error: 'Was not possible to perform query' }))
 }
 
