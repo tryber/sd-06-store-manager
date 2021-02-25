@@ -7,12 +7,12 @@ const SalesController = new Router();
 const status0 = 200;
 
 SalesController.post('/', validate.validateQuantity, async (request, response) => {
-  const sales = request.body;
-  const { insertedId } = await Sales.insertSales(sales);
+  const itensSold = request.body;
+  const { insertedId } = await Sales.insertSales(itensSold);
 
   const insertedSale = {
     _id: insertedId,
-    itensSold: sales,
+    itensSold,
   };
 
   return response.status(status0).json(insertedSale);
@@ -21,7 +21,9 @@ SalesController.post('/', validate.validateQuantity, async (request, response) =
 SalesController.get('/:id', validate.saleExists, async (request, response) => {
   const { id } = request.params;
 
-  response.status(status0).json(await Sales.findById(id));
+  const sale = await Sales.findById(id);
+
+  response.status(status0).json(sale);
 });
 
 SalesController.get('/', async (_request, response) => {
@@ -35,6 +37,17 @@ SalesController.put('/:id', validate.validateQuantity, async (request, response)
 
   await Sales.updateSale(id, sale);
   const result = await Sales.findById(id);
+
+  response.status(status0).json(result);
+});
+
+SalesController.delete('/:id', validate.idFormat, async (request, response) => {
+  const { id } = request.params;
+  // const sale = request.body;
+
+  const result = await Sales.findById(id);
+    
+  await Sales.deleteSale(id);
 
   response.status(status0).json(result);
 });

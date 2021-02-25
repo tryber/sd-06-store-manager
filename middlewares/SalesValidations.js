@@ -6,6 +6,7 @@ const errorNotFound = 404;
 const ZERO = 0;
 const UM = 1;
 const TWEENTYFOUR = 24;
+// const SIXTEEN = 16;
 
 const messageError = (code, message) => {
   return {
@@ -32,8 +33,18 @@ const validateQuantity = (request, response, next) => {
 const saleExists = async (request, response, next) => {
   const { id } = request.params;
 
-  if (id.length !== TWEENTYFOUR) return response
+  if ((id.length !== TWEENTYFOUR)
+    || (id.length === TWEENTYFOUR && await Sales.findById(id) === null)) return response
     .status(errorNotFound).json(messageError('not_found', 'Sale not found'));
+
+  next();
+};
+
+const idFormat = async (request, response, next) => {
+  const { id } = request.params;
+
+  if (id.length !== TWEENTYFOUR) return response
+    .status(error).json(messageError('invalid_data', 'Wrong sale ID format'));
 
   next();
 };
@@ -41,4 +52,5 @@ const saleExists = async (request, response, next) => {
 module.exports = {
   validateQuantity,
   saleExists,
+  idFormat,
 };
