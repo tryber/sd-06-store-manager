@@ -4,7 +4,7 @@ const UNPROCESS = 422;
 const SUCESS = 201;
 
 const ZERO = 0;
-const FIVE = 5;
+// const FIVE = 5;
 
 const createProduct = async (name, quantity) => {
 
@@ -14,10 +14,10 @@ const createProduct = async (name, quantity) => {
       message: 'Product already exists'
     }}];
 
-  if (name.length < FIVE) return [UNPROCESS, {err: 
-    {code: 'invalid_data',
-      message: '\"name\" length must be at least 5 characters long'
-    }}];
+  // if (name.length < FIVE) return [UNPROCESS, {err: 
+  //   {code: 'invalid_data',
+  //     message: '\"name\" length must be at least 5 characters long'
+  //   }}];
 
   if (quantity <= ZERO) return [UNPROCESS, {err: 
     {code: 'invalid_data',

@@ -1,4 +1,5 @@
 const UNPROCESS = 422;
+const FIVE = 5;
 
 const isName = async (req, res, next) => {
   const name = req.body.name;
@@ -10,6 +11,4 @@ const isName = async (req, res, next) => {
   next();
 };
 
-module.exports = {
-  isName,
-};
+module.exports = isName;
