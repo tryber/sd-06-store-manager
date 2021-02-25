@@ -18,8 +18,15 @@ const findById = async (id) => {
   return sale;
 };
 
+const updateById = async (id, sale) => {
+  const updatedSale = await models.updateById(id, sale);
+
+  return updatedSale;
+};
+
 module.exports = {
   create,
   getAll,
-  findById
+  findById,
+  updateById
 };

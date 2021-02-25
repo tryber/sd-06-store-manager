@@ -29,4 +29,13 @@ router.get('/:id', idValidation, async (req, res) => {
   return res.status(SUCCESS).send(sale);
 });
 
+router.put('/:id', idValidation, saleValidate, async (req, res) => {
+  const { id } = req.params;
+  const itensSold = req.body;
+
+  const updatedSale = await controller.updateById(id, itensSold);
+
+  return res.status(SUCCESS).send(updatedSale);
+});
+
 module.exports = router;
