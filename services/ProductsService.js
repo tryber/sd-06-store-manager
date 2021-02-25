@@ -11,11 +11,9 @@ async function findById(id) {
   const product = await Product.findById(id);
 
   if (!product) return {
-    'notFound': {
-      'err': {
-        'code': 'invalid_data',
-        'message': 'Wrong id format',
-      },
+    'err': {
+      'code': 'invalid_data',
+      'message': 'Wrong id format',
     },
   };
 

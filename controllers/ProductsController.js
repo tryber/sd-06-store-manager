@@ -16,13 +16,13 @@ router.get('/', async (_request, response) => {
 
 router.get('/:id', async (request, response) => {
   const { id } = request.params;
-  const product = await ProductsService.findById(id);
+  const requestedProduct = await ProductsService.findById(id);
 
-  if (product.notFound) {
-    return response.status(UNPROCESSABLE_ENTITY).json(product.notFound);
+  if (requestedProduct.err) {
+    return response.status(UNPROCESSABLE_ENTITY).json(requestedProduct);
   };
 
-  return response.status(SUCCESS).json(product);
+  return response.status(SUCCESS).json(requestedProduct);
 });
 
 router.post('/',
