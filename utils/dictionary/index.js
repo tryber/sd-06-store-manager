@@ -3,6 +3,7 @@ const handleMessage = require('./handleMessage');
 const STATUS = {
   badRequest: 400,
   unpEntity: 422,
+  notFound: 404,
 };
 
 module.exports = {
@@ -25,6 +26,9 @@ module.exports = {
     unexpected: handleMessage('Unexpected error'),
     invalidSaleIdOrQuantity: handleMessage(
       'Wrong product ID or invalid quantity', STATUS.unpEntity
+    ),
+    invalidSale: handleMessage(
+      'Sale not found', STATUS.notFound, 'not_found'
     ),
   },
   validations: {

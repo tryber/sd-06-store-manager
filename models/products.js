@@ -6,18 +6,6 @@ const queryByName = async (collection, name) => {
   return await db.findOne({ name });
 };
 
-const queryProducts = async (collection, id) => {
-  try {
-    const db = await connection(collection);
-    return id
-      ? await db.findOne({ _id: ObjectId(id) })
-      : { products: await db.find().toArray() };
-  } catch (err) {
-    console.error(err);
-    return [];
-  }
-};
-
 const updateProduct = async (collection, id, data) => {
   const db = await connection(collection);
   await db.updateOne(
@@ -34,6 +22,5 @@ const deleteProduct = async (collection, id) => {
 module.exports = {
   deleteProduct,
   queryByName,
-  queryProducts,
   updateProduct,
 };

@@ -1,19 +1,24 @@
-const { error, magicNumbers } = require('../utils/dictionary');
+const { error } = require('../utils/dictionary');
 const { products, utils } = require('../models');
 const { validateProduct } = require('../utils/validators');
 
 const createProduct = async (product) => {
   await validateProduct(product);
+  // needs rafactoration
   const isNameTaken = await findByName(product.name);
   if (isNameTaken) throw new Error(error.invalidProductName);
+  //
   return utils.insertToDb('products', product);
 };
 
 const findByName = async (name) => products.queryByName('products', name);
 
 const getProducts = async (id) => {
-  const productsList = await products.queryProducts('products', id);
-  if (productsList.length === magicNumbers.zero) throw new Error(error.invalidId);
+  // const productsList = await products.queryProducts('products', id);
+  const productsList = await utils.queryFromDb('products', id);
+  // console.log('AQUI: %s', productsList)
+  // console.log('====================================================')
+  if (!productsList) throw new Error(error.invalidId);
   return productsList;
 };
 

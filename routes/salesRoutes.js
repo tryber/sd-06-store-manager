@@ -4,6 +4,9 @@ const controllers = require('../controllers/sales');
 
 const sales = express.Router();
 
+sales.get('/:id', controllers.getSales);
+sales.get('/', controllers.getSales);
+
 sales.post('/', controllers.createSale);
 
 sales.use(middlewares.handleError);
