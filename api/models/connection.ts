@@ -6,7 +6,7 @@ config()
 
 const dbConnection = () => {
   return MongoClient.connect(
-    process.env.MONGO_DB_URL,
+    'mongodb://mongodb:27017/StoreManager',
     { useNewUrlParser: true, useUnifiedTopology: true }
   )
   .then((connection) => connection.db(process.env.DB_NAME))
