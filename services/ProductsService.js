@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const Products = require('../models/Products');
 
 const productValidation = async (name, quantity) => {
@@ -41,11 +42,12 @@ const getAll = async () => {
   return products;
 };
 
-const findById = async (id) => {
-  const idLength = 24;
-  const productById = await Products.findById(id);
+const isIdValid = (id) => ObjectId.isValid(id);
 
-  if (id.length !== idLength) return { message: 'Wrong id format'};
+const findById = async (id) => {
+  if (!isIdValid(id)) return { message: 'Wrong id format'};
+  
+  const productById = await Products.findById(id);
 
   if (!productById) return { message: 'Wrong id format' };
 
@@ -75,5 +77,6 @@ module.exports = {
   getAll,
   findById,
   update,
-  remove
+  remove,
+  isIdValid
 };

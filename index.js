@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+
 const ProductsRouter = require('./controllers/ProductsController');
+const SalesRouter = require('./controllers/SalesController');
 
 const app = express();
 
@@ -14,6 +16,8 @@ app.get('/', (_request, response) => {
 });
 
 app.use('/products', ProductsRouter);
+
+app.use('/sales', SalesRouter);
 
 
 app.listen(port, () => console.log('Example app listening on port port!'));
