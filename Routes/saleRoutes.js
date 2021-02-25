@@ -12,13 +12,13 @@ router.post('/', saleValidate, async (req, res) => {
 
   const createdSale = await controller.create(sale);
 
-  return res.status(SUCCESS).send(createdSale);
+  return res.status(SUCCESS).json(createdSale);
 });
 
 router.get('/', async (_req, res) => {
   const salesList = await controller.getAll();
 
-  return res.status(SUCCESS).send(salesList);
+  return res.status(SUCCESS).send({sales: salesList});
 });
 
 router.get('/:id', idValidation, async (req, res) => {
