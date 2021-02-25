@@ -19,11 +19,27 @@ const getById = async (id) => {
   return await connection().then(db => 
     db.collection('products').findOne({ _id: ObjectId(id) }));
 };
-// 2 
+// 2
+
+//3
+const update = async (id, name, quantity) => {
+  // return await connection().then(db => db.collection('products').updateOne(
+  //   {_id: ObjectId(id) },
+  //   { $set: {name, quantity}}
+  // ));
+  // tive que trocar para findOneAndUpdate para conseguir retornar o produto atualizado após edição
+  return await connection().then(db => db.collection('products').findOneAndUpdate(
+    { _id: ObjectId(id) },
+    { $set: {name, quantity} },
+    { returnOriginal: false } // retorna o poduto atualizado após edição
+  ));
+};
+//3
 
 module.exports = {
   getAll,
   create,
   getByName,
-  getById
+  getById,
+  update
 };

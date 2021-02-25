@@ -18,7 +18,7 @@ router.get('/', async (_req, res) => {
 });
 
 //
-const validation = async (name, quantity, id) => {
+const validation = async (name, quantity) => {
   if (name.length < Cinco) {
     return {
       code: 'invalid_data',
@@ -90,5 +90,43 @@ router.get('/:id', async (req, res) => {
   return res.status(SUCCESS).json(product);
 });
 // 2
+
+// 3
+const validation2 = async (name, quantity) => {
+  if (name.length < Cinco) {
+    return {
+      code: 'invalid_data',
+      message: '"name" length must be at least 5 characters long'
+    };
+  }
+
+  if (quantity <= Zero) {
+    return {
+      code: 'invalid_data',
+      message: '"quantity" must be larger than or equal to 1'
+    };
+  }
+
+  if (isNaN(quantity)) {
+    return {
+      code: 'invalid_data',
+      message: '"quantity" must be a number'
+    };
+  }
+
+  return null;
+};
+
+router.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+  
+  const err = await validation2(name, quantity);
+  if (err) return res.status(Erro422).json({ err });
+  
+  const product = await Products.update(id, name, quantity);
+  return res.status(SUCCESS).json(product.value);
+});
+// 3
 
 module.exports = router;
