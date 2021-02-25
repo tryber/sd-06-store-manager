@@ -1,32 +1,34 @@
 const Product = require('../models/Product');
 const validation = require('../services/validation');
+const {generateError} = require('../utils/errors');
+const {unProcessableEntity} = require('../utils/status');
 
 const getAll = async () => {
   return await Product.getAll();
 };
 
 const getOne = async (id) => {
-  return await Product.getOne(id);
+  try {
+    const product =  await Product.getOne(id);
+    console.log(product, 'product');
+    return {product};
+
+  } catch (err) {
+    console.log('rror');
+    return generateError(unProcessableEntity, 'invalid_data', 'Wrong id format');
+
+  }
 };
 
-const validate = async (name, quantity) => {
- 
+const validate = async (name, quantity) => { 
   const nameExists = await Product.getOneByName(name);  
-  if (nameExists) return {
-    err: {
-      code: 'invalid_data', message:'Product already exists', status: 422
-    }
-  };
-
+  if (nameExists) return (
+    generateError(unProcessableEntity, 'invalid_data', 'Product Already exists'));
   try {
     await validation.ProductSchema.validate({name, quantity});
     return {};
   } catch (err) {
-    return {err: {
-      code: 'invalid_data',
-      message: err.message,
-      status: 422
-    }};
+    return generateError(unProcessableEntity, 'invalid_data', err.message);
   }  
 
 };
