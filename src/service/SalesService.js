@@ -33,27 +33,15 @@ const update = async (id, itensSold) => {
   return { status: 'NOK', result: 'Wrong product ID or invalid quantity' };
 };
 
-// // Remove sale
-// const remove = async (id) => {
-//   const sale = await sale.findById(id);
-//   if (sale) {
-//     sale.remove(id);
-//     return { status: 'OK', sale};
-//   }
-//   return { status: 'NOK', message: 'Wrong id format' };
-// };
-
-
-// // Get sale By Name
-// const getByname = async (name) => {
-//   return await sale.findByName(name);
-// };
-
-// // Check Exist sale, search by name
-// const existsaleName = async (name) => {
-//   const sale = await getByname(name);
-//   return sale;
-// };
+// Remove sale
+const remove = async (id) => {
+  const result = await Sales.findById(id);
+  if (result) {
+    Sales.remove(id);
+    return { status: 'OK', result};
+  }
+  return { status: 'NOK', result: 'Wrong sale ID format' };
+};
 
 // Validation Id
 const validateId = (id) => {
@@ -79,5 +67,5 @@ module.exports = {
   findById,
   create,
   update,
-  // remove,
+  remove,
 };

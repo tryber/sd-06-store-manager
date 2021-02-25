@@ -50,17 +50,16 @@ SalesController.put('/:id', async (req, res) => {
   res.status(OK).json(result);
 });
 
-// // Delete Sale
-// SalesController.delete('/:id', async (req, res) => {
-//   const { id } = req.params;
+// Delete Sale
+SalesController.delete('/:id', async (req, res) => {
+  const { id } = req.params;
   
-//   const result = await Service.remove(id);
-//   const { status } = result;
-//   if (status === 'NOK') {
-//     return res.status(UNPROCESSABLE_ENTITY).json(responseError(result));
-//   }
-//   const { Sale } = result;
-//   res.status(OK).json(Sale);
-// });
+  const { status, result } = await Service.remove(id);
+  if (status === 'NOK') {
+    return res.status(UNPROCESSABLE_ENTITY)
+      .json({err: { code: 'invalid_data', message: result }});
+  }
+  res.status(OK).json(result);
+});
 
 module.exports = SalesController;

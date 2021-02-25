@@ -30,12 +30,11 @@ const create = async (name, quantity) => {
 
 // Update Product
 const update = async (id, name, quantity) => {
-  const { insertedId } = await connection()
-    .then((db) => db.collection('products').updateOne(
-      { _id: ObjectId(id) },
-      { $set: { name, quantity } },
-    ).catch(err => console.error(err)));
-  return { _id: insertedId, name, quantity };
+  await connection().then((db) => db.collection('products').updateOne(
+    { _id: ObjectId(id) },
+    { $set: { name, quantity } }))
+    .catch(err => console.error(err));
+  return { _id: id, name, quantity };
 };
 
 // Remove Product

@@ -23,26 +23,24 @@ const create = async (itensSold) => {
 
 // Update Sale
 const update = async (id, itensSold) => {
-  const { insertedId } = await connection()
-    .then((db) => db.collection('sales').updateOne(
-      { _id: ObjectId(id) },
-      { $set: { itensSold } }))
+  await connection().then((db) => db.collection('sales').updateOne(
+    { _id: ObjectId(id) },
+    { $set: { itensSold } }))
     .catch((err) => console.error(err));
-  return { _id: insertedId, itensSold };
+  return { _id: id, itensSold };
 };
 
-// // Remove Sale
-// const remove = async (id) => {
-//   return await connection()
-//     .then((db) => db.collection('Sales').deleteOne({ _id: ObjectId(id) }))
-//     .catch(err => console.error(err));
-// };
-
+// Remove Sale
+const remove = async (id) => {
+  return await connection()
+    .then((db) => db.collection('sales').deleteOne({ _id: ObjectId(id) }))
+    .catch(err => console.error(err));
+};
 
 module.exports = {
   getAll,
   findById,
   create,
   update,
-  // remove,
+  remove,
 };
