@@ -30,17 +30,22 @@ const updateByIdSale = async (id, itensSold) => {
   return await Sales.updateByIdSale(id, itensSold);
 };
 
-// const deleteByIdProduct = async (id) => {
-//   const product = findByIdProduct(id);
-//   await Product.deleteByIdProduct(id);
-//   return product;
-// };
+// Desafio 8 - Deletar uma venda pelo id
+const deleteByIdSale = async (id) => {
+  const sale = await findByIdSale(id);
+  if(sale.message === 'Sale not found') {
+    return {message: 'Wrong sale ID format'};  
+  } else {
+    await Sales.deleteByIdSale(id);
+    return sale;
+  }
+};
 
 module.exports = {
   createSale,
   getAllSales,
   findByIdSale,
   updateByIdSale,
-  // deleteByIdProduct,
+  deleteByIdSale,
 };
 

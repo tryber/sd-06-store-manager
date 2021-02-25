@@ -52,17 +52,17 @@ SalesController.put('/:id', async (req, res) => {
   res.status(SUCCESS).json(sale);
 });
 
-// // Desafio 4 - Deletar um produto pelo id
-// ProductController.delete('/:id', async (req, res)  => {
-//   const { id } = req.params;
-//   const product = await ProductService.deleteByIdProduct(id);
-//   if (product.message) return res.status(UNPROCESSABLEENTITY).json(
-//     { err: {
-//       code: 'invalid_data',
-//       message: product.message
-//     }}
-//   );
-//   res.status(SUCCESS).json(product);
-// });
+// Desafio 8 - Deletar uma venda pelo id
+SalesController.delete('/:id', async (req, res)  => {
+  const { id } = req.params;
+  const sale = await SalesService.deleteByIdSale(id);
+  if (sale.message) return res.status(UNPROCESSABLEENTITY).json(
+    { err: {
+      code: 'invalid_data',
+      message: sale.message
+    }}
+  );
+  res.status(SUCCESS).json(sale);
+});
 
 module.exports = SalesController;

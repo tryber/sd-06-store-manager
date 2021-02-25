@@ -30,22 +30,16 @@ const updateByIdSale = async(id, itensSold) => {
   return { _id: id, itensSold };
 };
 
-// const deleteByIdProduct = async(id) => {
-//   return await connection().then((db) => db.collection('products')
-//     .deleteOne({_id: ObjectId}));
-// };
-
-// const findByName = async (name) => {
-//   return await connection()
-//     .then((db) => db.collection('products').findOne({ name }))
-//     .catch(err => console.error(err));
-// };
+// Desafio 8 - Deletar uma venda pelo id
+const deleteByIdSale = async(id) => {
+  return await connection().then((db) => db.collection('sales')
+    .deleteOne({ _id: ObjectId(id) }));
+};
 
 module.exports = {
   createSale,
   getAllSales,
   findByIdSale,
   updateByIdSale,
-  // deleteByIdProduct,
-  // findByName,
+  deleteByIdSale,
 };
