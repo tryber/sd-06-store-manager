@@ -1,8 +1,10 @@
-// const Sales = require('../models/sales');
+const Sales = require('../models/sales');
+const { ObjectId } = require('mongodb');
 
 const ZERO = 0;
 
 const UNPROCESSABLEENTITY = 422;
+const NOTFOUND = 404;
 
 const quantityValidation = async (req, res, next) => {
   const inputedSales = req.body;
@@ -26,6 +28,33 @@ const quantityValidation = async (req, res, next) => {
   next();
 };
 
+const idValidation = async (req, res, next) => {
+  const { id } = req.params;
+
+  if(!ObjectId.isValid(id)) {
+    return res.status(NOTFOUND).json({
+      err: {
+        code: 'not_found',
+        message: 'Sale not found'
+      }
+    });
+  };
+
+  const idExists = await Sales.findById(id);
+
+  if(!idExists) {
+    return res.status(NOTFOUND).json({
+      err: {
+        code: 'not_found',
+        message: 'Sale not found'
+      }
+    });
+  };
+
+  next();
+};
+
 module.exports = {
-  quantityValidation
+  quantityValidation,
+  idValidation,
 };

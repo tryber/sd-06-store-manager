@@ -12,7 +12,7 @@ const idValidation = async (req, res, next) => {
         code: 'invalid_data',
         message: 'Wrong id format'
       }
-    });;
+    });
   }
 
   const idExists = await Products.findById(id);

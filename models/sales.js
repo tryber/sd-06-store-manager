@@ -1,9 +1,5 @@
 const connection = require('./connection');
-// const { ObjectId } = require('mongodb');
-
-const getAll = async () => {
-  return await connection().then(db => db.collection('sales').find().toArray());
-};
+const { ObjectId } = require('mongodb');
 
 const createSale = async (sale) => {
   const { insertedId } = await connection()
@@ -15,13 +11,13 @@ const createSale = async (sale) => {
   };
 };
 
-// const findByName = async (name) => {
-//   return await connection().then(db => db.collection('sales').findOne({name}));
-// };
+const getAll = async () => {
+  return await connection().then(db => db.collection('sales').find().toArray());
+};
 
-// const findById = async (id) => {
-//   return await connection().then(db => db.collection('sales').findOne(ObjectId(id)));
-// };
+const findById = async (id) => {
+  return await connection().then(db => db.collection('sales').findOne(ObjectId(id)));
+};
 
 // const update = async (id, name, quantity) => {
 //   return await connection().then(db => db.collection('sales').updateOne(
@@ -39,8 +35,7 @@ const createSale = async (sale) => {
 module.exports = {
   getAll,
   createSale,
-  // findByName,
-  // findById,
+  findById,
   // update,
   // remove,
 };

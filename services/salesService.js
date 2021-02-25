@@ -10,9 +10,9 @@ const createNewSale = async(sale) => {
   return newSale;
 };
 
-// const findSaleById = async(id) => {
-//   return await Sales.findById(id);
-// };
+const findSaleById = async(id) => {
+  return await Sales.findById(id);
+};
 
 // const updateSale = async (id, name, quantity) => {
 //   return await Sales.update(id, name, quantity);
@@ -25,7 +25,7 @@ const createNewSale = async(sale) => {
 module.exports = {
   getAllSales,
   createNewSale,
-  // findSaleById,
+  findSaleById,
   // updateSale,
   // removeSale,
 };

@@ -1,7 +1,7 @@
 const { Router } = require('express');
 
 const salesService = require('../services/salesService');
-const { quantityValidation } = require('../middlewares/salesValidation');
+const { quantityValidation, idValidation } = require('../middlewares/salesValidation');
 
 const router = Router();
 
@@ -11,16 +11,16 @@ const OK = 200;
 router.get('/', async (_req, res) => {
   const sales = await salesService.getAllSales();
 
-  res.status(OK).json(sales);
+  res.status(OK).json({ sales });
 });
 
-// router.get('/:id', idValidation, async (req, res) => {
-//   const { id } = req.params;
+router.get('/:id', idValidation, async (req, res) => {
+  const { id } = req.params;
 
-//   const saleById = await salesService.findSaleById(id);
+  const saleById = await salesService.findSaleById(id);
 
-//   res.status(OK).json(saleById);
-// });
+  res.status(OK).json(saleById);
+});
 
 router.post('/', quantityValidation, async (req, res) => {
   const sale = req.body;
