@@ -25,7 +25,7 @@ productsRouter.put('/:id', async (req, res) => {
   const searchResult = await ProductsService.updateProduct(id, name, quantity);
 
   if (searchResult && searchResult.payload) {
-    const { payload: { err }, error } = searchResult;
+    const { payload: { err }, error } = searchResult; 
 
     return res.status(error.status).json({ err });
   }

@@ -24,8 +24,8 @@ const quantityValidation = (salesArr) => {
   return false;
 };
 
-const idValidation = async (id) => {
-  if (!ObjectId.isValid(id)) return (
+const idValidation = async (id, del=false) => {
+  if (!ObjectId.isValid(id) && !del) return (
     {
       payload: {
         err: {
@@ -37,8 +37,20 @@ const idValidation = async (id) => {
     }
   );
 
+  if (!ObjectId.isValid(id) && del) return (
+    {
+      payload: {
+        err: {
+          message: 'Wrong sale ID format', 
+          code: 'invalid_data',
+        },
+      },
+      error: { status: 422 }
+    }
+  );
+
   const searchResult = await Sales.getById(id);
-  if (!searchResult) return (
+  if (!searchResult && !del) return (
     {
       payload: {
         err: {
@@ -47,6 +59,18 @@ const idValidation = async (id) => {
         },
       },
       error: { status: 404 }
+    }
+  );
+
+  if (!searchResult && del) return (
+    {
+      payload: {
+        err: {
+          message: 'Wrong sale ID format', 
+          code: 'invalid_data',
+        },
+      },
+      error: { status: 422 }
     }
   );
 

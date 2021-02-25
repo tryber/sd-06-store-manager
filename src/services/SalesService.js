@@ -1,4 +1,3 @@
-const { ObjectId } = require('mongodb');
 const Sales = require('../models/Sales');
 const helpers = require('./helpers/SalesHelper');
 
@@ -36,9 +35,17 @@ const insertSale = async (salesArr) => {
   return await Sales.insertSale(salesArr);
 };
 
+const deleteSale = async (id) => {
+  const action = 'DELETE';
+  const validateId = await helpers.idValidation(id, action);
+  if (!validateId.payload) await Sales.deleteSale(id);;
+  return validateId;
+};
+
 module.exports = {
   getAll,
   insertSale,
   getById,
-  updateSale
+  updateSale,
+  deleteSale
 };

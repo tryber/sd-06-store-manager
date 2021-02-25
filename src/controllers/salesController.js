@@ -35,6 +35,19 @@ salesRouter.put('/:id', async (req, res) => {
   return res.status(SUCCESS).send(result);
 });
 
+salesRouter.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  const result = await SalesService.deleteSale(id);
+
+  if (result && result.payload) {
+    const { payload: { err }, error } = result;
+
+    return res.status(error.status).json({ err });
+  }
+
+  return res.status(SUCCESS).send(result);
+});
+
 salesRouter.post('/', async (req, res) => {
   const salesArr = req.body;
   const result = await SalesService.insertSale(salesArr);
