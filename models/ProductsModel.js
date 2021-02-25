@@ -3,14 +3,7 @@ const { ObjectId } = require('mongodb');
 
 const getAllProducts = async () =>
   await connection()
-    .then(db => db.collection('products').find().toArray())
-    .then((products) =>
-      products.map(({ _id, name, quantity}) => ({
-        id: _id,
-        name,
-        quantity,
-      }))
-    );
+    .then(db => db.collection('products').find().toArray());
 
 const createProduct = async (name, quantity) => {
   const { insertedId } = await connection()
