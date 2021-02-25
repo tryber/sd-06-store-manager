@@ -1,12 +1,7 @@
 const yup = require('yup');
 const nameMinLength = 5;
 const minQuantity = 1;
-const error = {
-  err: {
-    code: 'invalid_data',
-    message: ''
-  }
-};
+
 
 const ProductSchema = yup.object().shape({
   name: yup.string('')
@@ -16,5 +11,5 @@ const ProductSchema = yup.object().shape({
 });
 
 module.exports = {
-  ProductSchema, error
+  ProductSchema
 };

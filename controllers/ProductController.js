@@ -18,6 +18,16 @@ router.get('/', async (req, res) => {
   res.status(ok).json({products});
 });
 
+router.put('/:id', async (req, res) => {
+  const {id} = req.params;
+  const {name, quantity} = req.body;
+  const response = await ProductService.update(id, name, quantity);
+  const {err} = response;
+  if (err) return res.status(err.status).json({err});
+
+  return res.status(ok).json({name: response.upsertedId._id, quantity});
+});
+
 
 router.post('/', async (req, res) => {
   const {name, quantity} = req.body;

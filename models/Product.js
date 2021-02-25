@@ -11,6 +11,15 @@ const getOne = async (id) => {
   return await db.collection('products').findOne({_id: ObjectId(id)});
 };
 
+const update = async (id, name, quantity) => {
+  const db = await connection();
+  return await db.collection('products')
+    .updateOne(
+      { _id: id  },
+      { $set: { name, quantity } },
+      { upsert: true }
+    );}; 
+
 const getOneByName = async (name) => {
   const db = await connection();
   return db.collection('products').findOne({name});
@@ -23,7 +32,7 @@ const createOne = async (product) => {
 };
 
 module.exports = {
-  getAll, getOne, createOne, getOneByName
+  getAll, getOne, createOne, getOneByName, update
 };
 
 

@@ -10,14 +10,16 @@ const getAll = async () => {
 const getOne = async (id) => {
   try {
     const product =  await Product.getOne(id);
-    console.log(product, 'product');
     return {product};
-
   } catch (err) {
-    console.log('rror');
     return generateError(unProcessableEntity, 'invalid_data', 'Wrong id format');
-
   }
+};
+
+const update = async (id, name, quantity) => {
+  const {err} = await validateUpdate(name, quantity);
+  if (err) return {err};
+  return await Product.update(name, id, quantity);
 };
 
 const validate = async (name, quantity) => { 
@@ -33,6 +35,15 @@ const validate = async (name, quantity) => {
 
 };
 
+const validateUpdate = async (name, quantity) => {
+  try {
+    await validation.ProductSchema.validate({name, quantity});
+    return {};
+  } catch (err) {
+    return generateError(unProcessableEntity, 'invalid_data', err.message);
+  }  
+};
+
 const createOne = async (product) => {
   const {name, quantity} = product;
   const {err} = await validate(name, quantity);
@@ -42,5 +53,5 @@ const createOne = async (product) => {
 };
 
 module.exports = {
-  getAll, getOne, createOne
+  getAll, getOne, createOne, update
 };
