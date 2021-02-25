@@ -3,7 +3,7 @@ const product = require('../models/product');
 
 
 // validações
-const isValidProduct = async (name, quantity)=>{
+const isValidNewProduct = async (name, quantity)=>{
 
   const minLength = 5;
   const minQuantity = 0;
@@ -25,12 +25,36 @@ const isValidProduct = async (name, quantity)=>{
   return '';
 };
 
+const isValidId = async(id) => {
+  try{
+    const idExists = await product.getProductById(id); // se der tudo certo vem o produto
+    console.log(`idExists: ${idExists}`);
+    return idExists; // retorna o id, nome e qtd do produto
+  } catch(err){ // se o id não for encontrado
+    return 'Wrong id format'; //retorna a msg
+  }
+};
+
 const createProduct = async (name, quantity) => {
-  const inValidProduct = await isValidProduct(name, quantity);
-  if(inValidProduct !== ''){
-    return {inValidProduct};
+  const invalidProduct = await isValidNewProduct(name, quantity);
+  if(invalidProduct !== ''){
+    return {invalidProduct};
   }
   return await product.createProduct(name, quantity);
 };
 
-module.exports = { createProduct };
+const getAll = async ()=>{
+  return await product.getAll();
+};
+
+const getProductById = async (id) => {
+  return await isValidId(id);
+};
+
+module.exports = { 
+  createProduct,
+  getAll,
+  getProductById
+};
+
+
