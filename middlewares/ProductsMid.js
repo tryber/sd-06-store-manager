@@ -1,4 +1,4 @@
-const { getByName }  = require('../models/ProductsModel');
+const { getByName, getById }  = require('../models/ProductsModel');
 
 const FIVE = 5;
 const ZERO = 0;
@@ -41,7 +41,20 @@ const validateName = async (req, res, next) => {
   next();
 };
 
+const validateId = async (req, res, next) => {
+  const LIMITID = 24;
+  const { id } = req.params;
+  if(id.length < LIMITID) return res.status(UNPROCESSABLE).json({ err: {
+    code: 'invalid_data',
+    message: 'Wrong id format'
+  }});
+  // const product = await getById(id);
+  // if(!product) 
+  next();
+};
+
 module.exports = {
   validateProduct,
   validateName,
+  validateId,
 };
