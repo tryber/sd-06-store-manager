@@ -1,17 +1,25 @@
 const services = require('../Services/saleServices');
-const saleValidate = require('../Utils/Sales/saleValidation');
-const { Router } = require('express');
 
-const SUCCESS = 200;
-
-const router = new Router();
-
-router.post('/', saleValidate, async (req, res) => {
-  const sale = req.body;
-
+const create = async (sale) => {
   const createdSale = await services.create(sale);
 
-  return res.status(SUCCESS).send(createdSale);
-});
+  return createdSale;
+};
 
-module.exports = router;
+const getAll = async () => {
+  const salesList = await services.getAll();
+
+  return salesList;
+};
+
+const findById = async (id) => {
+  const sale = await services.findById(id);
+
+  return sale;
+};
+
+module.exports = {
+  create,
+  getAll,
+  findById
+};

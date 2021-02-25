@@ -1,6 +1,6 @@
 const express = require('express');
-const productController = require('./Controllers/productControllers');
-const saleController = require('./Controllers/saleControllers');
+const productRoutes = require('./Routes/productRoutes');
+const saleRoutes = require('./Routes/saleRoutes');
 const bodyParser = require('body-parser');
 
 const app = express();
@@ -13,8 +13,8 @@ app.get('/', (_request, response) => {
 
 app.use(bodyParser.json());
 
-app.use('/products', productController);
+app.use('/products', productRoutes);
 
-app.use('/sales', saleController);
+app.use('/sales', saleRoutes);
 
 app.listen(port, () => console.log(`Store Manager running on port ${port}!`));

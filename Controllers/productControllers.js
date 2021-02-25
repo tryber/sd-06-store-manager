@@ -1,50 +1,31 @@
 const services = require('../Services/productServices');
-const { Router } = require('express');
-const productValidation = require('../Utils/Products/productValidation');
-const idValidate = require('../Utils/Products/idValidation');
-const testDuplicated = require('../Utils/Products/testDuplicated');
 
-const router = new Router;
-const CREATED = 201;
-const SUCCESS = 200;
+const create = async (name, quantity) => {
+  const createdModel = await services.create(name, quantity);
 
-router.post('/', productValidation, testDuplicated, async (req, res) => {
-  const { name, quantity } = req.body;
+  return createdModel;
+};
 
-  const createdProduct = await services.create(name, quantity);
+const getAll = async () => {
+  return await services.getAll();
+};
 
-  return res.status(CREATED).send(createdProduct);
-});
+const findById = async (id) => {
+  return await services.findById(id);
+};
 
-router.get('/', async (_req, res) => {
-  const productList = await services.getAll();
+const updateById = async (id, name, quantity) => {
+  return await services.updateById(id, name, quantity);
+};
 
-  res.status(SUCCESS).json({ products: productList });
-});
+const deleteById = async (id) => {
+  return await services.deleteById(id);
+};
 
-router.get('/:id', idValidate, async (req, res) => {
-  const { id } = req.params;
-
-  const product = await services.findById(id);
-
-  return res.status(SUCCESS).json(product);
-});
-
-router.put('/:id', idValidate, productValidation, async (req, res) => {
-  const { id } = req.params;
-  const { name, quantity } = req.body;
-
-  const updatedProduct = await services.updateById(id, name, quantity);
-
-  return res.status(SUCCESS).send(updatedProduct);
-});
-
-router.delete('/:id', idValidate, async (req, res) => {
-  const { id } = req.params;
-
-  const deletedProduct = await services.deleteById(id);
-
-  return res.status(SUCCESS).send(deletedProduct);
-});
-
-module.exports = router;
+module.exports = {
+  create,
+  getAll,
+  findById,
+  updateById,
+  deleteById
+};
