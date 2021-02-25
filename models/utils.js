@@ -19,17 +19,7 @@ const queryFromDb = async (collection, id) => {
   }
 };
 
-const updateDb = async (collection, id, data) => {
-  const db = await connection(collection);
-  return (await db.findOneAndUpdate(
-    { _id: ObjectId(id) },
-    { $set: data },
-    { returnOriginal: false },
-  ))['value'];
-};
-
 module.exports = {
   insertToDb,
   queryFromDb,
-  updateDb,
 };

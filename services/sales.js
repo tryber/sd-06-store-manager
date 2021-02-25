@@ -1,5 +1,4 @@
-// const { error, magicNumbers } = require('../utils/dictionary');
-const { utils } = require('../models');
+const { utils, sales } = require('../models');
 const { error } = require('../utils/dictionary');
 const { validateSales } = require('../utils/validators');
 
@@ -17,7 +16,9 @@ const getSales = async (id) => {
 const updateSale = async (id, body) => {
   await getSales(id);
   await validateSales(body);
-  return utils.updateDb('sales', id, { itensSold: body });
+  const promises = body.map( async (prod) => await sales.updateSales('sales', id, prod));
+  const results = await Promise.all(promises);
+  return results[results.length - 1];
 };
 
 module.exports = {

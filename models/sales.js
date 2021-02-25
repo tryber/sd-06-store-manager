@@ -1,12 +1,18 @@
 const connection = require('./connection');
 const { ObjectId } = require('mongodb');
 
-const insertSale = async (collection, sale) => {
+const updateSales = async (collection, id, { productId, quantity }) => {
   const db = await connection(collection);
-  const result = await db.insertOne(sale);
-  return result.ops[0];
+  return (await db.findOneAndUpdate(
+    {
+      _id: ObjectId(id),
+      'itensSold.productId': productId,
+    },
+    { $set: { 'itensSold.$.quantity': quantity } },
+    { returnOriginal: false },
+  ))['value'];
 };
 
 module.exports = {
-
+  updateSales,
 };
