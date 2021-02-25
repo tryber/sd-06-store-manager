@@ -1,3 +1,5 @@
-const middServices = require('./productsServices');
+const productsServices = require('./productsServices');
+const productsValidation = require('./productsValidation');
 
-module.exports = middServices;
+
+module.exports = {productsServices, productsValidation};

@@ -25,4 +25,14 @@ const create = async (name,quantity) => {
   };
 };
 
-module.exports = {create, findByName, getAll, findById};
+const update = async (id,name, quantity) => {
+  const updateProduct = await connection().then(db => db.collection('products').updateOne(
+    { _id: ObjectId(id) },
+    { $set: { name,quantity } },      
+  ));
+  const _id =id;
+  if(updateProduct) return {_id,name,quantity};
+  return {message: 'nada feito'};
+};
+
+module.exports = {create, findByName, getAll, findById, update};
