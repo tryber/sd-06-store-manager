@@ -7,10 +7,11 @@ const getAll = async () => {
   return { products: allProd};
 };
 
-const getById = async (id) =>
-  await connection()
+const getById = async (id) =>{
+  const prod = await connection()
     .then((db) => db.collection('products').findOne(ObjectId(id)));
-
+  return prod;
+};
 const create = async (name, quantity) => 
   await connection()
     .then((db) => 
