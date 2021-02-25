@@ -6,8 +6,10 @@ interface IDocument {
   itensSold?: { productId: string, quantity: number }[]
 }
 
+const SALES_TABLE_NAME = 'sales';
+
 const collection = dbConnection()
-.then((db) => db.collection(process.env.SALES_TABLE_NAME))
+.then((db) => db.collection(process.env.SALES_TABLE_NAME || SALES_TABLE_NAME))
 
 export const getAll = () => {
   return collection

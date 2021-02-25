@@ -6,9 +6,10 @@ interface IDocument {
   name?: string
   quantity?: number
 }
+const PRODUCTS_TABLE_NAME = 'products';
 
 const collection = dbConnection()
-.then((db) => db.collection(process.env.PRODUCTS_TABLE_NAME))
+.then((db) => db.collection(process.env.PRODUCTS_TABLE_NAME || PRODUCTS_TABLE_NAME))
 
 collection.then(collection => collection.createIndex({ "name": 1 }, {unique: true}))
 
