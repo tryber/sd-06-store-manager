@@ -13,7 +13,7 @@ const getAllProducts = async () => getConnection('products')
   .then((db) => db.find().toArray());
 
 const getProductById = async (id) => getConnection('products')
-  .then((db) => db.findOne(ObjectID(id)));
+  .then((db) => db.findOne(ObjectId(id)));
 
 const deleteProduct = async (id) => getConnection('products')
   .then((db) => db.deleteOne({ _id: ObjectId(id) }));
