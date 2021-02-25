@@ -12,7 +12,7 @@ const updateSalesByIdService = async (id, sales) => {
       message: 'Wrong product ID or invalid quantity'
     }}];
   
-  const validationString = sales.find(element => typeof element.quantity === "string" );
+  const validationString = sales.find(element => typeof element.quantity === 'string' );
   if (validationString) return [UNPROCESS, {err: 
     {code: 'invalid_data',
       message: 'Wrong product ID or invalid quantity'
