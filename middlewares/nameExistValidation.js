@@ -1,7 +1,7 @@
 const Products = require('../models/products');
 
 const nameExistValidation = async(req, res, next) => {
-  const { name, quantity } = req.body;
+  const { name } = req.body;
   
   const UNPROCESSABLEENTITY = 422;
 

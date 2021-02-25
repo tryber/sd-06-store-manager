@@ -1,0 +1,46 @@
+const connection = require('./connection');
+// const { ObjectId } = require('mongodb');
+
+const getAll = async () => {
+  return await connection().then(db => db.collection('sales').find().toArray());
+};
+
+const createSale = async (sale) => {
+  const { insertedId } = await connection()
+    .then((db) => db.collection('sales').insertOne({ itensSold: sale }));
+
+  return {
+    _id: insertedId,
+    itensSold: sale
+  };
+};
+
+// const findByName = async (name) => {
+//   return await connection().then(db => db.collection('sales').findOne({name}));
+// };
+
+// const findById = async (id) => {
+//   return await connection().then(db => db.collection('sales').findOne(ObjectId(id)));
+// };
+
+// const update = async (id, name, quantity) => {
+//   return await connection().then(db => db.collection('sales').updateOne(
+//     { _id: ObjectId(id) },
+//     { $set: { name, quantity } }
+//   ));
+// };
+
+// const remove = async (id) => {
+//   return await connection().then(db => db.collection('sales').deleteOne(
+//     { _id: ObjectId(id) }
+//   ));
+// };
+
+module.exports = {
+  getAll,
+  createSale,
+  // findByName,
+  // findById,
+  // update,
+  // remove,
+};
