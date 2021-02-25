@@ -30,6 +30,14 @@ const update = async (name, quantity, id) => {
   };
 };
 
+const remove = async (id) => {
+  const currId = getById(id);
+  await connection()
+    .then((db) => db.collection('products').deleteOne({ _id: ObjectId(id) }));
+
+  return currId;
+};
+
 const verifyName = async (name) => {
   const verify = await connection()
     .then(db => db.collection('products').findOne({ name: name }));
@@ -42,5 +50,6 @@ module.exports = {
   getById,
   create,
   verifyName,
-  update
+  update,
+  remove
 };

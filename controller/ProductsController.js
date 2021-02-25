@@ -47,9 +47,29 @@ productsRouter.put('/:id', async (req, res) => {
   const { id } = req.params;
   const { name, quantity } = req.body;
   if (await validate.validateUpdateProducts(res, name, quantity)) {
-    const ok = await ProductsModel.update(name, quantity, id);
-    res.status(SUCCESS).json(ok);
+    const updated = await ProductsModel.update(name, quantity, id);
+    res.status(SUCCESS).json(updated);
   }
+});
+
+productsRouter.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  const valId = ObjectId.isValid(id);
+  
+  if (!valId) {
+    return res.status(INVALID).json({ err: 
+      {code: 'invalid_data', message: 'Wrong id format'}});
+  };
+
+  const productByID = await ProductsModel.getById(ObjectId(id));
+
+  if (!productByID) {
+    return res.status(INVALID).json({ err: 
+      {code: 'invalid_data', message: 'Wrong id format'}});
+  };
+
+  const removed = await ProductsModel.remove(id);
+  return res.status(SUCCESS).json(removed);
 });
 
 
