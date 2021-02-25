@@ -1,6 +1,6 @@
 const { MongoClient } = require('mongodb');
 
-const isEvaluator = false;
+const isEvaluator = true;
 
 const MONGO_DB_URL = (isEvaluator) ?  'mongodb://mongodb:27017/StoreManager' 
   : 'mongodb://localhost:27017/StoreManager';
