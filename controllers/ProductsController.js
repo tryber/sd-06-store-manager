@@ -2,18 +2,20 @@ const { Router } = require('express');
 const { 
   validateName,
   validateProduct,
-  validateId 
+  validateId, 
 } = require('../middlewares/ProductsMid');
 const {
   createProductService,
   getAllProductsService,
   getByIdService,
   updateProductService,
+  deleteProductService,
 } = require('../service/ProductsService');
 
 const router = Router();
 const CREATED = 201;
 const SUCCESS = 200;
+const UNPROCESSABLE = 422;
 
 router.post('/', validateProduct, validateName, async (req, res) => {
   const { name, quantity } = req.body;
@@ -42,6 +44,18 @@ router.put('/:id', validateProduct, async(req, res) => {
   const updated = await updateProductService(id, name, quantity);
 
   return res.status(SUCCESS).json(updated);
+});
+
+router.delete('/:id', validateId, async (req, res) => {
+  const { id } = req.params;
+  const deleted = await deleteProductService(id);
+  
+  if(!deleted) return res.status(UNPROCESSABLE).json({ err: {
+    code: 'invalid_data',
+    message: 'Wrong id format'
+  }});
+
+  return res.status(SUCCESS).json(deleted);
 });
 
 module.exports = router; 

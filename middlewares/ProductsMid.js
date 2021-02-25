@@ -1,4 +1,6 @@
 const { getByName, getById }  = require('../models/ProductsModel');
+const { deleteProductService } = require('../service/ProductsService');
+const { ObjectId } = require('mongodb');
 
 const FIVE = 5;
 const ZERO = 0;
@@ -44,10 +46,12 @@ const validateName = async (req, res, next) => {
 const validateId = async (req, res, next) => {
   const LIMITID = 24;
   const { id } = req.params;
-  if(id.length < LIMITID) return res.status(UNPROCESSABLE).json({ err: {
-    code: 'invalid_data',
-    message: 'Wrong id format'
-  }});
+  // Object.isValid(id)
+  if(id.length < LIMITID) return res.status(UNPROCESSABLE)
+    .json({ err: {
+      code: 'invalid_data',
+      message: 'Wrong id format'
+    }});
   next();
 };
 
