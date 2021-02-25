@@ -22,6 +22,15 @@ const getById = async (id) => {
 
 };
 
+const update = async (id, itens) => {
+  const sale = await connection()
+    .then((db) => db.collection('sales').updateOne(
+      db.collection('sales').findOne({_id: ObjectId(id) }),
+      {$set:{ itensSold: itens }}
+    ));
+  return sale;
+};
+
 const exclude = async (id) => {
   const sale = await connection()
     .then((db) => db.collection('sales').deleteOne({_id: ObjectId(id) }));
@@ -33,5 +42,6 @@ module.exports = {
   create,
   getAll,
   getById,
+  update,
   exclude,
 };

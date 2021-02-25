@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { create, getAll, getById, exclude } = require('../models/SalesModel');
+const { create, getAll, getById, update, exclude } = require('../models/SalesModel');
 const { ObjectId } = require('mongodb');
 
 const SalesController = new Router();
@@ -56,6 +56,35 @@ SalesController.get('/:id', async (req, res) => {
         }});
   }
   return res.status(STATUS_OK).json(sale);
+});
+
+// Requisito 7
+SalesController.put('/:id', async (req, res) => {
+  const updatedItens = req.body;
+  const id = req.params.id;
+
+  updatedItens.forEach((item) => {
+    if (item.quantity <= ZERO) {
+      return res.status(STATUS_UNPROCESSABLE).json({ 
+        err: {
+          code: 'invalid_data',
+          message: 'Wrong product ID or invalid quantity'
+        }
+      });
+    }
+    if (isNaN(item.quantity)) {
+      return res.status(STATUS_UNPROCESSABLE).json({ 
+        err: {
+          code: 'invalid_data',
+          message: 'Wrong product ID or invalid quantity'
+        }
+      });
+    }
+  });
+
+  await update(id, updatedItens);
+  const updatedSale = await getById(id);
+  return res.status(STATUS_OK).json(updatedSale);
 });
 
 // Requisito 8
