@@ -31,10 +31,8 @@ productsRouter.get('/:id', async (req, res) => {
       {code: 'invalid_data', message: 'Wrong id format'}});
   };
 
-  console.log('aqui');
   return res.status(SUCCESS).json(productByID);
 });
-
     
 productsRouter.post('/', async (req, res) => {
   const { name, quantity } = req.body;
@@ -42,6 +40,15 @@ productsRouter.post('/', async (req, res) => {
     const { insertedId } = await ProductsModel.create(name, quantity);
     const newProduct = { _id: insertedId, name, quantity };
     res.status(CREATED).json(newProduct);
+  }
+});
+
+productsRouter.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+  if (await validate.validateUpdateProducts(res, name, quantity)) {
+    const ok = await ProductsModel.update(name, quantity, id);
+    res.status(SUCCESS).json(ok);
   }
 });
 

@@ -12,10 +12,23 @@ const getById = async (id) =>{
     .then((db) => db.collection('products').findOne(ObjectId(id)));
   return prod;
 };
+
 const create = async (name, quantity) => 
   await connection()
     .then((db) => 
-      db.collection('products').insertOne({ name, quantity}));
+      db.collection('products').insertOne({ name, quantity }));
+
+const update = async (name, quantity, id) => {
+  await connection()
+    .then((db) => db.collection('products').updateOne(
+      { _id: ObjectId(id) }, { $set: {name, quantity} }
+    ));
+  return {
+    _id: id,
+    name: name,
+    quantity: quantity
+  };
+};
 
 const verifyName = async (name) => {
   const verify = await connection()
@@ -28,5 +41,6 @@ module.exports = {
   getAll,
   getById,
   create,
-  verifyName
+  verifyName,
+  update
 };

@@ -1,5 +1,6 @@
 const errorMessage = require('./errors');
 const { verifyName } = require('../models/ProductsModel');
+const { ObjectId } = require('mongodb');
 
 const INVALID = 422;
 const NAME_LENGTH = 5;
@@ -29,6 +30,23 @@ const validateProducts = async (res, name, quantity) => {
   return true;
 };
 
+const validateUpdateProducts = async (res, name, quantity) => {
+  if (name.length < NAME_LENGTH) {
+    res.status(INVALID).json(errorMessage(LENGTH_ERROR));
+    return false;
+  }
+  if (typeof quantity !== 'number') {
+    res.status(INVALID).json(errorMessage(TYPEOF_ERROR));
+    return false; 
+  };
+  if (quantity < 1) {
+    res.status(INVALID).json(errorMessage(LARGER_THAN_ERROR));
+    return false;
+  };
+  return true;
+};
+
 module.exports = {
-  validateProducts
+  validateProducts,
+  validateUpdateProducts
 };
