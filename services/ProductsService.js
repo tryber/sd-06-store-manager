@@ -1,4 +1,5 @@
 const Product = require('../models/Product');
+const ProductSchema = require('../schemas/ProductSchema');
 
 const getAll = async () => {
   return await Product.getAll();
@@ -13,6 +14,8 @@ const findByName = async (name) => {
 };
 
 const create = async (name, quantity) => {
+  const validations = ProductSchema.validate(name, quantity);
+  if (ProductSchema.validate.message) return validations;
   const product = await Product.create(name, quantity);
   return product;
 };
