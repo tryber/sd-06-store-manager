@@ -44,8 +44,21 @@ const validationId = (id) => {
   return null;
 };
 
+const validateSale = (itensSold) => {
+  const ZERO = 0;
+  let result = true;
+  itensSold.forEach(item => {
+    if (!item.quantity || item.quantity < ZERO
+      || item.quantity === ZERO || !Number.isInteger(item.quantity)) {
+      result = false;
+    };
+  });
+  return result;
+};
+
 module.exports = {
   validationCreate,
   validationUpdate,
   validationId,
+  validateSale,
 };

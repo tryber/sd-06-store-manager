@@ -9,15 +9,15 @@ const SalesController = new Router();
 
 // Desafio 5 - Cadastra uma venda
 SalesController.post('/', async (req, res) => {
-  const { productId, quantity } = req.body;
-  const sale = await SalesService.createSale(productId, quantity);
+  const itensSold = req.body;
+  const sale = await SalesService.createSale(itensSold);
   if (sale.message) return res.status(UNPROCESSABLEENTITY).json(
     { err: {
       code: 'invalid_data',
-      message: product.message
+      message: sale.message
     }}
   );
-  res.status(CREATED).json(sale);
+  res.status(SUCCESS).json(sale);
 });
 
 // // Desafio 2 - Busca todos os produtos

@@ -1,10 +1,10 @@
 const Sales = require('../models/SalesModel');
-const { validationCreate, validationUpdate, validationId } = require('./Validations');
+const { validateSale } = require('./Validations');
 
-const createSale = async (productId, quantity) => {
-  // const validation = await validationCreate(productId, quantity);
-  // if(validation) return validation;
-  return await Sales.createProduct(productId, quantity);
+const createSale = async (itensSold) => {
+  const validation = await validateSale(itensSold);
+  if(!validation) return {message: 'Wrong product ID or invalid quantity'};
+  return await Sales.createSale(itensSold);
 };
 
 // const getAllProducts = async () => {
