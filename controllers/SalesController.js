@@ -3,6 +3,7 @@ const { create } = require('../models/SalesModel');
 
 const SalesController = new Router();
 const STATUS_OK = 200;
+const STATUS_UNPROCESSABLE= 422;
 const ZERO = 0;
 
 SalesController.post('/', async (req, res) => {
