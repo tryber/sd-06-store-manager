@@ -12,6 +12,7 @@ const getAll = async () => {
 };
 
 const findById = async (id) => {
+  if (!ObjectId.isValid(id)) return null;
   const productById = await connection()
     .then((db) => db.collection('products')
       .findOne(ObjectId(id)));
@@ -23,34 +24,34 @@ const create = async (name, quantity) => {
   const newProduct = await connection()
     .then(db => db.collection('products')
       .insertOne({ name, quantity }));
-    
-  const { insertedId } = newProduct;
 
   return { 
-    _id: insertedId,
+    _id: newProduct.insertedId,
     name,
     quantity
   };
 };
 
 const update = async (id, name, quantity) => {
+  if (!ObjectId.isValid(id)) return null;
   const productUpdated = await connection()
     .then(db => db.collection('products')
-      .updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }));
+      .findOneAndUpdate(
+        { _id: ObjectId(id) },
+        { $set: { name, quantity } },
+        { returnOriginal: false }
+      ));
 
-  return {
-    id,
-    name,
-    quantity
-  };
+  return productUpdated['value'];
 };
 
 const remove = async (id) => {
+  if (!ObjectId.isValid(id)) return null;
   const productDeleted = await connection()
     .then(db => db.collection('products')
-      .deleteOne({ _id: ObjectId(id) }));
+      .findOneAndDelete({ _id: ObjectId(id) }));
 
-  return productDeleted;
+  return productDeleted['value'];
 };
 
 module.exports = {
