@@ -38,19 +38,19 @@ SalesController.get('/:id', async (req, res) => {
   res.status(SUCCESS).json(sale);
 });
 
-// // Desafio 3 - Atualizar um produto pelo id
-// ProductController.put('/:id', async (req, res) => {
-//   const { id } = req.params;
-//   const { name, quantity } = req.body;
-//   const product = await ProductService.updateByIdProduct(id, name, quantity);
-//   if (product.message) return res.status(UNPROCESSABLEENTITY).json(
-//     { err: {
-//       code: 'invalid_data',
-//       message: product.message
-//     }}
-//   );
-//   res.status(SUCCESS).json(product);
-// });
+// Desafio 7 - Atualizar uma venda pelo id
+SalesController.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  const itensSold = req.body;
+  const sale = await SalesService.updateByIdSale(id, itensSold);
+  if (sale.message) return res.status(UNPROCESSABLEENTITY).json(
+    { err: {
+      code: 'invalid_data',
+      message: sale.message
+    }}
+  );
+  res.status(SUCCESS).json(sale);
+});
 
 // // Desafio 4 - Deletar um produto pelo id
 // ProductController.delete('/:id', async (req, res)  => {

@@ -1,5 +1,5 @@
 const Sales = require('../models/SalesModel');
-const { validateSale, validationIdSale } = require('./Validations');
+const { validateSale, validationIdSale, validationUpdateSale } = require('./Validations');
 
 // Desafio 5 - Cadastra uma venda
 const createSale = async (itensSold) => {
@@ -20,11 +20,15 @@ const findByIdSale = async (id) => {
   return await Sales.findByIdSale(id);
 };
 
-// const updateByIdProduct = async (id, name, quantity) => {
-//   const validation = await validationUpdate(name, quantity);
-//   if(validation) return validation;
-//   return await Product.updateByIdProduct(id, name, quantity);
-// };
+// Desafio 7 - Atualizar uma venda pelo id
+const updateByIdSale = async (id, itensSold) => {
+  const verifyItensSold = validateSale(itensSold);
+  const verifyId = validationIdSale(id);
+  if(!verifyItensSold || !verifyId) {
+    return {message: 'Wrong product ID or invalid quantity'};
+  }
+  return await Sales.updateByIdSale(id, itensSold);
+};
 
 // const deleteByIdProduct = async (id) => {
 //   const product = findByIdProduct(id);
@@ -36,7 +40,7 @@ module.exports = {
   createSale,
   getAllSales,
   findByIdSale,
-  // updateByIdProduct,
+  updateByIdSale,
   // deleteByIdProduct,
 };
 

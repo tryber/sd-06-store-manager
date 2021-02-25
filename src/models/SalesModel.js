@@ -22,16 +22,13 @@ const findByIdSale = async(id) => {
   return await connection().then((db) => db.collection('sales').findOne(ObjectId(id)));
 };
 
-// const updateByIdProduct = async(id, name, quantity) => {
-//   const { insertedId } = await connection()
-//     .then((db) => db.collection('products')
-//       .updateOne({_id: ObjectId},{ $set:{name, quantity}}));
-//   return {
-//     id: insertedId,
-//     name,
-//     quantity,
-//   };
-// };
+// Desafio 7 - Atualizar uma venda pelo id
+const updateByIdSale = async(id, itensSold) => {
+  const { insertedId } = await connection()
+    .then((db) => db.collection('sales')
+      .updateOne({_id: ObjectId}, { $set:{ itensSold } }));
+  return { _id: id, itensSold };
+};
 
 // const deleteByIdProduct = async(id) => {
 //   return await connection().then((db) => db.collection('products')
@@ -48,7 +45,7 @@ module.exports = {
   createSale,
   getAllSales,
   findByIdSale,
-  // updateByIdProduct,
+  updateByIdSale,
   // deleteByIdProduct,
   // findByName,
 };
