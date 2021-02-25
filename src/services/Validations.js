@@ -44,6 +44,14 @@ const validationId = (id) => {
   return null;
 };
 
+const validationIdSale = (id) => {
+  const idLength = 24;
+  if(id.length != idLength) {
+    return false;
+  }
+  return true;
+};
+
 const validateSale = (itensSold) => {
   const ZERO = 0;
   let result = true;
@@ -60,5 +68,6 @@ module.exports = {
   validationCreate,
   validationUpdate,
   validationId,
+  validationIdSale,
   validateSale,
 };

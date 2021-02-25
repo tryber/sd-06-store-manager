@@ -2,7 +2,7 @@ const { Router } = require('express');
 const SalesService = require('../services/SalesService');
 
 const SUCCESS = 200;
-const CREATED = 201;
+const NOTFOUND = 404;
 const UNPROCESSABLEENTITY = 422;
 
 const SalesController = new Router();
@@ -20,22 +20,23 @@ SalesController.post('/', async (req, res) => {
   res.status(SUCCESS).json(sale);
 });
 
-// // Desafio 2 - Busca todos os produtos
-// ProductController.get('/', async (req, res) => {
-//   res.status(SUCCESS).json(await ProductService.getAllProducts());
-// });
+// Desafio 6 - Listar todas as vendas
+SalesController.get('/', async (req, res) => {
+  const sales = await SalesService.getAllSales();
+  res.status(SUCCESS).json(sales);
+});
 
-// // Desafio 2 - Busca um produto pelo id
-// ProductController.get('/:id', async (req, res) => {
-//   const product = await ProductService.findByIdProduct(req.params.id);
-//   if (product.message) return res.status(UNPROCESSABLEENTITY).json(
-//     { err: {
-//       code: 'invalid_data',
-//       message: product.message
-//     }}
-//   );
-//   res.status(SUCCESS).json(product);
-// });
+// Desafio 6 - Busca uma venda pelo id
+SalesController.get('/:id', async (req, res) => {
+  const sale = await SalesService.findByIdSale(req.params.id);
+  if (sale.message) return res.status(NOTFOUND).json(
+    { err: {
+      code: 'not_found',
+      message: sale.message
+    }}
+  );
+  res.status(SUCCESS).json(sale);
+});
 
 // // Desafio 3 - Atualizar um produto pelo id
 // ProductController.put('/:id', async (req, res) => {

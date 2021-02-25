@@ -1,6 +1,7 @@
 const connection = require('./connection');
 const { ObjectId } = require('mongodb');
 
+// Desafio 5 - Cadastra uma venda
 const createSale = async (itensSold) => {
   const { insertedId } = await connection()
     .then((db) => db.collection('sales').insertOne({ itensSold }));
@@ -10,14 +11,16 @@ const createSale = async (itensSold) => {
   };
 };
 
-// const getAllProducts = async() => {
-//   return { products: await connection()
-//     .then((db) => db.collection('products').find().toArray())};
-// };
+// Desafio 6 - Listar todas as vendas
+const getAllSales = async() => {
+  return { sales: await connection()
+    .then((db) => db.collection('sales').find().toArray())};
+};
 
-// const findByIdProduct = async(id) => {
-//   return await connection().then((db) => db.collection('products').findOne(ObjectId(id)));
-// };
+// Desafio 6 - Busca uma venda pelo id
+const findByIdSale = async(id) => {
+  return await connection().then((db) => db.collection('sales').findOne(ObjectId(id)));
+};
 
 // const updateByIdProduct = async(id, name, quantity) => {
 //   const { insertedId } = await connection()
@@ -43,8 +46,8 @@ const createSale = async (itensSold) => {
 
 module.exports = {
   createSale,
-  // getAllProducts,
-  // findByIdProduct,
+  getAllSales,
+  findByIdSale,
   // updateByIdProduct,
   // deleteByIdProduct,
   // findByName,
