@@ -14,7 +14,14 @@ const getSales = async (id) => {
   return salesList;
 };
 
+const updateSale = async (id, body) => {
+  await getSales(id);
+  await validateSales(body);
+  return utils.updateDb('sales', id, { itensSold: body });
+};
+
 module.exports = {
   createSale,
   getSales,
+  updateSale,
 };

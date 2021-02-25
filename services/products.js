@@ -14,10 +14,7 @@ const createProduct = async (product) => {
 const findByName = async (name) => products.queryByName('products', name);
 
 const getProducts = async (id) => {
-  // const productsList = await products.queryProducts('products', id);
   const productsList = await utils.queryFromDb('products', id);
-  // console.log('AQUI: %s', productsList)
-  // console.log('====================================================')
   if (!productsList) throw new Error(error.invalidId);
   return productsList;
 };

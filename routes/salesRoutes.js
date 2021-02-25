@@ -9,6 +9,8 @@ sales.get('/', controllers.getSales);
 
 sales.post('/', controllers.createSale);
 
+sales.put('/:id', controllers.updateSale);
+
 sales.use(middlewares.handleError);
 
 module.exports = sales;
