@@ -1,9 +1,10 @@
 const { Router } = require('express');
-const { create } = require('../models/SalesModel');
+const { create, getAll } = require('../models/SalesModel');
 
 const SalesController = new Router();
 const STATUS_OK = 200;
 const STATUS_UNPROCESSABLE= 422;
+const STATUS_NOT_FOUND= 404;
 const ZERO = 0;
 
 SalesController.post('/', async (req, res) => {
@@ -22,6 +23,24 @@ SalesController.post('/', async (req, res) => {
   const register = await create(req.body);
 
   return res.status(STATUS_OK).json(register);
+});
+
+SalesController.get('/', async (req, res) => { 
+  const allSales = await getAll();
+  return res.status(STATUS_OK).json({'sales': allSales});
+});
+
+SalesController.get('/:id', async (req, res) => {
+  const id = req.params.id;
+  if(ObjectId.isValid(id)){
+    const product = await getSaleById(id);
+    return res.status(STATUS_OK).json(product);
+  }
+  return res.status(STATUS_NOT_FOUND).json({
+    err: {
+      code: 'not_found',
+      message: 'Sale not Found'
+    }});
 });
 
 module.exports = SalesController;

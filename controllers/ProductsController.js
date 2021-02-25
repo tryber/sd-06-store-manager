@@ -71,7 +71,7 @@ ProductsController.get('/:id', async (req, res) => {
     err: {
       code: 'invalid_data',
       message: 'Wrong id format'
-    }});;
+    }});
 });
 
 
