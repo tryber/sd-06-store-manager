@@ -1,23 +1,20 @@
 const getCollection = require('./connection');
 const { ObjectId } = require('mongodb');
 
-const collection = 'products';
+const collection = 'sales';
 
-const create = async (name, quantity) => {
-  const dataBase = await getCollection(collection);
-  const result = await dataBase.insertOne({ name, quantity });
+const create = async (sales) => {
+  const salesDB = await getCollection(collection);
 
-  return { _id: result.insertedId, name, quantity };
+  const newSales = { itensSold: sales };
+  const result = await salesDB.insertOne({ ...newSales });
+
+  return { _id: result.insertedId, ...newSales };
 };
 
 const getAll = async () => {
   const dataBase = await getCollection(collection);
   return await dataBase.find().toArray();
-};
-
-const getByName = async (name) => {
-  const product = await getCollection(collection);
-  return await product.findOne({ name });
 };
 
 const getById = async (id) => {
@@ -27,13 +24,13 @@ const getById = async (id) => {
   return await dataBase.findOne(ObjectId(id));
 };
 
-const updateById = async (id, name, quantity) => {
+const updateById = async (id, sale) => {
   const dataBase = await getCollection(collection);
-  const productUpdate = { name, quantity };
+  const { productId, quantity } = sale[0];
 
   const result = await dataBase.findOneAndUpdate(
     { _id : ObjectId(id) },
-    { $set: productUpdate },
+    { $set: { 'itensSold': [{ productId, quantity } ]} },
     { returnOriginal: false });
 
   return result['value'];
@@ -48,7 +45,6 @@ module.exports = {
   create,
   getAll,
   getById,
-  getByName,
   updateById,
-  deleteById,
+  deleteById
 };

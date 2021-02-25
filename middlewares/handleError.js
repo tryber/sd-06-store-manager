@@ -1,15 +1,9 @@
 const { STATUS_CODES: {
   UNPROCESSABLE_ENTITY,
-  SERVER_ERROR,
-},
-ERROR_MESSAGE: { serverError} } = require('../utils/dictionary');
+  NOT_FOUND
+} } = require('../utils/dictionary');
 
-module.exports = (error, _req, res, _next) => {
-  const { err } = error || undefined;
-
-  if (err) {
-    return res.status(UNPROCESSABLE_ENTITY).json({ err });
-  }
-
-  res.status(SERVER_ERROR).json(serverError);
+module.exports = ({ err }, _req, res, _next) => {
+  if (err.code === 'not_found') res.status(NOT_FOUND).json({ err });
+  res.status(UNPROCESSABLE_ENTITY).json({ err });
 };

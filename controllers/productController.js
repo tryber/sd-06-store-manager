@@ -8,7 +8,6 @@ const product = Router();
 
 product.get('/', async (req, res) => {
   const products = await services.getAll();
-
   res.status(OK).json({ products });
 });
 
@@ -19,7 +18,6 @@ product.get('/:id', async (req, res, next) => {
 
     res.status(OK).json(productById);
   } catch (err) {
-
     next(err);
   }
 });

@@ -2,7 +2,7 @@ const { MongoClient } = require('mongodb');
 
 const DB_NAME = 'StoreManager';
 // const DB_URI = `mongodb://localhost:27017/${DB_NAME}`;
-const DB_URI = 'mongodb://mongodb:27017/StoreManager';
+const DB_URI = `mongodb://mongodb:27017/${DB_NAME}`;
 
 let connection;
 

@@ -3,7 +3,6 @@ const STATUS_CODES = {
   CREATED: 201,
   NOT_FOUND: 404,
   UNPROCESSABLE_ENTITY: 422,
-  SERVER_ERROR: 500,
 };
 
 const ERROR_MESSAGE = {
@@ -37,11 +36,23 @@ const ERROR_MESSAGE = {
       message: 'Wrong id format'
     }
   },
-  serverError: {
+  invalidQuantityOrId: {
     err: {
-      code: 'server_error',
-      message: 'something went wrong'
-    },
+      code: 'invalid_data',
+      message: 'Wrong product ID or invalid quantity'
+    }
+  },
+  invalidSaleId: {
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong sale ID format'
+    }
+  },
+  saleNotFound: {
+    err: {
+      code: 'not_found',
+      message: 'Sale not found'
+    }
   },
 };
 

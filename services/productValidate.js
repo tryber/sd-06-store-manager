@@ -8,7 +8,7 @@ const { ERROR_MESSAGE: {
 } } = require('../utils/dictionary');
 
 const ZERO = 0;
-const resultNameRegex = (name) => name.match(/^([A-Z]\s*){5,}/i);
+const resultNameRegex = (name) => (/^([A-Z]\s*){5,}/i).test(name);
 
 module.exports = async (name, quantity, update) => {
   if (!update) {
