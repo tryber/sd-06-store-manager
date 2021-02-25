@@ -1,6 +1,7 @@
-const { getByName } = require('../models/ProductsModel');
+const { getByName, getById } = require('../models/ProductsModel');
 const zero = 0;
 const five = 5;
+const vinteequatro = 24;
 const UNPROCESSABLE = 422;
 
 const validateProduct = (req, res, next) => {
@@ -43,7 +44,19 @@ const validateName = async (req, res, next) => {
   next();
 };
 
+const getByIdMid = async (req, res, next) => {
+  const { id } = req.params;
+  if (id.length < vinteequatro) return res.status(UNPROCESSABLE).json({
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong id format'
+    }
+  });
+  next();
+};
+
 module.exports = {
   validateName,
   validateProduct,
+  getByIdMid,
 };
