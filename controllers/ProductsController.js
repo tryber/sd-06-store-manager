@@ -27,7 +27,7 @@ router.post('/', validateProduct, validateName, async (req, res) => {
 router.get('/', async (req, res) => {
   const getAll = await getAllProductsService();
 
-  return res.status(SUCCESS).json(getAll);
+  return res.status(SUCCESS).json({ products: getAll });
 });
 
 router.get('/:id', validateId, async (req, res) => {

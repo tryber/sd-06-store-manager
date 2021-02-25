@@ -48,8 +48,6 @@ const validateId = async (req, res, next) => {
     code: 'invalid_data',
     message: 'Wrong id format'
   }});
-  // const product = await getById(id);
-  // if(!product) 
   next();
 };
 
