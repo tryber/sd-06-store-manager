@@ -1,6 +1,14 @@
+const { Router } = require('express');
+const ProductsRouter = Router();
+const rescue = require('express-rescue');
+
+const bodyParser = require('body-parser');
+ProductsRouter.use(bodyParser.json());
+
 const createProductService = require('../services/CreateProductService');
 const getProductService = require('../services/GetProductService');
 const getProductByIdService = require('../services/GetProductByIdService');
+const updateProductByIdService = require('../services/updateProductByIdService');
 
 const createProduct = async (req, res) => {
   const { name, quantity } = req.body;
@@ -24,8 +32,19 @@ const getProductById = async (req, res) => {
   return res.status(resp[0]).json(resp[1]);
 };
 
-module.exports = {
-  createProduct,
-  getAllProduct,
-  getProductById
+const updateProductById = async (req, res) => {
+  const id = req.params.id;
+  const name = req.body.name;
+  const quantity = req.body.quantity;
+
+  const resp = await updateProductByIdService(id, name, quantity);
+
+  return res.status(resp[0]).json(resp[1]);
 };
+
+ProductsRouter.post('/', rescue(createProduct));
+ProductsRouter.get('/', rescue(getAllProduct));
+ProductsRouter.get('/:id', rescue(getProductById));
+ProductsRouter.put('/:id', rescue(updateProductById));
+
+module.exports = ProductsRouter;

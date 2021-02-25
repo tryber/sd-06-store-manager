@@ -1,15 +1,18 @@
 const Product = require('../models/Product');
 
-const UM = 1;
 const UNPROCESS = 422;
 const SUCESS = 200;
+const IDLENGTH = 24;
 
 const getProductByIdService = async (id) => {
-  const productResponse = await Product.getAllProduct();
+  if (id.length !== IDLENGTH) return [ UNPROCESS, {err: 
+    {code: 'invalid_data',
+      message: 'Wrong id format'
+    }}];
 
-  const product = productResponse[id-UM];
+  const product = await Product.getById(id);
 
-  if (product === undefined) return [ UNPROCESS, {err: 
+  if (!product) return [ UNPROCESS, {err: 
     {code: 'invalid_data',
       message: 'Wrong id format'
     }}];
