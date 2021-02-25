@@ -2,11 +2,23 @@ const Product = require('../models/Product');
 
 async function getAll() {
   const products = await Product.getAll();
-  return products;
+  return {
+    products: products,
+  };
 }
 
 async function findById(id) {
   const product = await Product.findById(id);
+
+  if (!product) return {
+    'notFound': {
+      'err': {
+        'code': 'invalid_data',
+        'message': 'Wrong id format',
+      },
+    },
+  };
+
   return product;
 }
 

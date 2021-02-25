@@ -7,6 +7,7 @@ const { validateQuantity } = require('../middlewares');
 const router = Router();
 const SUCCESS = 200;
 const CREATED = 201;
+const UNPROCESSABLE_ENTITY = 422;
 
 router.get('/', async (_request, response) => {
   const products = await ProductsService.getAll();
@@ -16,6 +17,10 @@ router.get('/', async (_request, response) => {
 router.get('/:id', async (request, response) => {
   const { id } = request.params;
   const product = await ProductsService.findById(id);
+
+  if (product.notFound) {
+    return response.status(UNPROCESSABLE_ENTITY).json(product.notFound);
+  };
 
   response.status(SUCCESS).json(product);
 });

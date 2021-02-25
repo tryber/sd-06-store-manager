@@ -16,7 +16,6 @@ async function findById(id) {
   const queryResult = await db
     .collection('products')
     .findOne(ObjectId(id));
-
   return queryResult;
 }
 
