@@ -1,9 +1,11 @@
 const controller = require('../Controllers/saleControllers');
 const saleValidate = require('../Utils/Sales/saleValidation');
 const idValidation = require('../Utils/Sales/saleIdValidation');
+const saleExistence = require('../Utils/Sales/saleExistence');
 const { Router } = require('express');
 
 const SUCCESS = 200;
+const NOTFOUND = 404;
 
 const router = new Router();
 
@@ -36,6 +38,14 @@ router.put('/:id', idValidation, saleValidate, async (req, res) => {
   const updatedSale = await controller.updateById(id, itensSold);
 
   return res.status(SUCCESS).send(updatedSale);
+});
+
+router.delete('/:id',saleExistence ,async (req, res) => {
+  const { id } = req.params;
+
+  const deletedSale = await controller.deleteById(id);
+  
+  return res.status(SUCCESS).send(deletedSale);
 });
 
 module.exports = router;
