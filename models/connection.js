@@ -9,7 +9,7 @@ const MONGO_DB_URL = 'mongodb://mongodb:27017/StoreManager';
 async function getCollection(collectionName) {
   connection =
     connection ||
-    (await MongoClient.connect(DB_URL, {
+    (await MongoClient.connect(MONGO_DB_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     }));
