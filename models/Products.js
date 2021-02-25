@@ -36,10 +36,20 @@ const update = async (id, name, quantity) => {
 };
 //3
 
+//4 ** Troquei o deleteOne por findOneAndDelete para retornar o porduto em Json
+const remove = async (id, name, quantity) => {
+  return await connection().then(db => db.collection('products').findOneAndDelete(
+    { _id: ObjectId(id) },
+    { $set: {name, quantity} }
+  ));
+};
+//4
+
 module.exports = {
   getAll,
   create,
   getByName,
   getById,
-  update
+  update,
+  remove
 };

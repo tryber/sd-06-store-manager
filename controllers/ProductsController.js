@@ -129,4 +129,20 @@ router.put('/:id', async (req, res) => {
 });
 // 3
 
+//4
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  if(!ObjectId.isValid(id)) {
+    return res.status(Erro422).json({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format'
+      }
+    });
+  }
+  const product = await Products.remove(id);
+  return res.status(SUCCESS).json(product.value);
+});
+//4
+
 module.exports = router;
