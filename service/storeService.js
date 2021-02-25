@@ -21,6 +21,9 @@ const remove = async (id) => {
 };
 
 //Sales
+const salesList = async () => {
+  return await Store.salesList();
+};
 const createSales = async (products) => {
   return await Store.createSales(products);
 };
@@ -34,6 +37,7 @@ module.exports = {
   findById,
   update,
   remove,
+  salesList,
   createSales,
   findSalesById
 };

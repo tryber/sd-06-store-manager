@@ -1,4 +1,4 @@
-const { findByName, findById } = require('../models/store');
+const { findByName, findById, findSalesById } = require('../models/store');
 const { ObjectId } = require('mongodb');
 
 const validateCreate = async (req, res, next) => {
@@ -83,10 +83,24 @@ const rightId = async (req, res, next) => {
   }
   next();
 };
-
+const salesId = async (req, res, next) => {
+  const { id } = req.params;
+  const err = 404;
+  if (!ObjectId.isValid(id)) {
+    return res.status(err)
+      .json({ err: { code: 'not_found', message: 'Sale not found' } });
+  }
+  const check = await findSalesById(id);
+  if (!check) {
+    return res.status(err)
+      .json({ err: { code: 'not_found', message: 'Sale not found' } });
+  }
+  next();
+};
 module.exports = {
   validateCreate,
   rightId,
   nameExist,
-  checkQuantitySold
+  checkQuantitySold,
+  salesId
 };

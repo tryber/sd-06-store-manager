@@ -30,14 +30,19 @@ const remove = async (id) => {
     db.collection('products').deleteOne({ _id: ObjectId(id) }));
 };
 //sales
+const salesList = async () => {
+  return await connection().then((db) =>
+    db.collection('sales').find().toArray());
+};
+
+const findSalesById = async (id) => {
+  return await connection().then((db) =>
+    db.collection('sales').findOne(ObjectId(id)));
+};
 const createSales = async (products) => {
   return await connection().then((db) =>
     db.collection('sales')
       .insertOne({ itensSold: products }));
-};
-const findSalesById = async (id) => {
-  return await connection().then((db) =>
-    db.collection('sales').findOne(ObjectId(id)));
 };
 module.exports = {
   createProduct,
@@ -46,6 +51,7 @@ module.exports = {
   findById,
   update,
   remove,
+  salesList,
   createSales,
   findSalesById
 };
