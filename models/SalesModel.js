@@ -19,8 +19,15 @@ const getSaleById = async (id) => {
   return result;
 };
 
+const deleteSale = async (id) => {
+  const result = await connection()
+    .then((db) => db.collection('products').deleteOne({_id: ObjectId(id) }));
+  return result;
+};
+
 module.exports = {
   create,
   getAll,
   getSaleById,
+  deleteSale,
 };

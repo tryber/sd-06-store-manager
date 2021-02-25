@@ -44,4 +44,18 @@ SalesController.get('/:id', async (req, res) => {
     }});
 });
 
+SalesController.delete('/:id', async (req, res) => {
+  const id = req.params.id;
+  if(ObjectId.isValid(id)){
+    const deletedSale = await getSaleById(id);
+    await deleteSale(id);
+    return res.status(STATUS_OK).json(deletedSale);
+  }
+  return res.status(STATUS_UNPROCESSABLE).json({
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong sale ID format'
+    }});;
+});
+
 module.exports = SalesController;
