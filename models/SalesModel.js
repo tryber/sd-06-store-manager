@@ -16,7 +16,7 @@ const getById = async (id) =>{
 const create = async (arr) => {
   const { insertedId } = await connection()
     .then((db) => 
-      db.collection('sales').insertOne({ itemsSold: arr }));
+      db.collection('sales').insertOne({ itensSold: arr }));
   return {
     _id: insertedId,
     itensSold: arr

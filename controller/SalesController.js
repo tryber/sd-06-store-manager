@@ -8,6 +8,7 @@ const salesRouter = express.Router();
 const SUCCESS = 200;
 const CREATED = 201;
 const INVALID = 422;
+const NOT_FOUND = 404;
 
 salesRouter.get('/', async (_req, res) => {
   const getSales = await SalesModel.getAll();
@@ -20,15 +21,15 @@ salesRouter.get('/:id', async (req, res) => {
   const valId = ObjectId.isValid(id);
   
   if (!valId) {
-    return res.status(INVALID).json({ err: 
-      {code: 'invalid_data', message: 'Wrong id format'}});
+    return res.status(NOT_FOUND).json({ err: 
+      {code: 'not_found', message: 'Sale not found'}});
   };
     
   const productByID = await SalesModel.getById(ObjectId(id));
 
   if (!productByID) {
-    return res.status(INVALID).json({ err: 
-      {code: 'invalid_data', message: 'Wrong id format'}});
+    return res.status(NOT_FOUND).json({ err: 
+      {code: 'not_found', message: 'Sale not found'}});
   };
 
   return res.status(SUCCESS).json(productByID);
