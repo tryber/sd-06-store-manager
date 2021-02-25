@@ -3,6 +3,7 @@ const ProductsService = require('../services/ProductsService');
 const { checkProductRepetition } = require('../middlewares');
 const { validateProductName } = require('../middlewares');
 const { validateQuantity } = require('../middlewares');
+const { validateId } = require('../middlewares');
 
 const router = Router();
 const SUCCESS = 200;
@@ -14,7 +15,7 @@ router.get('/', async (_request, response) => {
   response.status(SUCCESS).json(products);
 });
 
-router.get('/:id', async (request, response) => {
+router.get('/:id', validateId, async (request, response) => {
   const { id } = request.params;
   const requestedProduct = await ProductsService.findById(id);
 
