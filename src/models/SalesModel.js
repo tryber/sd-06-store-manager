@@ -22,9 +22,16 @@ const getById = async (id) => {
 
 };
 
+const exclude = async (id) => {
+  const sale = await connection()
+    .then((db) => db.collection('sales').deleteOne({_id: ObjectId(id) }));
+  return sale;
+};
+
 
 module.exports = {
   create,
   getAll,
   getById,
+  exclude,
 };

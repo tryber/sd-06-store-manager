@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { create, getAll, getById } = require('../models/SalesModel');
+const { create, getAll, getById, exclude } = require('../models/SalesModel');
 const { ObjectId } = require('mongodb');
 
 const SalesController = new Router();
@@ -56,6 +56,22 @@ SalesController.get('/:id', async (req, res) => {
         }});
   }
   return res.status(STATUS_OK).json(sale);
+});
+
+// Requisito 8
+SalesController.delete('/:id', async (req, res) => {
+  const id = req.params.id;
+  if (!ObjectId.isValid(id)) {
+    return res.status(STATUS_UNPROCESSABLE)
+      .json({
+        err: {
+          code: 'invalid_data',
+          message: 'Wrong sale ID format'
+        }});
+  }
+  const deletedSale = await getById(id);
+  await exclude(id);
+  return res.status(STATUS_OK).json(deletedSale);
 });
 
 module.exports = SalesController;
