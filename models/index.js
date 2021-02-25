@@ -1,4 +1,4 @@
-const handlingDB = require('./handlingDB');
+const  productsHandlingDB  = require('./ProductsHandlingDB');
 const connection = require('./connection');
 
-module.exports = {handlingDB,connection};
+module.exports = { productsHandlingDB ,connection};

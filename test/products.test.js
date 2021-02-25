@@ -119,7 +119,7 @@ describe('1 - Crie um endpoint para o cadastro de produtos', () => {
       });
   });
 
-  it.only('Será validado que é possível criar um produto com sucesso', async () => {
+  it('Será validado que é possível criar um produto com sucesso', async () => {
     await frisby
       .post(`${url}/products`, {
         name: 'Arco do Gavião Arqueiro',
@@ -171,7 +171,7 @@ describe('2 - Crie um endpoint para listar os produtos', () => {
   it('Será validado que todos produtos estão sendo retornados', async () => {
     await frisby
       .get(`${url}/products`)
-      .expect('status', 200)
+      .expect('status', 200) 
       .then((res) => {
         let { body } = res;
         body = JSON.parse(body);

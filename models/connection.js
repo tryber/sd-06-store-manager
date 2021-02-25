@@ -1,11 +1,9 @@
 const { MongoClient } = require('mongodb');
 
-// const MONGO_DB_URL = 'mongodb://localhost:27017/StoreManager';
-// const DB_NAME = 'StoreManager';
+const isEvaluator = false;
 
-// Para o avaliador funcionar altere a conexão do banco para:
-
-const MONGO_DB_URL = 'mongodb://mongodb:27017/StoreManager';
+const MONGO_DB_URL = (isEvaluator) ?  'mongodb://mongodb:27017/StoreManager' 
+  : 'mongodb://localhost:27017/StoreManager';
 const DB_NAME = 'StoreManager';
 
 const connection = async () => {
