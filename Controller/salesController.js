@@ -16,9 +16,8 @@ const qntMessage = {
 const create = async (req, res) => {
   const {productId, quantity} = req.body;
 
-  const quantities = quantity.array.forEach(element => {
-    
-  });
+  const quantities = quantity.find((sales) => sales.quantidade);
+  console.log(quantities);
 
   if(quantity <= ZERO) {
     return res.status(codeErr).json({ err: qntMessage});
