@@ -8,7 +8,8 @@ const {
   findSalesById,
   salesList,
   createSales,
-  saleUpdate
+  saleUpdate,
+  salesRemove
 } = require('../service/storeService');
 
 const saleController = new Router();
@@ -18,7 +19,8 @@ const {
   rightId,
   nameExist,
   salesId,
-  checkQuantitySold
+  checkQuantitySold,
+  rightIdSales
 } = require('../middleware/storeMiddleware');
 
 saleController.get('/', async (req, res) => {
@@ -51,5 +53,12 @@ saleController.put('/:id', checkQuantitySold, async (req, res) => {
   res.status(okay)
     .json({ _id: id, itensSold: products });
 });
+saleController.delete('/:id', rightIdSales, async (req, res) => {
+  const { id } = req.params;
+  const okay = 200;
+  const salesById = await findSalesById(id);
+  await salesRemove(id);
 
+  res.status(okay).json(salesById);
+});
 module.exports = saleController;

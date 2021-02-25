@@ -97,10 +97,25 @@ const salesId = async (req, res, next) => {
   }
   next();
 };
+const rightIdSales = async (req, res, next) => {
+  const { id } = req.params;
+  const err = 422;
+  if (!ObjectId.isValid(id)) {
+    return res.status(err)
+      .json({ err: { code: 'invalid_data', message: 'Wrong sale ID format' } });
+  }
+  const check = await findSalesById(id);
+  if (!check) {
+    return res.status(err)
+      .json({ err: { code: 'invalid_data', message: 'Wrong sale ID format' } });
+  }
+  next();
+};
 module.exports = {
   validateCreate,
   rightId,
   nameExist,
   checkQuantitySold,
-  salesId
+  salesId,
+  rightIdSales
 };

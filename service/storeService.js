@@ -33,6 +33,9 @@ const findSalesById = async (Sales) => {
 const saleUpdate = async (id, products) => {
   return await Store.saleUpdate(id, products);
 };
+const salesRemove = async (id) => {
+  return await Store.salesRemove(id);
+};
 
 module.exports = {
   createProduct,
@@ -43,5 +46,6 @@ module.exports = {
   salesList,
   createSales,
   findSalesById,
-  saleUpdate
+  saleUpdate,
+  salesRemove
 };
