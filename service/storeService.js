@@ -30,6 +30,9 @@ const createSales = async (products) => {
 const findSalesById = async (Sales) => {
   return await Store.findSalesById(Sales);
 };
+const saleUpdate = async (id, products) => {
+  return await Store.saleUpdate(id, products);
+};
 
 module.exports = {
   createProduct,
@@ -39,5 +42,6 @@ module.exports = {
   remove,
   salesList,
   createSales,
-  findSalesById
+  findSalesById,
+  saleUpdate
 };

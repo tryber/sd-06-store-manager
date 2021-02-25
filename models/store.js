@@ -44,6 +44,15 @@ const createSales = async (products) => {
     db.collection('sales')
       .insertOne({ itensSold: products }));
 };
+const saleUpdate = async (id, products) => {
+  return await connection().then((db) =>
+    db.collection('sales')
+      .updateOne({ _id: ObjectId(id) },
+        { $set: { itensSold: products } }))
+    .catch((err) => {
+      console.log(err.message);
+    });
+};
 module.exports = {
   createProduct,
   findByName,
@@ -53,5 +62,6 @@ module.exports = {
   remove,
   salesList,
   createSales,
-  findSalesById
+  findSalesById,
+  saleUpdate
 };

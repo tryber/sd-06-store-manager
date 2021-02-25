@@ -7,7 +7,8 @@ const {
   remove,
   findSalesById,
   salesList,
-  createSales
+  createSales,
+  saleUpdate
 } = require('../service/storeService');
 
 const saleController = new Router();
@@ -38,6 +39,17 @@ saleController.post('/', checkQuantitySold, async (req, res) => {
   const { ops } = await createSales(products);
 
   res.status(deBoa).json(ops[0]);
+});
+
+saleController.put('/:id', checkQuantitySold, async (req, res) => {
+  const { id } = req.params;
+  const products = req.body;
+  console.log();
+  const okay = 200;
+  await saleUpdate(id, products);
+
+  res.status(okay)
+    .json({ _id: id, itensSold: products });
 });
 
 module.exports = saleController;
