@@ -22,7 +22,7 @@ router.get('/:id', async (request, response) => {
     return response.status(UNPROCESSABLE_ENTITY).json(product.notFound);
   };
 
-  response.status(SUCCESS).json(product);
+  return response.status(SUCCESS).json(product);
 });
 
 router.post('/',
