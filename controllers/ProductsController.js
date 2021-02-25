@@ -8,6 +8,7 @@ const {
   createProductService,
   getAllProductsService,
   getByIdService,
+  editProductService,
 } = require('../service/ProductsService');
 const router = Router();
 const CREATED = 201;
@@ -30,5 +31,11 @@ router.get('/:id', validateId, async (req, res) => {
   return res.status(SUCCESS).json(product);
 });
 
-// router.put('/:id', async(req, res));
+router.put('/:id', validateProduct, async (req, res) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+  const productEdited = await editProductService(id, name, quantity);
+  return res.status(SUCCESS).json(productEdited);
+});
+
 module.exports = router;
