@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { create, getAll, deleteSale } = require('../models/SalesModel');
+const { create, getAll, getSaleById, deleteSale } = require('../models/SalesModel');
 const {ObjectId} = require('mongodb');
 
 const SalesController = new Router();
