@@ -61,9 +61,16 @@ router.get('/sales/:id', rescue (async (req, res) => {
 router.put('/sales/:id', rescue (async (req, res) => {
   const { id } = req.params;
   const products = req.body;
-  console.log('products controller', products);
 
-  /*   const quantity = products.map((product) => product.quantity);
+  if (!ObjectId.isValid(id)) {
+    return res.status(NOT_FOUND)
+      .json({err: { 
+        code: 'not_found',  
+        message: 'Sale not found' 
+      } });
+  }
+
+  const quantity = products.map((product) => product.quantity);
   const isNotValid = quantity.some((item) => item <= ZERO || typeof item !== 'number');
 
   if (isNotValid) {
@@ -72,10 +79,10 @@ router.put('/sales/:id', rescue (async (req, res) => {
         code: 'invalid_data',
         message: 'Wrong product ID or invalid quantity'
       } });
-  } */
+  }
 
-  const insertedId = await SalesService.updateSale(id);
-  return res.status(SUCCESS).json({ _id:insertedId, itensSold:products });
+  await SalesService.updateSale(id, products);
+  return res.status(SUCCESS).json({ _id:id, itensSold:products });
 }));
 
 router.delete('/sales/:id', rescue (async (req, res) => {

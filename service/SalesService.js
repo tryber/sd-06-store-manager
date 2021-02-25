@@ -13,7 +13,6 @@ const getById = async (id) => {
 };
 
 const updateSale = async (id, productData) => {
-  console.log('product data service', productData);
   return Sales.updateSale(id, productData);
 };
 

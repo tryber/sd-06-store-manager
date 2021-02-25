@@ -26,7 +26,6 @@ const updateSale = async (id, arrayProductsSold) => {
   const registeredSale = {
     itensSold: arrayProductsSold,
   };
-
   const { insertedId } = await connection().then((db) => {
     return db.collection('sales').updateOne(
       { _id: ObjectId(id) },
