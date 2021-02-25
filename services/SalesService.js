@@ -1,6 +1,6 @@
 const SalesModel = require('../models/SalesModel');
 const code = 'invalid_data';
-
+const ZERO = 0;
 
 const validateFields = async (products) => {
   const status = false;
@@ -16,7 +16,7 @@ const validateFields = async (products) => {
   return { status: true };
 };
 
-const insertProducts = async (products) => {
+const insertSale = async (products) => {
   const validate = await validateFields(products);
   if (!validate.status) {
     let err = new Error();
@@ -28,7 +28,7 @@ const insertProducts = async (products) => {
     throw err;
   };
   
-  const insertedId = await SalesModel.insertProducts(products);
+  const insertedId = await SalesModel.insertSale(products);
   return {
     _id: insertedId,
     itensSold: products
@@ -62,8 +62,36 @@ const findById = async (id) => {
   };
 };
 
+const updateSale = async (id, products) => {
+  console.log(products);
+  const validate = await validateFields(products);
+  if (!validate.status) {
+    let err = new Error();
+    err.statuscode = validate.httpcode;
+    err.message = { 
+      code: validate.code, 
+      message: validate.msg
+    };
+    throw err;
+  };
+  try {
+    await SalesModel.updateSale(id, products);
+  } catch {
+    let err = new Error();
+    err.statuscode = 422;
+    err.message = { 
+      code, 
+      message: 'Wrong product ID or invalid quantity'
+    };
+    throw err;
+  }
+
+  return true;
+};
+
 module.exports = {
-  insertProducts,
+  insertSale,
   getAll,
   findById,
+  updateSale,
 };
