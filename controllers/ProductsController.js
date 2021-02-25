@@ -20,6 +20,7 @@ router.post('/', validateProduct, validateName, async (req, res) => {
 
 router.get('/', async (_req, res) => {
   const allProducts = await getAllProductsServices();
+  console.log(allProducts);
 
   return res.status(OK).json(allProducts);
 });
@@ -29,7 +30,7 @@ router.get('/:id', validateId, async(req, res) => {
 
   const productById = await getByIdServices(id);
 
-  return res.status(OK).json(productById);
+  return res.status(OK).json({ products: productById});
 });
 
 module.exports = router; 
