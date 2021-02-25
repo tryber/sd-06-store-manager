@@ -9,7 +9,7 @@ const create = async (sale) => {
     const createdSales = await connection()
       .then((db) => db.collection('sales').findOne({ _id: ObjectId(insertedId) }));
 
-    return createdSales
+    return createdSales;
   }
 
   if(sale.length === undefined) {
@@ -19,7 +19,7 @@ const create = async (sale) => {
     const createdSale = await connection()
       .then((db) => db.collection('sales').findOne({ _id: ObjectId(insertedId) }));
 
-    return createdSale
+    return createdSale;
   }
 };
 
