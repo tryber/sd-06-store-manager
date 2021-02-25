@@ -40,7 +40,7 @@ routerProducts.get('/:id', async (req, res) => {
   }
 });
 
-routerProducts.put('/:id', async (req, res) => {
+routerProducts.put('/:id', verifyProduct, async (req, res) => {
   const { name, quantity } = req.body;
   const { id } = req.params;
   try {
