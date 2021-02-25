@@ -22,13 +22,17 @@ const validateBody = async (req, res, next) =>{
   next();
 };
 
-const idValid = (req,res, next) => {
+const idValid = async(req,res, next) => {
   const { id } = req.params;
   const correctLength = 24;
-  if(id.length !== correctLength) {
-    return res.status(status.Unprocessable_Entity).json(errorMessages.not_id);
-  }
+  if(id.length !== correctLength) return res.status(status.Unprocessable_Entity)
+    .json(errorMessages.not_id);
+  const findId = await productsHandlingDB.findById(id);
+  if(!findId)  return res.status(status.Unprocessable_Entity).json(errorMessages.not_id);
   next();
 };
 
-module.exports={ validateBody, idValid };
+module.exports={
+  validateBody,
+  idValid
+};

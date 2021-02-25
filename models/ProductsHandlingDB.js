@@ -35,4 +35,18 @@ const update = async (id,name, quantity) => {
   return {message: 'nada feito'};
 };
 
-module.exports = {create, findByName, getAll, findById, update};
+const deleteProduct = async (id) => {
+  const resultDelete = await connection().then(db => db.collection('products')
+    .findOneAndDelete( 
+      { _id: ObjectId(id) },   
+      { returnOriginal: false }));
+  return resultDelete.value; 
+};
+
+module.exports = { 
+  create, 
+  findByName,
+  getAll,
+  findById, 
+  update,
+  deleteProduct };
