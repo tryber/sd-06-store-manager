@@ -1,6 +1,5 @@
 import { MongoClient } from 'mongodb'
 import { config } from 'dotenv'
-import createProductsCollection from './createProductsCollection'
 
 // DOTENV CONFIGURATION
 config()
