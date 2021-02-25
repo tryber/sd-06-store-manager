@@ -15,17 +15,13 @@ const getAllProducts = async () => getConnection('products')
 const getProductById = async (id) => getConnection('products')
   .then((db) => db.findOne(ObjectID(id)));
 
-const updateProduct = async (id, name, quantity) => getConnection()
-  .then(async (db) => {
-    db.collection('products')
-      .updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } });
-    return { _id: id, name, quantity };
-  });
+const deleteProduct = async (id) => getConnection('product')
+  .then((db) => db.deleteOne({ _id: ObjectId(id) }));
 
 module.exports = {
   createProduct,
   getProductsByName,
   getAllProducts,
   getProductById,
-  updateProduct,
+  deleteProduct,
 };
