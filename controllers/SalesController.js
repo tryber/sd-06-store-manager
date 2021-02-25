@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const { create, getAll } = require('../models/SalesModel');
+const {ObjectId} = require('mongodb');
 
 const SalesController = new Router();
 const STATUS_OK = 200;
