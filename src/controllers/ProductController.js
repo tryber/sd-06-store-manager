@@ -9,6 +9,7 @@ const createProductService = require('../services/CreateProductService');
 const getProductService = require('../services/GetProductService');
 const getProductByIdService = require('../services/GetProductByIdService');
 const updateProductByIdService = require('../services/updateProductByIdService');
+const deleteProductByIdService = require('../services/deleteProductByIdService');
 
 const createProduct = async (req, res) => {
   const { name, quantity } = req.body;
@@ -42,9 +43,17 @@ const updateProductById = async (req, res) => {
   return res.status(resp[0]).json(resp[1]);
 };
 
+const deleteProductById = async (req, res) => {
+  const id = req.params.id;
+  const resp = await deleteProductByIdService(id);
+
+  return res.status(resp[0]).json(resp[1]);
+};
+
 ProductsRouter.post('/', rescue(createProduct));
 ProductsRouter.get('/', rescue(getAllProduct));
 ProductsRouter.get('/:id', rescue(getProductById));
 ProductsRouter.put('/:id', rescue(updateProductById));
+ProductsRouter.delete('/:id', rescue(deleteProductById));
 
 module.exports = ProductsRouter;
