@@ -1,29 +1,47 @@
 const express = require('express');
 const ProductsModel = require('../models/ProductsModel');
-const validateProducts = require('../utils/validateProducts');
+const validate = require('../utils/validate');
+const { ObjectId } = require('mongodb');
 
 const productsRouter = express.Router();
 
 const SUCCESS = 200;
 const CREATED = 201;
-
+const INVALID = 422;
 
 productsRouter.get('/', async (_req, res) => {
   const getProducts = await ProductsModel.getAll();
   res.status(SUCCESS).json(getProducts);
 });
 
-productsRouter.post('/', async (req, res) => {
-  const { name, quantity } = req.body;
-  validateProducts(res, name, quantity);
-  const { insertedId } = await ProductsModel.create(name, quantity);
-  const newProduct = { id: insertedId, name, quantity };
-  res.status(CREATED).json(newProduct);
+productsRouter.get('/:id', async (req, res) => {
+  const { id } = req.params;
+  const valId = ObjectId.isValid(id);
+  
+  if (!valId) {
+    console.log('aqui');
+    return res.status(INVALID).json({ err: 
+      {code: 'invalid_data', message: 'Wrong id format'}});
+  };
+    
+  const productByID = await ProductsModel.getById(id);
+  if (!productByID) {
+    console.log('aqui');
+    return res.status(INVALID).json({ err: 
+    {code: 'invalid_data', message: 'Wrong id format'}});
+  };
+
+  return res.status(SUCCESS).json(productByID);
 });
 
-// productsRouter.get('/:id', (req, res) => {
-//   const { id } = req.params;
-//   res.send(id);
-// });
+productsRouter.post('/', async (req, res) => {
+  const { name, quantity } = req.body;
+  if (await validate.validateProducts(res, name, quantity)) {
+    const { insertedId } = await ProductsModel.create(name, quantity);
+    const newProduct = { id: insertedId, name, quantity };
+    res.status(CREATED).json(newProduct);
+  }
+});
+
 
 module.exports = productsRouter;
