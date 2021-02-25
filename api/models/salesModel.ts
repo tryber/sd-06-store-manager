@@ -1,15 +1,18 @@
 import dbConnection from './connection'
 import { ObjectId } from 'mongodb'
 
+import { config } from 'dotenv'
+
+// DOTENV CONFIGURATION
+config()
+
 interface IDocument {
   id?: string
   itensSold?: { productId: string, quantity: number }[]
 }
 
-const SALES_TABLE_NAME = 'sales';
-
 const collection = dbConnection()
-.then((db) => db.collection(process.env.SALES_TABLE_NAME || SALES_TABLE_NAME))
+.then((db) => db.collection(process.env.SALES_TABLE_NAME))
 
 export const getAll = () => {
   return collection
