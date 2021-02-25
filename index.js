@@ -1,6 +1,7 @@
 const express = require('express');
-const bodyParsser = require('body-parser');
-const { managerController } = require('./controller');
+
+const bodyParser = require('body-parser');
+const  produtoController  = require('./controller/produtoController'); // produtos vendas lembrar de verificar nomes
 
 const app = express();
 const PORT = 3000;
@@ -9,7 +10,7 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
-app.use(bodyParsser.json());
-app.use('/manager', managerController);
+app.use(bodyParser.json());
+app.use('/products', produtoController);
 
 app.listen(PORT, () => console.log('App listening on PORT %s', PORT));
