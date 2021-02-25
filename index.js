@@ -8,7 +8,7 @@ const PORT = 3000;
 app.use(bodyParser.json());
 app.use('/products', ProductsController);
 
-
+//não retire esse endpoint
 app.get('/', (_request, response) => {
   response.send();
 });
