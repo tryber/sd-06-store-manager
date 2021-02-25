@@ -36,7 +36,7 @@ const createProduct = async ({ name, quantity }) => {
 };
 
 const getByName = async ({ name }) => {
-  const productExists = await model.getByName(name);
+  const productExists = await model.getByName({name});
 
   return productExists;
 };

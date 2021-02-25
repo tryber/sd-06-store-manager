@@ -26,14 +26,22 @@ router.get('/:id', verifyObjectId, rescue(async (req, res) => {
 
 router.post('/', registerProducts, rescue(async (req, res) => {
   const { name, quantity } = req.body;
+  const searcher = await service.getByName({name});
+  console.log(searcher);
 
-  const createdProduct = await service.createProduct({name, quantity});
+  if(!searcher){
+    const createdProduct = await service.createProduct({name, quantity});
+    return res.status(created).json(createdProduct);
+  }
+  return res.status(unprocessable).json({ err:{
+    code: 'invalid_data', message: 'Product already exists'
+  }});
+
   console.log(createdProduct.name);
   
   
   // createdProduct.filter(product => product.name !== name);
 
-  return res.status(created).json(createdProduct);
 }));
 
 router.put('/:id',
