@@ -44,7 +44,21 @@ const validateName = async (req, res, next) => {
   next();
 };
 
+const validateId = async (req, res, next) => {
+  const { id } = req.params;
+  const twentyFour = 24;
+  
+  if(id.length < twentyFour) return res.status(UNPROCESSABLE).json({ err: {
+    code: 'invalid_data',
+    message: 'Wrong id format'
+  }
+  });
+
+  next();
+};
+
 module.exports = {
   validateProduct,
-  validateName
+  validateName,
+  validateId
 };

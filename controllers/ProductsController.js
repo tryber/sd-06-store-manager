@@ -1,9 +1,14 @@
 const { Router } = require('express');
-const { createProductService } = require('../service/ProductsService');
-const { validateName, validateProduct } = require('../middlewares/productsMid');
+const { createProductService,
+  getAllProductsServices,
+  getByIdServices } = require('../service/ProductsService');
+const { validateName,
+  validateProduct,
+  validateId } = require('../middlewares/productsMid');
 
 const router = Router();
 const SUCESS = 201;
+const OK = 200;
 
 router.post('/', validateProduct, validateName, async (req, res) => {
   const { name, quantity } = req.body;
@@ -11,6 +16,20 @@ router.post('/', validateProduct, validateName, async (req, res) => {
   const productCreated = await createProductService(name, quantity);
 
   return res.status(SUCESS).json(productCreated);
+});
+
+router.get('/', async (_req, res) => {
+  const allProducts = await getAllProductsServices();
+
+  return res.status(OK).json(allProducts);
+});
+
+router.get('/:id', validateId, async(req, res) => {
+  const { id } = req.params;
+
+  const productById = await getByIdServices(id);
+
+  return res.status(OK).json(productById);
 });
 
 module.exports = router; 
