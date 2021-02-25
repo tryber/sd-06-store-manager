@@ -40,7 +40,7 @@ SalesController.get('/:id', async (req, res) => {
   return res.status(STATUS_NOT_FOUND).json({
     err: {
       code: 'not_found',
-      message: 'Sale not Found'
+      message: 'Sale not found'
     }});
 });
 
