@@ -1,4 +1,5 @@
 const productsService = require('../Service/productsService');
+const { ObjectId } = require('mongodb');
 const Unauthorized = 422;
 
 const validateNameSize = (req, _res, next) => {
@@ -59,9 +60,23 @@ const quantityNotAString = (req, _res, next) => {
   next();
 };
 
+const validateId = (req, _res, next) => {
+  const { id } = req.params;
+  if (!ObjectId.isValid(id)) 
+    return next({
+      status: Unauthorized,  
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format'
+      }
+    });
+  next();
+};
+
 module.exports = {
   validateNameSize,
   productAlreadyExits,
   quantityNotNegativeOrZero,
-  quantityNotAString
+  quantityNotAString,
+  validateId
 };
