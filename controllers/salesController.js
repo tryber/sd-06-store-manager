@@ -1,27 +1,61 @@
-const express = require('express');
-
-const salesRouter = express.Router();
+const salesService = require('../services/salesService');
 
 const SUCCESS = 200;
 
-salesRouter.get('/', (request, response) => {
-  return response.status(SUCCESS).json({ message: 'listar todos os vendas'});
-});
+const getAll = async (request, response) => {
+  try {
+    const sales = await salesService.getAll();
+    return response.status(SUCCESS).json(sales);
+  } catch (err) {
+    next(err);
+  }
+};
 
-salesRouter.post('/', (request, response) => {
-  return response.status(SUCCESS).json({ message: 'cadastro de vendas'});
-});
+const findById = async (request, response, next) => {
+  try {
+    const { id } = request.params;
+    const sale = await salesService.findById(id);
+    return response.status(SUCCESS).json(sale);
+  } catch (err) {
+    next(err);
+  }
+};
 
-salesRouter.put('/', (request, response) => {
-  return response.status(SUCCESS).json({ message: 'atualizar venda'});
-});
+const create = async(request, response, next) => {
+  try {
+    const sale = request.body;
+    const registeredSale = await salesService.create(sale);
+    return response.status(SUCCESS).json(registeredSale);
+  } catch (err) {
+    next(err);
+  }
+};
 
-salesRouter.get('/:id', (request, response) => {
-  return response.status(SUCCESS).json({message: 'venda id'});
-});
+const update = async (request, response, next) => {
+  try {
+    const { id } = request.params;
+    const sale = request.body;
+    const updatedSale = await salesService.update(id, sale);
+    return response.status(SUCCESS).json(updatedSale);
+  } catch (err) {
+    next(err);
+  }
+};
 
-salesRouter.delete('/:id', (request, response) => {
-  return response.status(SUCCESS).json({message: 'venda deletado'});
-});
+const remove = async(request, response, next) => {
+  try {
+    const { id } = request.params;
+    const sale = await salesService.remove(id);
+    return response.status(SUCCESS).json(sale);
+  } catch (err) {
+    next(err);
+  }
+};
 
-module.exports = salesRouter;
+module.exports = {
+  getAll,
+  findById,
+  create,
+  update,
+  remove
+};

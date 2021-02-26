@@ -3,8 +3,7 @@ const Products = require('../models/Products');
 const ZERO = 0;
 const MIN_LENGTH = 5;
 
-module.exports = async (name, quantity, update) => {
-
+module.exports = async (name, quantity) => {
   if(name.length < MIN_LENGTH) throw({ 
     err: {
       'code': 'invalid_data',
@@ -23,6 +22,15 @@ module.exports = async (name, quantity, update) => {
     err: {
       'code': 'invalid_data',
       'message': '"quantity" must be a number'
+    }
+  });
+
+  const productExists = await Products.findByName(name);
+  
+  if(productExists) throw({ 
+    err: {
+      'code': 'invalid_data',
+      'message': 'Product already exists'
     }
   });
 };
