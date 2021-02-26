@@ -15,6 +15,14 @@ const qntMessage = {
 
 const getAll = async (req, res) => {
   const allSales = await salesConnection.getAll();
+  console.log(allSales);
+
+  if (!allSales) {
+    return res.status(notFound).json({
+      err: 'not_found',
+      message: 'Sale not found'
+    });
+  }
 
   res.status(OK).json({ sales: allSales});
 };
@@ -41,6 +49,7 @@ const findById = async (req, res) => {
   } else {
     return res.status(OK).json(findId);
   }
+  res.status(OK).json(findId);
 };
 
 const create = async (req, res) => {
@@ -60,7 +69,6 @@ const create = async (req, res) => {
     }
   };
 
-
   for(productId of eachProductId) {
     if(ObjectId.isValid(productId) !== true) {
       return res.status(codeErr).json({ err: qntMessage});
@@ -72,12 +80,10 @@ const create = async (req, res) => {
     }
   };
 
-  const creation = await salesConnection.create(eachProductId, eachQuantity);
+  const creation = await salesConnection.create(sales);
+  /* console.log(creation); */
   
-  res.status(OK).json({
-    _id: creation.insertedId,
-    itensSold: req.body
-  });
+  res.status(OK).json(creation.ops[0]);
   
 };
 
