@@ -63,6 +63,4 @@ routerSales.put('/:id', rescue(async (req, res) => {
   }
 }));
 
-module.exports = {
-  routerSales,
-};
+module.exports = routerSales;
