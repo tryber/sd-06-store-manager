@@ -45,32 +45,33 @@ salesRouter.post('/', async (req, res) => {
 
 // salesRouter.put('/:id', async (req, res) => {
 //   const { id } = req.params;
-//   const { name, quantity } = req.body;
-//   if (await validate.validateUpdateProducts(res, name, quantity)) {
-//     const updated = await SalesModel.update(name, quantity, id);
-//     res.status(SUCCESS).json(updated);
-//   }
+//   const [ { productId, quantity } ] = req.body;
+//   console.log(productId);
+//   // if (await validate.validateUpdateProducts(res, productId, quantity)) {
+//   const updated = await SalesModel.update(productId, quantity, id);
+//   res.status(SUCCESS).json(updated);
+//   // }
 // });
 
-// salesRouter.delete('/:id', async (req, res) => {
-//   const { id } = req.params;
-//   const valId = ObjectId.isValid(id);
+salesRouter.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  const valId = ObjectId.isValid(id);
   
-//   if (!valId) {
-//     return res.status(INVALID).json({ err: 
-//       {code: 'invalid_data', message: 'Wrong id format'}});
-//   };
+  if (!valId) {
+    return res.status(INVALID).json({ err: 
+      {code: 'invalid_data', message: 'Wrong sale ID format'}});
+  };
 
-//   const productByID = await SalesModel.getById(ObjectId(id));
+  const productByID = await SalesModel.getById(ObjectId(id));
 
-//   if (!productByID) {
-//     return res.status(INVALID).json({ err: 
-//       {code: 'invalid_data', message: 'Wrong id format'}});
-//   };
+  if (!productByID) {
+    return res.status(INVALID).json({ err: 
+      {code: 'invalid_data', message: 'Wrong sale ID format'}});
+  };
 
-//   const removed = await SalesModel.remove(id);
-//   return res.status(SUCCESS).json(removed);
-// });
+  const removed = await SalesModel.remove(id);
+  return res.status(SUCCESS).json(removed);
+});
 
 
 module.exports = salesRouter;

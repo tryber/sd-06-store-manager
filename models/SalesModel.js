@@ -23,38 +23,30 @@ const create = async (arr) => {
   };
 };
 
-// const update = async (name, quantity, id) => {
+// const update = async (productId, quantity, id) => {
 //   await connection()
-//     .then((db) => db.collection('sales').updateOne(
-//       { _id: ObjectId(id) }, { $set: {name, quantity} }
-//     ));
-//   return {
-//     _id: id,
-//     name: name,
-//     quantity: quantity
-//   };
 // };
 
-// const remove = async (id) => {
-//   const currId = getById(id);
-//   await connection()
-//     .then((db) => db.collection('sales').deleteOne({ _id: ObjectId(id) }));
+const remove = async (id) => {
+  const currId = getById(id);
+  await connection()
+    .then((db) => db.collection('sales').deleteOne({ _id: ObjectId(id) }));
 
-//   return currId;
-// };
+  return currId;
+};
 
-// const verifyName = async (name) => {
-//   const verify = await connection()
-//     .then(db => db.collection('sales').findOne({ name: name }));
-//   if (verify) return true;
-//   return false;
-// };
+const verifyName = async (name) => {
+  const verify = await connection()
+    .then(db => db.collection('sales').findOne({ name: name }));
+  if (verify) return true;
+  return false;
+};
 
 module.exports = {
   getAll,
   getById,
   create,
-  // verifyName,
+  verifyName,
   // update,
-  // remove
+  remove
 };
