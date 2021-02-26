@@ -51,7 +51,7 @@ router.put('/:id',
     response.status(SUCCESS).json(updatedProduct);
   });
 
-router.delete('/:id', async (request, response) => {
+router.delete('/:id', validateId, async (request, response) => {
   const { id } = request.params;
   const removedProduct = await ProductsService.remove(id);
   if (removedProduct.error) {
