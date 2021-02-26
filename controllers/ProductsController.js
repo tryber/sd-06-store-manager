@@ -13,4 +13,4 @@ productsRouter.post('/', validateProduct, checkIfNotExist, async (request, respo
   return response.status(SUCCESS).json(request.body);
 });
 
-module.exports = { productsRouter };
+module.exports = productsRouter;
