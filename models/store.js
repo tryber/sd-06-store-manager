@@ -40,9 +40,10 @@ const findSalesById = async (id) => {
     db.collection('sales').findOne(ObjectId(id)));
 };
 const createSales = async (products) => {
-  return await connection().then((db) =>
+  const create = await connection().then((db) =>
     db.collection('sales')
       .insertOne({ itensSold: products }));
+  return create;
 };
 const saleUpdate = async (id, products) => {
   return await connection().then((db) =>
