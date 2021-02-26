@@ -21,7 +21,7 @@ router.get('/:id', validateId, async (req, res) => {
   const { id } = req.params;
 
   const product = await ProductsService.findById(id);
-  console.log(product)
+
   if (!product) return res.status(UNPROCESSABLE_ENTITY).json({
     err: {
       code: 'invalid_data',
