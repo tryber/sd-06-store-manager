@@ -1,42 +1,47 @@
 const SalesModel = require('../models/SalesModel');
 const code = 'invalid_data';
+const SUCCESS = 200;
 
-const validateFields = async (products) => {
+const validateFields = async (req, res, next) => {
+  const products = req.body;
   const status = false;
   const ONE = 1;
 
   const isOK = products
     .some(product => (typeof product.quantity !== 'number' || product.quantity < ONE) );
 
-  if (isOK) return {
-    status, code, httpcode: 422, msg: 'Wrong product ID or invalid quantity' 
-  };
-
-  return { status: true };
-};
-
-const insertSale = async (products) => {
-  const validate = await validateFields(products);
-  if (!validate.status) {
+  if (isOK) {
     let err = new Error();
-    err.statuscode = validate.httpcode;
+    err.statuscode = 422;
     err.message = { 
-      code: validate.code, 
-      message: validate.msg
+      code, 
+      message: 'Wrong product ID or invalid quantity' 
     };
     throw err;
-  };
+  } 
+  next();
+};
+
+const insertSale = async (req, res) => {
+  const products = req.body;
   
   const insertedId = await SalesModel.insertSale(products);
-  return {
+  const sale =  {
     _id: insertedId,
     itensSold: products
   };
+  return res.status(SUCCESS).json(sale);
 };
 
-const getAll = async () => await SalesModel.getAll();
+const getAll = async (req, res) => {
+  const sales = await SalesModel.getAll();
+  
+  return res.status(SUCCESS).json({ sales });
+};
 
-const findById = async (id) => {
+const findById = async (req, res) => {
+  const { id } = req.params;
+
   const onErrorMsg = {
     statuscode: 404, 
     err: { 
@@ -52,28 +57,24 @@ const findById = async (id) => {
       err.message = onErrorMsg.err;
       throw err;
     };
-    return sale;
+    return res.status(SUCCESS).json({ sale });
   } catch {
     let err = new Error();
     err.statuscode = onErrorMsg.statuscode;
     err.message = onErrorMsg.err;
     throw err;
   };
+  
 };
 
-const updateSale = async (id, products) => {
-  const validate = await validateFields(products);
-  if (!validate.status) {
-    let err = new Error();
-    err.statuscode = validate.httpcode;
-    err.message = { 
-      code: validate.code, 
-      message: validate.msg
-    };
-    throw err;
-  };
+const updateSale = async (req, res) => {
+  const { id } = req.params;
+  const products = req.body;
+  let sale;
+  
   try {
     await SalesModel.updateSale(id, products);
+    sale = await SalesModel.findById(id);
   } catch {
     let err = new Error();
     err.statuscode = 422;
@@ -83,13 +84,15 @@ const updateSale = async (id, products) => {
     };
     throw err;
   }
-  return true;
+  return res.status(SUCCESS).json(sale);
 };
 
-const deleteSale = async (id) => {
-  let product;
+const deleteSale = async (req, res) => {
+  const { id } = req.params;
+  let deletedSale;
+
   try {
-    product = await findById(id);
+    deletedSale = await SalesModel.findById(id);
     await SalesModel.deleteSale(id);
   } catch {
     let err = new Error();
@@ -100,10 +103,11 @@ const deleteSale = async (id) => {
     };
     throw err;
   }
-  return product;
+  return res.status(SUCCESS).json(deletedSale);
 };
 
 module.exports = {
+  validateFields,
   insertSale,
   getAll,
   findById,

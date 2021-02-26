@@ -1,9 +1,6 @@
 const { ObjectId } = require('mongodb');
 const conn = require('./connection');
 
-// const findByName = async (name) => await conn()
-//   .then(db => db.collection('sales').findOne({ name }));
-
 const insertSale = async (products) => {
   const { insertedId } = await conn()
     .then(db => db.collection('sales').insertOne({ itensSold: products }));
@@ -23,7 +20,6 @@ const updateSale = async (id, itensSold) => {
         itensSold
       }
     }));
-  console.log({id, itensSold});
   return +modifiedCount;
 };
 
@@ -31,7 +27,6 @@ const deleteSale = async (id) => conn()
   .then(db => db.collection('sales').deleteOne({_id: ObjectId(id)}));
 
 module.exports = {
-  // findByName,
   insertSale,
   getAll,
   findById,
