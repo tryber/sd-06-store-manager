@@ -78,23 +78,23 @@ const isQuantityInStock = async (request, response, next) => {
   next();
 };
 
-  // const resultado = saleInOrder.map(dado => {
-  //   return productsDB.filter(produto => {
-  //     return produto['_id'] === dado.productId && produto.quantity < dado.quantity;
-  //   });
-  // });
+// const resultado = saleInOrder.map(dado => {
+//   return productsDB.filter(produto => {
+//     return produto['_id'] === dado.productId && produto.quantity < dado.quantity;
+//   });
+// });
 
 
-  // if (resultado.length >= 1) return response
-  //   .status(errorNotFound)
-  //   .json(messageError('stock_problem', 'Such amount is not permitted to sell'));
-  
-  // const result = saleInOrder.filter((sale) => {
-  //   const result = Products.findById(sale.productId);
-  //   if (result.quantity < sale.quantity) return response
-  //     .status(errorNotFound)
-  //     .json(messageError('stock_problem', 'Such amount is not permitted to sell'));
-  // })
+// if (resultado.length >= 1) return response
+//   .status(errorNotFound)
+//   .json(messageError('stock_problem', 'Such amount is not permitted to sell'));
+
+// const result = saleInOrder.filter((sale) => {
+//   const result = Products.findById(sale.productId);
+//   if (result.quantity < sale.quantity) return response
+//     .status(errorNotFound)
+//     .json(messageError('stock_problem', 'Such amount is not permitted to sell'));
+// })
 
 module.exports = {
   validateQuantity,

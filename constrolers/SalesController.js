@@ -22,7 +22,8 @@ SalesController.post('/',
     await service.updateQuantity(itensSold);
 
     return response.status(status0).json(insertedSale);
-});
+  }
+);
 
 SalesController.get('/:id', validate.saleExists, async (request, response) => {
   const { id } = request.params;
