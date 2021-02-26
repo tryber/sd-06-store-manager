@@ -16,6 +16,10 @@ const getSaleById = async (id) => {
   return await salesModels.getSaleById(id);
 };
 
+const updateSale = async (id, saleInfo) => {
+  return await salesModels.updateSale(id, saleInfo);
+};
+
 const validateSale = async (request, response, next) => {
   const sale = request.body;
   sale.forEach((sale) => {
@@ -49,4 +53,5 @@ module.exports = {
   registerSale,
   validateSale,
   getSaleById,
+  updateSale,
 };

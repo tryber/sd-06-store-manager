@@ -6,6 +6,7 @@ const { registerSale,
   getAllSales,
   getSaleById,
   validateId,
+  updateSale,
 } = require('../services/SalesServices');
 
 const SUCCESS = 200;
@@ -31,6 +32,18 @@ salesRouter.get('/:id', validateId, async (request, response) => {
     }
   });
   response.status(SUCCESS).json(sale);
+});
+
+salesRouter.put('/:id', validateId, validateSale, async (request, response) => {
+  const id = request.params.id;
+  const data = request.body;
+  await updateSale(id, data);
+  const saleUpdated = {
+    _id: ObjectId(id),
+    itensSold: data,
+  };
+
+  response.status(SUCCESS).json(saleUpdated);
 });
 
 
