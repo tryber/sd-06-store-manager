@@ -96,11 +96,22 @@ const editProductById = async (id, name, quantity) => {
   };
 };
 
+const deleteProduct = async(id) => {
+  const invalidId = await isValidId(id);
+
+  if(invalidId.isError){
+    return invalidId;
+  }
+  await product.deleteProduct(id);
+  return invalidId;
+};
+
 module.exports = { 
   createProduct,
   getAll,
   getProductById,
-  editProductById
+  editProductById,
+  deleteProduct
 };
 
 

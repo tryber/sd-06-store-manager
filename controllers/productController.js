@@ -51,13 +51,28 @@ routerProduct.post('/', async (req, res) => {
       },
     });
   }
-
   const newProduct = {
     _id: insertedId.insertedId,
     name,
     quantity,
   };
   return res.status(Created).json(newProduct);
+});
+
+routerProduct.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  const deletedProduct = await productService.deleteProduct(id);
+  if(deletedProduct.isError){
+    return res.status(deletedProduct.status).json(
+      {
+        err: {
+          code: 'invalid_data',
+          message: deletedProduct.message,
+        },
+      }
+    );
+  }
+  return res.status(SUCCESS).json(deletedProduct);
 });
 
 module.exports = routerProduct;
