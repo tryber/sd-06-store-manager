@@ -26,4 +26,16 @@ const idValid = async(req,res, next) => {
   next();
 };
 
-module.exports = { validaQuantity, idValid};
+const idExist = async (req,res,next) => {
+  const { id } = req.params;
+  const correctLength = 24;
+  if(id.length === correctLength){
+    const findId = await SalesHandlingDB.getForId(id);
+    if(findId === null)  return res.status(status.not_found)
+      .json(errorMessages.salesID_existis_);
+  }else { return res.status(status.Unprocessable_Entity)
+    .json(errorMessages.salesID_existis_);}
+  next();
+};
+
+module.exports = { validaQuantity, idValid, idExist };

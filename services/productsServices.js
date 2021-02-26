@@ -1,5 +1,5 @@
 const { productsHandlingDB } = require('../models');
-const { errorMessages, status } = require('../utilsData/dataResponses');
+const { status } = require('../utilsData/dataResponses');
 
 const create = async (req, res,) => {
   const { name, quantity } = req.body;

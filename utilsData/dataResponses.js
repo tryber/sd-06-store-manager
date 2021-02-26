@@ -17,7 +17,10 @@ const errorMessages = {
     message: 'Wrong product ID or invalid quantity'}},
 
   salesNot_id: {err: { code: 'not_found', 
-    message: 'Sale not found'}}
+    message: 'Sale not found'}},
+
+  salesID_existis_: {err: { code: 'invalid_data', 
+    message: 'Wrong sale ID format'}}
 };
 
 const status = {
