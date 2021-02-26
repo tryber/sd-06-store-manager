@@ -34,8 +34,8 @@ SalesController.get('/', async (req, res) => {
 SalesController.get('/:id', async (req, res) => {
   const id = req.params.id;
   if(ObjectId.isValid(id)){
-    const product = await getSaleById(id);
-    return res.status(STATUS_OK).json(product);
+    const sale = await getSaleById(id);
+    return res.status(STATUS_OK).json(sale);
   }
   return res.status(STATUS_NOT_FOUND).json({
     err: {
@@ -55,7 +55,7 @@ SalesController.delete('/:id', async (req, res) => {
     err: {
       code: 'invalid_data',
       message: 'Wrong sale ID format'
-    }});;
+    }});
 });
 
 module.exports = SalesController;

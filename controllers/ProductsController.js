@@ -119,7 +119,7 @@ ProductsController.delete('/:id', async (req, res) => {
     err: {
       code: 'invalid_data',
       message: 'Wrong id format'
-    }});;
+    }});
 });
 
 module.exports = ProductsController;
