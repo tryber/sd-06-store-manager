@@ -22,7 +22,6 @@ const updateSale = async (id, body) => {
 };
 
 const deleteSale = async (id) => {
-  // await getSales(id);
   const salesList = await utils.queryFromDb('sales', id);
   if (!salesList) throw new Error(error.invalidSaleId);
   return utils.deleteFromDb('sales', id);

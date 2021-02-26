@@ -14,7 +14,7 @@ const queryFromDb = async (collection, id) => {
       ? await db.findOne({ _id: ObjectId(id) })
       : { [collection]: await db.find().toArray() };
   } catch (err) {
-    // console.error(err);
+    console.error(err);
     return null;
   }
 };
