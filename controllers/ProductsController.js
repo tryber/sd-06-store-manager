@@ -57,7 +57,6 @@ router.post('/', async (req, res) => {
   if (err) return res.status(Erro422).json({ err });
   //
   const { insertedId } = await Products.create(name, quantity);
-  console.log(insertedId);
   const product = {
     _id: insertedId,
     name,
