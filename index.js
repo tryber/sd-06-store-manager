@@ -1,6 +1,7 @@
 const express = require('express');
 const { expectedError } = require('./Middlewares/expectedError');
 const productsController = require('./Controller/productsController');
+const salesController = require('./Controller/salesController');
 const bodyParser = require('body-parser');
 
 const app = express();
@@ -8,6 +9,7 @@ const bell = 3000;
 
 app.use(bodyParser.json());
 app.use('/products', productsController);
+app.use('/sales', salesController);
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {

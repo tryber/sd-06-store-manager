@@ -48,7 +48,6 @@ const quantityNotNegativeOrZero = (req, _res, next) => {
 
 const quantityNotAString = (req, _res, next) => {
   const { quantity } = req.body;
-  const Zero = 0;
   if (typeof quantity === 'string') 
     return next({
       status: Unauthorized,  
@@ -88,11 +87,40 @@ const wrongId = async(req, _res, next) => {
   next();
 };
 
+const quantityNotNegativeOrZeroSales = (req, _res, next) => {
+  const [{ quantity }] = req.body;
+  const Zero = 0;
+  if (quantity <= Zero) 
+    return next({
+      status: Unauthorized,  
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong product ID or invalid quantity'
+      }
+    });
+  next();
+};
+
+const quantityNotAStringSales = (req, _res, next) => {
+  const [{ quantity }] = req.body;
+  if (typeof quantity === 'string') 
+    return next({
+      status: Unauthorized,  
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong product ID or invalid quantity'
+      }
+    });
+  next();
+};
+
 module.exports = {
   validateNameSize,
   productAlreadyExits,
   quantityNotNegativeOrZero,
   quantityNotAString,
   validateId,
-  wrongId
+  wrongId,
+  quantityNotNegativeOrZeroSales,
+  quantityNotAStringSales
 };
