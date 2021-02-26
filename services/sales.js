@@ -21,8 +21,16 @@ const updateSale = async (id, body) => {
   return results[results.length - 1];
 };
 
+const deleteSale = async (id) => {
+  // await getSales(id);
+  const salesList = await utils.queryFromDb('sales', id);
+  if (!salesList) throw new Error(error.invalidSaleId);
+  return utils.deleteFromDb('sales', id);
+};
+
 module.exports = {
   createSale,
   getSales,
   updateSale,
+  deleteSale,
 };

@@ -29,7 +29,7 @@ const updateProduct = async (id, body) => {
 
 const deleteProduct = async (id) => {
   await getProducts(id);
-  return products.deleteProduct('products', id);
+  return utils.deleteFromDb('products', id);
 };
 
 module.exports = {

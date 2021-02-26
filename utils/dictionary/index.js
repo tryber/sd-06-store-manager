@@ -30,6 +30,9 @@ module.exports = {
     invalidSale: handleMessage(
       'Sale not found', STATUS.notFound, 'not_found'
     ),
+    invalidSaleId: handleMessage(
+      'Wrong sale ID format', STATUS.unpEntity
+    ),
   },
   validations: {
     nameSize: 5,

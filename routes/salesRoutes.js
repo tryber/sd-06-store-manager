@@ -4,6 +4,8 @@ const controllers = require('../controllers/sales');
 
 const sales = express.Router();
 
+sales.delete('/:id', controllers.deleteSale);
+
 sales.get('/:id', controllers.getSales);
 sales.get('/', controllers.getSales);
 

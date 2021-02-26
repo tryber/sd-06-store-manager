@@ -19,7 +19,13 @@ const queryFromDb = async (collection, id) => {
   }
 };
 
+const deleteFromDb = async (collection, id) => {
+  const db = await connection(collection);
+  return (await db.findOneAndDelete({ _id: ObjectId(id)}))['value'];
+};
+
 module.exports = {
   insertToDb,
   queryFromDb,
+  deleteFromDb,
 };
