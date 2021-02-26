@@ -1,9 +1,9 @@
 const salesConnection = require('../Model/salesConnection');
-const { getById } = require('../Model/productsConnection');
+const productsConnection = require('../Model/productsConnection');
 const { ObjectId } = require('mongodb');
-/* const { ObjectId } = require('mongodb'); */
 
 const codeErr = 422;
+const notFound = 404;
 const created = 201;
 const OK = 200;
 const nameLength = 5;
@@ -13,36 +13,76 @@ const qntMessage = {
   message: 'Wrong product ID or invalid quantity'
 };
 
+const getAll = async (req, res) => {
+  const allSales = await salesConnection.getAll();
+
+  res.status(OK).json({ sales: allSales});
+};
+
+const findById = async (req, res) => {
+  const {id} = req.params;
+
+  const validId = ObjectId.isValid(id);
+
+  if(validId !== true) {
+    return res.status(notFound).json({ err: {
+      code: 'not_found',
+      message: 'Sale not found'
+    }});
+  }
+
+  const findId = await salesConnection.findById(id);
+
+  if (!findId) {
+    return res.status(notFound).json({ err: {
+      code: 'not_found',
+      message: 'Sale not found'
+    }});
+  } else {
+    return res.status(OK).json(findId);
+  }
+};
+
 const create = async (req, res) => {
-  const {productId, quantity} = req.body;
+  const sales = req.body;
 
-  const quantities = quantity.find((sales) => sales.quantidade);
-  console.log(quantities);
+  const eachProductId = sales.map((item) => item.productId);
+  /* console.log(eachProductId); */
+  const eachQuantity = sales.map((item) => item.quantity);
+  /* console.log(eachQuantity); */
 
-  if(quantity <= ZERO) {
-    return res.status(codeErr).json({ err: qntMessage});
-  }
-  if(typeof quantity !== 'number') {
-    return res.status(codeErr).json({ err: qntMessage});
-  }
+  for(quantity of eachQuantity) {
+    if(quantity <= ZERO) {
+      return res.status(codeErr).json({ err: qntMessage});
+    }
+    if(typeof quantity !== 'number') {
+      return res.status(codeErr).json({ err: qntMessage});
+    }
+  };
 
-  const verifyId = await getById(productId);
-  const getproductId = verifyId._id;
 
-  if(ObjectId.isValid(getproductId) !== true) {
-    return res.status(codeErr).json({ err: qntMessage});
-  }
-  if (!verifyId) {
-    return res.status(codeErr).json({ err: qntMessage});
-  }
-  const create = await salesConnection.create(productId, quantity);
+  for(productId of eachProductId) {
+    if(ObjectId.isValid(productId) !== true) {
+      return res.status(codeErr).json({ err: qntMessage});
+    }
+
+    const verifyId = await productsConnection.getById(productId);
+    if (!verifyId) {
+      return res.status(codeErr).json({ err: qntMessage});
+    }
+  };
+
+  const creation = await salesConnection.create(eachProductId, eachQuantity);
+  
   res.status(OK).json({
-    _id: create.insertedId,
-    itensSold: [{productId, quantity}]
+    _id: creation.insertedId,
+    itensSold: req.body
   });
   
 };
 
 module.exports = {
   create,
+  getAll,
+  findById,
 };
