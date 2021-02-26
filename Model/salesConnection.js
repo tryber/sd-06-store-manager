@@ -20,6 +20,12 @@ const create = async (itensSold) => {
   return creation;
 };
 
+const update = async (id, itensSold) => {
+  const update = connection()
+    .then((db)=> db.collection('sales').updateOne({_id: ObjectId(id), $set: itensSold}));
+  return update;
+};
+
 const remove = async (id) => {
   const removing = connection()
     .then((db) => db.collection('sales').deleteOne({ _id: ObjectId(id)}));
@@ -30,5 +36,6 @@ module.exports = {
   getAll,
   findById,
   create,
+  update,
   remove,
 };

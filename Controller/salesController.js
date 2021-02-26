@@ -87,7 +87,42 @@ const create = async (req, res) => {
   
 };
 
-const deletar = async (req, res) => {
+const update = async (req, res) => {
+  const {id} = req.params;
+  const body = req.body;
+
+  /* const findById = await salesConnection.findById(id); */
+
+  const eachProductId = body.map((item) => item.productId);
+  const eachQuantity = body.map((item) => item.quantity);
+
+  for(quantity of eachQuantity) {
+    if(quantity <= ZERO) {
+      return res.status(codeErr).json({ err: qntMessage});
+    }
+    if(typeof quantity !== 'number') {
+      return res.status(codeErr).json({ err: qntMessage});
+    }
+  };
+
+  for(productId of eachProductId) {
+    if(ObjectId.isValid(productId) !== true) {
+      return res.status(codeErr).json({ err: qntMessage});
+    }
+
+    const verifyId = await productsConnection.getById(productId);
+    if (!verifyId) {
+      return res.status(codeErr).json({ err: qntMessage});
+    }
+  };
+
+  const update = await salesConnection.update(id, body);
+
+
+  res.status(OK).json({_id: id, itensSold: body});
+};
+
+const remove = async (req, res) => {
   const {id} = req.params;
 
   const isValid = ObjectId.isValid(id);
@@ -119,8 +154,9 @@ const deletar = async (req, res) => {
 };
 
 module.exports = {
-  create,
   getAll,
   findById,
-  deletar,
+  create,
+  update,
+  remove,
 };
