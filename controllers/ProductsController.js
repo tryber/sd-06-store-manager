@@ -23,8 +23,8 @@ productsRouter.get('/', async (request, response) => {
 });
 
 productsRouter.get('/:id', validateId, async (request, response) => {
-  const productList = await getProductById(request.params.id);
-  response.status(SUCCESS).json({ products: productList });
+  const product = await getProductById(request.params.id);
+  response.status(SUCCESS).json(product);
 });
 
 module.exports = productsRouter;
