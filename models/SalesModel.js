@@ -13,15 +13,12 @@ const getAll = async () => await conn()
 const findById = async (id) => await conn()
   .then(db => db.collection('sales').findOne(ObjectId(id)));
 
-const updateSale = async (id, itensSold) => {
-  const { modifiedCount } = await conn()
-    .then(db => db.collection('sales').updateOne({_id: ObjectId(id)}, {
-      $set: { 
-        itensSold
-      }
-    }));
-  return +modifiedCount;
-};
+const updateSale = async (id, itensSold) => await conn()
+  .then(db => db.collection('sales').updateOne({_id: ObjectId(id)}, {
+    $set: { 
+      itensSold
+    }
+  }));
 
 const deleteSale = async (id) => conn()
   .then(db => db.collection('sales').deleteOne({_id: ObjectId(id)}));

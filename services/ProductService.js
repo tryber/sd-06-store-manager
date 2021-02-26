@@ -1,109 +1,87 @@
 const ProductsModel = require('../models/ProductsModel');
-const code = 'invalid_data';
+const { throwThisError } = require('../utils');
 const ZERO = 0;
+const CREATED = 201;
+const SUCCESS = 200;
+const UNPROCESSABLE_ENTITY = 422;
 
-const validateFields = async (product) => {
-  const status = false;
+const validateFields = async (req, res, next) => {
+  const product = req.body;
   const MIN_CHARS = 5;
   const ONE = 1;
 
-  if (product.name.length < MIN_CHARS) return { 
-    status, code, httpcode: 422, msg: '"name" length must be at least 5 characters long' 
-  };
-  
-  if (typeof product.quantity !== 'number') return { 
-    status, code, httpcode: 422, msg: '"quantity" must be a number' 
-  };
+  switch (true) {
 
-  if (parseInt(product.quantity) < ONE) return { 
-    status, code, httpcode: 422, msg: '"quantity" must be larger than or equal to 1' 
-  };
+  case (product.name.length < MIN_CHARS):
+    throwThisError(
+      UNPROCESSABLE_ENTITY, '"name" length must be at least 5 characters long'
+    );
 
-  if (product.name) {
+  case (typeof product.quantity !== 'number'):
+    throwThisError(UNPROCESSABLE_ENTITY, '"quantity" must be a number');
+
+  case (product.quantity < ONE):
+    throwThisError(UNPROCESSABLE_ENTITY, '"quantity" must be larger than or equal to 1' );
+
+  case (typeof product.name !== undefined):
     const nameExists = await ProductsModel.findByName(product.name);
-    if (nameExists) return { 
-      status, code, httpcode: 422, msg: 'Product already exists' 
-    };
+    if (nameExists) throwThisError(UNPROCESSABLE_ENTITY, 'Product already exists');
+    
+  default:
+    next();
   }
-
-  return { status: true };
 };
 
-const insertProduct = async (product) => {
-  const validate = await validateFields(product);
-  if (!validate.status) {
-    let err = new Error();
-    err.statuscode = validate.httpcode;
-    err.message = { 
-      code: validate.code, 
-      message: validate.msg
-    };
-    throw err;
-  };
-    
+const insertProduct = async (req, res) => {
+  const product = req.body;
+
   const newId = await ProductsModel.insertProduct(product);
   const { name, quantity } = product;
-  return {
+  const responseMessage = {
     _id: newId,
     name,
     quantity,
   };
+  return res.status(CREATED).json(responseMessage);
 };
 
-const getAll = async () => await ProductsModel.getAll();
+const getAll = async (req, res) => {
+  const all = await ProductsModel.getAll();
+  return res.status(SUCCESS).json({ products: all });
+};
 
-const findById = async (id) => {
-  const onErrorMsg = {
-    statuscode: 422, 
-    err: { 
-      code, 
-      message: 'Wrong id format'
-    } };
+const findById = async (req, res) => {
+  const { id } = req.params;  
 
   try {
     const result = await ProductsModel.findById(id);
-    if (!result) {
-      let err = new Error();
-      err.statuscode = onErrorMsg.statuscode;
-      err.message = onErrorMsg.err;
-      throw err;
-    };
-    return result;
+    if (!result) throwThisError(UNPROCESSABLE_ENTITY, 'Wrong id format');
+    return res.status(SUCCESS).json(result);
   } catch {
-    let err = new Error();
-    err.statuscode = onErrorMsg.statuscode;
-    err.message = onErrorMsg.err;
-    throw err;
+    throwThisError(UNPROCESSABLE_ENTITY, 'Wrong id format');
   };
 };
 
-const updateProduct = async (id, name, quantity) => {
-  const validate = await validateFields({name, quantity});
-  if (!validate.status) {
-    let err = new Error();
-    err.statuscode = validate.httpcode;
-    err.message = { 
-      code: validate.code, 
-      message: validate.msg
-    };
-    throw err;
-  };
-
+const updateProduct = async (req, res) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+ 
   const modifiedCount = await ProductsModel.updateProduct(id, name, quantity);
-  if (modifiedCount === ZERO) return { 
-    statuscode: 422, 
-    err: { 
-      code, 
-      message: 'No changes'
-    }
-  }; 
-  return true;
+  if (modifiedCount === ZERO) throwThisError(UNPROCESSABLE_ENTITY, 'No changes');
+  return res.status(SUCCESS).json({ _id: id, name, quantity });
 };
 
-const deleteProduct = async (id) => {
-  const product = await findById(id);
-  await ProductsModel.deleteProduct(id);
-  return product;
+const deleteProduct = async (req, res) => {
+  const { id } = req.params;
+  let product;
+
+  try {
+    product = await ProductsModel.findById(id);
+    await ProductsModel.deleteProduct(id);
+  } catch {
+    throwThisError(UNPROCESSABLE_ENTITY, 'Wrong id format');
+  }
+  return res.status(SUCCESS).json(product);
 };
 
 module.exports = {

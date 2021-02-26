@@ -1,24 +1,18 @@
 const SalesModel = require('../models/SalesModel');
-const code = 'invalid_data';
+const { throwThisError } = require('../utils');
 const SUCCESS = 200;
+const UNPROCESSABLE_ENTITY = 422;
+const NOT_FOUND = 404;
 
 const validateFields = async (req, res, next) => {
   const products = req.body;
-  const status = false;
   const ONE = 1;
 
-  const isOK = products
+  const notOK = products
     .some(product => (typeof product.quantity !== 'number' || product.quantity < ONE) );
 
-  if (isOK) {
-    let err = new Error();
-    err.statuscode = 422;
-    err.message = { 
-      code, 
-      message: 'Wrong product ID or invalid quantity' 
-    };
-    throw err;
-  } 
+  if (notOK) throwThisError(UNPROCESSABLE_ENTITY, 'Wrong product ID or invalid quantity');
+
   next();
 };
 
@@ -41,30 +35,14 @@ const getAll = async (req, res) => {
 
 const findById = async (req, res) => {
   const { id } = req.params;
-
-  const onErrorMsg = {
-    statuscode: 404, 
-    err: { 
-      code: 'not_found', 
-      message: 'Sale not found'
-    } };
-
+  const throwNotFoundErr = () => throwThisError(NOT_FOUND, 'Sale not found', 'not_found');
   try {
     const sale = await SalesModel.findById(id);
-    if (!sale) {
-      let err = new Error();
-      err.statuscode = onErrorMsg.statuscode;
-      err.message = onErrorMsg.err;
-      throw err;
-    };
+    if (!sale) throwNotFoundErr();
     return res.status(SUCCESS).json({ sale });
   } catch {
-    let err = new Error();
-    err.statuscode = onErrorMsg.statuscode;
-    err.message = onErrorMsg.err;
-    throw err;
+    throwNotFoundErr();
   };
-  
 };
 
 const updateSale = async (req, res) => {
@@ -76,13 +54,7 @@ const updateSale = async (req, res) => {
     await SalesModel.updateSale(id, products);
     sale = await SalesModel.findById(id);
   } catch {
-    let err = new Error();
-    err.statuscode = 422;
-    err.message = { 
-      code, 
-      message: 'Wrong product ID or invalid quantity'
-    };
-    throw err;
+    throwThisError(UNPROCESSABLE_ENTITY, 'Wrong product ID or invalid quantity');
   }
   return res.status(SUCCESS).json(sale);
 };
@@ -95,13 +67,7 @@ const deleteSale = async (req, res) => {
     deletedSale = await SalesModel.findById(id);
     await SalesModel.deleteSale(id);
   } catch {
-    let err = new Error();
-    err.statuscode = 422;
-    err.message = { 
-      code, 
-      message: 'Wrong sale ID format'
-    };
-    throw err;
+    throwThisError(UNPROCESSABLE_ENTITY, 'Wrong sale ID format');
   }
   return res.status(SUCCESS).json(deletedSale);
 };

@@ -15,6 +15,6 @@ app.get('/', (_request, response) => {
 app.use('/products', ProductController);
 app.use('/sales', SalesController);
 
-// app.all('*', (req, res) => res.send({ error: 'This endpoint does not exist' }));
+app.all('*', (req, res) => res.send({ error: 'This endpoint does not exist' }));
 
 app.listen(port);
