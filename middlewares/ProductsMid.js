@@ -2,7 +2,6 @@ const { getByName, getById }  = require('../models/ProductsModel');
 const FIVE = 5;
 const ZERO = 0;
 const UNPROCESSABLE = 422;
-
 const validateProduct = (req, res, next) => {
   const { name, quantity } = req.body;
   if (!name || name.length < FIVE) return res.status(UNPROCESSABLE).json({ err: {
@@ -10,7 +9,6 @@ const validateProduct = (req, res, next) => {
     message: '"name" length must be at least 5 characters long',
   }
   });
-     
   if (!quantity || quantity < ZERO || quantity === ZERO)  return res.status(UNPROCESSABLE)
     .json({ err: {
       code: 'invalid_data',
@@ -24,7 +22,6 @@ const validateProduct = (req, res, next) => {
   });
   next();
 };
-
 const validateName = async (req, res, next) => {
   const { name } = req.body;
   const result = await getByName(name);
@@ -35,7 +32,6 @@ const validateName = async (req, res, next) => {
   });
   next();
 };
-
 const validateId = async (req, res, next) => {
   const LIMITID = 24;
   const { id } = req.params;
@@ -45,7 +41,6 @@ const validateId = async (req, res, next) => {
   }});
   next();
 };
-
 module.exports = {
   validateProduct,
   validateName,
