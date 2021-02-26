@@ -24,14 +24,14 @@ routerSales.post('/', rescue(async (req, res) => {
   }
 }));
 
-routerSales.get('/', rescue(async (_req, res) => {
-  try {
-    const allSales = await sales.showAllSales();
-    return res.status(status200).json({ allSales });
-  } catch (err) {
-    return res.status(status500).json(err.message);
-  }
-}));
+// routerSales.get('/', rescue(async (_req, res) => {
+//   try {
+//     const allSales = await sales.showAllSales();
+//     return res.status(status200).json({ allSales });
+//   } catch (err) {
+//     return res.status(status500).json(err.message);
+//   }
+// }));
 
 routerSales.get('/:id', rescue(async (req, res) => {
   const { id } = req.params;
