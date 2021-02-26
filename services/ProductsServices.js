@@ -19,6 +19,10 @@ const editProduct = async (id, name, quantity) => {
   return await ProductsModels.editProduct(id, name, quantity);
 };
 
+const deleteProduct = async (id) => {
+  return await ProductsModels.editProduct(id);
+};
+
 const validateProduct = async (request, response, next) => {
   const { name, quantity } = request.body;
   const five = 5;
@@ -88,4 +92,5 @@ module.exports = {
   getProductById,
   validateId,
   editProduct,
+  deleteProduct,
 };
