@@ -253,7 +253,6 @@ describe('6 - Crie um endpoint para listar as vendas', () => {
         const { body } = responseSales;
         resultSales = JSON.parse(body);
         resultSalesId = resultSales._id;
-console.log(resultSales)
       });
 
     await frisby.get(`${url}/sales/`)
