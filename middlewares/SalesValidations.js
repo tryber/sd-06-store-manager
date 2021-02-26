@@ -55,47 +55,22 @@ const idFormat = async (request, response, next) => {
 
 const isQuantityInStock = async (request, response, next) => {
   const saleInOrder = request.body;
-  // const productsDB = await Products.getAllProducts();
 
-  const positive = saleInOrder
-    .filter(async (sale) => await Products
-      .findById(sale.productId).quantity < sale.quantity
-    // const id = sale.productId;
-    // const achei = await Products.findById(id);
-    // console.log(achei);
-    // console.log(`sale: ${sale.quantity}`);
-    // console.log(`banco: ${achei.quantity}`);
-    // return achei.quantity < sale.quantity;
-    );
-  // const result = await positive;
-  console.log(`positive${positive}`);
-  // console.log(saleInOrder);
-
-  // if (positive[0]) return response
-  //   .status(errorNotFound)
-  //   .json(messageError('stock_problem', 'Such amount is not permitted to sell'));
-    
-
-  next();
+  Promise.all(saleInOrder.map(async (sale) => {
+    const { productId, quantity } = sale;
+    const achei = await Products.findById(productId);
+    return achei.quantity > quantity;
+  }))
+    .then((values) => {
+      return !values[0]
+        ?
+        response
+          .status(errorNotFound)
+          .json(messageError('stock_problem', 'Such amount is not permitted to sell'))
+        :
+        next();
+    });
 };
-
-// const resultado = saleInOrder.map(dado => {
-//   return productsDB.filter(produto => {
-//     return produto['_id'] === dado.productId && produto.quantity < dado.quantity;
-//   });
-// });
-
-
-// if (resultado.length >= 1) return response
-//   .status(errorNotFound)
-//   .json(messageError('stock_problem', 'Such amount is not permitted to sell'));
-
-// const result = saleInOrder.filter((sale) => {
-//   const result = Products.findById(sale.productId);
-//   if (result.quantity < sale.quantity) return response
-//     .status(errorNotFound)
-//     .json(messageError('stock_problem', 'Such amount is not permitted to sell'));
-// })
 
 module.exports = {
   validateQuantity,
