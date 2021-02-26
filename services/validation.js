@@ -10,6 +10,13 @@ const ProductSchema = yup.object().shape({
     .min(minQuantity, '\"quantity\" must be larger than or equal to 1')
 });
 
+const SalesSchema = yup.object().shape({
+  productId: yup.string().required(),
+  quantity: yup.number().typeError('Wrong product ID or invalid quantity')
+    .min(minQuantity, 'Wrong product ID or invalid quantity').required()  
+});
+
 module.exports = {
-  ProductSchema
+  ProductSchema,
+  SalesSchema 
 };
