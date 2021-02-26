@@ -20,7 +20,7 @@ const editProduct = async (id, name, quantity) => {
 };
 
 const deleteProduct = async (id) => {
-  return await ProductsModels.editProduct(id);
+  return await ProductsModels.deleteProduct(id);
 };
 
 const validateProduct = async (request, response, next) => {
