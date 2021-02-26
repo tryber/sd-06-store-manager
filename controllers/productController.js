@@ -1,17 +1,13 @@
-const { Router } = require('express');
-
 const services = require('../services/productService');
 
 const { STATUS_CODES: { OK, CREATED } } = require('../utils/dictionary');
 
-const product = Router();
-
-product.get('/', async (req, res) => {
+const getAll = async (req, res) => {
   const products = await services.getAll();
   res.status(OK).json({ products });
-});
+};
 
-product.get('/:id', async (req, res, next) => {
+const getById = async (req, res, next) => {
   try {
     const { id } = req.params;
     const productById = await services.getById(id);
@@ -20,9 +16,9 @@ product.get('/:id', async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-});
+};
 
-product.post('/', async (req, res, next) => {
+const create = async (req, res, next) => {
   try {
     const { name, quantity } = req.body;
     const newProduct = await services.create(name, quantity);
@@ -31,9 +27,9 @@ product.post('/', async (req, res, next) => {
   } catch(err) {
     next(err);
   }
-});
+};
 
-product.put('/:id', async (req, res, next) => {
+const updateById = async (req, res, next) => {
   try {
     const { body: { name, quantity }, params: { id } } = req;
     const updateProduct = await services.updateById(id, name, quantity);
@@ -42,9 +38,9 @@ product.put('/:id', async (req, res, next) => {
   } catch(err) {
     next(err);
   }
-});
+};
 
-product.delete('/:id', async (req, res, next) => {
+const deleteById = async (req, res, next) => {
   try {
     const { params: { id } } = req;
     const deletedProduct = await services.deleteById(id);
@@ -53,6 +49,12 @@ product.delete('/:id', async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-});
+};
 
-module.exports = product;
+module.exports = {
+  getAll,
+  getById,
+  create,
+  updateById,
+  deleteById
+};
