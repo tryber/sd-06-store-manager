@@ -1,4 +1,5 @@
 const { Router } = require('express');
+const { ObjectId } = require('mongodb');
 const salesRouter = new Router();
 
 const { registerSale,
