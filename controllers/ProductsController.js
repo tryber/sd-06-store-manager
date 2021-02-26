@@ -37,8 +37,7 @@ router.post('/', createValidationRules(), validateCreate, async (req, res) => {
 
   const newProduct = await ProductsService.create(name, quantity);
 
-  if (!newProduct)
-    return res.status(UNPROCESSABLE_ENTITY).json({
+  if (!newProduct) return res.status(UNPROCESSABLE_ENTITY).json({
       err: {
         code: 'invalid_data',
         message: 'Product already exists',
