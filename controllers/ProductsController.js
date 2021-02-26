@@ -1,12 +1,11 @@
-const { Router, request, response } = require('express');
+const { Router } = require('express');
 const ProductService = require('../services/ProductsService');
 const ProductController = new Router();
-const rescue = require('express-rescue');
 
 const STATUS_422 = 422;
 const STATUS_201 = 201;
 const STATUS_200 = 200;
-const STATUS_404 = 404;
+// const STATUS_404 = 404;
 
 ProductController.post('/', async(request, response) => {
   const { name, quantity } = request.body;
@@ -28,22 +27,16 @@ ProductController.post('/', async(request, response) => {
 
 });
 
+ProductController.get('/:id', async (request, response) => {
+  const { id } = request.params;
+  const productId = await ProductService.getProdById(id);
+  return productId._id ? response.status(STATUS_200)
+    .json(productId):response.status(STATUS_422).json(productId);
+});
+
 ProductController.get('/', async (_request, response) => {
   const allProd = await ProductService.getProd();
   return response.status(STATUS_200).json({ products: allProd });
-});
-
-ProductController.get('/:id', async (request, response) => {
-  try {
-    const { id } = request.params;
-    const productId = await ProductService.getProdById(id);
-    if (!productId) throw new Error('error');
-    return response.status(STATUS_200).json(productId);
-  } catch (err) {
-    return response.status(STATUS_200).json({ err:
-      { code: 'invalid_data', message: 'Wrong id format' }
-    });
-  }
 });
 
 module.exports = ProductController;

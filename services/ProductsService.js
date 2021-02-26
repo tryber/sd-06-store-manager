@@ -1,5 +1,6 @@
 const { Products } = require('../models/index');
 const { verifyName, verifyQuantity, verifyEqualProduct } = require('../assets');
+const ID_LENGTH = 24;
 
 const getProd = async () => {
   const allProducts = await Products.getProducts();
@@ -7,8 +8,12 @@ const getProd = async () => {
 };
 
 const getProdById = async (id) => {
+  const err =  { err: { code: 'invalid_data', message: 'Wrong id format' }};
+  if (id.length !== ID_LENGTH) {
+    return err;
+  } 
   const oneProduct = await Products.getProductsById(id);
-  return oneProduct;
+  return oneProduct ? oneProduct : err;
 };
 
 const verifyAll = async (name, quantity) => {
