@@ -6,7 +6,6 @@ const { validateProduct,
   registerProduct,
 } = require('../services/ProductsServices');
 
-
 const SUCCESS = 201;
 
 productsRouter.post('/', validateProduct, checkIfNotExist, async (request, response) => {
@@ -14,4 +13,4 @@ productsRouter.post('/', validateProduct, checkIfNotExist, async (request, respo
   return response.status(SUCCESS).json(request.body);
 });
 
-module.exports = productsRouter;
+module.exports = { productsRouter };

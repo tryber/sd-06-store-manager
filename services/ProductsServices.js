@@ -3,7 +3,7 @@ const ProductsModels = require('../models/ProductsModels');
 const unprocessableEntity = 422;
 
 const registerProduct = async () => {
-  return await ProductsModels.RegisterProduct();
+  return await ProductsModels.registerProduct();
 };
 
 const validateProduct = async (request, response, next) => {
