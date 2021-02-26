@@ -7,6 +7,7 @@ const { validateProduct,
   getAllProducts,
   getProductById,
   validateId,
+  editProduct,
 } = require('../services/ProductsServices');
 
 const SUCCESS = 200;
@@ -27,12 +28,12 @@ productsRouter.get('/:id', validateId, async (request, response) => {
   response.status(SUCCESS).json(product);
 });
 
-productsRouter.put('/:id'), validateId, validateProduct, async (request, response) => {
+productsRouter.put('/:id', validateId, validateProduct, async (request, response) => {
   const id = request.params.id;
   const { name, quantity } = request.body;
   await editProduct(id, name, quantity);
   const editedProduct = await getProductById(id);
   return response.status(SUCCESS).json(editedProduct);
-};
+});
 
 module.exports = productsRouter;

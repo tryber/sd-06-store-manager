@@ -12,7 +12,7 @@ const getProductById = async (id) => connection()
 
 const editProduct = async (id, name, quantity) => connection()
   .then((db) => db.collection('products').updateOne({ _id: ObjectId(id) },
-    { $set: { name: name, quantity: quantity } }
+    { $set: { name, quantity } }
   ));
 
 module.exports = {
