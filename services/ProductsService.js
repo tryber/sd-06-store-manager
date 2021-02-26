@@ -15,7 +15,7 @@ const create = async (name, quantity) => {
   const { insertedId } = await Products.create(name, quantity);
 
   return {
-    insertedId,
+    _id: insertedId,
     name,
     quantity,
   };
