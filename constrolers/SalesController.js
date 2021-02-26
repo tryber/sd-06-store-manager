@@ -7,18 +7,21 @@ const SalesController = new Router();
 
 const status0 = 200;
 
-SalesController.post('/', validate.validateQuantity, async (request, response) => {
-  const itensSold = request.body;
-  const { insertedId } = await Sales.insertSales(itensSold);
+SalesController.post('/',
+  validate.validateQuantity,
+  validate.isQuantityInStock,
+  async (request, response) => {
+    const itensSold = request.body;
+    const { insertedId } = await Sales.insertSales(itensSold);
 
-  const insertedSale = {
-    _id: insertedId,
-    itensSold,
-  };
+    const insertedSale = {
+      _id: insertedId,
+      itensSold,
+    };
 
-  await service.updateQuantity(itensSold);
+    await service.updateQuantity(itensSold);
 
-  return response.status(status0).json(insertedSale);
+    return response.status(status0).json(insertedSale);
 });
 
 SalesController.get('/:id', validate.saleExists, async (request, response) => {
