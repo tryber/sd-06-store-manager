@@ -1,6 +1,6 @@
 const { body, validationResult } = require('express-validator');
 
-const createValidationRules = () => {
+const productValidationRules = () => {
   return [
     body('name')
       .isLength({ min: 5 })
@@ -24,7 +24,7 @@ const createValidationRules = () => {
 
 const UNPROCESSABLE_ENTITY = 422;
 
-const validateCreate = (req, res, next) => {
+const validateProduct = (req, res, next) => {
   const errors = validationResult(req);
   const extractedErrors = errors.array().map(err => ({ err: err.msg }));
 
@@ -34,4 +34,4 @@ const validateCreate = (req, res, next) => {
   return res.status(UNPROCESSABLE_ENTITY).json(extractedErrors[0]);
 };
 
-module.exports = { createValidationRules, validateCreate };
+module.exports = { productValidationRules, validateProduct };

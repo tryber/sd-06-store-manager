@@ -1,8 +1,8 @@
 const { Router } = require('express');
 const ProductsService = require('../services/ProductsService');
 const {
-  createValidationRules,
-  validateCreate } = require('../middlewares/validateCreate');
+  productValidationRules,
+  validateProduct } = require('../middlewares/validateProduct');
 const validateId = require('../middlewares/validateId');
 
 const router = Router();
@@ -32,7 +32,7 @@ router.get('/:id', validateId, async (req, res) => {
   res.status(OK).json(product);
 });
 
-router.post('/', createValidationRules(), validateCreate, async (req, res) => {
+router.post('/', productValidationRules(), validateProduct, async (req, res) => {
   const { name, quantity } = req.body;
 
   const newProduct = await ProductsService.create(name, quantity);
@@ -50,8 +50,8 @@ router.post('/', createValidationRules(), validateCreate, async (req, res) => {
 router.put(
   '/:id',
   validateId,
-  createValidationRules(),
-  validateCreate,
+  productValidationRules(),
+  validateProduct,
   async (req, res) => {
     const { id } = req.params;
     const { name, quantity } = req.body;
