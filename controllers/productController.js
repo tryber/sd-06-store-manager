@@ -4,49 +4,60 @@ const productService = require('../service/productService');
 const routerProduct = new Router(); // instancia (retorna) um obj com as propriedades de Router
 const SUCCESS = 200;
 const Created = 201;
-const UnprocessableEntity = 422;
 
 routerProduct.get('/:id', async (req, res) => {
   const { id } = req.params;
   const product = await productService.getProductById(id);
-  console.log(`product: ${product}`); // nao esta vindo o id 
-  if(typeof(product) === 'object'){
-    return res.status(SUCCESS).json(product);
+  if (product.isError) {
+    return res.status(product.status).json({
+      err: {
+        code: 'invalid_data',
+        message: product.message,
+      },
+    });
   }
-  return res.status(UnprocessableEntity).json(
-    { err:{
-      code: 'invalid_data',
-      message: product
-    }}
-  );
+  return res.status(SUCCESS).json(product);
 });
 
 routerProduct.get('/', async (req, res) => {
   const products = await productService.getAll();
-  res.status(SUCCESS).json({products: products});
+  res.status(SUCCESS).json({ products: products });
 });
 
-
-routerProduct.post('/', async (req, res)=>{
+routerProduct.put('/:id', async (req, res) => {
+  const { id } = req.params;
   const { name, quantity } = req.body;
-  const { insertedId, invalidProduct } = await 
-  productService.createProduct(name, quantity);
-  if(insertedId){
-    const newProduct = {
-      _id: insertedId,
-      name,
-      quantity
-    };
-    return res.status(Created).json(newProduct);
+  const editedProduct = await productService.editProductById(id, name, quantity);
+  if (editedProduct.isError) {
+    return res.status(editedProduct.status).json({
+      err: {
+        code: 'invalid_data',
+        message: editedProduct.message,
+      },
+    });
   }
- 
-  return res.status(UnprocessableEntity).json(
-    { err:{
-      code: 'invalid_data',
-      message: invalidProduct
-    }}
-  );
+  return res.status(SUCCESS).json(editedProduct);
+});
+
+routerProduct.post('/', async (req, res) => {
+  const { name, quantity } = req.body;
+  const insertedId = await productService.createProduct(name, quantity);
+  // console.log(`error: ${error}`);
+  if (insertedId.isError) {
+    return res.status(insertedId.status).json({
+      err: {
+        code: 'invalid_data',
+        message: insertedId.message,
+      },
+    });
+  }
+
+  const newProduct = {
+    _id: insertedId.insertedId,
+    name,
+    quantity,
+  };
+  return res.status(Created).json(newProduct);
 });
 
 module.exports = routerProduct;
-

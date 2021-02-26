@@ -17,10 +17,17 @@ const createProduct = async(name, quantity) => {
   
 };
 
-
 const getProductByName = async(name) => {
   const db = await connection();
-  return await db.collection('products').findOne({name});
+  return db.collection('products').findOne({name});
+};
+
+const editProductById = async(id, name, quantity) => {
+  const db = await connection();
+  return db.collection('products').updateOne(
+    {_id: ObjectId(id)},
+    { $set: {name: name, quantity: quantity}}
+  );
 };
 
 
@@ -28,5 +35,6 @@ module.exports = {
   getAll,
   createProduct,
   getProductByName,
-  getProductById
+  getProductById,
+  editProductById
 };
