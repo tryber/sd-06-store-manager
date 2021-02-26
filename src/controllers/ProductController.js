@@ -8,8 +8,8 @@ ProductsRouter.use(bodyParser.json());
 const createProductService = require('../services/CreateProductService');
 const getProductService = require('../services/GetProductService');
 const getProductByIdService = require('../services/GetProductByIdService');
-const updateProductByIdService = require('../services/updateProductByIdService');
-const deleteProductByIdService = require('../services/deleteProductByIdService');
+const updateProductByIdService = require('../services/UpdateProductByIdService');
+const deleteProductByIdService = require('../services/DeleteProductByIdService');
 
 const isName = require('../middlewares/isName');
 

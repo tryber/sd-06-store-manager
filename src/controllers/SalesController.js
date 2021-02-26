@@ -7,9 +7,9 @@ SalesRouter.use(bodyParser.json());
 
 const createSalesService = require('../services/CreateSaleService');
 const getSalesByIdService = require('../services/GetSalesByIdService');
-const getSalesService = require('../services/getSalesService');
-const updateSalesByIdService = require('../services/updateSalesByIdService');
-const deleteSaleByIdService = require('../services/deleteSaleByIdService');
+const getSalesService = require('../services/GetSalesService');
+const updateSalesByIdService = require('../services/UpdateSalesByIdService');
+const deleteSaleByIdService = require('../services/DeleteSaleByIdService');
 
 const createSales = async (req, res) => {
   const arraySale = req.body;
