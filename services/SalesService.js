@@ -18,16 +18,13 @@ const updateQuantityOfSale = async (id, arrSale) => {
       await Products.updateProductQuantity(sale.productId, value);
     }
   });
-  console.log('update');
 };
 
 const updateDelete = async (arrSale) => {
-  // const foundSale = Sales.findById(id);
   arrSale.itensSold.forEach(async (sale) => {
     const value = -sale.quantity;
     await Products.updateProductQuantity(sale.productId, value);
   });
-  console.log('delete');
 };
 
 module.exports = {

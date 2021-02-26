@@ -24,6 +24,7 @@ ProductsController.post('/',
 
 ProductsController.get('/', async (_request, response) => {
   const allProducts = await Products.getAllProducts();
+
   return response.status(status0).json({ products: allProducts });
 });
 
@@ -31,6 +32,7 @@ ProductsController.get('/:id', validateProducts.validateId, async (request, resp
   const { id } = request.params;
 
   const product = await Products.findById(id);
+
   return response.status(status0).json(product);
 });
 
@@ -51,8 +53,8 @@ ProductsController.delete('/:id',
   validateProducts.validateId,
   async (request, response) => {
     const { id } = request.params;
-    const product = await Products.findById(id);
 
+    const product = await Products.findById(id);
     await Products.deleteProduct(id);
 
     return response.status(status0).json(product);

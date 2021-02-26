@@ -53,8 +53,7 @@ SalesController.delete('/:id', validate.idFormat, async (request, response) => {
   const { id } = request.params;
 
   const result = await Sales.findById(id);
-  await service.updateDelete(result);
-    
+  await service.updateDelete(result);  
   await Sales.deleteSale(id);
 
   response.status(status0).json(result);
