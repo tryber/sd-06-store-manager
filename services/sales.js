@@ -1,7 +1,6 @@
 const { ObjectId } = require('mongodb');
 const sales = require('../models/sales');
 const products = require('../models/products');
-const { TestWatcher } = require('jest');
 const ZERO = 0;
 
 const createSale = async (allSales) => {
@@ -29,7 +28,7 @@ const createSale = async (allSales) => {
     return allSales;
   });
   await Promise.all(verifySale);
-  return sales.createSale(allSales);
+  return sales.sale(allSales);
 };
 
 const showSaleById = async (id) => {
@@ -67,7 +66,7 @@ const updateSale = async (id, productId, quantity) => {
   const productExists = await products.getProductById(productId);
   if (!productExists || quantity <= ZERO || typeof quantity !== 'number') {
     throw {
-      code: 'invalid_code',
+      code: 'invalid_data',
       message: 'Wrong product ID or invalid quantity',
     };
   }

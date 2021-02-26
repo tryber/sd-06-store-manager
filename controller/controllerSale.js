@@ -24,7 +24,7 @@ routerSales.post('/', rescue(async (req, res) => {
   }
 }));
 
-routerSales.get('/', rescue(async (req, res) => {
+routerSales.get('/', rescue(async (_req, res) => {
   try {
     const allSales = await sales.showAllSales();
     return res.status(status200).json({ allSales });
