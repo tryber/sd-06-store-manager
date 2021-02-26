@@ -20,8 +20,15 @@ const create = async (itensSold) => {
   return creation;
 };
 
+const remove = async (id) => {
+  const removing = connection()
+    .then((db) => db.collection('sales').deleteOne({ _id: ObjectId(id)}));
+  return removing;
+};
+
 module.exports = {
   getAll,
   findById,
   create,
+  remove,
 };

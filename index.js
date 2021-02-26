@@ -23,6 +23,7 @@ app.post('/products', productsController.create);
 
 // sales rotas
 app.get('/sales/:id', salesController.findById);
+app.delete('/sales/:id', salesController.deletar);
 app.get('/sales', salesController.getAll);
 app.post('/sales', salesController.create);
 

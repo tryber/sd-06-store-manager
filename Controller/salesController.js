@@ -15,7 +15,7 @@ const qntMessage = {
 
 const getAll = async (req, res) => {
   const allSales = await salesConnection.getAll();
-  console.log(allSales);
+  /* console.log(allSales); */
 
   if (!allSales) {
     return res.status(notFound).json({
@@ -87,8 +87,40 @@ const create = async (req, res) => {
   
 };
 
+const deletar = async (req, res) => {
+  const {id} = req.params;
+
+  const isValid = ObjectId.isValid(id);
+  if (isValid !== true) {
+    return res.status(codeErr).json({ err:{
+      code: 'invalid_data',
+      message: 'Wrong sale ID format'
+    }});
+  }
+
+  const getSaleId = await salesConnection.findById(id);
+
+  if(!getSaleId) {
+    return res.status(codeErr).json({ err:{
+      code: 'invalid_data',
+      message: 'Wrong sale ID format'
+    }});
+  }
+
+  const remove = await salesConnection.remove(id);
+  if(!remove) {
+    return res.status(codeErr).json({ err:{
+      code: 'invalid_data',
+      message: 'Wrong sale ID format'
+    }});
+  }
+
+  res.status(OK).json(getSaleId);
+};
+
 module.exports = {
   create,
   getAll,
   findById,
+  deletar,
 };
