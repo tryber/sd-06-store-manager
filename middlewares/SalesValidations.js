@@ -57,22 +57,23 @@ const isQuantityInStock = async (request, response, next) => {
   const saleInOrder = request.body;
   // const productsDB = await Products.getAllProducts();
 
-  const positive = await saleInOrder.map(async (sale) => {
-    const id = sale.productId;
-    const achei = await Products.findById(id);
-    console.log(achei);
-    console.log(`sale: ${sale.quantity}`);
-    console.log(`banco: ${achei.quantity}`);
-    if (achei.quantity < sale.quantity) return true;
-    return false;
-  });
+  const positive = saleInOrder
+    .filter(async (sale) => await Products
+      .findById(sale.productId).quantity < sale.quantity
+    // const id = sale.productId;
+    // const achei = await Products.findById(id);
+    // console.log(achei);
+    // console.log(`sale: ${sale.quantity}`);
+    // console.log(`banco: ${achei.quantity}`);
+    // return achei.quantity < sale.quantity;
+    );
   // const result = await positive;
   console.log(`positive${positive}`);
   // console.log(saleInOrder);
 
-  if (positive[0]) return response
-    .status(errorNotFound)
-    .json(messageError('stock_problem', 'Such amount is not permitted to sell'));
+  // if (positive[0]) return response
+  //   .status(errorNotFound)
+  //   .json(messageError('stock_problem', 'Such amount is not permitted to sell'));
     
 
   next();
