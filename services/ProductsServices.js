@@ -1,9 +1,18 @@
 const ProductsModels = require('../models/ProductsModels');
+const { ObjectId } = require('mongodb');
 
 const unprocessableEntity = 422;
 
-const registerProduct = async () => {
-  return await ProductsModels.registerProduct();
+const registerProduct = async (productInfo) => {
+  return await ProductsModels.registerProduct(productInfo);
+};
+
+const getAllProducts = async () => {
+  return await ProductsModels.getAllProducts();
+};
+
+const getProductById = async (id) => {
+  return await ProductsModels.getProductById(id);
 };
 
 const validateProduct = async (request, response, next) => {
@@ -55,8 +64,23 @@ const checkIfNotExist = async (request, response, next) => {
   next();
 };
 
+const validateId = async (request, response, next) => {
+  const id = request.params.id;
+  if (!ObjectId.isValid(id)) return response.status(unprocessableEntity).json({
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    },
+  });
+
+  next();
+};
+
 module.exports = {
   registerProduct,
   validateProduct,
   checkIfNotExist,
+  getAllProducts,
+  getProductById,
+  validateId,
 };
