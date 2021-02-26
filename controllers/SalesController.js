@@ -24,7 +24,6 @@ salesRouter.get('/', async (_request, response) => {
 salesRouter.get('/:id', validateId, async (request, response) => {
   const id = request.params.id;
   const sale = await getSaleById(id);
-
   if (!sale) return response.status(NOTFOUND).json({
     err: {
       code: 'not_found',

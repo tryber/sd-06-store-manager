@@ -1,4 +1,4 @@
-const salesModels = require('../models/salesModels');
+const salesModels = require('../models/SalesModels');
 const { ObjectId } = require('mongodb');
 
 const NOTFOUND = 404;
