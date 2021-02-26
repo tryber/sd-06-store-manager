@@ -19,8 +19,19 @@ const getByIdService = async (id) => {
   return product;
 };
 
+const attProductService = async (id, name, quantity) => {
+  await ProductsModel.attProduct(id, name, quantity);
+  return { id, name, quantity };
+};
+
+const deleteProductService = async (id) => {
+  return await ProductsModel.deleteProduct(id);
+};
+
 module.exports = {
   createProductService,
   getAllProductsService,
   getByIdService,
+  attProductService,
+  deleteProductService,
 };
