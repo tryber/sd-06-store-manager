@@ -27,4 +27,11 @@ productsRouter.get('/:id', validateId, async (request, response) => {
   response.status(SUCCESS).json(product);
 });
 
+productsRouter.put('/:id'), validateId, validateProduct, async (request, response) => {
+  const id = request.params.id;
+  const { name, quantity } = request.body;
+  await editProduct(id, name, quantity);
+  return response.status(SUCCESS).json(await getProductById(id));
+};
+
 module.exports = productsRouter;
