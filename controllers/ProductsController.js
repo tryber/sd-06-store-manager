@@ -37,16 +37,19 @@ router.post('/',
   }
 );
 
-router.put('/:id', async (request, response) => {
-  const { id } = request.params;
-  const { name, quantity } = request.body;
-  const updatedProduct = await ProductsService.update(id, name, quantity);
+router.put('/:id',
+  validateProductName,
+  validateQuantity,
+  async (request, response) => {
+    const { id } = request.params;
+    const { name, quantity } = request.body;
+    const updatedProduct = await ProductsService.update(id, name, quantity);
 
-  if (updatedProduct.error) {
-    return response.status(updatedProduct.error.code).json(updatedProduct.error);
-  }
-  response.status(SUCCESS).json(updatedProduct);
-});
+    if (updatedProduct.error) {
+      return response.status(updatedProduct.error.code).json(updatedProduct.error);
+    }
+    response.status(SUCCESS).json(updatedProduct);
+  });
 
 router.delete('/:id', async (request, response) => {
   const { id } = request.params;
