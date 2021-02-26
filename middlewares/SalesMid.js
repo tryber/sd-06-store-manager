@@ -1,5 +1,6 @@
 const ZERO = 0;
 const UNPROCESSABLE = 422;
+const NOT_FOUND = 404;
 
 const validateSale = async (req, res, next) => {
   const products = req.body;
@@ -16,6 +17,17 @@ const validateSale = async (req, res, next) => {
   next();
 };
 
+const validateSalesId = async (req, res, next) => {
+  const LIMITID = 24;
+  const { id } = req.params;
+  if(id.length < LIMITID) return res.status(NOT_FOUND).json({ err: {
+    code: 'not_found',
+    message: 'Sale not found'
+  }});
+  next();
+};
+
 module.exports = {
-  validateSale
+  validateSale,
+  validateSalesId,
 };

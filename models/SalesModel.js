@@ -1,15 +1,14 @@
 const connection = require('./connection');
 const { ObjectId } = require('mongodb');
 
-const getAllSales = async () => {
+const getAllSales = async () =>
   await connection()
     .then(db => db.collection('sales').find().toArray());
-};
 
-const createSale =  async (element) => {
+const createSale = async (element) => {
   const { insertedId } = await connection()
     .then(db => db.collection('sales').insertOne({
-      intensSold: element
+      itensSold: element
     }));
 
   return {
@@ -18,7 +17,13 @@ const createSale =  async (element) => {
   };
 };
 
+const getBySalesId = async (id) => {
+  return await connection()
+    .then(db => db.collection('sales').findOne(ObjectId(id)));
+};
+
 module.exports = {
   getAllSales,
-  createSale
+  createSale,
+  getBySalesId,
 };

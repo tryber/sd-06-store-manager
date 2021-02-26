@@ -10,7 +10,13 @@ const createSaleService = async (element) => {
   return tudo;
 };
 
+const getBySalesIdService = async (id) => {
+  const sales = await SalesModel.getBySalesId(id);
+  return sales;
+};
+
 module.exports = {
   getAllSalesService,
-  createSaleService
+  createSaleService,
+  getBySalesIdService,
 };
