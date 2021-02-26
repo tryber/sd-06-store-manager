@@ -17,9 +17,14 @@ const productByIdService = async (id) => {
   return product.productById(id);
 };
 
+const updateProductService = async (id, name, quantity) => {
+  return product.updateProduct(id, name, quantity);
+};
+
 module.exports = {
   createProductService,
   productByNameService,
   listProductsService,
-  productByIdService
+  productByIdService,
+  updateProductService
 };

@@ -31,4 +31,13 @@ router.get('/:id', validateId, async(req, res) => {
   return res.status(OK).json(product);
 });
 
+// Requisito-3
+router.put('/:id', validateNameSize,
+  quantityNotNegativeOrZero, quantityNotAString, async(req, res) => {
+    const { id } = req.params;
+    const { name, quantity } = req.body;
+
+    await productsService.updateProductService(id, name, quantity);
+    return res.status(OK).json({ _id: id, name, quantity });
+  });
 module.exports = router;
