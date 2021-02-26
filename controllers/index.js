@@ -1,2 +1,4 @@
-const middControllers = require('./productsControl');
-module.exports = middControllers;
+const productsControl = require('./productsControl');
+const salesControl = require('./salesControl');
+
+module.exports = { productsControl, salesControl };

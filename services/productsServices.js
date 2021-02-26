@@ -15,8 +15,7 @@ const getAll = async (_req, res,) => {
 const getById = async (req, res,) => {
   const { id }= req.params;
   const resultGet = await productsHandlingDB.findById(id);
-  if(resultGet) return res.status(status.OK).json(resultGet);
-  return res.status(status.Unprocessable_Entity).json(errorMessages.not_id);
+  return res.status(status.OK).json(resultGet);  
 };
 
 const update = async (req,res)=>{

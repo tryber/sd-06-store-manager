@@ -2,7 +2,7 @@ const { errorMessages, status } = require('../utilsData/dataResponses');
 const { productsHandlingDB } = require('../models');
 
 const validateBody = async (req, res, next) =>{
-  const {name, quantity} = req.body;
+  const { name, quantity } = req.body;
   const minLength = 5;
   const  valueZero = 0;
 
