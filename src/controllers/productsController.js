@@ -5,64 +5,49 @@ const productsRouter = Router();
 const SUCCESS = 200;
 const SUCCESS201 = 201;
 
-productsRouter.get('/:id', async (req, res) => {
+const getById = async (req, res, next) => {
   const { id } = req.params;
-  const searchResult = await ProductsService.findById(id);
+  const result = await ProductsService.findById(id);
 
-  if (searchResult && searchResult.payload) {
-    const { payload: { err }, error } = searchResult;
+  if (result.payload) return next(result);
+  return res.status(SUCCESS).json(result);
+};
 
-    return res.status(error.status).json({ err });
-  }
-
-  return res.status(SUCCESS).json(searchResult);
-});
-
-productsRouter.put('/:id', async (req, res) => {
+const updateProduct = async (req, res, next) => {
   const { id } = req.params;
   const { name, quantity } = req.body;
+  const result = await ProductsService.updateProduct(id, name, quantity);
 
-  const searchResult = await ProductsService.updateProduct(id, name, quantity);
+  if (result.payload) return next(result);
+  return res.status(SUCCESS).json(result);
+};
 
-  if (searchResult && searchResult.payload) {
-    const { payload: { err }, error } = searchResult; 
-
-    return res.status(error.status).json({ err });
-  }
-
-  return res.status(SUCCESS).json(searchResult);
-});
-
-productsRouter.delete('/:id', async (req, res) => {
+const deleteProduct = async (req, res, next) => {
   const { id } = req.params;
-  const deleteResult = await ProductsService.deleteProduct(id);
+  const result = await ProductsService.deleteProduct(id);
 
-  if (deleteResult && deleteResult.payload) {
-    const { payload: { err }, error } = deleteResult;
+  if (result.payload) return next(result);
+  return res.status(SUCCESS).json(result);
+};
 
-    return res.status(error.status).json({ err });
-  }
-
-  return res.status(SUCCESS).json(deleteResult);
-});
-
-productsRouter.get('/', async (_req, res) => {
+const getAll = async (_req, res) => {
   const result = await ProductsService.getAll();
 
   return res.status(SUCCESS).json(result);
-});
+};
 
-productsRouter.post('/', async (req, res) => {
+const insertProduct = async (req, res, next) => {
   const { name, quantity } = req.body;
-  const searchResult = await ProductsService.insertProduct(name, quantity);
+  const result = await ProductsService.insertProduct(name, quantity);
 
-  if (searchResult && searchResult.payload) {
-    const { payload: { err }, error } = searchResult;
+  if (result.payload) return next(result);
+  return res.status(SUCCESS201).json(result);
+};
 
-    return res.status(error.status).json({ err });
-  }
-
-  return res.status(SUCCESS201).json(searchResult);
-});
-
-module.exports = productsRouter;
+module.exports = {
+  getById,
+  updateProduct,
+  deleteProduct,
+  getAll,
+  insertProduct,
+};

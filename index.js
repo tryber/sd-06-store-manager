@@ -1,21 +1,21 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const { handleError } = require('./src/middlewares');
 const app = express();
 const port = 3000;
-const productsController = require('./src/controllers/productsController');
-const salesController = require('./src/controllers/salesController');
+const productsRoutes = require('./src/routes/ProductsRouter');
+const salesRoutes = require('./src/routes/SalesRouter');
 
 // Trybe Code
-
 app.get('/', (_request, response) => {
   response.send();
 });
 
 // My Code
-
 app.use(bodyParser.json());
 
-app.use('/products', productsController);
-app.use('/sales', salesController);
+app.use('/products', productsRoutes);
+app.use('/sales', salesRoutes);
+app.use(handleError);
 
 app.listen(port, () => console.log('Port Running'));

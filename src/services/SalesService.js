@@ -1,5 +1,7 @@
 const Sales = require('../models/Sales');
-const helpers = require('./helpers/SalesHelper');
+const helpers = require('./validations');
+const type = 'SALE';
+const action = 'DELETE';
 
 const getAll = async () => {
   const result = await Sales.getAll();
@@ -9,14 +11,15 @@ const getAll = async () => {
 };
 
 const getById = async (id) => {
-  const validateId = await helpers.idValidation(id);
+  const validateId = await helpers.idValidation(id, type);
+
   return validateId;
 };
 
 const updateSale = async (id, productId, quantity) => {
   const bodyArr = [ { productId, quantity} ];
   const qntIsError = helpers.quantityValidation(bodyArr);
-  const validateId = await helpers.idValidation(id);
+  const validateId = await helpers.idValidation(id, type);
   
   if (qntIsError) return qntIsError;
   if (validateId.payload) return validateId;
@@ -36,8 +39,7 @@ const insertSale = async (salesArr) => {
 };
 
 const deleteSale = async (id) => {
-  const action = 'DELETE';
-  const validateId = await helpers.idValidation(id, action);
+  const validateId = await helpers.idValidation(id, type, action);
   if (!validateId.payload) await Sales.deleteSale(id);;
   return validateId;
 };

@@ -1,6 +1,6 @@
-const { ObjectId } = require('mongodb');
 const Products = require('../models/Products');
-const helpers = require('./helpers/ProductsHelper');
+const helpers = require('./validations');
+const isSale = false;
 
 const getAll = async () => {
   const result = await Products.getAll();
@@ -17,7 +17,7 @@ const findById = async (id) => {
 const insertProduct = async (name, qnt) => {
   const minChar = 5;
   const nameIsError = await helpers.nameValidation(name, minChar);
-  const qntIsError = helpers.quantityValidation(qnt);
+  const qntIsError = helpers.quantityValidation(isSale, qnt);
 
   if (nameIsError) return nameIsError;
   if (qntIsError) return qntIsError;
@@ -28,7 +28,7 @@ const insertProduct = async (name, qnt) => {
 const updateProduct = async (id, name, qnt) => {
   const minChar = 5;
   const nameIsError = await helpers.nameValidation(name, minChar, true);
-  const qntIsError = helpers.quantityValidation(qnt);
+  const qntIsError = helpers.quantityValidation(isSale, qnt);
 
   if (nameIsError) return nameIsError;
   if (qntIsError) return qntIsError;
