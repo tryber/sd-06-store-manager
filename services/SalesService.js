@@ -1,5 +1,7 @@
 const SalesModel = require('../models/SalesModel');
+const ProductsModel = require('../models/ProductsModel');
 const { throwThisError } = require('../utils');
+const ZERO = 0;
 const SUCCESS = 200;
 const UNPROCESSABLE_ENTITY = 422;
 const NOT_FOUND = 404;
@@ -16,7 +18,29 @@ const validateFields = async (req, res, next) => {
   next();
 };
 
-const insertSale = async (req, res) => {
+const stockUpdate = async (req, res) => {
+  const { sale, method } = req;
+  const item = sale.itensSold[0];
+ 
+  // sale.itensSold.forEach(async (item) => {
+  const product = await ProductsModel.findById(item.productId);
+  
+  let newQuantity;
+
+  if (method === 'POST') newQuantity = product.quantity - item.quantity;
+  if (method === 'DELETE') newQuantity = product.quantity + item.quantity;
+  
+  console.log(product.quantity, item.quantity);
+  const errorMsg = 'Such amount is not permitted to sell';
+  
+  if (newQuantity < ZERO) throwThisError(NOT_FOUND, errorMsg, 'stock_problem');
+  await ProductsModel.updateProduct(item.productId, product.name, newQuantity);
+  // });
+ 
+  return res.status(SUCCESS).json(sale);
+};
+
+const insertSale = async (req, res, next) => {
   const products = req.body;
   
   const insertedId = await SalesModel.insertSale(products);
@@ -24,7 +48,9 @@ const insertSale = async (req, res) => {
     _id: insertedId,
     itensSold: products
   };
-  return res.status(SUCCESS).json(sale);
+  req.sale = sale;
+
+  next();
 };
 
 const getAll = async (req, res) => {
@@ -59,7 +85,7 @@ const updateSale = async (req, res) => {
   return res.status(SUCCESS).json(sale);
 };
 
-const deleteSale = async (req, res) => {
+const deleteSale = async (req, res, next) => {
   const { id } = req.params;
   let deletedSale;
 
@@ -69,11 +95,14 @@ const deleteSale = async (req, res) => {
   } catch {
     throwThisError(UNPROCESSABLE_ENTITY, 'Wrong sale ID format');
   }
-  return res.status(SUCCESS).json(deletedSale);
+  req.sale = deletedSale;
+  
+  next();
 };
 
 module.exports = {
   validateFields,
+  stockUpdate,
   insertSale,
   getAll,
   findById,

@@ -4,10 +4,17 @@ const SalesService = require('../services/SalesService');
 const router = Router();
 
 router.get('/', rescue(SalesService.getAll));
-router.post('/', rescue(SalesService.validateFields), rescue(SalesService.insertSale));
+router.post('/', 
+  rescue(SalesService.validateFields), 
+  rescue(SalesService.insertSale), 
+  rescue(SalesService.stockUpdate));
 router.get('/:id', rescue(SalesService.findById));
-router.put('/:id', rescue(SalesService.validateFields), rescue(SalesService.updateSale));
-router.delete('/:id', rescue(SalesService.deleteSale));
+router.put('/:id', 
+  rescue(SalesService.validateFields), 
+  rescue(SalesService.updateSale));
+router.delete('/:id', 
+  rescue(SalesService.deleteSale),
+  rescue(SalesService.stockUpdate));
 
 router.use((err, _req, res, next) => {
   res.status(err.statuscode).json({ err: err.message });

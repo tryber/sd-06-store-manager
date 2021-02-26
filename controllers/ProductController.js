@@ -1,13 +1,17 @@
 const { Router } = require('express');
 const rescue = require('express-rescue');
-const ProductServ = require('../services/ProductService');
+const ProductService = require('../services/ProductService');
 const router = Router();
 
-router.get('/', rescue(ProductServ.getAll));
-router.post('/', rescue(ProductServ.validateFields), rescue(ProductServ.insertProduct));
-router.get('/:id', rescue(ProductServ.findById));
-router.put('/:id', rescue(ProductServ.validateFields), rescue(ProductServ.updateProduct));
-router.delete('/:id', rescue(ProductServ.deleteProduct));
+router.get('/', rescue(ProductService.getAll));
+router.post('/', 
+  rescue(ProductService.validateFields), 
+  rescue(ProductService.insertProduct));
+router.get('/:id', rescue(ProductService.findById));
+router.put('/:id', 
+  rescue(ProductService.validateFields), 
+  rescue(ProductService.updateProduct));
+router.delete('/:id', rescue(ProductService.deleteProduct));
 
 router.use((err, _req, res, next) => {
   res.status(err.statuscode).json({ err: err.message });
