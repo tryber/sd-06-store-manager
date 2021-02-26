@@ -21,8 +21,22 @@ const create = async (name, quantity) => {
   };
 };
 
+const update = async (id, name, quantity) => {
+  const updated = await Products.update(id, name, quantity);
+
+  return updated;
+};
+
+const remove = async (id) => {
+  const removed = await Products.remove(id);
+
+  return removed;
+};
+
 module.exports = {
   getAll,
   findById,
   create,
+  update,
+  remove,
 };
