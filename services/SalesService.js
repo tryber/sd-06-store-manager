@@ -1,6 +1,5 @@
 const SalesModel = require('../models/SalesModel');
 const code = 'invalid_data';
-const ZERO = 0;
 
 const validateFields = async (products) => {
   const status = false;
@@ -63,7 +62,6 @@ const findById = async (id) => {
 };
 
 const updateSale = async (id, products) => {
-  console.log(products);
   const validate = await validateFields(products);
   if (!validate.status) {
     let err = new Error();
@@ -85,8 +83,24 @@ const updateSale = async (id, products) => {
     };
     throw err;
   }
-
   return true;
+};
+
+const deleteSale = async (id) => {
+  let product;
+  try {
+    product = await findById(id);
+    await SalesModel.deleteSale(id);
+  } catch {
+    let err = new Error();
+    err.statuscode = 422;
+    err.message = { 
+      code, 
+      message: 'Wrong sale ID format'
+    };
+    throw err;
+  }
+  return product;
 };
 
 module.exports = {
@@ -94,4 +108,5 @@ module.exports = {
   getAll,
   findById,
   updateSale,
+  deleteSale,
 };

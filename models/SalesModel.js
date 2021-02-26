@@ -27,8 +27,8 @@ const updateSale = async (id, itensSold) => {
   return +modifiedCount;
 };
 
-// const deleteProduct = async (id) => conn()
-//   .then(db => db.collection('sales').deleteOne({_id: ObjectId(id)}));
+const deleteSale = async (id) => conn()
+  .then(db => db.collection('sales').deleteOne({_id: ObjectId(id)}));
 
 module.exports = {
   // findByName,
@@ -36,5 +36,5 @@ module.exports = {
   getAll,
   findById,
   updateSale,
-  // deleteProduct,
+  deleteSale,
 };

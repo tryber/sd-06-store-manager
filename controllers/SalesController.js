@@ -32,6 +32,13 @@ router.put('/:id', rescue(async (req, res) => {
   return res.status(SUCCESS).json(sale);
 }));
 
+router.delete('/:id', rescue(async (req, res) => {
+  const { id } = req.params;
+  const deletedSale = await SalesService.deleteSale(id, req.body);
+
+  return res.status(SUCCESS).json(deletedSale);
+}));
+
 router.use((err, _req, res, next) => {
   res.status(err.statuscode).json({ err: err.message });
 });
