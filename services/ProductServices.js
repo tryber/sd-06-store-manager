@@ -1,7 +1,7 @@
 const Product = require('../models/Product');
 const validation = require('../services/validation');
 const {generateError} = require('../utils/errors');
-const {unProcessableEntity} = require('../utils/status');
+const {unProcessableEntity, ok} = require('../utils/status');
 
 const getAll = async () => {
   return await Product.getAll();
@@ -25,7 +25,7 @@ const update = async (id, name, quantity) => {
 const validate = async (name, quantity) => { 
   const nameExists = await Product.getOneByName(name);  
   if (nameExists) return (
-    generateError(unProcessableEntity, 'invalid_data', 'Product Already exists'));
+    generateError(unProcessableEntity, 'invalid_data', 'Product already exists'));
   try {
     await validation.ProductSchema.validate({name, quantity});
     return {};
@@ -44,6 +44,12 @@ const validateUpdate = async (name, quantity) => {
   }  
 };
 
+const deleteOne = async (id) => {
+  const {deletedCount} = await Product.deleteOne(id);
+  return {status: ok};
+  
+};
+
 const createOne = async (product) => {
   const {name, quantity} = product;
   const {err} = await validate(name, quantity);
@@ -53,5 +59,5 @@ const createOne = async (product) => {
 };
 
 module.exports = {
-  getAll, getOne, createOne, update
+  getAll, getOne, createOne, update, deleteOne
 };
