@@ -73,10 +73,26 @@ const validateId = (req, _res, next) => {
   next();
 };
 
+const wrongId = async(req, _res, next) => {
+  const { id } = req.params;
+  const newProduct = await productsService.productByIdService(id);
+  if (!newProduct) 
+    return next({
+      status: Unauthorized,  
+      err: 
+            {
+              code: 'invalid_data',
+              message: 'Wrong id format',
+            }
+    });
+  next();
+};
+
 module.exports = {
   validateNameSize,
   productAlreadyExits,
   quantityNotNegativeOrZero,
   quantityNotAString,
-  validateId
+  validateId,
+  wrongId
 };

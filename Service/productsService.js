@@ -21,10 +21,15 @@ const updateProductService = async (id, name, quantity) => {
   return product.updateProduct(id, name, quantity);
 };
 
+const deleteProductService = async (id, name, quantity) => {
+  return product.deleteProduct(id);
+};
+
 module.exports = {
   createProductService,
   productByNameService,
   listProductsService,
   productByIdService,
-  updateProductService
+  updateProductService,
+  deleteProductService
 };

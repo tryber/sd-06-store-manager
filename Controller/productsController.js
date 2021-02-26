@@ -1,7 +1,7 @@
 const productsService = require('../Service/productsService');
 const { Router } = require('express');
 const { validateNameSize, productAlreadyExits, quantityNotNegativeOrZero,
-  quantityNotAString, validateId } = require('../Middlewares/validation');
+  quantityNotAString, validateId, wrongId } = require('../Middlewares/validation');
 
 const router = Router();
 const Created = 201;
@@ -40,4 +40,14 @@ router.put('/:id', validateNameSize,
     await productsService.updateProductService(id, name, quantity);
     return res.status(OK).json({ _id: id, name, quantity });
   });
+
+// Requisito-4
+router.delete('/:id', validateId, wrongId, async(req, res) => {
+  const { id } = req.params;
+  const newProduct = await productsService.productByIdService(id);
+
+  await productsService.deleteProductService(id);
+  return res.status(OK).json(newProduct);
+});  
+
 module.exports = router;
