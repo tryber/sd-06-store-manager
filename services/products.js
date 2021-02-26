@@ -3,11 +3,8 @@ const { products, utils } = require('../models');
 const { validateProduct } = require('../utils/validators');
 
 const createProduct = async (product) => {
-  await validateProduct(product);
-  // needs rafactoration
   const isNameTaken = await findByName(product.name);
-  if (isNameTaken) throw new Error(error.invalidProductName);
-  //
+  await validateProduct(product, isNameTaken);
   return utils.insertToDb('products', product);
 };
 
