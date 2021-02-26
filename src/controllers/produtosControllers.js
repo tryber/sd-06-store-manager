@@ -1,6 +1,8 @@
 const express = require('express');
 const productRouter = express.Router();
 
+const { createProduct } = require('../models/productModel');
+
 /** abreviação de status */
 const cadastrado = 201;
 const tudoCerto = 200;
@@ -9,7 +11,9 @@ const deuRuim = 500;
 
 /** rota para cadastro de produtos */
 productRouter.post('/', async (req, res) => {
-  await res.status(cadastrado).json({ message: 'cadastro de produtos' });
+  const { name, quantity } = req.body;
+  const retorno = await createProduct({name, quantity});
+  return res.status(cadastrado).send(retorno);
 });
 
 /** listando todos os produtos */
