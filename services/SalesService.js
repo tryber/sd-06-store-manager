@@ -30,7 +30,6 @@ const stockUpdate = async (req, res) => {
   if (method === 'POST') newQuantity = product.quantity - item.quantity;
   if (method === 'DELETE') newQuantity = product.quantity + item.quantity;
   
-  console.log(product.quantity, item.quantity);
   const errorMsg = 'Such amount is not permitted to sell';
   
   if (newQuantity < ZERO) throwThisError(NOT_FOUND, errorMsg, 'stock_problem');
@@ -96,7 +95,7 @@ const deleteSale = async (req, res, next) => {
     throwThisError(UNPROCESSABLE_ENTITY, 'Wrong sale ID format');
   }
   req.sale = deletedSale;
-  
+
   next();
 };
 
