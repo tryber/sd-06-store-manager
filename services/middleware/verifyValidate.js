@@ -45,7 +45,7 @@ function verifyProducts(request, response, next) {
   next();
 }
 
-function verifyId(request, response, next) {
+function validateId(request, response, next) {
   try {
     const { id } = request.params;
     ObjectId(id);
@@ -61,7 +61,7 @@ function verifyId(request, response, next) {
   }
 }
 module.exports = {
-  verifyId,
+  validateId,
   verifyNameExists,
   verifyProducts,
 };
