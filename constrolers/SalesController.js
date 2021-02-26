@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const Sales = require('../models/Sales');
 const validate = require('../middlewares/SalesValidations');
+const service = require('../services/SalesService');
 
 const SalesController = new Router();
 
@@ -14,6 +15,8 @@ SalesController.post('/', validate.validateQuantity, async (request, response) =
     _id: insertedId,
     itensSold,
   };
+
+  await service.updateQuantity(itensSold);
 
   return response.status(status0).json(insertedSale);
 });
@@ -35,6 +38,7 @@ SalesController.put('/:id', validate.validateQuantity, async (request, response)
   const { id } = request.params;
   const sale = request.body;
 
+  await service.updateQuantityOfSale(id, sale);
   await Sales.updateSale(id, sale);
   const result = await Sales.findById(id);
 
@@ -43,9 +47,9 @@ SalesController.put('/:id', validate.validateQuantity, async (request, response)
 
 SalesController.delete('/:id', validate.idFormat, async (request, response) => {
   const { id } = request.params;
-  // const sale = request.body;
 
   const result = await Sales.findById(id);
+  await service.updateDelete(result);
     
   await Sales.deleteSale(id);
 
