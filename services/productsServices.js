@@ -10,5 +10,5 @@ const createProduct = async (req, res) => {
 
 
 module.exports = {
-    create
+    createProduct
   };
