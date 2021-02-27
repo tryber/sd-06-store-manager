@@ -1,7 +1,20 @@
-// não remova esse endpoint, e para o avaliador funcionar
-const MONGO_DB_URL = 'mongodb://localhost:27017/StoreManager';
-const DB_NAME = 'StoreManager'
+const express = require('express');
+const bodyParser = require('body-parser');
+const CRUDController = require('./src/controllers/CRUDController')
 
+const app = express();
+const PORT = process.env.PORT || 3000;
+app.use(bodyParser.json());
+app.use('./products', CRUDController)
+
+
+// não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
   response.send();
 });
+
+
+
+app.listen(PORT, () => {
+  console.log(`Ouvindo a porta ${PORT}`)
+})
