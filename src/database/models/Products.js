@@ -25,9 +25,6 @@ class Products extends Crud {
       }, WRONG_DATA);
     }
   }
-
-
-  async delete() {}
 }
 
 module.exports = Products;

@@ -46,7 +46,12 @@ class Crud {
     };
   }
 
-  async delete() {}
+  async delete(modelId) {
+    const db = await connection();
+
+    await db.collection(this.Model)
+      .deleteOne({ _id: ObjectID(modelId) });
+  }
 }
 
 module.exports = Crud;
