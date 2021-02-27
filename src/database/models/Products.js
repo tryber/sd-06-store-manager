@@ -26,7 +26,6 @@ class Products extends Crud {
     }
   }
 
-  async update() {}
 
   async delete() {}
 }

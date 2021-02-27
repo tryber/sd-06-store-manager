@@ -1,7 +1,8 @@
 const {
   CreateProductService,
   ListProductsService,
-  GetProductByIdService
+  GetProductByIdService,
+  UpdateProductService
 } = require('../services/index');
 
 class ProductsController {
@@ -37,7 +38,21 @@ class ProductsController {
     return res.status(PRODUCT_FOUND).json(productFound);
   }
 
-  update(req, res) {}
+  async update(req, res) {
+    const { id } = req.params;
+
+    const getProductByIdService = new GetProductByIdService();
+
+    const updateProductService = new UpdateProductService();
+
+    await getProductByIdService.execute(id);
+
+    const updatedProduct = await updateProductService.execute(id, req.body);
+
+    const PRODUCT_UPDATED = 200;
+
+    return res.status(PRODUCT_UPDATED).json(updatedProduct);
+  }
 
   delete(req, res) {}
 }

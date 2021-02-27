@@ -34,7 +34,17 @@ class Crud {
     return modelsFound;
   }
 
-  async update() {}
+  async update(modelId, queryParams) {
+    const db = await connection();
+
+    await db.collection(this.Model)
+      .updateOne({ _id: ObjectID(modelId) }, queryParams);
+
+    return {
+      ...queryParams.$set,
+      _id: ObjectID(modelId)
+    };
+  }
 
   async delete() {}
 }
