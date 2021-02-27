@@ -17,8 +17,15 @@ const register = async (items) => {
   };
 };
 
+const update = async (id, sale) => {
+  const updated = Sales.update(id, sale);
+
+  return updated;
+};
+
 module.exports = {
   getAll,
   findById,
   register,
+  update,
 };

@@ -37,4 +37,13 @@ router.post('/', saleValidationRules(), validateSale, async (req, res) => {
   res.status(OK).json(registeredSale);
 });
 
+router.put('/:id', saleValidationRules(), validateSale, async (req, res) => {
+  const { id } = req.params;
+  const sale = req.body;
+
+  const updated = await SalesService.update(id, sale);
+
+  res.status(OK).json(updated.value);
+});
+
 module.exports = router;

@@ -19,8 +19,20 @@ const register = async (items) => {
   };
 };
 
+const update = async (id, sale) => {
+  return await connection().then((db) =>
+    db.collection('sales')
+      .findOneAndUpdate(
+        { _id: ObjectId(id) },
+        { $set: { itensSold: sale } },
+        { returnOriginal: false },
+      )
+  );
+};
+
 module.exports = {
   getAll,
   findById,
   register,
+  update,
 };
