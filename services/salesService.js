@@ -6,7 +6,7 @@ const dataValidate = async (itensSold) => {
   let error = {};
 
   itensSold.forEach(item => {
-    if (item.quantity <= number0) {
+    if (item.quantity <= number0 || !Number.isInteger(item.quantity)) {
       error = {
         err: {
           code: 'invalid_data',

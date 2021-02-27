@@ -4,8 +4,6 @@ const router = Router();
 
 const salesService = require('../services/salesService');
 const status200 = 200;
-const status201 = 201;
-const status422 = 422;
 
 router.post('/', async (req, res) => {
   const itensSold  = req.body;
