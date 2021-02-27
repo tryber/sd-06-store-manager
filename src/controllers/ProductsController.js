@@ -1,13 +1,17 @@
-const { HelloWorldService } = require('../services/index');
+const { CreateProductService, HelloWorldService } = require('../services/index');
 
 class ProductsController {
-  create(req, res) {}
+  async create(req, res) {
+    const createProductService = new CreateProductService();
 
-  list(req, res) {
-    const helloWorldService = new HelloWorldService();
-    const message = helloWorldService.execute();
-    return res.json({ message });
+    const productCreated = await createProductService.execute(req.body);
+
+    const PRODUCT_CREATED = 201;
+
+    return res.status(PRODUCT_CREATED).json(productCreated);
   }
+
+  list(req, res) {}
 
   update(req, res) {}
 

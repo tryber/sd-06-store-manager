@@ -2,10 +2,10 @@ const AppError = require('../utils/AppError');
 
 const SERVER_ERROR = 500;
 
-const errorHandling = (err, req, res, _next) => {
+function errorHandling(err, req, res, _next) {
   if (err instanceof AppError) {
     console.log(`${req.method} ${req.url} ${err.statusCode}, error: ${err.message}`);
-    return res.status(err.status).json({ err: {
+    return res.status(err.statusCode).json({ err: {
       message: err.message,
       code: err.code
     }});
@@ -16,6 +16,6 @@ const errorHandling = (err, req, res, _next) => {
     message: 'Internal Server Error',
     code: 'internal_server_error'
   }});
-};
+}
 
 module.exports = errorHandling;

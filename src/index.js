@@ -1,4 +1,5 @@
 const express = require('express');
+require('express-async-errors');
 
 const routes = require('./routes/index.js');
 const errorHandling = require('./middlewares/errorHandling');
@@ -10,6 +11,10 @@ const port = 3000;
 app.use(express.json());
 
 app.use(auditInitialRequest);
+
+app.get('/', (_req, res) => {
+  res.send();
+});
 
 app.use(routes);
 

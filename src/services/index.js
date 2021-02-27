@@ -1,3 +1,3 @@
-const HelloWorldService = require('./HelloWorldService');
+const CreateProductService = require('./CreateProductService');
 
-module.exports = { HelloWorldService };
+module.exports = { CreateProductService };

@@ -3,11 +3,7 @@ const { HelloWorldService } = require('../services/index');
 class SalesController {
   create(req, res) {}
 
-  list(req, res) {
-    const helloWorldService = new HelloWorldService();
-    const message = helloWorldService.execute();
-    return res.json({ message });
-  }
+  list(req, res) {}
 
   update(req, res) {}
 
