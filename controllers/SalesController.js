@@ -33,10 +33,11 @@ route.post('/', async (req, res) => {
 
 route.put('/:id', async (req, res) => {
   const {id} = req.params;
-  const {productId, quantity} = req.body;
-  const {product, err} = await SalesServices.updateOne(id, productId, quantity);
+  const [...itensSold] = req.body;
+  const response = await SalesServices.updateOne(id, itensSold);
+  const {err} = response;
   if(err) return res.status(err.status).json({err});
-  return res.status(ok).json({product});
+  return res.status(ok).json({_id: response.upsertedId._id, itensSold});
 });
 
 route.delete('/:id', async (req, res) => {

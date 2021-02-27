@@ -44,7 +44,7 @@ const validateUpdate = async (name, quantity) => {
 };
 
 const deleteOne = async (id) => {
-  const {deletedCount} = await Product.deleteOne(id);
+  await Product.deleteOne(id);
   return {status: ok};  
 };
 

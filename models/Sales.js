@@ -17,6 +17,16 @@ const create = async (itensSold) => {
   return db.collection('sales').insertOne({itensSold: [...itensSold]});
 };
 
+const updateOne = async (id, sale) => {
+  const db = await connection();
+  return db.collection('sales').updateOne(
+    {_id: id},
+    { $set: {itensSold: sale}},
+    {upsert: true}
+  );
+
+};
+
 module.exports = {
-  getAll, getOne, create
+  getAll, getOne, create, updateOne
 };

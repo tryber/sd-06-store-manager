@@ -10,12 +10,10 @@ const getAll = async () => {
 
 const getOne = async (id) => {
   try {
-    console.log(id);
     const itensSold = await Sales.getOne(id);    
     return {itensSold};
   } catch  {
     return generateError(notFound, 'not_found', 'Sale not found');
-
   }
 };
 
@@ -50,8 +48,12 @@ const createOne = async (itensSold) => {
 };
 
 
-
-const updateOne = async (id, productId, quantity) => {
+const updateOne = async (id, sale) => {
+  const {err} = await validateEntry(sale);
+  if(err) return {err};
+  const {err: error} = await getOne(id); 
+  if (error) return {err: error};
+  return await Sales.updateOne(id, sale);
 };
 
 const deleteOne = async (id) => {
