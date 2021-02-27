@@ -7,7 +7,7 @@ const verifyObjectId = (req, res, next) => {
 
   if(!ObjectId.isValid(id)){
     res.status(UNPROCESSABLE).json({ err: {
-      code: 'invalid_data', message: 'Wrong id format'
+      code: 'invalid_data', message: 'Wrong sale ID format'
     }});
   }
   next();

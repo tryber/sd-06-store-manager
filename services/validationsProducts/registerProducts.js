@@ -21,10 +21,7 @@ const registerProducts = (req, res, next) => {
   if(typeof quantity !== 'number') res.status(unprocessable).json({ err: {
     code: 'invalid_data', message: '"quantity" must be a number'
   }});
-
-  // if(name === req.body) res.status(unprocessable).json({ err: {
-  //   code: 'invalid_id', message: 'Product already exists'
-  // }});
+  
   next();
 };
 

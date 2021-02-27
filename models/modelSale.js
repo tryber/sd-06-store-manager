@@ -7,37 +7,31 @@ const getAllSales = async () => {
 };
 
 const getByIdSale = async (id) => {
-  if(!ObjectId.isValid(id)) return null;
-
   return getCollection('sales').then((sale) => sale.findOne(ObjectId(id)));
 };
 
-const createSale = async ({ quantity }) => {
-  const sale = await getCollection('sales').then((sale) =>
-    sale.insertOne({ quantity }));
-
-  return { _id: sale.insertedId, quantity };
+const createSale = async (product) => {
+  const { insertedId } = await getCollection('sales').then((sale) =>
+    sale.insertOne({itensSold: product}));
+  console.log('insertedId', insertedId);
+  return insertedId;
 };
 
-const updateSale = async ({ id, quantity }) => {
-  if(!ObjectId.isValid(id)) return null;
-
-  const sale = await getCollection('sales').then((sale) =>
-    sale.updateOne({ _id: ObjectId(id)}, { $set: { quantity}}));
+const updateSale = async (id, productId, quantity) => {
+  const sale = await getCollection('sales')
+    .then((sales) => sales.updateOne(
+      { _id: ObjectId(id), 'itensSold.productId': productId },
+      { $set: { 'intensSold[0].quantity': quantity } },
+    ));
 
   return sale;
 };
 
-const getByNameAndQuantity = async ({quantity }) => {
-  return getCollection('sales').then((sale) => sale.findOne({ quantity }));
-};
-
 const excludeSale = async (id) => {
-  if(!ObjectId.isValid(id)) return null;
-
-  return getCollection('sales').then((sale) => {
-    return sale.deleteOne({ _id: ObjectId(id)});
+  const exclude = await getCollection('sales').then((sale) => {
+    sale.deleteOne({ _id: ObjectId(id)});
   });
+  return exclude;
 };
 
 module.exports = {
@@ -45,6 +39,5 @@ module.exports = {
   getByIdSale,
   createSale,
   updateSale,
-  getByNameAndQuantity,
   excludeSale,
 };

@@ -18,19 +18,11 @@ const getByIdSale = async (id) => {
   return sale;
 };
 
-const createSale = async ({ quantity }) => {
-  const saleExists = await model.getByNameAndQuantity(quantity);
+const createSale = async (product) => {
 
-  if (saleExists){
-    return {
-      error: true,
-      code: 'already_exists',
-      message: ''
-    };
-  }
-
-  const newSale = await model.createSale({quantity });
-
+  const newSale = await model.createSale(product);
+  console.log('newSale', newSale);
+  console.log('product', product);
   return newSale;
 };
 
