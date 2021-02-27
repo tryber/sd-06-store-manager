@@ -12,7 +12,7 @@ router.post('/', async (req, res) => {
 
   const result = await salesService.create(itensSold);
 
-  return res.status(status201).json(result);
+  return res.status(status200).json(result);
 });
 
 module.exports = router;
