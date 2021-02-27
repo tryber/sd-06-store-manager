@@ -3,8 +3,8 @@ const { MongoClient } = require('mongodb');
 let connection;
 
 const DB_NAME = 'StoreManager';
-const DB_URL = 'mongodb://localhost:27017';
-// const MONGO_DB_URL = 'mongodb://mongodb:27017/StoreManager';
+// const DB_URL = 'mongodb://localhost:27017';
+const MONGO_DB_URL = 'mongodb://mongodb:27017/StoreManager';
 
 async function getCollection(collectionName) {
   connection =
@@ -14,7 +14,7 @@ async function getCollection(collectionName) {
       useUnifiedTopology: true,
     }));
 
-  return connection.db(DB_NAME).collection(collectionName);
+  return connection.db(MONGO_DB_NAME).collection(collectionName);
 }
 
 module.exports = getCollection;
