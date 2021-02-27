@@ -18,14 +18,14 @@ const updateSale = async (id, itensSold) => {
   return await Sales.update(id, itensSold);
 };
 
-// const removeSale = async (id) => {
-//   return await Sales.remove(id);
-// };
+const removeSale = async (id) => {
+  return await Sales.remove(id);
+};
 
 module.exports = {
   getAllSales,
   createNewSale,
   findSaleById,
   updateSale,
-  // removeSale,
+  removeSale,
 };

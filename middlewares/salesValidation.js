@@ -54,7 +54,34 @@ const idValidation = async (req, res, next) => {
   next();
 };
 
+const removeIdValidation = async (req, res, next) => {
+  const { id } = req.params;
+
+  if(!ObjectId.isValid(id)) {
+    return res.status(UNPROCESSABLEENTITY).json({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong sale ID format'
+      }
+    });
+  };
+
+  const idExists = await Sales.findById(id);
+
+  if(!idExists) {
+    return res.status(UNPROCESSABLEENTITY).json({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong sale ID format'
+      }
+    });
+  };
+
+  next();
+};
+
 module.exports = {
   quantityValidation,
   idValidation,
+  removeIdValidation,
 };

@@ -1,7 +1,8 @@
 const { Router } = require('express');
 
 const salesService = require('../services/salesService');
-const { quantityValidation, idValidation } = require('../middlewares/salesValidation');
+const { quantityValidation, idValidation,
+  removeIdValidation } = require('../middlewares/salesValidation');
 
 const router = Router();
 
@@ -32,7 +33,6 @@ router.post('/', quantityValidation, async (req, res) => {
 
 router.put('/:id', idValidation, quantityValidation, async (req, res) => {
   const { id } = req.params;
-  // const { productId, quantity } = req.body;
 
   await salesService.updateSale(id, req.body);
 
@@ -41,17 +41,19 @@ router.put('/:id', idValidation, quantityValidation, async (req, res) => {
     intesSold: req.body
   };
 
+  // console.log(editedSale.intesSold[0].productId);
+
   res.status(OK).json(editedSale);
 });
 
-// router.delete('/:id', idValidation, async (req, res) => {
-//   const { id } = req.params;
+router.delete('/:id', removeIdValidation, async (req, res) => {
+  const { id } = req.params;
 
-//   const deletedSale = await salesService.findSaleById(id);
+  const deletedSale = await salesService.findSaleById(id);
 
-//   await salesService.removeSale(id);
+  await salesService.removeSale(id);
 
-//   res.status(OK).json(deletedSale);
-// });
+  res.status(OK).json(deletedSale);
+});
 
 module.exports = router;
