@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { ObjectId } = require('mongodb');
+const { ObjectId, Logger } = require('mongodb');
 const Sales = require('../models/Sales');
 
 const router = Router();
@@ -77,5 +77,21 @@ router.get('/:id', async (req, res) => {
   return res.status(SUCCESS).json(saleId);
 });
 // 6
+
+//7
+router.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  const itensSold = req.body;
+
+  // forEach não respeita a ordem async/await e Promise.all só funciona se a ordem de execução não for importante.
+  for (const product of itensSold) {
+    const err = await validationSales(product.quantity);
+    if (err) return res.status(Erro422).json({ err });  
+  } // O for..of executa o loop na ordem esperada, aguardando que cada operação await anterior seja concluída antes de passar para a próxima.
+  
+  const sale = await Sales.update(id, itensSold);
+  return res.status(SUCCESS).json(sale.value);
+});
+//7
 
 module.exports = router;

@@ -17,8 +17,20 @@ const getById = async (id) => {
 };
 // 6
 
+// 7
+const update = async (id, itensSold) => {
+  // Trocar para findOneAndUpdate para conseguir retornar o produto atualizado após edição
+  return await connection().then(db => db.collection('sales').findOneAndUpdate(
+    { _id: ObjectId(id) },
+    { $set: { itensSold } },
+    { returnOriginal: false } // retorna o poduto atualizado após edição
+  ));
+};
+// 7
+
 module.exports = {
   getAll,
   create,
   getById,
+  update
 };
