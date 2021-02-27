@@ -33,8 +33,8 @@ const isValidProduct = (name, quantity)=>{
     error.message = '"quantity" must be larger than or equal to 1';
     error.status = 422;
     return error;
-    
   }
+
   if(!Number.isInteger(quantity)){
     error.message = '"quantity" must be a number'; 
     error.status = 422;
@@ -82,7 +82,6 @@ const getProductById = async (id) => {
 const editProductById = async (id, name, quantity) => {
   const invalidProduct = await isValidProduct(name, quantity);
   const invalidId = await isValidId(id);
-  console.log(`invalidProduct:  ${invalidProduct}`);
   if(invalidId.isError){
     return invalidId;
   }

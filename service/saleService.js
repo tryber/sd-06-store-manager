@@ -9,30 +9,49 @@ const isValidQuantity = (quantity) =>{
   return true;
 };
 
+const isValidSaleId = async(id)=>{
+  const error = {
+    isError: false
+  };
+  const saleId = await sales.getSaleById(id);
+  if(!saleId){
+    error.isError = true;
+    error.status = 404,
+    error.message = 'Sale not found';
+    return error;
+  }
+  return error;
+};
+
 const getAll = async()=>{
   return await sales.getAll();
 };
 
+const getSaleById = async(id)=>{
+  const validSaleId = await isValidQuantity(id);
+  if(!validSaleId){
+    return validSaleId;
+  }
+  return await sales.getSaleById(id);
+};
+
 const createSale = async(sale)=>{
-  const error ={
+  const error = {
     isError: true,
   };
   const allValidatedSales = await 
   Promise.all(sale.map(e => isValidQuantity(e.quantity))); // validação
-  console.log('allValidatedSales', allValidatedSales);
   const isAllSalesValid = allValidatedSales.find(e => {if(e) return true;});
-  console.log('isAllSalesValid', isAllSalesValid);
   if(!isAllSalesValid){
     error.message = 'Wrong product ID or invalid quantity';
     error.status = 422;
-    console.log('error', error);
     return error;
   }  
   return await sales.createSale(sale);
-
 };
 
 module.exports = {
   getAll,
-  createSale
-}
+  createSale,
+  getSaleById
+};

@@ -6,6 +6,11 @@ const getAll = async() => {
   return db.collection('sales').find().toArray();
 };
 
+const getSaleById = async(id) => {
+  const db = await connection();
+  return db.collection('sales').findOne({ _id: ObjectId(id)});
+};
+
 const createSale = async(sale) => {
   const sales = await connection()
     .then((db)=> db.collection('sales').insertOne({itensSold: sale}));
@@ -18,5 +23,6 @@ const createSale = async(sale) => {
 
 module.exports = {
   getAll,
-  createSale
+  createSale,
+  getSaleById
 };
