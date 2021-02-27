@@ -23,12 +23,7 @@ module.exports = async (req, res, next) => {
   };
 
   if(idArray.indexOf(id) !== NEGATIVE) {
-    const error = {
-      code: 'not_found',
-      message: 'Sale not found'
-    };
-
-    return res.status(NOTFOUND).send({ err: error });
+    return next();
   }
 
   idArray.push(id);
