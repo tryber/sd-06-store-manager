@@ -22,7 +22,6 @@ const dataValidate = async (itensSold) => {
 
 const create = async (itensSold) => {
   const errorMessage = await dataValidate(itensSold);
-  console.log(errorMessage);
 
   if (errorMessage.err) return errorMessage;
 
