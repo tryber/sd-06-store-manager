@@ -5,6 +5,7 @@ const { addProduct,
   allProducts,
   productById,
   checkId,
+  updateProduct
 } = require('../services/productService');
 const productRouter = new Router();
 const Res201 = 201;
@@ -24,6 +25,13 @@ productRouter.get('/', async (request, response) => {
 productRouter.get('/:id', checkId, async (request, response) => {
   const product = await productById(request.params.id);
   response.status(Res200).json(product);
+});
+
+productRouter.put('/:id', checkId, validateProduct, async (request, response) => {
+  const { name, quantity } = request.body;
+  await updateProduct(request.params.id, name, quantity);  
+  const updateProduct = await productById(request.params.id);
+  response.status(Res200).json(updateProduct);
 });
 
 module.exports = productRouter;

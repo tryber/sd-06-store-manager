@@ -15,6 +15,11 @@ const productById = async (id) => {
   return await productModel.productById(id);
 };
 
+const updateProduct = async (id, name, quantity) => {
+  return await productModel.updateProduct(id, name, quantity);
+};
+  
+
 const checkId = async (request, response, next) => {
   const id = request.params.id;
   if (!ObjectId.isValid(id)) return response.status(Erro422).json({
@@ -82,5 +87,6 @@ module.exports = { addProduct,
   checkProduct,
   allProducts,
   productById,
-  checkId
+  checkId,
+  updateProduct
 };

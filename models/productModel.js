@@ -15,5 +15,11 @@ const productById = async (id) => connection()
   .then((db) => db.collection('products')
     .findOne(ObjectId(id))
   );
+  
+const updateProduct = async (id, name, quantity) => connection()
+  .then((db) => db.collection('products')
+    .updateOne({_id: ObjectId(id)}),
+  {$set: { name, quantity}}
+  );
 
-module.exports = { addProduct, allProducts, productById };
+module.exports = { addProduct, allProducts, productById, updateProduct };
