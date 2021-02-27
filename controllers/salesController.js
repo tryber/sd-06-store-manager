@@ -12,6 +12,12 @@ router.post('/', async (req, res) => {
 
   const result = await salesService.create(itensSold);
 
+  if (result.err) return res.status(result.err.codeStatus)
+    .json({ err: {
+      code: result.err.code,
+      message: result.err.message
+    } });
+
   return res.status(status200).json(result);
 });
 
