@@ -28,6 +28,15 @@ router.get('/:id', idValidation, async (req, res) => {
 
   const sale = await controller.findById(id);
 
+  if(!sale) {
+    const err = {
+      code: 'not_found',
+      message: 'Sale not found'
+    };
+
+    return res.status(NOTFOUND).send({ err: err });
+  }
+
   return res.status(SUCCESS).send(sale);
 });
 
@@ -44,7 +53,7 @@ router.delete('/:id',saleExistence ,async (req, res) => {
   const { id } = req.params;
 
   const deletedSale = await controller.deleteById(id);
-  
+
   return res.status(SUCCESS).send(deletedSale);
 });
 

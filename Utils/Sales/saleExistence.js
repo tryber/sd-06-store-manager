@@ -1,6 +1,6 @@
 const controller = require('../../Controllers/saleControllers');
+const { ObjectId } = require('mongodb');
 
-const IDLENGTH = 24;
 const ERROR = 422;
 const NOTFOUND = 404;
 const NEGATIVE = -1;
@@ -13,7 +13,7 @@ const error = {
 module.exports = async (req, res, next) => {
   const { id } = req.params;
 
-  if(!id || id.length !== IDLENGTH ) {
+  if(!ObjectId.isValid(id)) {
     const err = {
       code: 'invalid_data',
       message: 'Wrong sale ID format'
@@ -23,16 +23,21 @@ module.exports = async (req, res, next) => {
   };
 
   if(idArray.indexOf(id) !== NEGATIVE) {
+    const error = {
+      code: 'not_found',
+      message: 'Sale not found'
+    };
+
     return res.status(NOTFOUND).send({ err: error });
   }
+
+  idArray.push(id);
 
   const saleCheck = await controller.findById(id);
 
   if(!saleCheck ) {
     return res.status(ERROR).send({ err: error });
   }
-
-  idArray.push(id);
 
   next();
 };

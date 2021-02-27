@@ -1,6 +1,8 @@
 const connection = require('./connection');
 const { ObjectId } = require('mongodb');
 
+const ONE = 1;
+
 const create = async (sale) => {
   if(sale.length > 1 ) {
     const { insertedId } = await connection()
