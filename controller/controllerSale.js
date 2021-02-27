@@ -24,14 +24,14 @@ routerSales.post('/', rescue(async (req, res) => {
   }
 }));
 
-// routerSales.get('/', rescue(async (_req, res) => {
-//   try {
-//     const allSales = await sales.showAllSales();
-//     return res.status(status200).json({ allSales });
-//   } catch (err) {
-//     return res.status(status500).json(err.message);
-//   }
-// }));
+routerSales.get('/', rescue(async (_req, res) => {
+  try {
+    const allSales = await sales.showAllSales();
+    return res.status(status200).json({ allSales });
+  } catch (err) {
+    return res.status(status500).json(err.message);
+  }
+}));
 
 routerSales.get('/:id', rescue(async (req, res) => {
   const { id } = req.params;
@@ -56,6 +56,20 @@ routerSales.put('/:id', rescue(async (req, res) => {
     if (err.code === 'not_found') {
       return res.status(status404).json({ err });
     }
+    if (err.code === 'invalid_data') {
+      return res.status(status422).json({ err });
+    }
+    return res.status(status500).json(err.message);
+  }
+}));
+
+routerSales.delete('/:id', rescue(async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const response = await services.deleteSale(id);
+    return res.status(status200).json(response);
+  } catch (err) {
     if (err.code === 'invalid_data') {
       return res.status(status422).json({ err });
     }

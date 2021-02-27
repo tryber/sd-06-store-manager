@@ -19,10 +19,14 @@ const updateSale = async (id, productId, quantity) => getConnection('sales')
   .then((sales) =>
     sales.updateOne({ _id: ObjectId(id)}, { $set: { productId, quantity }}));
 
+const deleteSale = async (id) => getConnection('sales')
+  .then((sales) => sales.deleteOne({ _id: ObjectId }));
+
 module.exports = {
   salesById,
   sale,
   showAllSales,
   showSaleById,
   updateSale,
+  deleteSale,
 };

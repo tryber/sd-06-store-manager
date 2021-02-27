@@ -80,8 +80,27 @@ const updateSale = async (id, productId, quantity) => {
   return { _id: id, itensSold: [{ productId, quantity }]};
 };
 
+const deleteSale = async (id) => {
+  if (!ObjectId.isValid(id)) {
+    throw {
+      code: 'invalide_data',
+      message: 'Wrong sale ID format',
+    };
+  }
+  const searchSale = await sales.showSaleById(id);
+  if (!searchSale) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong sale ID format',
+    };
+  }
+  await sales.deleteSale(id);
+  return searchSale;
+};
+
 module.exports = {
   createSale,
   showSaleById,
   updateSale,
+  deleteSale,
 };
