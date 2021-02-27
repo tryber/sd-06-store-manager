@@ -39,5 +39,19 @@ routes.post('/', async(request, response) => {
   return response.status(SUCCESS).send(freshProduct);
 });
 
+routes.put('/:id', async (request, response) => {
+  const { id } = request.params;
+  const { name, quantity} = request.body;
+  await Products.updateProduct(id, name, quantity);;
+
+  const updatedProduct = {
+    _id: id,
+    name,
+    quantity
+  };
+
+  return response.status(SUCCESS).send(updatedProduct);
+});
+
 
 module.exports = routes;
