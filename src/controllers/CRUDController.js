@@ -7,14 +7,14 @@ const SUCCESS = 200;
 const UNPROCESSABLE_ENTITY = 422;
 
 router.post('/', setValidation, setValidationName, async(req, res) => {
- const { name, quantity } = req.body;
- const newProduct = await createService(name, quantity);
- return res.status(CREATED).json(newProduct)
-})
+  const { name, quantity } = req.body;
+  const newProduct = await createService(name, quantity);
+  return res.status(CREATED).json(newProduct);
+});
 
 router.get('/', async (req, res) => {
   const getAll = getAllService();
-  return res.status(SUCCESS).json({ products: getAll })
-})
+  return res.status(SUCCESS).json({ products: getAll });
+});
 
 module.exports = router;

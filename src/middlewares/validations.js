@@ -12,7 +12,7 @@ function setValidation (req, res, next) {
           message: '"name" length must be at least 5 characters long',
         }
       }
-    )
+    );
   };
   if(!Number.isInteger(quantity)) {
     return res.status(UNPROCESSABLE_ENTITY).json(
@@ -22,7 +22,7 @@ function setValidation (req, res, next) {
           message: '"quantity" must be a number',
         }
       }
-    )
+    );
   };
   if(quantity <= zero){
     return res.status(UNPROCESSABLE_ENTITY).json(
@@ -32,7 +32,7 @@ function setValidation (req, res, next) {
           message: '"quantity" must be larger than or equal to 1',
         }
       }
-    )
+    );
   };
 }
 
@@ -47,7 +47,7 @@ async function setValidationName (req, res, next) {
           message: 'Product already exists',
         }
       }
-    )
+    );
   }
   next();
 }
@@ -55,6 +55,6 @@ async function setValidationName (req, res, next) {
 module.exports = {
   setValidation,
   setValidationName,
-}
+};
 
 

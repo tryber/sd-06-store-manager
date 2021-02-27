@@ -16,6 +16,6 @@ app.get('/', (_request, response) => {
 
 
 
-app.listen(PORT, () => {
+app.listen(port, () => {
   console.log(`Ouvindo a porta ${port}`);
 });
