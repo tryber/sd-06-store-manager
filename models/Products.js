@@ -4,7 +4,7 @@
 const connection = require('./connection');
 
 const getAll = async () => {
-  return await connection().then((db) => db.collection('products').find.toArray());
+  return await connection().then((db) => db.collection('products').find().toArray());
 };
 
 const createProduct = async (name, quantity) => {

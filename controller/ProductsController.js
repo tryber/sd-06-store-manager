@@ -1,6 +1,7 @@
 // aqui organizar os endpoints relativos aos produtos
 // realizar todo tratamento das requisições
 // CRUD com GET, GET :id, POST, PUT :id, DELETE :id
+const { Router } = require('express');
 const express = require('express');
 
 // usando  o routes;
@@ -20,6 +21,22 @@ routes.get('/', async (_request, response) => {
   const allProductsList = await Products.getAll();
 
   return response.status(SUCCESS).send(allProductsList);
+});
+
+routes.post('/', async(request, response) => {
+  const { name, quantity } = request.body;
+
+  // para receber o ID gerado automaticamente pelo cadastro desse produto
+  const { insertedId } = await Products.createProduct(name, quantity);
+
+  // para organizar o novo produto de forma a retorná-lo estruturado no .send();
+  const freshProduct = {
+    _id: insertedId,
+    name,
+    quantity
+  };
+
+  return response.status(SUCCESS).send(freshProduct);
 });
 
 
