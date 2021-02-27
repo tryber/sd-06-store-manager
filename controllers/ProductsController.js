@@ -3,7 +3,7 @@ const ProductsService = require('../services/ProductsService');
 const {
   productValidationRules,
   validateProduct } = require('../middlewares/validateProduct');
-const validateId = require('../middlewares/validateId');
+const { validateId } = require('../middlewares/validateId');
 
 const router = Router();
 const OK = 200;

@@ -1,11 +1,33 @@
 const { Router } = require('express');
 const SalesService = require('../services/SalesService');
 const { saleValidationRules, validateSale } = require('../middlewares/validateSale');
+const { validateSaleId } = require('../middlewares/validateId');
 
 const router = Router();
 const OK = 200;
-const CREATED = 201;
-const UNPROCESSABLE_ENTITY = 422;
+const NOT_FOUND = 404;
+
+router.get('/', async (req, res) => {
+  const sales = await SalesService.getAll();
+
+  res.status(OK).json({ sales });
+});
+
+router.get('/:id', validateSaleId, async (req, res) => {
+  const { id } = req.params;
+
+  const sales = await SalesService.findById(id);
+
+  if (!sales)
+    return res.status(NOT_FOUND).json({
+      err: {
+        code: 'not_found',
+        message: 'Sale not found',
+      },
+    });
+
+  res.status(OK).json({ sales });
+});
 
 router.post('/', saleValidationRules(), validateSale, async (req, res) => {
   const itensSold = req.body;

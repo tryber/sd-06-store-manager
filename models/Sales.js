@@ -20,5 +20,7 @@ const register = async (items) => {
 };
 
 module.exports = {
+  getAll,
+  findById,
   register,
 };
