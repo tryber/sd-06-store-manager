@@ -30,20 +30,19 @@ router.post('/', quantityValidation, async (req, res) => {
   res.status(OK).json(newSale);
 });
 
-// router.put('/:id', idValidation, nameAndQuantityValidation, async (req, res) => {
-//   const { id } = req.params;
-//   const { name, quantity } = req.body;
+router.put('/:id', idValidation, quantityValidation, async (req, res) => {
+  const { id } = req.params;
+  // const { productId, quantity } = req.body;
 
-//   await salesService.updateSale(id, name, quantity);
+  await salesService.updateSale(id, req.body);
 
-//   const product = {
-//     _id: id,
-//     name,
-//     quantity
-//   };
+  const editedSale = {
+    _id: id,
+    intesSold: req.body
+  };
 
-//   res.status(OK).json(product);
-// });
+  res.status(OK).json(editedSale);
+});
 
 // router.delete('/:id', idValidation, async (req, res) => {
 //   const { id } = req.params;

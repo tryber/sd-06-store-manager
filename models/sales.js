@@ -19,12 +19,19 @@ const findById = async (id) => {
   return await connection().then(db => db.collection('sales').findOne(ObjectId(id)));
 };
 
-// const update = async (id, name, quantity) => {
+// const update = async (id, productId, quantity) => {
 //   return await connection().then(db => db.collection('sales').updateOne(
 //     { _id: ObjectId(id) },
-//     { $set: { name, quantity } }
+//     { $set: { itensSold: { productId, quantity } } }
 //   ));
 // };
+
+const update = async (id, itensSold) => {
+  return await connection().then(db => db.collection('sales').updateOne(
+    { _id: ObjectId(id) },
+    { $set: { itensSold } }
+  ));
+};
 
 // const remove = async (id) => {
 //   return await connection().then(db => db.collection('sales').deleteOne(
@@ -36,6 +43,6 @@ module.exports = {
   getAll,
   createSale,
   findById,
-  // update,
+  update,
   // remove,
 };

@@ -14,9 +14,9 @@ const findSaleById = async(id) => {
   return await Sales.findById(id);
 };
 
-// const updateSale = async (id, name, quantity) => {
-//   return await Sales.update(id, name, quantity);
-// };
+const updateSale = async (id, itensSold) => {
+  return await Sales.update(id, itensSold);
+};
 
 // const removeSale = async (id) => {
 //   return await Sales.remove(id);
@@ -26,6 +26,6 @@ module.exports = {
   getAllSales,
   createNewSale,
   findSaleById,
-  // updateSale,
+  updateSale,
   // removeSale,
 };
