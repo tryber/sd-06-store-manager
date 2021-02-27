@@ -1,4 +1,4 @@
-const productRouter = require('../controllers/productController');
+const { ObjectId } = require('mongodb');
 const productModel = require('../models/productModel');
 
 const Erro422 = 422;
@@ -9,6 +9,22 @@ const addProduct = async (newProduct) => {
 
 const allProducts = async () => {
   return await productModel.allProducts();
+};
+
+const productById = async (id) => {
+  return await productModel.productById(id);
+};
+
+const checkId = async (request, response, next) => {
+  const id = request.params.id;
+  if (!ObjectId.isValid(id)) return response.status(Erro422).json({
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    },
+  });
+  
+  next();
 };
 
 const checkProduct = async (request, response, next) => {
@@ -60,4 +76,10 @@ const validateProduct = async (request, response, next) => {
   next();
 };
 
-module.exports = { addProduct, validateProduct, checkProduct, allProducts };
+module.exports = { addProduct,
+  validateProduct,
+  checkProduct,
+  allProducts,
+  productById,
+  checkId
+};

@@ -8,4 +8,7 @@ const allProducts = () => connection()
   .then((db) => db.collection('products')
     .find().toArray() );
 
-module.exports = { addProduct, allProducts };
+const productById = async (id) => connection()
+  .then((db) => db.collection('products').findOne(ObjectId(id)));
+
+module.exports = { addProduct, allProducts, productById };
