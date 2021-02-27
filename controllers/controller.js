@@ -104,9 +104,15 @@ const getAllSales = async (_req, res) => {
 
 const findSalesById = async (req, res) => {
   const { id } = req.params;
+  if(id.length !== vinteQuatro) return res.status(notFound).json(saleNotFound);
   const sale = await service.findSalesById(id);
   if (!sale) return res.status(notFound).json(saleNotFound);
   res.status(OK).json(sale);
+};
+
+const deleteSale = async (req,res) => {
+  const { id } = req.params;
+  const { } = req.body;
 };
 
 // const validaVenda = async (req, res, _next) => {
