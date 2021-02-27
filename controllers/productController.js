@@ -42,7 +42,6 @@ routerProduct.put('/:id', async (req, res) => {
 routerProduct.post('/', async (req, res) => {
   const { name, quantity } = req.body;
   const insertedId = await productService.createProduct(name, quantity);
-  // console.log(`error: ${error}`);
   if (insertedId.isError) {
     return res.status(insertedId.status).json({
       err: {
