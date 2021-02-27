@@ -1,8 +1,8 @@
 const { ObjectId } = require('mongodb');
 const getConnection = require('./connection');
 
-const salesById = async (id) => getConnection('sales')
-  .then((sales) => sales.findOne(ObjectId(id)));
+// const salesById = async (id) => getConnection('sales')
+//   .then((sales) => sales.findOne(ObjectId(id)));
 
 const sale = async (itensSold) =>
   getConnection('sales')
@@ -20,10 +20,9 @@ const updateSale = async (id, productId, quantity) => getConnection('sales')
     sales.updateOne({ _id: ObjectId(id)}, { $set: { productId, quantity }}));
 
 const deleteSale = async (id) => getConnection('sales')
-  .then((sales) => sales.deleteOne({ _id: ObjectId }));
+  .then((sales) => sales.deleteOne({ _id: ObjectId(id) }));
 
 module.exports = {
-  salesById,
   sale,
   showAllSales,
   showSaleById,

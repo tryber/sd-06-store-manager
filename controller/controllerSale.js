@@ -63,18 +63,27 @@ routerSales.put('/:id', rescue(async (req, res) => {
   }
 }));
 
-routerSales.delete('/:id', rescue(async (req, res) => {
-  const { id } = req.params;
-
+routerSales.delete('/:id', async (req, res) => {
   try {
-    const response = await services.deleteSale(id);
-    return res.status(status200).json(response);
-  } catch (err) {
-    if (err.code === 'invalid_data') {
-      return res.status(status422).json({ err });
+    const saleById = await sales.showSaleById(req.params.id);
+    if (!saleById) {
+      return res.status(status422).json({
+        err: {
+          code: 'invalid_code',
+          message: 'Wrong sale ID format'
+        },
+      });
     }
-    return res.status(status500).json(err.message);
+    await sales.deleteSale(req.params.id);
+    res.status(status200).json();
+  } catch (err) {
+    return res.status(status422).json({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong sale ID format',
+      },
+    });
   }
-}));
+});
 
 module.exports = routerSales;
