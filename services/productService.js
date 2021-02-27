@@ -30,7 +30,7 @@ const checkId = async (request, response, next) => {
 const checkProduct = async (request, response, next) => {
   const { name } = request.body;
   const productList = await productModel.allProducts();
-  const existProd = await productList.find((product) => product.name === name);
+  const existProd = await productList.find((el) => el.name === name);
   
   if (existProd) {
     return response.status(Erro422).json(
@@ -49,8 +49,9 @@ const checkProduct = async (request, response, next) => {
 const validateProduct = async (request, response, next) => {
   const { name, quantity } = request.body;
   const five = 5;
+  const nameSize = name.length;
   
-  if(name.length < five) {
+  if( nameSize < five) {
     return response.status(Erro422).json({
       err: {
         code: 'invalid_data',
