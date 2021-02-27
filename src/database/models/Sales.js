@@ -3,8 +3,8 @@ const { ObjectID } = require('mongodb');
 
 const AppError = require('../../utils/AppError');
 
-const { NOT_FOUND: SALE_NOT_FOUND } = require('../../utils/errorCodes');
-const { NOT_FOUND } = require('../../utils/errorStatus');
+const { INVALID_DATA } = require('../../utils/errorCodes');
+const { WRONG_DATA } = require('../../utils/errorStatus');
 
 class Sales extends Crud {
   constructor() {
@@ -19,17 +19,17 @@ class Sales extends Crud {
     return salesCreated;
   }
 
-  async findOne(queryParams) {
-    try {
-      const sale = await super.findOne(queryParams);
-      return sale;
-    } catch (error) {
-      throw new AppError({
-        message: 'Sale not found',
-        code: SALE_NOT_FOUND
-      }, NOT_FOUND);
-    }
-  }
+  // async findOne(queryParams) {
+  //   try {
+  //     const sale = await super.findOne(queryParams);
+  //     return sale;
+  //   } catch (error) {
+  //     throw new AppError({
+  //       message: 'Wrong sale ID format',
+  //       code: INVALID_DATA
+  //     }, WRONG_DATA);
+  //   }
+  // }
 
   async update(saleId, itensSold) {
 

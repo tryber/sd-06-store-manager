@@ -2,7 +2,8 @@ const {
   CreateSalesService,
   ListSalesService,
   GetSalesByIdService,
-  UpdateSaleService
+  UpdateSaleService,
+  DeleteSaleService
 } = require('../services/index');
 
 class SalesController {
@@ -57,17 +58,13 @@ class SalesController {
   async delete(req, res) {
     const { id } = req.params;
 
-    const getSalesByIdService = new GetSalesByIdService();
+    const deleteSaleService = new DeleteSaleService();
 
-    const deleteProductService = new DeleteProductService();
+    const saleDeleted = await deleteSaleService.execute(id);
 
-    const saleDeleted = await getSalesByIdService.execute(id);
+    const SALE_DELETED = 200;
 
-    await deleteProductService.execute(id, req.body);
-
-    const PRODUCT_DELETED = 200;
-
-    return res.status(PRODUCT_DELETED).json(saleDeleted);
+    return res.status(SALE_DELETED).json(saleDeleted);
   }
 }
 

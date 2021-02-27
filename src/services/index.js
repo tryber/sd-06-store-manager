@@ -8,6 +8,7 @@ const CreateSalesService = require('./CreateSalesService');
 const ListSalesService = require('./ListSalesService');
 const GetSalesByIdService = require('./GetSalesByIdService');
 const UpdateSaleService = require('./UpdateSaleService');
+const DeleteSaleService = require('./DeleteSaleService');
 
 module.exports = {
   CreateProductService,
@@ -18,5 +19,6 @@ module.exports = {
   CreateSalesService,
   ListSalesService,
   GetSalesByIdService,
-  UpdateSaleService
+  UpdateSaleService,
+  DeleteSaleService
 };
