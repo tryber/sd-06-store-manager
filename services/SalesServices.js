@@ -2,7 +2,7 @@ const Sales = require('../models/Sales');
 const ProductServices = require('../services/ProductServices');
 const validation = require('../services/validation');
 const {generateError} = require('../utils/errors');
-const {unProcessableEntity, ok} = require('../utils/status');
+const {unProcessableEntity, ok, notFound} = require('../utils/status');
 
 const getAll = async () => {
   return await Sales.getAll();
@@ -10,23 +10,28 @@ const getAll = async () => {
 
 const getOne = async (id) => {
   try {
-    const itensSold = await Sales.getOne(id);
+    console.log(id);
+    const itensSold = await Sales.getOne(id);    
     return {itensSold};
-  } catch {
-    return generateError(unProcessableEntity,
-      'invalid_data', 'Wrong product ID or invalid quantity'); 
+  } catch  {
+    return generateError(notFound, 'not_found', 'Sale not found');
+
   }
 };
 
-const validateEntry = async (itensSold) => {
-  const validateSales = itensSold.map(async (item) => {
+const validateSales = (itensSold) => {
+  const validations = itensSold.map(async (item) => {
     const {err} = await ProductServices.getOne(item.productId);
     if (err) throw err;
     await validation.SalesSchema.validate(item);
   });
-  
+  return validations;
+};
+
+const validateEntry = async (itensSold) => {    
   try {
-    await Promise.all(validateSales);    
+    const validations = validateSales(itensSold);
+    await Promise.all(validations);    
     return {};
   } catch (err) {
     return generateError(unProcessableEntity,
@@ -34,18 +39,13 @@ const validateEntry = async (itensSold) => {
   }  
 };
 
-const createOne = async (itensSold) => {
-  
+const createOne = async (itensSold) => {  
   const {err} = await validateEntry(itensSold);
-  console.log(err, 'err');
   if(err) return {err};
-
   const {insertedId} = await Sales.create(itensSold);
 
-  return {
-    sale: {
-      ...itensSold, insertedId
-    }
+  return {   
+    insertedId    
   };
 };
 

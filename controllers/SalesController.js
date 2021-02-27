@@ -1,3 +1,4 @@
+const {notFound} = require('../utils/status');
 const {Router} = require('express');
 
 const SalesServices = require('../services/SalesServices');
@@ -8,24 +9,26 @@ const route =  Router();
 route.get('/:id', async (req, res) => {
   const {id} = req.params;
   const {itensSold, err} = await SalesServices.getOne(id);
+  console.log(err, itensSold);
   if (err) return res.status(err.status).json({err});
-  return res.status(ok).json({itensSold});
+  return res.status(ok).json({itensSold:  itensSold});
 });
 
 route.get('/', async (req, res) => {
-  const itensSold = await SalesServices.getAll();
-  return res.status(ok).json({itensSold});
+  const sales = await SalesServices.getAll();
+  console.log(sales);
+  return res.status(ok).json({sales});
 });
 
 route.post('/', async (req, res) => {
   const [...itensSold] = req.body;
 
-  const {err, sale} = await SalesServices.createOne(itensSold);
+  const {err, insertedId} = await SalesServices.createOne(itensSold);
   // console.log(oductId, quantity, 'controller');
   if (err) {
     return res.status(err.status).json({err});
   }
-  return res.status(ok).json({itensSold: sale});
+  return res.status(ok).json({itensSold, _id: insertedId});
 });
 
 route.put('/:id', async (req, res) => {

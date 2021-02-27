@@ -31,8 +31,7 @@ const validate = async (name, quantity) => {
     return {};
   } catch (err) {
     return generateError(unProcessableEntity, 'invalid_data', err.message);
-  }  
-
+  } 
 };
 
 const validateUpdate = async (name, quantity) => {
@@ -46,14 +45,12 @@ const validateUpdate = async (name, quantity) => {
 
 const deleteOne = async (id) => {
   const {deletedCount} = await Product.deleteOne(id);
-  return {status: ok};
-  
+  return {status: ok};  
 };
 
 const createOne = async (product) => {
   const {name, quantity} = product;
   const {err} = await validate(name, quantity);
-  console.log(err);
   if(err) return {err};
   return await Product.createOne({name, quantity});
 };

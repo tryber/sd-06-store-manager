@@ -4,17 +4,17 @@ const connection = require('./connection');
 
 const getAll = async () => {
   const db = await connection();
-  return db.collection('sales').find({});
+  return await db.collection('sales').find({}).toArray();
 };
 
 const getOne = async (id) => {
   const db = await connection();
-  return db.collection('sales').find({_id: ObjectId(id)});
+  return await db.collection('sales').findOne({_id: ObjectId(id)});
 };
 
-const create = async (productId, quantity) => {
+const create = async (itensSold) => {
   const db = await connection();
-  return db.collection('sales').insertOne({productId, quantity});
+  return db.collection('sales').insertOne({itensSold: [...itensSold]});
 };
 
 module.exports = {
