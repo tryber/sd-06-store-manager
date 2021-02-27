@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const PORT = 3000;
 
 const productsController = require('./controllers/productsController');
+const salesController = require('./controllers/salesController');
 
 app.use(bodyParser.json());
 
@@ -13,5 +14,6 @@ app.get('/', (_request, response) => {
 });
 
 app.use('/products', productsController);
+app.use('/sales', salesController);
 
 app.listen(PORT, () => console.log('app listening!'));
