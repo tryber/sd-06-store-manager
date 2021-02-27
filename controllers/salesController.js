@@ -38,10 +38,10 @@ router.put('/:id', idValidation, quantityValidation, async (req, res) => {
 
   const editedSale = {
     _id: id,
-    intesSold: req.body
+    itensSold: req.body
   };
 
-  // console.log(`Aqui está o itensSold[0]...${editedSale.intesSold[0].productId}`);
+  // console.log(`Aqui está o itensSold[0]...${editedSale.itensSold[0].productId}`);
 
   res.status(OK).json(editedSale);
 });
