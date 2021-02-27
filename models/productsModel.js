@@ -18,10 +18,14 @@ const updateForId = async (id, objUpdate) => await connection()
   .then((db) => db.collection('products')
     .updateOne({ _id: ObjectID(id) }, { $set: objUpdate }));
 
+const deleteForId = (id) => connection()
+  .then((db) => db.collection('products').deleteOne({ _id: ObjectID(id) }));
+
 module.exports = {
   getAll,
   findById,
   addProduct,
   nameExists,
-  updateForId
+  updateForId,
+  deleteForId
 };

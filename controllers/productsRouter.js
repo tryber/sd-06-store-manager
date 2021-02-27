@@ -2,12 +2,12 @@ const { Router } = require('express');
 
 const productsModel = require('../models/productsModel');
 const {
-  validationProductsBodyAndNameExists,
+  validationNameExists,
   validationProductsBody,
   postProducts,
   findIdAndTreatError,
-  putProducts,
-  updateProductAndFindIdAndTreatError
+  updateProductAndFindIdAndTreatError,
+  deleteProductAndFindIdAndTreatError
 } = require('../services/productsValidations');
 
 const productsRouter = Router();
@@ -26,7 +26,8 @@ productsRouter.get('/:id', findIdAndTreatError, async (_req, res) => {
 });
 
 productsRouter.post('/',
-  validationProductsBodyAndNameExists,
+  validationNameExists,
+  validationProductsBody,
   postProducts,
   async (_req, res) => {
     const status = 201;
@@ -38,6 +39,23 @@ productsRouter.put('/:id',
   validationProductsBody,
   updateProductAndFindIdAndTreatError,
   async (_req, res) => {    
+    const status = 200;
+    res.status(status).json(res.locals.objProductId);
+  }
+);
+
+productsRouter.put('/:id',
+  validationProductsBody,
+  updateProductAndFindIdAndTreatError,
+  async (_req, res) => {    
+    const status = 200;
+    res.status(status).json(res.locals.objProductId);
+  }
+);
+
+productsRouter.delete('/:id',
+  deleteProductAndFindIdAndTreatError,
+  async (_req, res) => {
     const status = 200;
     res.status(status).json(res.locals.objProductId);
   }

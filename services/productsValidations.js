@@ -1,47 +1,52 @@
 const productsModel = require('../models/productsModel');
 const resErrorPai = require('./useful/resError');
 
-const fatherValidationProductsBody = (validationNameExists) => {
-  const validationProductsBody = async (req, res, next) => {
-    const { name, quantity } = req.body;
-    const { resError } = resErrorPai(res);
+const validationNameExists = async (req, res, next) => {
+  const { resError } = resErrorPai(res);
+  const { name } = req.body;
 
-    const zero = 0;
-  
-    let nameExistsLength = zero;
-    if (validationNameExists) {
-      nameExistsLength = await productsModel.nameExists(name)
-        .then((array) => array.length);
-    }
-  
-    const cincoCaracteres = 5;
-    const erro422 = 422;
-    const bollError = resError(
-      name.length < cincoCaracteres,
-      '"name" length must be at least 5 characters long',
-      erro422
-    )
-    && resError(
-      nameExistsLength !== zero,
-      'Product already exists',
-      erro422
-    )
-    && resError(
-      typeof quantity === 'string',
-      '"quantity" must be a number',
-      erro422
-    )
-    && resError(
-      quantity === zero || quantity < zero,
-      '"quantity" must be larger than or equal to 1',
-      erro422
-    );
-  
-    if (!bollError) return;
-  
-    next();
-  };
-  return validationProductsBody;
+  const zero = 0;
+  const erro422 = 422;
+
+  const nameExistsLength = await productsModel.nameExists(name)
+    .then((array) => array.length);
+
+  const bollError = resError(
+    nameExistsLength !== zero,
+    'Product already exists',
+    erro422
+  );
+  if (!bollError) return;
+
+  next();
+};
+
+const validationProductsBody = async (req, res, next) => {
+  const { name, quantity } = req.body;
+  const { resError } = resErrorPai(res);
+
+  const zero = 0;
+  const cincoCaracteres = 5;
+  const erro422 = 422;
+  const bollError = resError(
+    name.length < cincoCaracteres,
+    '"name" length must be at least 5 characters long',
+    erro422
+  )
+  && resError(
+    typeof quantity === 'string',
+    '"quantity" must be a number',
+    erro422
+  )
+  && resError(
+    quantity === zero || quantity < zero,
+    '"quantity" must be larger than or equal to 1',
+    erro422
+  );
+
+  if (!bollError) return;
+
+  next();
 };
 
 const postProducts = async (req, res, next) => {
@@ -55,7 +60,7 @@ const postProducts = async (req, res, next) => {
   next();
 };
 
-const fatherFindIdAndTreatError = (updateProduct) => {
+const fatherFindIdAndTreatError = (callbackUpdate, callbackDelete) => {
   const findIdAndTreatError = async (req, res, next) => {
     const { resError } = resErrorPai(res);
     const { id } = req.params;
@@ -64,11 +69,9 @@ const fatherFindIdAndTreatError = (updateProduct) => {
     const error422 = 422;
     
     try {
-      if (updateProduct) {
-        const { body } = req;
-        await productsModel.updateForId(id, body);
-      }
+      if (callbackUpdate) await callbackUpdate(req, id);
       const ola = await productsModel.findById(id);
+      if (callbackDelete) await callbackDelete(id);
       const bollError = resError(
         !ola,
         message,
@@ -89,18 +92,32 @@ const fatherFindIdAndTreatError = (updateProduct) => {
   return findIdAndTreatError;
 };
 
-const putProducts = async (req, res, next) => {
-  const { id } = req.params;
+const findIdAndTreatError = fatherFindIdAndTreatError();
+
+const updateProductAndFindIdAndTreatError = fatherFindIdAndTreatError(
+  async (req, id) => {
+    const { body } = req;
+    return await productsModel.updateForId(id, body);
+  }
+);
+
+const deleteProductAndFindIdAndTreatError = fatherFindIdAndTreatError(
+  null,
+  async (id) => await productsModel.deleteForId(id)
+);
+
+// const putProducts = async (req, res, next) => {
+//   const { id } = req.params;
   
-  console.log(req.body);
-  next();
-};
+//   console.log(req.body);
+//   next();
+// };
 
 module.exports = {
-  validationProductsBodyAndNameExists: fatherValidationProductsBody(true),
-  validationProductsBody: fatherValidationProductsBody(false),
+  validationNameExists,
+  validationProductsBody,
   postProducts,
-  findIdAndTreatError: fatherFindIdAndTreatError(false),
-  updateProductAndFindIdAndTreatError: fatherFindIdAndTreatError(true),
-  putProducts
+  findIdAndTreatError,
+  updateProductAndFindIdAndTreatError,
+  deleteProductAndFindIdAndTreatError
 };
