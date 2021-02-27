@@ -78,7 +78,7 @@ router.get('/:id', async (req, res) => {
 });
 // 6
 
-//7
+// 7
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const itensSold = req.body;
@@ -92,6 +92,22 @@ router.put('/:id', async (req, res) => {
   const sale = await Sales.update(id, itensSold);
   return res.status(SUCCESS).json(sale.value);
 });
-//7
+// 7
+
+// 8
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  if(!ObjectId.isValid(id)) {
+    return res.status(Erro422).json({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong sale ID format'
+      }
+    });
+  }
+  const sale = await Sales.remove(id);
+  return res.status(SUCCESS).json(sale.value);
+});
+// 8
 
 module.exports = router;

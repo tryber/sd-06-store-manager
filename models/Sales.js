@@ -28,9 +28,19 @@ const update = async (id, itensSold) => {
 };
 // 7
 
+// 8 ** Troquei o deleteOne por findOneAndDelete para retornar o porduto em Json
+const remove = async (id, itensSold) => {
+  return await connection().then(db => db.collection('sales').findOneAndDelete(
+    { _id: ObjectId(id) },
+    { $set: { itensSold } },
+  ));
+};
+// 8 
+
 module.exports = {
   getAll,
   create,
   getById,
-  update
+  update,
+  remove
 };
