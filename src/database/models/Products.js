@@ -1,5 +1,8 @@
-// const AppError = require('../utils/AppError');
 const Crud = require('./Crud');
+
+const AppError = require('../../utils/AppError');
+const { INVALID_DATA } = require('../../utils/errorCodes');
+const { WRONG_DATA } = require('../../utils/errorStatus');
 
 class Products extends Crud {
   constructor() {
@@ -11,7 +14,17 @@ class Products extends Crud {
     return productCreated;
   }
 
-  async list() {}
+  async findOne(queryParams) {
+    try {
+      const product = await super.findOne(queryParams);
+      return product;
+    } catch (error) {
+      throw new AppError({
+        message: 'Wrong id format',
+        code: INVALID_DATA
+      }, WRONG_DATA);
+    }
+  }
 
   async update() {}
 
