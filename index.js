@@ -18,8 +18,7 @@ app.put('/products/:id', controller.updateProduct);
 app.delete('/products/:id', controller.deleteProduct);
 app.post('/sales', controller.quantitySold, controller.createSales);
 app.get('/sales', controller.getAllSales);
-
-app.get('/sales/:id', (req, res) => res.send('6 - listar as vendas'));
+app.get('/sales/:id', controller.findSalesById);
 
 app.put('/sales/:id', (req, res) => res.send('7 - atualizar uma venda'));
 

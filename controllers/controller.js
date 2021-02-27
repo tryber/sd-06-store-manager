@@ -2,15 +2,23 @@ const service = require('../services/service');
 
 const OK = 200;
 const created = 201;
+const notFound = 404;
 const invalidParams = 422;
 const zero = 0;
 const cinco = 5;
 const vinteQuatro = 24;
-
 const msgError = (string) => {
   return {
     err: {
       code: 'invalid_data',
+      message: string,
+    }
+  };
+};
+const msgNotFound = (string) => {
+  return {
+    err: {
+      code: 'not_found',
       message: string,
     }
   };
@@ -21,6 +29,7 @@ const quantityGtZero = (msgError('"quantity" must be larger than or equal to 1')
 const quantityNaN = (msgError('"quantity" must be a number'));
 const wrongId = (msgError('Wrong id format'));
 const salesWrong = (msgError('Wrong product ID or invalid quantity'));
+const saleNotFound = (msgNotFound('Sale not found'));
 
 const createProduct = async (req, res) => {
   const { name, quantity } = req.body;
@@ -44,7 +53,7 @@ const findByIdProducts = async (req, res) => {
   const { id } = req.params;
   if(id.length !== vinteQuatro) return res.status(invalidParams).json(wrongId);
   const product = await service.findByIdProducts(id);
-  if (!product)  return res.status(invalidParams).json(wrongId);;
+  if (!product) return res.status(invalidParams).json(wrongId);
   res.status(OK).json(product);
 };
 
@@ -93,6 +102,13 @@ const getAllSales = async (_req, res) => {
   res.status(OK).json({ sales: sales });
 };
 
+const findSalesById = async (req, res) => {
+  const { id } = req.params;
+  const sale = await service.findSalesById(id);
+  if (!sale) return res.status(notFound).json(saleNotFound);
+  res.status(OK).json(sale);
+};
+
 // const validaVenda = async (req, res, _next) => {
 //   const listSolds = req.body;
 //   const verificaLista = listSolds.some(list => {
@@ -112,5 +128,6 @@ module.exports = {
   deleteProduct,
   createSales,
   quantitySold,
-  getAllSales
+  getAllSales,
+  findSalesById
 };

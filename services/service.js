@@ -48,6 +48,11 @@ const getAllSales = async () => {
   return sales;
 };
 
+const findSalesById = async (id) => {
+  const sale = await model.findSalesById(id);
+  return sale;
+};
+
 module.exports = {
   nameValid,
   productRepeat,
@@ -57,5 +62,6 @@ module.exports = {
   updateProduct,
   deleteProduct,
   createSales,
-  getAllSales
+  getAllSales,
+  findSalesById
 };

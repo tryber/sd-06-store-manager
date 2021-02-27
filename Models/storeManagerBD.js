@@ -31,22 +31,21 @@ const deleteProduct = async (id) => {
     .then((db) => db.collection('products').deleteOne({ _id: ObjectId(id) }));
 };
 
-const createSales  = async (itensSolds) => {
+const createSales  = async (itensSold) => {
   const { insertedId } = await connection()
-    .then(db => db.collection('sales').insertOne( { itensSolds } )); 
-  return  { _id: insertedId, itensSold: itensSolds
+    .then(db => db.collection('sales').insertOne( { itensSold } )); 
+  return  { _id: insertedId, itensSold: itensSold
   };
 };
 
 const getAllSales = async() => await connection()
   .then((db) => db.collection('sales').find().toArray());
 
-const findByIdSaless = async (id) => {
+const findSalesById = async (id) => {
   const saleData = await connection()
     .then((db) => db.collection('sales').findOne(ObjectId(id)));
   if (!saleData) return null;
-  const { _id, itensSold } = saleData;
-  return { _id, itensSold };
+  return saleData;
 };
 
 module.exports = {
@@ -57,5 +56,5 @@ module.exports = {
   deleteProduct,
   createSales,
   getAllSales,
-  findByIdSaless
+  findSalesById
 };
