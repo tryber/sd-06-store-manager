@@ -9,30 +9,41 @@ const isValidQuantity = (quantity) =>{
   return true;
 };
 
-const isValidSaleId = async(id)=>{
+// const isValidSaleId = async(id)=>{
+//   const error = {
+//     isError: false
+//   };
+//   const saleId = await sales.getSaleById(id);
+//   if(!saleId){
+//     error.isError = true;
+//     error.status = 404,
+//     error.message = 'Sale not found';
+//     return error;
+//   }
+//   return error;
+// };
+
+const getAll = async()=>{
+  const sale = await sales.getAll();
+  return sale;
+};
+
+const getSaleById = async(id)=>{
   const error = {
     isError: false
   };
-  const saleId = await sales.getSaleById(id);
-  if(!saleId){
+
+  try{
+    const validSaleId = await sales.getSaleById(id);
+    console.log('validSaleID', validSaleId);
+    return validSaleId;
+  }catch{
     error.isError = true;
     error.status = 404,
     error.message = 'Sale not found';
     return error;
+  
   }
-  return error;
-};
-
-const getAll = async()=>{
-  return await sales.getAll();
-};
-
-const getSaleById = async(id)=>{
-  const validSaleId = await isValidQuantity(id);
-  if(!validSaleId){
-    return validSaleId;
-  }
-  return await sales.getSaleById(id);
 };
 
 const createSale = async(sale)=>{
