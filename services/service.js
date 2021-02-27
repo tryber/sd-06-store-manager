@@ -43,6 +43,11 @@ const createSales = async (soldItens) => {
   return salesCreated;
 };
 
+const getAllSales = async () => {
+  const sales = await model.getAllSales();
+  return sales;
+};
+
 module.exports = {
   nameValid,
   productRepeat,
@@ -51,5 +56,6 @@ module.exports = {
   findByIdProducts,
   updateProduct,
   deleteProduct,
-  createSales
+  createSales,
+  getAllSales
 };

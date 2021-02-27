@@ -73,17 +73,6 @@ const deleteProduct = async (req, res) => {
   res.status(OK).json({ _id: id, name, quantity });    
 };
 
-// const validaVenda = async (req, res, _next) => {
-//   const listSolds = req.body;
-//   const verificaLista = listSolds.some(list => {
-//     if (list.quantity <= zero) return res.status(invalidParams).json(salesWrong);
-//     if (typeof list.quantity !== 'number')
-//       return res.status(invalidParams).json(salesWrong);
-//     const product = await service.findByIdProducts(id);
-//     if(!product === null)return res.status(invalidParams)
-//       .json({ message: 'produto not found' });
-//   });
-// };
 const quantitySold = (req, res, next) => {
   const listSolds = req.body;
   listSolds.some(list => {
@@ -99,6 +88,22 @@ const createSales = async (req, res) => {
   res.status(OK).json(sold);
 };
 
+const getAllSales = async (_req, res) => {
+  const sales = await service.getAllSales();
+  res.status(OK).json({ sales: sales });
+};
+
+// const validaVenda = async (req, res, _next) => {
+//   const listSolds = req.body;
+//   const verificaLista = listSolds.some(list => {
+//     if (list.quantity <= zero) return res.status(invalidParams).json(salesWrong);
+//     if (typeof list.quantity !== 'number')
+//       return res.status(invalidParams).json(salesWrong);
+//     const product = await service.findByIdProducts(id);
+//     if(!product === null)return res.status(invalidParams)
+//       .json({ message: 'produto not found' });
+//   });
+// };
 module.exports = {
   createProduct,
   getAllProducts,
@@ -106,5 +111,6 @@ module.exports = {
   updateProduct,
   deleteProduct,
   createSales,
-  quantitySold
+  quantitySold,
+  getAllSales
 };
