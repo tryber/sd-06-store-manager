@@ -1,6 +1,6 @@
 const Products = require('../services/ProductsService');
 const Sales = require('../models/Sales');
-
+const { ObjectId } = require('mongodb');
 
 const SalesValidation = async (itensSold) => {
   let isAnyError = '';
@@ -44,8 +44,18 @@ const getAll = async () => {
   return sales;
 };
 
+const isIdValid = (id) => ObjectId.isValid(id);
+
+const findById = async (id) => {
+  if (!isIdValid(id)) return null;
+  
+  const salesById = await Sales.findById(id);
+
+  return salesById;
+};
 
 module.exports = {
   create,
   getAll,
+  findById
 };

@@ -4,6 +4,7 @@ const Sales = require('../services/SalesService');
 const router = new Router();
 const SUCCESS = 200;
 const CREATED = 201;
+const NOT_FOUND = 404;
 const UNPROCESSABLE_ENTITY = 422;
 
 router
@@ -25,20 +26,20 @@ router
     const sales = await Sales.getAll();
 
     res.status(SUCCESS).json({ sales });
+  })
+  .get('/:id', async (req, res) => {
+    const { id } = req.params;
+    const sale = await Sales.findById(id);
+
+    if (!sale) return res.status(NOT_FOUND).json({
+      err: {
+        code: 'not_found',
+        message: 'Sale not found'
+      }
+    });
+
+    res.status(SUCCESS).json(sale);
   });
-// .get('/:id', async (req, res) => {
-//   const { id } = req.params;
-//   const sale = await Sales.findById(id);
-
-//   if (sale.message) return res.status(UNPROCESSABLE_ENTITY).json({
-//     err: {
-//       code: 'invalid_data',
-//       message: sale.message
-//     }
-//   });
-
-//   res.status(SUCESS).json(sale);
-// })
 // .put('/:id', async (req, res) => {
 //   const { id } = req.params;
 //   const { name, quantity } = req.body;
