@@ -20,6 +20,7 @@ const productExistingMsg = (msgError('Product already exists'));
 const quantityGtZero = (msgError('"quantity" must be larger than or equal to 1'));
 const quantityNaN = (msgError('"quantity" must be a number'));
 const wrongId = (msgError('Wrong id format'));
+const salesWrong = (msgError('Wrong product ID or invalid quantity'));
 
 const createProduct = async (req, res) => {
   const { name, quantity } = req.body;
@@ -72,10 +73,38 @@ const deleteProduct = async (req, res) => {
   res.status(OK).json({ _id: id, name, quantity });    
 };
 
+// const validaVenda = async (req, res, _next) => {
+//   const listSolds = req.body;
+//   const verificaLista = listSolds.some(list => {
+//     if (list.quantity <= zero) return res.status(invalidParams).json(salesWrong);
+//     if (typeof list.quantity !== 'number')
+//       return res.status(invalidParams).json(salesWrong);
+//     const product = await service.findByIdProducts(id);
+//     if(!product === null)return res.status(invalidParams)
+//       .json({ message: 'produto not found' });
+//   });
+// };
+const quantitySold = (req, res, next) => {
+  const listSolds = req.body;
+  listSolds.some(list => {
+    if (list.quantity <= zero || typeof list.quantity !== 'number')
+      return res.status(invalidParams).json(salesWrong);
+  });
+  next();
+};
+
+const createSales = async (req, res) => {
+  const listSolds = req.body;
+  const sold = await service.createSales(listSolds);
+  res.status(OK).json(sold);
+};
+
 module.exports = {
   createProduct,
   getAllProducts,
   findByIdProducts,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  createSales,
+  quantitySold
 };

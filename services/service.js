@@ -2,11 +2,6 @@ const model = require('../Models/storeManagerBD');
 const minCaractName = 5;
 const zero = 0;
 
-const quantityValid = (_name, quantity) => {
-  if (!quantity || !Number.isInteger(quantity) || quantity === zero) return false;  
-  return true;
-};
-
 const nameValid = (name, _quantity) => {
   if(typeof name !== 'string' || name.length < minCaractName) return false;
   return true;
@@ -41,16 +36,20 @@ const updateProduct = async (id, name, quantity) => {
 
 const deleteProduct = async (id) => {
   const productDeleted = await model.deleteProduct(id);
+};
 
+const createSales = async (soldItens) => {
+  const salesCreated = await model.createSales(soldItens);
+  return salesCreated;
 };
 
 module.exports = {
-  quantityValid,
   nameValid,
   productRepeat,
   productCreate,
   getAllProducts,
   findByIdProducts,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  createSales
 };

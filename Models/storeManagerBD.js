@@ -31,17 +31,18 @@ const deleteProduct = async (id) => {
     .then((db) => db.collection('products').deleteOne({ _id: ObjectId(id) }));
 };
 
-// const repeatFind = async (name) => {
-//   const repeated = await connection()
-//     .then((db) => db.collection('products').find({name: name}));
-//   return false;
-// };
+const createSales  = async (soldItens) => {
+  const { insertedId } = await connection()
+    .then(db => db.collection('sales').insertOne( { soldItens } )); 
+  return  { _id: insertedId, itensSold: soldItens
+  };
+};
 
 module.exports = {
   createProduct,
-  // repeatFind,
   getAllProducts,
   findByIdProducts,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  createSales
 };
