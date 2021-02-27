@@ -7,7 +7,7 @@ const getAll = async (collection) => await connection()
 const findById = async (collection, id) => await connection()
   .then((db) => db.collection(collection).findOne(ObjectID(id)));
 
-const uploadDB = async (collection, product) => await connection()
+const addProduct  = async (collection, product) => await connection()
   .then((db) => db.collection(collection).insertOne(product));
 
 const nameExists = async (collection, name) => await connection()
@@ -24,7 +24,7 @@ const deleteForId = async (collection, id) => await connection()
 module.exports = {
   getAll,
   findById,
-  uploadDB,
+  addProduct,
   nameExists,
   updateForId,
   deleteForId

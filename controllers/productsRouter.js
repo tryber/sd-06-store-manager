@@ -13,7 +13,7 @@ const {
 const productsRouter = Router();
 
 productsRouter.get('/', async (_req, res) => {
-  const arrayAllProducts = await productsModel.getAll();
+  const arrayAllProducts = await productsModel.getAll('products');
   const status = 200;
   res.status(status).json({
     products: arrayAllProducts

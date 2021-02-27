@@ -1,6 +1,8 @@
 const productsModel = require('../models/productsModel');
 const resErrorPai = require('./useful/resError');
 
+const collectionProducts = 'products';
+
 const validationNameExists = async (req, res, next) => {
   const { resError } = resErrorPai(res);
   const { name } = req.body;
@@ -8,7 +10,7 @@ const validationNameExists = async (req, res, next) => {
   const zero = 0;
   const erro422 = 422;
 
-  const nameExistsLength = await productsModel.nameExists(name)
+  const nameExistsLength = await productsModel.nameExists(collectionProducts, name)
     .then((array) => array.length);
 
   const bollError = resError(
@@ -53,7 +55,7 @@ const postProducts = async (req, res, next) => {
   const { body } = req;
   const copyBody = { ...body };
 
-  await productsModel.addProduct(copyBody);
+  await productsModel.uploadDB(collectionProducts, copyBody);
 
   res.locals.objAdicionado = copyBody;
 
@@ -70,15 +72,15 @@ const fatherFindIdAndTreatError = (callbackUpdate, callbackDelete) => {
     
     try {
       if (callbackUpdate) await callbackUpdate(req, id);
-      const ola = await productsModel.findById(id);
+      const product = await productsModel.findById(collectionProducts, id);
       if (callbackDelete) await callbackDelete(id);
       const bollError = resError(
-        !ola,
+        !product,
         message,
         error422
       );
       if (!bollError) return;
-      res.locals.objProductId = ola;
+      res.locals.objProductId = product;
     } catch {
       resError(
         true,
@@ -97,13 +99,13 @@ const findIdAndTreatError = fatherFindIdAndTreatError();
 const updateProductAndFindIdAndTreatError = fatherFindIdAndTreatError(
   async (req, id) => {
     const { body } = req;
-    return await productsModel.updateForId(id, body);
+    return await productsModel.updateForId(collectionProducts, id, body);
   }
 );
 
 const deleteProductAndFindIdAndTreatError = fatherFindIdAndTreatError(
   null,
-  async (id) => await productsModel.deleteForId(id)
+  async (id) => await productsModel.deleteForId(collectionProducts, id)
 );
 
 // const putProducts = async (req, res, next) => {
