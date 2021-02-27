@@ -41,7 +41,7 @@ router.put('/:id', idValidation, quantityValidation, async (req, res) => {
     intesSold: req.body
   };
 
-  // console.log(editedSale.intesSold[0].productId);
+  // console.log(`Aqui está o itensSold[0]...${editedSale.intesSold[0].productId}`);
 
   res.status(OK).json(editedSale);
 });
