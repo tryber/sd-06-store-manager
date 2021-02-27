@@ -22,7 +22,15 @@ const getProductsById = async (id) => {
   return await connection().then((db) => db.collection('products').findOne(ObjectId(id)));
 };
 
-module.exports = { addProduct, getProducts, getProductsById, updateById };
+const deleteProductsById = async (id) => {
+  return await connection().then((db) => db.collection('products')
+    .deleteOne({ _id: ObjectId(id) }));
+};
 
-
-// db.products.updateOne({ _id: ObjectId("603a84919c07f5c408ab7391")}, { $set: { name: "mercedez slk", quantity: 12 } });
+module.exports = {
+  addProduct,
+  getProducts,
+  getProductsById,
+  updateById,
+  deleteProductsById,
+};

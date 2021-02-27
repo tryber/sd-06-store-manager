@@ -40,4 +40,14 @@ ProductController.get('/', async (_request, response) => {
   return response.status(STATUS_200).json({ products: allProd });
 });
 
+ProductController.delete('/:id', async(request, response) => {
+  const { id } = request.params;
+  const prod = await ProductService.getProdById(id);
+  if (prod.err) return response.status(STATUS_422).json(prod);
+  await ProductService.deleteProd(id);
+  return response.status(STATUS_200).json(prod);
+});
+
 module.exports = ProductController;
+
+// db.products.insertMany([{ name: "Mercedez sls 500", quantity: 12 }, { name: "Porche 911 carrera", quantity: 10 }]);

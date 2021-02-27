@@ -1,7 +1,9 @@
 const { Products } = require('../models/index');
 const { verifyName, verifyQuantity, verifyEqualProduct } = require('../assets');
+
 const ID_LENGTH = 24;
 const STATUS_422 = 422;
+const err =  { err: { code: 'invalid_data', message: 'Wrong id format' }};
 
 const getProd = async () => {
   const allProducts = await Products.getProducts();
@@ -9,7 +11,6 @@ const getProd = async () => {
 };
 
 const getProdById = async (id) => {
-  const err =  { err: { code: 'invalid_data', message: 'Wrong id format' }};
   if (id.length !== ID_LENGTH) {
     return err;
   } 
@@ -54,6 +55,11 @@ const updateProd = async (id, name, quantity) => {
   return productUpdated;
 };
 
+const deleteProd = async (id) => {
+  if (id.length !== ID_LENGTH) return err;
+  return await Products.deleteProductsById(id); 
+};
+
 module.exports = { 
   addProd,
   getProd,
@@ -61,4 +67,5 @@ module.exports = {
   getProdById,
   updateProd,
   middlewareVerification,
+  deleteProd,
 };
