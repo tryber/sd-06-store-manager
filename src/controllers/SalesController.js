@@ -1,7 +1,8 @@
 const {
   CreateSalesService,
   ListSalesService,
-  GetSalesByIdService
+  GetSalesByIdService,
+  UpdateSaleService
 } = require('../services/index');
 
 class SalesController {
@@ -40,33 +41,33 @@ class SalesController {
   async update(req, res) {
     const { id } = req.params;
 
-    const getProductByIdService = new GetProductByIdService();
+    const getSalesByIdService = new GetSalesByIdService();
 
-    const updateProductService = new UpdateProductService();
+    const updateSaleService = new UpdateSaleService();
 
-    await getProductByIdService.execute(id);
+    await getSalesByIdService.execute(id);
 
-    const updatedProduct = await updateProductService.execute(id, req.body);
+    const updatedProduct = await updateSaleService.execute(id, req.body);
 
-    const PRODUCT_UPDATED = 200;
+    const SALE_UPDATED = 200;
 
-    return res.status(PRODUCT_UPDATED).json(updatedProduct);
+    return res.status(SALE_UPDATED).json(updatedProduct);
   }
 
   async delete(req, res) {
     const { id } = req.params;
 
-    const getProductByIdService = new GetProductByIdService();
+    const getSalesByIdService = new GetSalesByIdService();
 
     const deleteProductService = new DeleteProductService();
 
-    const productDeleted = await getProductByIdService.execute(id);
+    const saleDeleted = await getSalesByIdService.execute(id);
 
     await deleteProductService.execute(id, req.body);
 
     const PRODUCT_DELETED = 200;
 
-    return res.status(PRODUCT_DELETED).json(productDeleted);
+    return res.status(PRODUCT_DELETED).json(saleDeleted);
   }
 }
 

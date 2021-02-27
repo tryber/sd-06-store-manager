@@ -1,4 +1,5 @@
 const Crud = require('./Crud');
+const { ObjectID } = require('mongodb');
 
 const AppError = require('../../utils/AppError');
 const { INVALID_DATA } = require('../../utils/errorCodes');
@@ -24,6 +25,24 @@ class Products extends Crud {
         code: INVALID_DATA
       }, WRONG_DATA);
     }
+  }
+
+  async update(productId, { name, quantity }) {
+
+    const updateFields = {
+      $set: {
+        name,
+        quantity
+      }
+    };
+
+    const queryParams = {
+      _id: ObjectID(productId)
+    };
+
+    const updatedProduct = await super.update(queryParams, updateFields);
+
+    return updatedProduct;
   }
 }
 

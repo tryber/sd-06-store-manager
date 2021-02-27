@@ -1,4 +1,5 @@
 const Crud = require('./Crud');
+const { ObjectID } = require('mongodb');
 
 const AppError = require('../../utils/AppError');
 
@@ -28,6 +29,23 @@ class Sales extends Crud {
         code: SALE_NOT_FOUND
       }, NOT_FOUND);
     }
+  }
+
+  async update(saleId, itensSold) {
+
+    const updateFields = {
+      $set: {
+        itensSold
+      }
+    };
+
+    const queryParams = {
+      _id: ObjectID(saleId)
+    };
+
+    const updatedProduct = await super.update(queryParams, updateFields);
+
+    return updatedProduct;
   }
 }
 

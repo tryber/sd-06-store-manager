@@ -5,12 +5,12 @@ const { INVALID_DATA } = require('../utils/errorCodes');
 const { WRONG_DATA } = require('../utils/errorStatus');
 
 class CreateSalesService {
-  async execute(sales) {
+  async execute(itensSold) {
 
     const productModel = new Products();
     const salesModel = new Sales();
 
-    for (const product of sales) {
+    for (const product of itensSold) {
       const productAlreadyExists = await productModel
         .findOne({ _id: product.productId });
 
@@ -24,7 +24,7 @@ class CreateSalesService {
       }
     }
 
-    const salesCreated = await salesModel.create(sales);
+    const salesCreated = await salesModel.create(itensSold);
 
     return salesCreated;
   }

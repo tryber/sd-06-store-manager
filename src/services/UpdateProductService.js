@@ -5,16 +5,9 @@ class UpdateProductService {
 
     const productModel = new Products();
 
-    const queryParams = {
-      $set: {
-        name,
-        quantity
-      }
-    };
+    const updatedProduct = await productModel.update(productId, { name, quantity });
 
-    const products = await productModel.update(productId, queryParams);
-
-    return products;
+    return updatedProduct;
   }
 }
 
