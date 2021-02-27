@@ -34,7 +34,7 @@ const deleteProduct = async (id) => {
   const { value } = await connection()
     .then(db => db.collection('products')
       .findOneAndDelete({_id: ObjectId(id)}));
-  console.log('model', value, 'modelllll');
+  // console.log('model', value, 'modelllll');
   return value;
 };
 

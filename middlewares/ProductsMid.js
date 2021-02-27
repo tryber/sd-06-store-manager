@@ -1,6 +1,6 @@
-const { getByName, getById }  = require('../models/ProductsModel');
-const { deleteProductService } = require('../service/ProductsService');
-const { ObjectId } = require('mongodb');
+const { getByName }  = require('../models/ProductsModel');
+// const { deleteProductService } = require('../service/ProductsService');
+// const { ObjectId } = require('mongodb');
 
 const FIVE = 5;
 const ZERO = 0;
