@@ -38,4 +38,34 @@ routerSale.post('/', async (req, res) =>{
   return res.status(SUCCESS).json(insertedSaleId);
 });
 
+routerSale.put('/:id', async (req, res)=>{
+  const {id} = req.params;
+  const sale = req.body;
+  const editedSale = await saleService.editSaleById(id, sale);
+  if(editedSale.isError){
+    return res.status(editedSale.status).json({
+      err: {
+        code: 'invalid_data',
+        message: editedSale.message,
+      },
+    });
+  }
+  return res.status(SUCCESS).json(editedSale);
+});
+
+routerSale.delete('/:id', async (req, res)=>{
+  const { id } = req.params;
+  const deletedSale = await saleService.deleteSaleById(id);
+  console.log('deletedSale', deletedSale);
+  if(deletedSale.isError){
+    return res.status(deletedSale.status).json({
+      err: {
+        code: 'invalid_data',
+        message: deletedSale.message,
+      },
+    });
+  }
+  return res.status(SUCCESS).json({deletedSale});
+});
+
 module.exports = routerSale;

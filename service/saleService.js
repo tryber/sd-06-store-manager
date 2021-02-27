@@ -9,20 +9,6 @@ const isValidQuantity = (quantity) =>{
   return true;
 };
 
-// const isValidSaleId = async(id)=>{
-//   const error = {
-//     isError: false
-//   };
-//   const saleId = await sales.getSaleById(id);
-//   if(!saleId){
-//     error.isError = true;
-//     error.status = 404,
-//     error.message = 'Sale not found';
-//     return error;
-//   }
-//   return error;
-// };
-
 const getAll = async()=>{
   const sale = await sales.getAll();
   return sale;
@@ -61,8 +47,51 @@ const createSale = async(sale)=>{
   return await sales.createSale(sale);
 };
 
+const editSaleById = async(id, sale)=>{
+  const error = {
+    isError: false,
+  };
+  const validQuantity = isValidQuantity(sale[0].quantity);
+  console.log('validQuantity', validQuantity);
+  if(!validQuantity){
+    error.message = 'Wrong product ID or invalid quantity';
+    error.status = 422;
+    error.isError = true;
+    return error;
+  }
+  await sales.editSaleById(id, sale);
+  return {
+    _id: id,
+    itensSold: [
+      {
+        productId: sale[0].productId,
+        quantity: sale[0].quantity,
+      }
+    ]
+  };
+};
+
+const deleteSaleById = async(id)=>{
+  const error = {
+    isError: false
+  };
+  try{
+    const validSaleId = await sales.getSaleById(id);
+    await sales.deleteSaleById(id);
+    console.log('validSaleID', validSaleId);
+    return validSaleId;
+  } catch {
+    error.isError = true;
+    error.status = 422,
+    error.message = 'Wrong sale ID format';
+    return error;
+  }
+};
+
 module.exports = {
   getAll,
   createSale,
-  getSaleById
+  getSaleById,
+  editSaleById,
+  deleteSaleById
 };
