@@ -23,14 +23,16 @@ productRouter.get('/', async (request, response) => {
 });
 
 productRouter.get('/:id', checkId, async (request, response) => {
-  const product = await productById(request.params.id);
+  const id = request.params.id;
+  const product = await productById(id);
   response.status(Res200).json(product);
 });
 
 productRouter.put('/:id', checkId, validateProduct, async (request, response) => {
   const { name, quantity } = request.body;
-  await updateProduct(request.params.id, name, quantity);  
-  const updateProduct = await productById(request.params.id);
+  const id = request.params.id;
+  await updateProduct(id, name, quantity);  
+  const updateProduct = await productById(id);
   response.status(Res200).json(updateProduct);
 });
 
