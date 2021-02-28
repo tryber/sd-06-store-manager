@@ -32,8 +32,8 @@ productRouter.put('/:id', checkId, validateProduct, async (request, response) =>
   const { name, quantity } = request.body;
   const id = request.params.id;
   await updateProduct(id, name, quantity);  
-  const updateProduct = await productById(id);
-  response.status(Res200).json(updateProduct);
+  const updatedProduct = await productById(id);
+  return response.status(Res200).json(updatedProduct);
 });
 
 module.exports = productRouter;
