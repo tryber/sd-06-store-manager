@@ -13,7 +13,7 @@ const validateProducts = async function (req, res, next) {
   const getProductByName = await searchForProductName(name);
 
   if(name.length < FIVE ) {
-    res.status(ERROR422).json(
+    return res.status(ERROR422).json(
       { err:
         {
           code: 'invalid_data',
@@ -22,12 +22,12 @@ const validateProducts = async function (req, res, next) {
   }
 
   if(typeof quantity !== 'number') {
-    res.status(ERROR422).json(
+    return res.status(ERROR422).json(
       { err: { code: 'invalid_data', message: '\"quantity\" must be a number'} });
   }
   
   if(typeof quantity !== 'number' || quantity <= ZERO) {
-    res.status(ERROR422).json({
+    return res.status(ERROR422).json({
       err:
       {
         code: 'invalid_data',
@@ -36,7 +36,7 @@ const validateProducts = async function (req, res, next) {
   }
 
   if(getProductByName.find((ProductName) => ProductName === ProductName )) {
-    res.status(ERROR422).json(
+    return res.status(ERROR422).json(
       { err:
         {
           code: 'invalid_data',
