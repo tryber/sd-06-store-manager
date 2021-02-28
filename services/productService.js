@@ -1,7 +1,7 @@
 const { ObjectId } = require('mongodb');
 const productModel = require('../models/productModel');
 
-const Erro422 = 422;
+const HTTP422 = 422;
 
 const addProduct = async (newProduct) => {
   return await productModel.addProduct(newProduct);
@@ -24,9 +24,9 @@ const deleteProduct = async (id) => {
 };
   
 
-const checkId = async (request, response, next) => {
+const checkId = (request, response, next) => {
   const id = request.params.id;
-  if (!ObjectId.isValid(id)) return response.status(Erro422).json({
+  if (!ObjectId.isValid(id)) return response.status(HTTP422).json({
     err: {
       code: 'invalid_data',
       message: 'Wrong id format',
@@ -42,7 +42,7 @@ const checkProduct = async (request, response, next) => {
   const existProd = await productList.find((el) => el.name === name);
   
   if (existProd) {
-    return response.status(Erro422).json(
+    return response.status(HTTP422).json(
       {
         err: {
           code: 'invalid_data',
@@ -61,21 +61,21 @@ const validateProduct = async (request, response, next) => {
   const nameSize = name.length;
   
   if( nameSize < five) {
-    return response.status(Erro422).json({
+    return response.status(HTTP422).json({
       err: {
         code: 'invalid_data',
         message: '"name" length must be at least 5 characters long'
       },
     });
   } else if (quantity < 1) {
-    return response.status(Erro422).json({
+    return response.status(HTTP422).json({
       err: {
         code: 'invalid_data',
         message: '"quantity" must be larger than or equal to 1'
       },
     });
   } else if (typeof quantity !== 'number') {
-    return response.status(Erro422).json({
+    return response.status(HTTP422).json({
       err: {
         code: 'invalid_data',
         message: '"quantity" must be a number'
@@ -86,7 +86,8 @@ const validateProduct = async (request, response, next) => {
   next();
 };
 
-module.exports = { addProduct,
+module.exports = {
+  addProduct,
   validateProduct,
   checkProduct,
   allProducts,
