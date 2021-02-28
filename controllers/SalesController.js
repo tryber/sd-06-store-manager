@@ -16,7 +16,7 @@ router.get('/', async (request, response) => {
   response.status(SUCCESS).json(sales);
 });
 
-router.get('/:id', validateSaleId,  async (request, response) => {
+router.get('/:id', validateSaleId, async (request, response) => {
   const { id } = request.params;
   const requestedSale = await SalesService.findById(id);
 
@@ -33,17 +33,20 @@ router.post('/', validateSaleQuantities, async (request, response) => {
   response.status(SUCCESS).json(registeredSale);
 });
 
-router.put('/:id', async (request, response) => {
-  const { id } = request.params;
-  const updateInfo = request.body;
-  const updatedSale = await SalesService.update(id, updateInfo);
+router.put('/:id',
+  validateSaleId,
+  validateSaleQuantities,
+  async (request, response) => {
+    const { id } = request.params;
+    const updateInfo = request.body;
+    const updatedSale = await SalesService.update(id, updateInfo);
 
-  if (updatedSale.error) {
-    return response.status(UNPROCESSABLE_ENTITY).json(updatedSale.error);
-  };
+    if (updatedSale.error) {
+      return response.status(UNPROCESSABLE_ENTITY).json(updatedSale.error);
+    };
 
-  response.status(SUCCESS).json(updatedSale);
-});
+    response.status(SUCCESS).json(updatedSale);
+  });
 
 router.delete('/:id', async (request, response) => {
   const { id } = request.params;
