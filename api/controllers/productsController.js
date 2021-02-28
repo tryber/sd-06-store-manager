@@ -1,6 +1,6 @@
 const app = require('express')();
 const Service  =require('../services/productsService');
-const statusCode = require('../utils/magicNumbers');
+const statusCode = require('../utils/errorCodes');
 const bodyParser = require('body-parser');
 
 
@@ -21,14 +21,21 @@ app.post('/', async (req, res) => {
   try {
     const {name, quantity} = req.body;
     const product = await Service.registerProduct(name, quantity);
-    
-    if(!product) throw Error;
+   
+    if(product.message) throw new Error(product.message);
 
     res.status(statusCode.CREATED).json(product);
 
   } catch (error) {
-    console.log(error);
-    
+    console.error(error);
+    res
+      .status(statusCode.UNPROCESSABLE_ENTITY)
+      .json(
+        { err: {
+          code: 'invalid_data',
+          message: error.message
+        }}
+      );
   }
 });
 
