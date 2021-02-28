@@ -38,4 +38,21 @@ const getProductById = async (id) => {
   return product;
 };
 
-module.exports = { createProduct, getByName, getAllProducts, getProductById };
+const updateProduct = async (id, name, quantity) => {
+  const updatedProduct = await connection().then((db) => {
+    db.collection(collection).updateOne(
+      { _id: ObjectId(id) },
+      { $set: { name, quantity } },
+    );
+  });
+
+  return updatedProduct;
+};
+
+module.exports = {
+  createProduct,
+  getByName,
+  getAllProducts,
+  getProductById,
+  updateProduct,
+};

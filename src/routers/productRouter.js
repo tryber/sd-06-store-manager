@@ -10,7 +10,7 @@ productRouter.get('/', productController.getAllProducts);
 
 productRouter.get('/:id', productController.getProductById);
 
-// productRouter.put('/:id', validateRegisterProduct, productController.updateProducts);
+productRouter.put('/:id', validateCreateProduct, productController.updateProduct);
 
 // productRouter.delete('/:id', productController.deleteProduct);
 

@@ -26,8 +26,18 @@ const getProductById = rescue(async (request, response) => {
   response.status(status.ok).json(product);
 });
 
+const updateProduct = rescue(async (request, response) => {
+  const { id } = request.params;
+  const { name, quantity } = request.body;
+
+  const updatedProduct = await productService.updateProduct(id, name, quantity);
+
+  response.status(status.ok).json(updatedProduct);
+});
+
 module.exports = {
   createProduct,
   getAllProducts,
   getProductById,
+  updateProduct,
 };
