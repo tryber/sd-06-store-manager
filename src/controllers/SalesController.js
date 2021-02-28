@@ -1,60 +1,32 @@
 const { Router } = require('express');
-const { create, getAll, getById, update, exclude } = require('../models/SalesModel');
-const { ObjectId } = require('mongodb');
+const { 
+  createValidation,
+  getAllValidation,
+  getByIdValidation,
+  editValidation,
+  deleteValidation
+} = require ('../services/SalesService');
 
 const SalesController = new Router();
 
 const STATUS_OK = 200;
-const STATUS_NOTFOUND= 404;
-const STATUS_UNPROCESSABLE= 422;
-const ZERO = 0;
 
 // Requisito 5
 SalesController.post('/', async (req, res) => {
   const itens = req.body;
-
-  itens.forEach((item) => {
-    if (item.quantity <= ZERO || isNaN(item.quantity)) {
-      return res.status(STATUS_UNPROCESSABLE).json({ 
-        err: {
-          code: 'invalid_data',
-          message: 'Wrong product ID or invalid quantity'
-        }
-      });
-    }  
-  });
-  
-  const register = await create(itens);
-
+  const register = await createValidation(itens);
   return res.status(STATUS_OK).json(register);
 });
 
 // Requisito 6
 SalesController.get('/', async (_req, res) => {
-  const sales = await getAll();
-
+  const sales = await getAllValidation();
   return res.status(STATUS_OK).json({sales});
 });
 
 SalesController.get('/:id', async (req, res) => {
   const id = req.params.id;
-  if (!ObjectId.isValid(id)) {
-    return res.status(STATUS_NOTFOUND)
-      .json({
-        err: {
-          code: 'not_found',
-          message: 'Sale not found'
-        }});
-  }
-  const sale = await getById(id);
-  if (!sale) {
-    return res.status(STATUS_NOTFOUND)
-      .json({
-        err: {
-          code: 'not_found',
-          message: 'Sale not found'
-        }});
-  }
+  const sale = await getByIdValidation(id);
   return res.status(STATUS_OK).json(sale);
 });
 
@@ -62,45 +34,15 @@ SalesController.get('/:id', async (req, res) => {
 SalesController.put('/:id', async (req, res) => {
   const updatedItens = req.body;
   const id = req.params.id;
-
-  updatedItens.forEach((item) => {
-    if (item.quantity <= ZERO) {
-      return res.status(STATUS_UNPROCESSABLE).json({ 
-        err: {
-          code: 'invalid_data',
-          message: 'Wrong product ID or invalid quantity'
-        }
-      });
-    }
-    if (isNaN(item.quantity)) {
-      return res.status(STATUS_UNPROCESSABLE).json({ 
-        err: {
-          code: 'invalid_data',
-          message: 'Wrong product ID or invalid quantity'
-        }
-      });
-    }
-  });
-
-  await update(id, updatedItens);
-  const updatedSale = await getById(id);
-  return res.status(STATUS_OK).json(updatedSale);
+  const updateSale = await editValidation(id, updatedItens);
+  return res.status(STATUS_OK).json(updateSale);
 });
 
 // Requisito 8
 SalesController.delete('/:id', async (req, res) => {
   const id = req.params.id;
-  if (!ObjectId.isValid(id)) {
-    return res.status(STATUS_UNPROCESSABLE)
-      .json({
-        err: {
-          code: 'invalid_data',
-          message: 'Wrong sale ID format'
-        }});
-  }
-  const deletedSale = await getById(id);
-  await exclude(id);
-  return res.status(STATUS_OK).json(deletedSale);
+  const deleteSale = await deleteValidation(id);
+  return res.status(STATUS_OK).json(deleteSale);
 });
 
 module.exports = SalesController;
