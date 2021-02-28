@@ -97,8 +97,57 @@ const displayThisSpecificProduct = async (request, response) => {
   return response.status(SUCCESS).send(thisProductOnly);
 };
 
+// req 3
+
+const updatingValidProduct = async (request, response) => {
+  const { id } = request.params;
+  const { name, quantity} = request.body;
+
+  if (name.length < NAME_MIN_LENGTH) {
+    return response.status(UNPROCESSABLE_ENTITY).json({
+      err:
+      {
+        code: 'invalid_data',
+        message: '"name" length must be at least 5 characters long',
+      }
+    });
+  };
+
+  if ( quantity <= NO_QUANTITY) {
+    return response.status(UNPROCESSABLE_ENTITY).json({
+      err:
+      {
+        code: 'invalid_data',
+        message: '"quantity" must be larger than or equal to 1',
+      }
+    });
+  };
+
+  if (typeof quantity !== 'number') {
+    return response.status(UNPROCESSABLE_ENTITY).json({
+      err:
+      {
+        code: 'invalid_data',
+        message: '"quantity" must be a number',
+      }
+    });
+  }
+
+
+  await Products.updateProduct(id, name, quantity);;
+
+  const updatedProduct = {
+    _id: id,
+    name,
+    quantity
+  };
+
+  return response.status(SUCCESS).send(updatedProduct);
+};
+
 module.exports = {
   creatingValidProduct,
   displayingAllProducts,
   displayThisSpecificProduct,
+  updatingValidProduct
 };
