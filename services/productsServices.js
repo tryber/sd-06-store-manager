@@ -1,14 +1,21 @@
-const { create } = require('../models/productsModels')
-const { status } = require('../util/dataStatus');
+const { create, findByName } = require('../models/productsModels');
+const { status, Messages } = require('../util/dataStatus');
+
 
 const createProduct = async (req, res) => {
-    const { name, quantidy } = req.body
-    const result = await create(name, quantidy);
+  const { name, quantity } = req.body;
 
-    return res.status(status.create).json(result)
+  const nameInMongoDb = await findByName(name);
+
+  if(nameInMongoDb !== null) {
+    return res.status(status.notFormated).json(Messages.productExist);
+  }
+
+  const result = await create(name, quantity);    
+  return res.status(status.create).json(result);
 };
 
 
 module.exports = {
-    createProduct
-  };
+  createProduct
+};

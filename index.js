@@ -1,4 +1,4 @@
-const express = require('express')
+const express = require('express');
 const bodyParser = require('body-parser');
 const productsControl = require('./controllers/productsControll');
 
@@ -18,5 +18,5 @@ app.get('/', (_request, response) => {
 app.use('/products', productsControl);
 
 app.listen(DOOR,() => {
-  console.log('server On')
+  console.log('server On');
 });
