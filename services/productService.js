@@ -24,7 +24,7 @@ const deleteProduct = async (id) => {
 };
   
 
-const checkId = (request, response, next) => {
+const checkId = async (request, response, next) => {
   const id = request.params.id;
   if (!ObjectId.isValid(id)) return response.status(HTTP422).json({
     err: {
