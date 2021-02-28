@@ -36,4 +36,11 @@ productRouter.put('/:id', checkId, validateProduct, async (request, response) =>
   return response.status(Res200).json(updatedProduct);
 });
 
+productRouter.delete('/:id', checkId, async (request, response) => {
+  const id = request.params.id;
+  const productToBeDeleted = await getProductById(id);
+  await deleteProduct(id);
+  return response.status(SUCCESS).json(productToBeDeleted);
+});
+
 module.exports = productRouter;

@@ -22,4 +22,9 @@ const updateProduct = async (id, name, quantity) => connection()
       { $set: { name, quantity } }
     ));
 
-module.exports = { addProduct, allProducts, productById, updateProduct };
+const deleteProduct = async (id) => connection()
+  .then((db) => db
+    .collection('products')
+    .deleteOne({ _id: ObjectId(id) }));
+
+module.exports = { addProduct, allProducts, productById, updateProduct, deleteProduct };

@@ -18,6 +18,10 @@ const productById = async (id) => {
 const updateProduct = async (id, name, quantity) => {
   return await productModel.updateProduct(id, name, quantity);
 };
+
+const deleteProduct = async (id) => {
+  return await productModel.deleteProduct(id);
+};
   
 
 const checkId = async (request, response, next) => {
@@ -88,5 +92,6 @@ module.exports = { addProduct,
   allProducts,
   productById,
   checkId,
-  updateProduct
+  updateProduct,
+  deleteProduct
 };
