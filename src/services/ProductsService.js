@@ -45,11 +45,9 @@ const getAll = async () => {
 const isIdValid = (id) => ObjectId.isValid(id);
 
 const findById = async (id) => {
-  if (!isIdValid(id)) return { message: 'Wrong id format'};
+  if (!isIdValid(id)) return null;
   
   const productById = await Products.findById(id);
-
-  if (!productById) return { message: 'Wrong id format' };
 
   return productById;
 };
@@ -65,7 +63,7 @@ const update = async (id, name, quantity) => {
 const remove = async (id) => {
   const product = await findById(id);
 
-  if (product.message) return product;
+  if (!product) return null;
 
   await Products.remove(id);
 

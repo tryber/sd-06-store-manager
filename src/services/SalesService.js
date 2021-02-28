@@ -1,40 +1,38 @@
-const Products = require('../services/ProductsService');
-const Sales = require('../models/Sales');
 const { ObjectId } = require('mongodb');
+const Sales = require('../models/Sales');
 
-const SalesValidation = async (itensSold) => {
-  let isAnyError = '';
+const isLessThanZero = (field) => {
+  const zero = 0;
+  return !field || field <= zero;
+};
+const isTypeNumber = (field) => typeof(field) === 'number';
 
-  itensSold.forEach(item => {
+const isQuantityValid = (quantity) => {
+  switch (true) {
+  case !quantity: return false;
+  case !isTypeNumber(quantity): return false;
+  case isLessThanZero(quantity): return false;
+  case !Number.isInteger(quantity): return false;
+
+  default: return true;
+  }
+};
+
+const areSaleDataValid = (itensSold) => {
+  const areItemsValid = itensSold.map(item => {
     const {productId, quantity} = item;
-    const zero = 0;
-    const productById = Products.isIdValid(productId);
-    const errorMsg = { message: 'Wrong product ID or invalid quantity' };
   
-    if (!productById) isAnyError = errorMsg;
-    
-    if ((!quantity && quantity !== zero) || typeof(quantity) !== 'number') {
-      isAnyError = errorMsg;
-    }
-    
-    if (!quantity || quantity <= zero || !Number.isInteger(quantity)) {
-      isAnyError = errorMsg;
-    }
+    if (!isIdValid(productId)) return false;
+    if (!isQuantityValid(quantity)) return false;
   });
-  
-  if (isAnyError.message) return isAnyError;
-  
-  return null;
 
-  
+  if(areItemsValid.some(item => item === false)) return false;
+    
+  return true;
 };
 
 const create = async (itensSold) => {
-  const isDataInvalid = await SalesValidation(itensSold);
-
-  console.log(isDataInvalid);
-
-  if (isDataInvalid) return isDataInvalid;
+  if (!areSaleDataValid(itensSold)) return false;
 
   return await Sales.create(itensSold);
 };
@@ -54,8 +52,16 @@ const findById = async (id) => {
   return salesById;
 };
 
+const update = async (id, itensSold) => {
+  if (!isIdValid(id)) return false;
+  if(!areSaleDataValid(itensSold)) return false;
+
+  return await Sales.update(id, itensSold);
+};
+
 module.exports = {
   create,
   getAll,
-  findById
+  findById,
+  update
 };

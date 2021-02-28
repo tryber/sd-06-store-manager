@@ -13,10 +13,10 @@ router
 
     const sale = await Sales.create(itensSold);
 
-    if (sale.message) return res.status(UNPROCESSABLE_ENTITY).json(
+    if (!sale) return res.status(UNPROCESSABLE_ENTITY).json(
       { err: {
         code: 'invalid_data',
-        message: sale.message
+        message: 'Wrong product ID or invalid quantity'
       }}
     );
 
@@ -39,22 +39,22 @@ router
     });
 
     res.status(SUCCESS).json(sale);
+  })
+  .put('/:id', async (req, res) => {
+    const { id } = req.params;
+    const itensSold = req.body;
+
+    const updatedSale = await Sales.update(id, itensSold);
+
+    if (!updatedSale) return res.status(UNPROCESSABLE_ENTITY).json(
+      { err: {
+        code: 'invalid_data',
+        message: 'Wrong product ID or invalid quantity'
+      }}
+    );
+
+    res.status(SUCCESS).json(updatedSale);
   });
-// .put('/:id', async (req, res) => {
-//   const { id } = req.params;
-//   const { name, quantity } = req.body;
-
-//   const updatedSale = await Sales.update(id, name, quantity);
-
-//   if (updatedSale.message) return res.status(UNPROCESSABLE_ENTITY).json(
-//     { err: {
-//       code: 'invalid_data',
-//       message: updatedSale.message
-//     }}
-//   );
-
-//   res.status(SUCESS).json(updatedsale);
-// })
 // .delete('/:id', async (req, res) => {
 //   const { id } = req.params;
 //   const deletedSale = await Sales.remove(id);

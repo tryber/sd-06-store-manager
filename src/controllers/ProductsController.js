@@ -30,10 +30,10 @@ router
     const { id } = req.params;
     const product = await Products.findById(id);
 
-    if (product.message) return res.status(UNPROCESSABLE_ENTITY).json({
+    if (!product) return res.status(UNPROCESSABLE_ENTITY).json({
       err: {
         code: 'invalid_data',
-        message: product.message
+        message: 'Wrong id format'
       }
     });
 
@@ -58,10 +58,10 @@ router
     const { id } = req.params;
     const deletedProduct = await Products.remove(id);
 
-    if (deletedProduct.message) return res.status(UNPROCESSABLE_ENTITY).json({
+    if (!deletedProduct) return res.status(UNPROCESSABLE_ENTITY).json({
       err: {
         code: 'invalid_data',
-        message: deletedProduct.message
+        message: 'Wrong id format'
       }
     });
 

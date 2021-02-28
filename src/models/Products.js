@@ -28,14 +28,14 @@ const findById = async (id) => {
 };
 
 const update = async (id, name, quantity) => {
-  const { insertedId } = await connection()
+  await connection()
     .then((db) => db.collection('products').updateOne(
       { _id: ObjectID(id) },
       { $set: { name, quantity} }
     ));
 
   return {
-    _id: insertedId,
+    _id: id,
     name,
     quantity
   };
