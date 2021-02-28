@@ -4,6 +4,7 @@ const validateProductQuantity = require('./validateQuantity');
 const validateProductId = require('./validateProductId');
 const validateSaleQuantities = require('./validateSaleQuantities');
 const validateSaleId = require('./validateSaleId');
+const validateSaleIdWORKAROUND = require('./validateSaleIdWORKAROUND');
 
 module.exports = {
   checkProductRepetition,
@@ -12,4 +13,5 @@ module.exports = {
   validateProductId,
   validateSaleQuantities,
   validateSaleId,
+  validateSaleIdWORKAROUND,
 };

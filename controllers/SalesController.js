@@ -3,6 +3,7 @@ const SalesService = require('../services/SalesService');
 const {
   validateSaleQuantities,
   validateSaleId,
+  validateSaleIdWORKAROUND,
 } = require('../middlewares');
 
 const router = Router();
@@ -16,7 +17,7 @@ router.get('/', async (request, response) => {
   response.status(SUCCESS).json(sales);
 });
 
-router.get('/:id', validateSaleId, async (request, response) => {
+router.get('/:id', validateSaleIdWORKAROUND, async (request, response) => {
   const { id } = request.params;
   const requestedSale = await SalesService.findById(id);
 

@@ -8,6 +8,7 @@ const app = express();
 const LOCALHOST_PORT = 3000;
 const PORT = process.env.PORT || LOCALHOST_PORT;
 const UNPROCESSABLE_ENTITY = 422;
+const NOT_FOUND = 404;
 
 app.use(bodyParser.json());
 
@@ -20,7 +21,7 @@ app.use('/products', ProductsController);
 app.use('/sales', SalesController);
 
 app.use((error, request, response, next) => {
-  response.status(UNPROCESSABLE_ENTITY).json(error);
+  return response.status(UNPROCESSABLE_ENTITY).json(error);
 });
 
 app.listen(PORT, () => console.log(`App listening on port ${PORT}`));
