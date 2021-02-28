@@ -30,20 +30,19 @@ const getSaleById = rescue(async (req, res) => {
 const updateSale = async (req, res) => {
   const { id } = req.params;
   const sale = req.body;
-  const responsePayload = await saleService.updateSale(id, sale);
-  res.status(status.ok).json(responsePayload);
+  const updatedSale = await saleService.updateSale(id, sale);
+  res.status(status.ok).json(updatedSale);
 };
 
-const deleteSale = rescue(async (req, res) => {
-  const { id } = req.params;
-  const responsePayload = await saleService.deleteSale(id);
-  res.status(status.ok).json(responsePayload);
-});
+// const deleteSale = rescue(async (req, res) => {
+//   const { id } = req.params;
+//   const deleteSale = await saleService.deleteSale(id);
+//   res.status(status.ok).json(deleteSale);
+// });
 
 module.exports = {
   createSale,
   getAllSales,
   getSaleById,
   updateSale,
-  deleteSale,
 };

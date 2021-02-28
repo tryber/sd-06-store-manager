@@ -1,17 +1,17 @@
 const { Router } = require('express');
-const SaleController = require('../controllers/SaleController');
+const saleController = require('../controllers/saleController');
 const { validateCreateSale } = require('../utils/validationErrors');
 
 const saleRouter = new Router();
 
-saleRouter.post('/', validateCreateSale, SaleController.createSale);
+saleRouter.post('/', validateCreateSale, saleController.createSale);
 
-saleRouter.get('/', SaleController.getAllSales);
+saleRouter.get('/', saleController.getAllSales);
 
-saleRouter.get('/:id', SaleController.getSaleById);
+saleRouter.get('/:id', saleController.getSaleById);
 
-// saleRouter.put('/:id', validateCreateSale, SaleController.updateSale);
+saleRouter.put('/:id', validateCreateSale, saleController.updateSale);
 
-// saleRouter.delete('/:id', SaleController.deleteSale);
+// saleRouter.delete('/:id', saleController.deleteSale);
 
 module.exports = saleRouter;

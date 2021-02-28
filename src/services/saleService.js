@@ -28,8 +28,34 @@ const getSaleById = async (id) => {
   return sale;
 };
 
+const updateSale = async (id, sale) => {
+  const updatedSale = await saleModel.updateSale(id, sale);
+
+  if (updatedSale === 1) {
+    const updateSales = {
+      _id: id,
+      itensSold: sale,
+    };
+
+    return updateSales;
+  }
+};
+
+// const deleteSale = async (id) => {
+//   const deletedSale = await saleModel.getSaleById(id);
+
+//   if (!deletedSale) {
+//     throw new throwError(status.notFound, errors.wrongSaleID);
+//   }
+
+//   await saleModel.deleteSale(id);
+
+//   return deletedSale;
+// };
+
 module.exports = {
   createSale,
   getAllSales,
   getSaleById,
+  updateSale,
 };
