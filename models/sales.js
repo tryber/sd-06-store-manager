@@ -3,7 +3,7 @@ const { ObjectId } = require('mongodb');
 
 const create = async (itensSold) => {
   const sales = {
-    itensSold: []
+    itensSold: [],
   };
 
   itensSold.forEach(element => {
@@ -30,8 +30,24 @@ const getById = async (id) => {
   return saleById;
 };
 
+const upDate = async (id, itensSold) => {
+  if (!ObjectId.isValid(id)) return null;
+
+  await connection()
+    .then((db) => db.collection('sales')
+      .updateOne({ _id: ObjectId(id) }, { $set: { itensSold } } ));
+
+  const updateSale = {
+    _id: ObjectId(id),
+    itensSold
+  };
+
+  return updateSale;
+};
+
 module.exports = {
   create,
   getAll,
   getById,
+  upDate,
 };
