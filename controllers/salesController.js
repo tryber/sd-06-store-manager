@@ -5,6 +5,7 @@ const router = Router();
 const salesService = require('../services/salesService');
 const status200 = 200;
 const status404 = 404;
+const status422 = 422;
 
 router.post('/', async (req, res) => {
   const itensSold  = req.body;
@@ -51,15 +52,14 @@ router.put('/:id', async (req, res) => {
   return res.status(status200).json(result);
 });
 
-module.exports = router;
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
 
-// itensSold.forEach(item => {
-//   if (item.quantity <= number0 || !Number(item.quantity)) {
-//     error = {
-//       err: {
-//         code: 'invalid_data',
-//         message: 'Wrong product ID or invalid quantity',
-//         codeStatus: 422,
-//       }
-//     };
-//   }
+  const result = await salesService.exclude(id);
+
+  if (result.err) return res.status(status422).json(result);
+
+  return res.status(status200).json(result);
+});
+
+module.exports = router;

@@ -50,8 +50,8 @@ const getById = async (id) => {
   if (!result) return {
     err: {
       code: 'not_found',
-      message: 'Sale not found'
-    }
+      message: 'Sale not found',
+    },
   };
 
   return result;
@@ -67,9 +67,30 @@ const upDate = async (id, itensSold) => {
   return salesResult;
 };
 
+const exclude = async (id) => {
+  if (!ObjectId.isValid(id)) return {
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong sale ID format',
+    },
+  };
+
+  const result = await sales.exclude(id);
+
+  if (!result) return {
+    err: {
+      code: 'not_found',
+      message: 'Sale not found',
+    },
+  };
+
+  return result;
+};
+
 module.exports = {
   create,
   getAll,
   getById,
   upDate,
+  exclude,
 };

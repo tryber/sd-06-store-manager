@@ -1,5 +1,6 @@
 const connection = require('./connection');
 const { ObjectId } = require('mongodb');
+const { connect } = require('../controllers/salesController');
 
 const create = async (itensSold) => {
   const sales = {
@@ -45,9 +46,22 @@ const upDate = async (id, itensSold) => {
   return updateSale;
 };
 
+const exclude = async (id) => {
+  if (!ObjectId.isValid(id)) return null;
+
+  const saleById = await connection()
+    .then((db) => db.collection('sales').findOne(ObjectId(id)));
+
+  await connection()
+    .then((db) => db.collection('sales').deleteOne({ _id: ObjectId(id) }));
+
+  return saleById;
+};
+
 module.exports = {
   create,
   getAll,
   getById,
   upDate,
+  exclude,
 };
