@@ -51,11 +51,12 @@ SalesController.delete('/:id', async (req, res) => {
     await deleteSale(id);
     return res.status(STATUS_OK).json(deletedSale);
   }
-  return res.status(STATUS_UNPROCESSABLE).json({
-    err: {
-      code: 'invalid_data',
-      message: 'Wrong sale ID format'
-    }});
+  return res.status(STATUS_UNPROCESSABLE)
+    .json({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong sale ID format'
+      }});
 });
 
 module.exports = SalesController;
