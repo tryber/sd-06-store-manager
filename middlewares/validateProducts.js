@@ -12,9 +12,9 @@ const validateProducts = async function (req, res, next) {
 
   const getProductByName = await searchForProductName(name);
 
-  if(name.length < FIVE ) {
-    return res.status(ERROR422).json(
-      { err:
+  if(name.length < FIVE || name.length === '') {
+    return res.status(ERROR422).json({
+      err:
         {
           code: 'invalid_data',
           message: '"name" length must be at least 5 characters long'
@@ -22,26 +22,30 @@ const validateProducts = async function (req, res, next) {
   }
 
   if(typeof quantity !== 'number') {
-    return res.status(ERROR422).json(
-      { err: { code: 'invalid_data', message: '\"quantity\" must be a number'} });
+    return res.status(ERROR422).json({
+      err:
+        {
+          code: 'invalid_data',
+          message: '\"quantity\" must be a number'
+        }});
   }
   
   if(typeof quantity !== 'number' || quantity <= ZERO) {
     return res.status(ERROR422).json({
       err:
-      {
-        code: 'invalid_data',
-        message: '\"quantity\" must be larger than or equal to 1'
-      } });
+        {
+          code: 'invalid_data',
+          message: '\"quantity\" must be larger than or equal to 1'
+        }});
   }
 
   if(getProductByName.find((ProductName) => ProductName === ProductName )) {
-    return res.status(ERROR422).json(
-      { err:
+    return res.status(ERROR422).json({
+      err:
         {
           code: 'invalid_data',
-          message: 'Product already exists'}
-      });
+          message: 'Product already exists'
+        }});
   }
 
   if(!getProductByName.find((ProductName) => ProductName === ProductName )) {

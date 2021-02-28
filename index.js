@@ -5,11 +5,10 @@ const app = express();
 
 
 const PORT = 3000;
-const SUCCESS = 200;
 
 // Para o avaliador funcionar, não remover.
-app.get('/', async (req, res) => {
-
+app.get('/', (request, response) => {
+  response.send();
 });
 
 app.use('/products', productsController);

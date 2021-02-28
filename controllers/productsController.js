@@ -7,6 +7,6 @@ const router = new Router();
 
 router.use(bodyParser.json());
 
-router.post('/', validateProducts, (req, res) => {});
+router.post('/', validateProducts, async (req, res) => {});
 
 module.exports = router;
