@@ -1,6 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { createProducts, validateProduct } = require('./src/middlewares/');
+const {
+  createProducts,
+  validateProduct,
+  findProduct,
+  findProducts
+} = require('./src/middlewares/');
 
 const app = express();
 
@@ -13,5 +18,10 @@ app.get('/', (_request, response) => {
 });
 
 app.post('/products', validateProduct, createProducts);
+
+app.get('/products/:id', findProduct);
+
+app.get('/products', findProducts);
+
 
 app.listen(PORT, () => console.log('App rodando na porta 3000'));
