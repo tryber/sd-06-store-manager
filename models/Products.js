@@ -33,10 +33,16 @@ const deleteProduct = async (id) => {
   ));
 };
 
+// criar uma query que busque no banco determinado documento a partir do nome
+const findByName = async (name) => {
+  return await connection().then((db) => db.collection('products').findOne({name}));
+};
+
 module.exports = {
   getAllProducts,
   getProductById,
   createProduct,
   updateProduct,
   deleteProduct,
+  findByName,
 };
