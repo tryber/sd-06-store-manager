@@ -1,6 +1,9 @@
 const { Router } = require('express');
 const SalesService = require('../services/SalesService');
-const { validateSaleQuantities } = require('../middlewares');
+const {
+  validateSaleQuantities,
+  validateSaleId,
+} = require('../middlewares');
 
 const router = Router();
 const SUCCESS = 200;
@@ -13,12 +16,12 @@ router.get('/', async (request, response) => {
   response.status(SUCCESS).json(sales);
 });
 
-router.get('/:id', async (request, response) => {
+router.get('/:id', validateSaleId,  async (request, response) => {
   const { id } = request.params;
   const requestedSale = await SalesService.findById(id);
 
   if (requestedSale.err) {
-    response.status(NOT_FOUND).json(requestedSale);
+    return response.status(NOT_FOUND).json(requestedSale);
   };
 
   response.status(SUCCESS).json(requestedSale);

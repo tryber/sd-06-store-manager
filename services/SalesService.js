@@ -9,7 +9,6 @@ async function getAll() {
 
 async function findById(id) {
   const sale = await Sale.findById(id);
-
   if(!sale) return {
     'err': {
       'code': 'not_found',

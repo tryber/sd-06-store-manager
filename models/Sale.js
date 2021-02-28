@@ -13,7 +13,7 @@ async function getAll() {
 
 async function findById(id) {
   const db = await connection();
-  const queryResult = db
+  const queryResult = await db
     .collection('sales')
     .findOne(ObjectId(id));
 
