@@ -53,8 +53,12 @@ const findSalesById = async (id) => {
   return sale;
 };
 
-const deleteSale = async (id) => {
-  const saleDeleted = await model.deleteSale(id);
+const deleteSale = async (id, sale) => {
+  const saleDeleted = await model.deleteSale(id, sale);
+};
+
+const updateSale = async (id, productId, quantity) => {
+  const updatedSale = await model.updateSale(id, productId, quantity);
 };
 
 module.exports = {
@@ -68,5 +72,6 @@ module.exports = {
   createSales,
   getAllSales,
   findSalesById,
-  deleteSale
+  deleteSale,
+  updateSale
 };

@@ -1,35 +1,21 @@
 const service = require('../services/service');
-
-const OK = 200;
-const created = 201;
-const notFound = 404;
-const invalidParams = 422;
-const zero = 0;
-const cinco = 5;
-const vinteQuatro = 24;
-const msgError = (string) => {
-  return {
-    err: {
-      code: 'invalid_data',
-      message: string,
-    }
-  };
-};
-const msgNotFound = (string) => {
-  return {
-    err: {
-      code: 'not_found',
-      message: string,
-    }
-  };
-};
-const nameRefusedMsg = (msgError('"name" length must be at least 5 characters long'));
-const productExistingMsg = (msgError('Product already exists'));
-const quantityGtZero = (msgError('"quantity" must be larger than or equal to 1'));
-const quantityNaN = (msgError('"quantity" must be a number'));
-const wrongId = (msgError('Wrong id format'));
-const salesWrong = (msgError('Wrong product ID or invalid quantity'));
-const saleNotFound = (msgNotFound('Sale not found'));
+const {
+  OK,
+  created,
+  notFound,
+  invalidParams,
+  zero,
+  cinco,
+  vinteQuatro,
+  nameRefusedMsg,
+  productExistingMsg,
+  quantityGtZero,
+  quantityNaN,
+  wrongId,
+  salesWrong,
+  saleNotFound,
+  saleIdWrong,
+} = require('../utils/messages');
 
 const createProduct = async (req, res) => {
   const { name, quantity } = req.body;
@@ -76,7 +62,7 @@ const deleteProduct = async (req, res) => {
   const { name, quantity } = req.body;
   if(id.length !== vinteQuatro) return res.status(invalidParams).json(wrongId);
   const product = await service.findByIdProducts(id);
-  if(!product === null)return res.status(invalidParams)
+  if(!product === null) return res.status(invalidParams)
     .json({ message: 'produto not found' });
   await service.deleteProduct(id, name, quantity);
   res.status(OK).json({ _id: id, name, quantity });    
@@ -110,22 +96,28 @@ const findSalesById = async (req, res) => {
   res.status(OK).json(sale);
 };
 
-const deleteSale = async (req,res) => {
+const deleteSale = async (req, res) => {
   const { id } = req.params;
-  const { } = req.body;
+  if(id.length !== vinteQuatro) return res.status(invalidParams).json(saleIdWrong);
+  const saleDeleted = await service.findSalesById(id);
+  if(!saleDeleted === null) return res.status(invalidParams).json(saleIdWrong);
+  await service.deleteSale(id);
+  res.status(OK).json(saleDeleted);
 };
 
-// const validaVenda = async (req, res, _next) => {
-//   const listSolds = req.body;
-//   const verificaLista = listSolds.some(list => {
-//     if (list.quantity <= zero) return res.status(invalidParams).json(salesWrong);
-//     if (typeof list.quantity !== 'number')
-//       return res.status(invalidParams).json(salesWrong);
-//     const product = await service.findByIdProducts(id);
-//     if(!product === null)return res.status(invalidParams)
-//       .json({ message: 'produto not found' });
-//   });
-// };
+const updateSale = async (req, res) => {
+  const { id } = req.params;
+  const { itensSold: [ { productId, quantity }] } = req.body;
+  console.log(id, productId, quantity);
+  if (quantity <= zero) return res.status(invalidParams).json(salesWrong);
+  if (typeof quantity !== 'number') return res.status(invalidParams)
+    .json(invalidParams);
+  const saleUpdated = await service.findSalesById(id);
+  if(!saleUpdated === null) return res.status(invalidParams).json(salesWrong);
+  await service.updateSale(id, productId, quantity);
+  res.status(OK).json(id, productId, quantity);
+};
+
 module.exports = {
   createProduct,
   getAllProducts,
@@ -135,5 +127,7 @@ module.exports = {
   createSales,
   quantitySold,
   getAllSales,
-  findSalesById
+  findSalesById,
+  deleteSale,
+  updateSale
 };

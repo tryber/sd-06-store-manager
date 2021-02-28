@@ -19,9 +19,7 @@ app.delete('/products/:id', controller.deleteProduct);
 app.post('/sales', controller.quantitySold, controller.createSales);
 app.get('/sales', controller.getAllSales);
 app.get('/sales/:id', controller.findSalesById);
-
-app.put('/sales/:id', (req, res) => res.send('7 - atualizar uma venda'));
-
-app.delete('/sales/:id', (req, res) => res.send('8 - deletar uma venda'));
+// app.put('/sales/:id', controller.updateSale);
+app.delete('/sales/:id', controller.deleteSale);
 
 app.listen(PORT, () => console.log(`Example app listening on PORT ${PORT}!`));
