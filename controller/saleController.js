@@ -20,7 +20,9 @@ const {
   nameExist,
   salesId,
   checkQuantitySold,
-  rightIdSales
+  rightIdSales,
+  updateStock,
+  resetStock
 } = require('../middleware/storeMiddleware');
 
 saleController.get('/', async (req, res) => {
@@ -35,7 +37,7 @@ saleController.get('/:id', salesId, async (req, res) => {
   const salesById = await findSalesById(id);
   res.status(okay).json(salesById);
 });
-saleController.post('/', checkQuantitySold, async (req, res) => {
+saleController.post('/', checkQuantitySold, updateStock, async (req, res) => {
   const deBoa = 200;
   const products = req.body;
   const { ops } = await createSales(products);
@@ -53,7 +55,7 @@ saleController.put('/:id', checkQuantitySold, async (req, res) => {
   res.status(okay)
     .json({ _id: id, itensSold: products });
 });
-saleController.delete('/:id', rightIdSales, async (req, res) => {
+saleController.delete('/:id', rightIdSales, resetStock, async (req, res) => {
   const { id } = req.params;
   const okay = 200;
   const salesById = await findSalesById(id);

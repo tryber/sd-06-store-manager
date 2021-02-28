@@ -1,4 +1,4 @@
-const { findByName, findById, findSalesById } = require('../models/store');
+const { findByName, update, findById, findSalesById } = require('../models/store');
 const { ObjectId } = require('mongodb');
 
 const validateCreate = async (req, res, next) => {
@@ -111,11 +111,38 @@ const rightIdSales = async (req, res, next) => {
   }
   next();
 };
+const updateStock = async (req, res, next) => {
+  const notFound = 404;
+  const zero = 0;
+  const [{ productId, quantity }] = req.body;
+  const productIten = await findById(productId);
+  const updateStock = (productIten.quantity - quantity);
+  //console.log(productIten._id);
+  if (updateStock < zero) return res
+    .status(notFound).json({
+      err:
+        { code: 'stock_problem', message: 'Such amount is not permitted to sell' }
+    });
+  await update(productIten._id, productIten.name, updateStock);
+  next();
+};
+const resetStock = async (req, res, next) => {
+  const { id } = req.params;
+  const sales = await findSalesById(id);
+  const { productId, quantity } = sales.itensSold['0'];
+  const productIten = await findById(productId);
+  const reset = (productIten.quantity + quantity);
+  await update(productIten._id, productIten.name, reset);
+  next();
+};
+
 module.exports = {
   validateCreate,
   rightId,
   nameExist,
   checkQuantitySold,
   salesId,
-  rightIdSales
+  rightIdSales,
+  updateStock,
+  resetStock
 };
