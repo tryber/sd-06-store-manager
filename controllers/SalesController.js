@@ -48,7 +48,7 @@ router.put('/:id',
     response.status(SUCCESS).json(updatedSale);
   });
 
-router.delete('/:id', async (request, response) => {
+router.delete('/:id', validateSaleId, async (request, response) => {
   const { id } = request.params;
   const removedSale = await SalesService.remove(id);
 
