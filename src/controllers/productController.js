@@ -35,9 +35,30 @@ const updateProduct = rescue(async (request, response) => {
   response.status(status.ok).json(updatedProduct);
 });
 
+const deleteProduct = rescue(async (req, res) => {
+  const { id } = req.params;
+
+  const getProduct = await productService.getProductById(id);
+
+  if (!getProduct) throw new throwError(status.unprocessableEntity, errors.wrongId);
+
+  await productService.deleteProduct(id);
+
+  const { name, quantity } = getProduct;
+
+  const deletedProduct = {
+    _id: id,
+    name,
+    quantity,
+  };
+
+  res.status(status.ok).json(deletedProduct);
+});
+
 module.exports = {
   createProduct,
   getAllProducts,
   getProductById,
   updateProduct,
+  deleteProduct,
 };

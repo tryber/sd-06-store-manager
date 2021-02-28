@@ -49,10 +49,22 @@ const updateProduct = async (id, name, quantity) => {
   return updatedProduct;
 };
 
+const deleteProduct = async (id) => {
+  const deletedProduct = await connection()
+    .then((db) => {
+      db.collection(collection).deleteOne({ _id: ObjectId(id) });
+    })
+    .catch((err) => {
+      throw new throwError(status.unprocessableEntity, errors.wrongId);
+    });
+  return deletedProduct;
+};
+
 module.exports = {
   createProduct,
   getByName,
   getAllProducts,
   getProductById,
   updateProduct,
+  deleteProduct,
 };
