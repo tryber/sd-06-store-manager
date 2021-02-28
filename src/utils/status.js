@@ -21,4 +21,9 @@ const errors = {
   wrongSaleID: 'Wrong sale ID format',
 };
 
-module.exports = { status, errors };
+const codeStatus = {
+  404: 'not_found',
+  422: 'invalid_data',
+};
+
+module.exports = { status, errors, codeStatus };

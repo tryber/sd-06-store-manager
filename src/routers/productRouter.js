@@ -1,10 +1,10 @@
 const { Router } = require('express');
 const productController = require('../controllers/productController');
-// const {validateRegisterProduct} = require('./validations/validationMiddlewares');
+const { validateCreateProduct } = require('../utils/validationErrors');
 
 const productRouter = new Router();
 
-productRouter.post('/', productController.createProduct);
+productRouter.post('/', validateCreateProduct, productController.createProduct);
 
 // productRouter.get('/', productController.getAll);
 
