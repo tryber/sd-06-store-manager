@@ -29,13 +29,6 @@ routes.get('/:id', ProductsService.displayThisSpecificProduct);
 
 routes.put('/:id', ProductsService.updatingValidProduct);
 
-routes.delete('/:id', async (request, response) => {
-  const { id } = request.params;
-
-  const removeThis = await Products.getProductById(id) ;
-  await Products.deleteProduct(id);
-
-  return response.status(SUCCESS).send(removeThis);
-});
+routes.delete('/:id', ProductsService.removingValidProduct);
 
 module.exports = routes;

@@ -98,7 +98,6 @@ const displayThisSpecificProduct = async (request, response) => {
 };
 
 // req 3
-
 const updatingValidProduct = async (request, response) => {
   const { id } = request.params;
   const { name, quantity} = request.body;
@@ -145,9 +144,37 @@ const updatingValidProduct = async (request, response) => {
   return response.status(SUCCESS).send(updatedProduct);
 };
 
+
+// req 4
+const removingValidProduct = async (request, response) => {
+  const { id } = request.params;
+
+  if (id.length !== ID_24_HEX ) return response.status(UNPROCESSABLE_ENTITY)
+    .json({err:
+      {
+        code: 'invalid_data',
+        message: 'Wrong id format'
+      }
+    });
+
+  const thisProductOnly = await Products.getProductById(id);
+  if(thisProductOnly === null || thisProductOnly === {})
+    return response.status(UNPROCESSABLE_ENTITY)
+      .json({
+        err: {
+          code: 'invalid_data',
+          message: 'Wrong id format',
+        }
+      });
+
+  await Products.deleteProduct(id);
+  return response.status(SUCCESS).send(thisProductOnly);
+};
+
 module.exports = {
   creatingValidProduct,
   displayingAllProducts,
   displayThisSpecificProduct,
-  updatingValidProduct
+  updatingValidProduct,
+  removingValidProduct
 };
