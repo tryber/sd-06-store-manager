@@ -18,9 +18,19 @@ const SUCCESS = 200;
 // [https://trybecourse.slack.com/archives/C016CCMKN9E/p1614104536091400?thread_ts=1614103977.091000&cid=C016CCMKN9E]
 
 routes.get('/', async (_request, response) => {
-  const allProductsList = await Products.getAll();
+  const allProductsList = await Products.getAllProducts();
 
   return response.status(SUCCESS).send(allProductsList);
+});
+
+// implementa o getProductsById (que já está sendo usado no delete uma vez que
+// o requisito quer que retorne o produto)
+
+routes.get('/:id', async (request, response) => {
+  const { id } = request.params;
+  const thisProductOnly = await Products.getProductById(id);
+
+  return response.status(SUCCESS).send(thisProductOnly);
 });
 
 routes.post('/', async(request, response) => {
@@ -53,5 +63,13 @@ routes.put('/:id', async (request, response) => {
   return response.status(SUCCESS).send(updatedProduct);
 });
 
+routes.delete('/:id', async (request, response) => {
+  const { id } = request.params;
+
+  const removeThis = await Products.getProductById(id) ;
+  await Products.deleteProduct(id);
+
+  return response.status(SUCCESS).send(removeThis);
+});
 
 module.exports = routes;

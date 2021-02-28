@@ -5,8 +5,12 @@
 const { ObjectId } = require('mongodb');
 const connection = require('./connection');
 
-const getAll = async () => {
+const getAllProducts = async () => {
   return await connection().then((db) => db.collection('products').find().toArray());
+};
+
+const getProductById = async (id) => {
+  return await connection().then((db) => db.collection('products').findOne(ObjectId(id)));
 };
 
 const createProduct = async (name, quantity) => {
@@ -23,9 +27,16 @@ const updateProduct = async (id, name, quantity) => {
   ));
 };
 
+const deleteProduct = async (id) => {
+  return await connection().then((db) => db.collection('products').deleteOne(
+    { _id: ObjectId(id)}
+  ));
+};
 
 module.exports = {
-  getAll,
+  getAllProducts,
+  getProductById,
   createProduct,
   updateProduct,
+  deleteProduct,
 };
