@@ -4,7 +4,7 @@ const {
   checkProductRepetition,
   validateProductName,
   validateProductQuantity,
-  validateId
+  validateProductId,
 } = require('../middlewares');
 
 const router = Router();
@@ -17,7 +17,7 @@ router.get('/', async (_request, response) => {
   response.status(SUCCESS).json(products);
 });
 
-router.get('/:id', validateId, async (request, response) => {
+router.get('/:id', validateProductId, async (request, response) => {
   const { id } = request.params;
   const requestedProduct = await ProductsService.findById(id);
 
@@ -53,7 +53,7 @@ router.put('/:id',
     response.status(SUCCESS).json(updatedProduct);
   });
 
-router.delete('/:id', validateId, async (request, response) => {
+router.delete('/:id', validateProductId, async (request, response) => {
   const { id } = request.params;
   const removedProduct = await ProductsService.remove(id);
   if (removedProduct.error) {

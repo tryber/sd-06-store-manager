@@ -1,4 +1,4 @@
-function validateId(request, response, next) {
+function validateProductId(request, response, next) {
   const { id } = request.params;
   const minimalLength = 24;
   
@@ -16,4 +16,4 @@ function validateId(request, response, next) {
   next();
 }
 
-module.exports = validateId;
+module.exports = validateProductId;
