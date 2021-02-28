@@ -32,10 +32,10 @@ const deleteProduct = async (id) => {
 };
 
 const createSales  = async (itensSold) => {
-  const { insertedId } = await connection()
-    .then(db => db.collection('sales').insertOne( { itensSold } )); 
-  return  { _id: insertedId, itensSold: itensSold
-  };
+  const salesCreated = await connection()
+    .then(db => db.collection('sales').insertOne( { itensSold } ))
+    .then(result => ({ _id: result.insertedId, itensSold: itensSold})); 
+  return  salesCreated;
 };
 
 const getAllSales = async() => await connection()
