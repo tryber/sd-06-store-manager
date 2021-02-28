@@ -1,9 +1,11 @@
 const { Router } = require('express');
 const ProductsService = require('../services/ProductsService');
-const { checkProductRepetition } = require('../middlewares');
-const { validateProductName } = require('../middlewares');
-const { validateProductQuantity } = require('../middlewares');
-const { validateId } = require('../middlewares');
+const {
+  checkProductRepetition,
+  validateProductName,
+  validateProductQuantity,
+  validateId
+} = require('../middlewares');
 
 const router = Router();
 const SUCCESS = 200;
