@@ -41,6 +41,10 @@ route.put('/:id', async (req, res) => {
 });
 
 route.delete('/:id', async (req, res) => {
+  const {id} = req.params;
+  const response = await SalesServices.deleteOne(id);
+  if (response.status) return res.status(response.status).json({message: 'ok'});
+  return res.status(response.err.status).json({err: response.err});  
   
 });
 

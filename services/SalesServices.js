@@ -10,7 +10,8 @@ const getAll = async () => {
 
 const getOne = async (id) => {
   try {
-    const itensSold = await Sales.getOne(id);    
+    const itensSold = await Sales.getOne(id);
+    if(!itensSold) throw 'something';    
     return {itensSold};
   } catch  {
     return generateError(notFound, 'not_found', 'Sale not found');
@@ -57,6 +58,14 @@ const updateOne = async (id, sale) => {
 };
 
 const deleteOne = async (id) => {
+  
+  try {
+    const deleteResponse = await Sales.deleteOne(id);
+    
+    return {status: ok}; 
+  } catch {
+    return generateError(unProcessableEntity, 'invalid_data', 'Wrong sale ID format');
+  }
   
 };
 
