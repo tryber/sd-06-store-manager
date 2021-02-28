@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const ProductsController = require('./controllers/ProductsController');
+const SalesController = require('./controllers/SalesController');
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.get('/', (_request, response) => {
 });
 
 app.use('/products', ProductsController);
+app.use('/sales', SalesController);
 
 app.use((error, request, response, next) => {
   response.status(UNPROCESSABLE_ENTITY).json(error);

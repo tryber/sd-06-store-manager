@@ -1,4 +1,4 @@
-function validateQuantity(request, response, next) {
+function validateProductQuantity(request, response, next) {
   const { quantity } = request.body;
   const minimalQuantity = 0;
 
@@ -26,4 +26,4 @@ function validateQuantity(request, response, next) {
   next();
 }
 
-module.exports = validateQuantity;
+module.exports = validateProductQuantity;

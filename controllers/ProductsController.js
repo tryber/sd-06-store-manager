@@ -2,7 +2,7 @@ const { Router } = require('express');
 const ProductsService = require('../services/ProductsService');
 const { checkProductRepetition } = require('../middlewares');
 const { validateProductName } = require('../middlewares');
-const { validateQuantity } = require('../middlewares');
+const { validateProductQuantity } = require('../middlewares');
 const { validateId } = require('../middlewares');
 
 const router = Router();
@@ -28,7 +28,7 @@ router.get('/:id', validateId, async (request, response) => {
 
 router.post('/',
   validateProductName,
-  validateQuantity,
+  validateProductQuantity,
   checkProductRepetition,
   async (request, response) => {
     const { name, quantity } = request.body;
@@ -39,7 +39,7 @@ router.post('/',
 
 router.put('/:id',
   validateProductName,
-  validateQuantity,
+  validateProductQuantity,
   async (request, response) => {
     const { id } = request.params;
     const { name, quantity } = request.body;
