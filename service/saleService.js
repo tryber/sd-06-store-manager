@@ -21,9 +21,11 @@ const getSaleById = async(id)=>{
 
   try{
     const validSaleId = await sales.getSaleById(id);
-    console.log('validSaleID', validSaleId);
-    return validSaleId;
-  }catch{
+    if(validSaleId){
+      return validSaleId;
+    }
+    throw ''; // mando do try para o catch, se chegar na linha 27, ele manda o valor '', como parametro para o catch
+  }catch(err){
     error.isError = true;
     error.status = 404,
     error.message = 'Sale not found';
@@ -52,7 +54,6 @@ const editSaleById = async(id, sale)=>{
     isError: false,
   };
   const validQuantity = isValidQuantity(sale[0].quantity);
-  console.log('validQuantity', validQuantity);
   if(!validQuantity){
     error.message = 'Wrong product ID or invalid quantity';
     error.status = 422;
@@ -75,10 +76,12 @@ const deleteSaleById = async(id)=>{
   const error = {
     isError: false
   };
+  
   try{
     const validSaleId = await sales.getSaleById(id);
-    await sales.deleteSaleById(id);
-    console.log('validSaleID', validSaleId);
+    if(validSaleId){
+      await sales.deleteSaleById(id);
+    }
     return validSaleId;
   } catch {
     error.isError = true;

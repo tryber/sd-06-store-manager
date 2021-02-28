@@ -65,7 +65,7 @@ routerSale.delete('/:id', async (req, res)=>{
       },
     });
   }
-  return res.status(SUCCESS).json({deletedSale});
+  return res.status(SUCCESS).json(deletedSale);
 });
 
 module.exports = routerSale;
