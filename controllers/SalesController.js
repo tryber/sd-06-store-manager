@@ -47,6 +47,7 @@ SalesController.get('/:id', async (req, res) => {
 SalesController.delete('/:id', async (req, res) => {
   const id = req.params.id;
   if(ObjectId.isValid(id)){
+    await getSaleById(id);
     const deletedSale = await getSaleById(id);
     await deleteSale(id);
     return res.status(STATUS_OK).json(deletedSale);
