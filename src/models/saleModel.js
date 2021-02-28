@@ -13,6 +13,26 @@ const createSale = async (sale) => {
   return insertedId;
 };
 
+const getAllSales = async () => {
+  const sales = await connection().then((db) =>
+    db.collection(collection).find().toArray(),
+  );
+
+  return sales;
+};
+
+const getSaleById = async (id) => {
+  const sale = await connection()
+    .then((db) => db.collection(collection).findOne({ _id: ObjectId(id) }))
+    .catch((error) => {
+      throw new throwError(status.notFound, errors.saleNotFound);
+    });
+
+  return sale;
+};
+
 module.exports = {
   createSale,
+  getAllSales,
+  getSaleById,
 };

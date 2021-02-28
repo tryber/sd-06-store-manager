@@ -12,19 +12,19 @@ const createSale = async (req, res) => {
   res.status(status.ok).json(createdSale);
 };
 
-const getAll = async (req, res) => {
-  const responsePayload = await saleService.getAll();
-  res.status(status.ok).json(responsePayload);
+const getAllSales = async (req, res) => {
+  const sales = await saleService.getAllSales();
+  res.status(status.ok).json(sales);
 };
 
-const getById = rescue(async (req, res) => {
+const getSaleById = rescue(async (req, res) => {
   const { id } = req.params;
 
-  const responsePayload = await saleService.getById(id);
+  const getSales = await saleService.getSaleById(id);
 
-  if (!responsePayload) throw new throwError(status.notFound, errors.saleNotFound);
+  if (!getSales) throw new throwError(status.notFound, errors.saleNotFound);
 
-  res.status(status.ok).json(responsePayload);
+  res.status(status.ok).json(getSales);
 });
 
 const updateSale = async (req, res) => {
@@ -42,8 +42,8 @@ const deleteSale = rescue(async (req, res) => {
 
 module.exports = {
   createSale,
-  getAll,
-  getById,
+  getAllSales,
+  getSaleById,
   updateSale,
   deleteSale,
 };

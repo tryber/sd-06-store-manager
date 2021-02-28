@@ -6,9 +6,9 @@ const saleRouter = new Router();
 
 saleRouter.post('/', validateCreateSale, SaleController.createSale);
 
-// saleRouter.get('/', SaleController.getAllSales);
+saleRouter.get('/', SaleController.getAllSales);
 
-// saleRouter.get('/:id', SaleController.getSaleById);
+saleRouter.get('/:id', SaleController.getSaleById);
 
 // saleRouter.put('/:id', validateCreateSale, SaleController.updateSale);
 
