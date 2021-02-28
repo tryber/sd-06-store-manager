@@ -25,7 +25,7 @@ const deleteProduct = async (id) => {
   
 
 const checkId = async (request, response, next) => {
-  const id = request.params.id;
+  const id = request.params.id || null;
   if (!ObjectId.isValid(id)) return response.status(HTTP422).json({
     err: {
       code: 'invalid_data',
