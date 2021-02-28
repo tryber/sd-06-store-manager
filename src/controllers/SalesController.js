@@ -54,20 +54,20 @@ router
     );
 
     res.status(SUCCESS).json(updatedSale);
+  })
+  .delete('/:id', async (req, res) => {
+    const { id } = req.params;
+    const deletedSale = await Sales.remove(id);
+
+    if (!deletedSale) return res.status(UNPROCESSABLE_ENTITY).json({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong sale ID format'
+      }
+    });
+
+    res.status(SUCCESS).json(deletedSale);
   });
-// .delete('/:id', async (req, res) => {
-//   const { id } = req.params;
-//   const deletedSale = await Sales.remove(id);
-
-//   if (deletedSale.message) return res.status(UNPROCESSABLE_ENTITY).json({
-//     err: {
-//       code: 'invalid_data',
-//       message: deletedSale.message
-//     }
-//   });
-
-//   res.status(SUCESS).json(deletedSale);
-// });
 
 
 module.exports = router;
