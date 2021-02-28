@@ -1,7 +1,6 @@
 const saleModel = require('../models/saleModel');
 const { throwError } = require('../utils/errorHandler');
 const { status, errors } = require('../utils/status');
-// const { get } = require('frisby');
 
 const createSale = async (sale) => {
   const insertedId = await saleModel.createSale(sale);
@@ -41,22 +40,21 @@ const updateSale = async (id, sale) => {
   }
 };
 
-const deleteSale = async (id) => {
-  const deletedSale = await saleModel.deletedSale(id);
+// const deleteSale = async (id) => {
+//   const deletedSale = await saleModel.deletedSale(id);
 
-  if (!deletedSale) {
-    throw new throwError(status.notFound, errors.wrongSaleID);
-  }
+//   if (!deletedSale) {
+//     throw new throwError(status.notFound, errors.wrongSaleID);
+//   }
 
-  await saleModel.deleteSale(id);
+//   await saleModel.deleteSale(id);
 
-  return id;
-};
+//   return id;
+// };
 
 module.exports = {
   createSale,
   getAllSales,
   getSaleById,
   updateSale,
-  deleteSale,
 };

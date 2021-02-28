@@ -43,22 +43,21 @@ const updateSale = async (id, sale) => {
   return nModified;
 };
 
-const deleteSale = async (id) => {
-  const deletedSale = await connection()
-    .then((db) => {
-      db.collection(dbCollection).deleteOne({ _id: ObjectId(id) });
-    })
-    .catch((err) => {
-      throw new throwError(status.unprocessableEntity, errors.wrongId);
-    });
+// const deleteSale = async (id) => {
+//   const deletedSale = await connection()
+//     .then((db) => {
+//       db.collection(collection).deleteOne({ _id: ObjectId(id) });
+//     })
+//     .catch((err) => {
+//       throw new throwError(status.unprocessableEntity, errors.wrongId);
+//     });
 
-  return deletedSale;
-};
+//   return deletedSale;
+// };
 
 module.exports = {
   createSale,
   getAllSales,
   getSaleById,
   updateSale,
-  deleteSale,
 };

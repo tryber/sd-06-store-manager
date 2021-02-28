@@ -8,6 +8,7 @@ const status = {
   forbidden: 403,
   notFound: 404,
   unprocessableEntity: 422,
+  internalServerError: 500,
 };
 
 const errors = {
@@ -24,6 +25,7 @@ const errors = {
 const codeStatus = {
   404: 'not_found',
   422: 'invalid_data',
+  500: 'internal_server_error',
 };
 
 module.exports = { status, errors, codeStatus };
