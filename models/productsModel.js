@@ -1,19 +1,19 @@
 const connection = require('./connection');
 
 const getAllProducts = async () => { 
-  return connection('products').then((product) => product.find().toArray());
+  return await connection().then((db) => db.collection(('products')).find({}).toArray());
 };
 
 const searchForProductName = async (name) => { 
-  return connection('products').then((product) => product.find({
+  return await connection().then((db) => db.collection(('products')).find({
     'name': name
   }).toArray());
 };
 
 const addNewProduct = async (name, quantity) => {
-  return connection('products').then((product) => product.insertOne({
-    'name': name,
-    'quantity': quantity
+  return await connection().then((db) => db.collection('products').insertOne({
+    name,
+    quantity
   }));
 };
 
