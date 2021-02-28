@@ -39,7 +39,7 @@ productRouter.put('/:id', checkId, validateProduct, async (request, response) =>
 
 productRouter.delete('/:id', checkId, async (request, response) => {
   const id = request.params.id;
-  const deletedProduct = await checkId(id);
+  const deletedProduct = await productById(id);
   await deleteProduct(id);
   return response.status(HTTP200).json(deletedProduct);
 });
