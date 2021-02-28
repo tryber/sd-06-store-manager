@@ -21,6 +21,14 @@ const msgNotFound = (string) => {
     }
   };
 };
+const msgStock = (string) => {
+  return {
+    err: {
+      code: 'stock_problem',
+      message: string,
+    }
+  };
+};
 const nameRefusedMsg = (msgError('"name" length must be at least 5 characters long'));
 const productExistingMsg = (msgError('Product already exists'));
 const quantityGtZero = (msgError('"quantity" must be larger than or equal to 1'));
@@ -29,6 +37,7 @@ const wrongId = (msgError('Wrong id format'));
 const salesWrong = (msgError('Wrong product ID or invalid quantity'));
 const saleNotFound = (msgNotFound('Sale not found'));
 const saleIdWrong = (msgError('Wrong sale ID format'));
+const stockProblem = (msgStock('Such amount is not permitted to sell'));
 
 module.exports = {
   OK,
@@ -46,4 +55,5 @@ module.exports = {
   salesWrong,
   saleNotFound,
   saleIdWrong,
+  stockProblem
 };

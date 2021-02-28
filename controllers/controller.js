@@ -15,6 +15,7 @@ const {
   salesWrong,
   saleNotFound,
   saleIdWrong,
+  stockProblem
 } = require('../utils/messages');
 
 const createProduct = async (req, res) => {
@@ -79,6 +80,11 @@ const quantitySold = (req, res, next) => {
 
 const createSales = async (req, res) => {
   const listSolds = req.body;
+  const [{ productId, quantity }] = listSolds;
+  if (quantity <= zero) return res.status(invalidParams).json(salesWrong); 
+  const product = await service.findByIdProducts(productId);
+  let stockQt = product.quantity - quantity;
+  if (stockQt <= zero) return res.status(notFound).json(stockProblem);
   const sold = await service.createSales(listSolds);
   res.status(OK).json(sold);
 };
@@ -108,7 +114,6 @@ const deleteSale = async (req, res) => {
 const updateSale = async (req, res) => {
   const { id } = req.params;
   const { itensSold: [ { productId, quantity }] } = req.body;
-  console.log(id, productId, quantity);
   if (quantity <= zero) return res.status(invalidParams).json(salesWrong);
   if (typeof quantity !== 'number') return res.status(invalidParams)
     .json(invalidParams);
