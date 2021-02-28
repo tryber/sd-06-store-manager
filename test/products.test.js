@@ -5,7 +5,7 @@ const mongoDbUrl = 'mongodb://localhost:27017';
 const url = 'http://localhost:3000';
 const invalidId = 99999;
 
-describe.only('1 - Crie um endpoint para o cadastro de produtos', () => {
+describe('1 - Crie um endpoint para o cadastro de produtos', () => {
   let connection;
   let db;
 
@@ -285,7 +285,9 @@ describe('3 - Crie um endpoint para atualizar um produto', () => {
       .then((secondResponse) => {
         const { json } = secondResponse;
         expect(json.err.code).toEqual('invalid_data');
-        expect(json.err.message).toEqual('"name" length must be at least 5 characters long');
+        expect(json.err.message).toEqual(
+          '"name" length must be at least 5 characters long',
+        );
       });
   });
 

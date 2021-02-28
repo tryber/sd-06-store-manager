@@ -1,8 +1,8 @@
 const connection = require('../database/connection');
-// const { ObjectId } = require('mongodb');
+const { ObjectId } = require('mongodb');
 const collection = 'products';
-// const { throwError } = require('../errorHandler/errorHandler');
-// const { status, errorMessages } = require('../utils/status');
+const { throwError } = require('../utils/errorHandler');
+const { status, errors } = require('../utils/status');
 
 const createProduct = async (name, quantity) => {
   const createdProduct = await connection().then((db) =>
@@ -20,4 +20,22 @@ const getByName = async (name) => {
   return product;
 };
 
-module.exports = { createProduct, getByName };
+const getAllProducts = async () => {
+  const allProducts = await connection().then((db) =>
+    db.collection(collection).find().toArray(),
+  );
+
+  return allProducts;
+};
+
+const getProductById = async (id) => {
+  const product = await connection()
+    .then((db) => db.collection(collection).findOne({ _id: ObjectId(id) }))
+    .catch((err) => {
+      throw new throwError(status.unprocessableEntity, errors.wrongId);
+    });
+
+  return product;
+};
+
+module.exports = { createProduct, getByName, getAllProducts, getProductById };
