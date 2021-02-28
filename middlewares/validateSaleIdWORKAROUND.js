@@ -13,6 +13,8 @@ function validateSaleIdWORKAROUND(request, response, next) {
     });
   };
 
+  next();
+
 }
 
 module.exports = validateSaleIdWORKAROUND;
