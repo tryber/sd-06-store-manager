@@ -5,11 +5,14 @@ const Products = require('../models/Products');
 // No Majik NUMBERS
 const NAME_MIN_LENGTH = 5;
 const NO_QUANTITY = 0;
+const ID_24_HEX = 24;
 
 // No Majik Status NUMBERS:
 const UNPROCESSABLE_ENTITY =  422;
 const SUCCESS_CREATED = 201;
+const SUCCESS = 200;
 
+// req 1
 const creatingValidProduct = async(request, response) => {
   const { name, quantity } = request.body;
 
@@ -63,6 +66,39 @@ const creatingValidProduct = async(request, response) => {
   return response.status(SUCCESS_CREATED).send(freshProduct);
 };
 
+// req2
+const displayingAllProducts = async (_request, response) => {
+  const allProductsList = await Products.getAllProducts();
+  console.log('all products List:', allProductsList);
+  return response.status(SUCCESS).send({products: allProductsList});
+};
+
+const displayThisSpecificProduct = async (request, response) => {
+  const { id } = request.params;
+
+  if (id.length !== ID_24_HEX ) return response.status(UNPROCESSABLE_ENTITY)
+    .json({err:
+      {
+        code: 'invalid_data',
+        message: 'Wrong id format'
+      }
+    });
+
+  const thisProductOnly = await Products.getProductById(id);
+  if(thisProductOnly === null || thisProductOnly === {})
+    return response.status(UNPROCESSABLE_ENTITY)
+      .json({
+        err: {
+          code: 'invalid_data',
+          message: 'Wrong id format',
+        }
+      });
+
+  return response.status(SUCCESS).send(thisProductOnly);
+};
+
 module.exports = {
-  creatingValidProduct
+  creatingValidProduct,
+  displayingAllProducts,
+  displayThisSpecificProduct,
 };

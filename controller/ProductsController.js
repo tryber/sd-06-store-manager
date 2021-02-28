@@ -20,21 +20,12 @@ const SUCCESS = 200;
 // [https://trybecourse.slack.com/archives/C016CCMKN9E/p1614104536091400?thread_ts=1614103977.091000&cid=C016CCMKN9E]
 routes.post('/', ProductsService.creatingValidProduct);
 
-routes.get('/', async (_request, response) => {
-  const allProductsList = await Products.getAllProducts();
-
-  return response.status(SUCCESS).send(allProductsList);
-});
+routes.get('/', ProductsService.displayingAllProducts);
 
 // implementa o getProductsById (que já está sendo usado no delete uma vez que
 // o requisito quer que retorne o produto)
 
-routes.get('/:id', async (request, response) => {
-  const { id } = request.params;
-  const thisProductOnly = await Products.getProductById(id);
-
-  return response.status(SUCCESS).send(thisProductOnly);
-});
+routes.get('/:id', ProductsService.displayThisSpecificProduct);
 
 routes.put('/:id', async (request, response) => {
   const { id } = request.params;
