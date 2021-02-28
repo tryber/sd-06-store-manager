@@ -5,7 +5,8 @@ const { addProduct,
   allProducts,
   productById,
   checkId,
-  updateProduct
+  updateProduct,
+  deleteProduct
 } = require('../services/productService');
 const productRouter = new Router();
 const Res201 = 201;
@@ -38,9 +39,9 @@ productRouter.put('/:id', checkId, validateProduct, async (request, response) =>
 
 productRouter.delete('/:id', checkId, async (request, response) => {
   const id = request.params.id;
-  const productToBeDeleted = await getProductById(id);
+  const deletedProduct = await checkId(id);
   await deleteProduct(id);
-  return response.status(SUCCESS).json(productToBeDeleted);
+  return response.status(Res200).json(deletedProduct);
 });
 
 module.exports = productRouter;
