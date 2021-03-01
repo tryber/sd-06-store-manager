@@ -4,6 +4,10 @@ const ProductController = require('./controllers/ProductController');
 const SalesController = require('./controllers/SalesController');
 const port = 3000;
 
+app.get('/', (_request, response) => {
+  response.send();
+});
+
 
 const app = express();
 
