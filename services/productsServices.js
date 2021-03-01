@@ -1,7 +1,8 @@
 const { create, 
   findByName, 
   getAllProducts, 
-  findById } = require('../models/productsModels');
+  findById,
+  updateUnitProduct } = require('../models/productsModels');
 const { status, Messages } = require('../util/dataStatus');
 
 
@@ -33,11 +34,21 @@ const idProduct = async (req, res) => {
 const allProducts = async (_req, res) => {
   const result = await getAllProducts();
 
-  return res.status(status.OK).json(result);;
+  return res.status(status.OK).json(result);
+};
+
+const updateProduct = async (req, res) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+  console.log(name, id , quantity);
+  const result = await updateUnitProduct(id, name, quantity);
+
+  return res.status(status.OK).json(result);
 };
 
 module.exports = {
   idProduct,
+  updateProduct,
   createProduct,
   allProducts,
 };

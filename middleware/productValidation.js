@@ -6,7 +6,7 @@ const { invalidName, largerZero, invalidQtt } = Messages;
 
 const productValidated = async (req, res, next) => {
   const { name, quantity } = req.body;
-
+  console.log(name);
   magicNumbers = {
     five: 5,
     zero: 0,

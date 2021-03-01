@@ -11,5 +11,7 @@ route.get('/', productsServices.allProducts );
 
 route.get('/:id', idValidate , productsServices.idProduct ); 
 
+route.put('/:id', productValidated , productsServices.updateProduct ); 
+
 
 module.exports = route;

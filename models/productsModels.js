@@ -32,13 +32,24 @@ const findByName = async (name) => {
     .then(mongodb => mongodb.collection('products').findOne({name}));
 };
 
+// UPDATE PRODUCT UNIT
+const updateUnitProduct = async (id, name, quantity) => {
+  const result = await connection().
+    then(mongodb => mongodb.collection('products')
+      .updateOne({_id: ObjectId(id)}, {$set: {name, quantity}}));
+  
+  let _id = id;
+  if(result) return { _id, name, quantity };
 
+  return { message: 'Nothing... 404' };
+}
 
 ;
 
 // EXPORT MODELS FUNCTIONS 
 module.exports = {
   create,
+  updateUnitProduct,
   findById,
   findByName,
   getAllProducts,
