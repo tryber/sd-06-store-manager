@@ -50,26 +50,23 @@ const getFindByName = async (name) => {
  * Atualiza cadastro de produto
  * @param {*} Object objeto contendo Id, nome e quantidade do produto a ser alterado
  */
-const updateProduct = async (product) => {
-  const { _id, name, quantity } = product;
+const updateProduct = async (product, id) => {
+  const { name, quantity } = product;
   const result = await connection()
-    .then((db) => db.collection('products').updateOne(
-      { _id: ObjectId(_id) },
-      { $set: { name, quantity } },
-      { returnOriginal: false }
+    .then((db) => db.collection('products').findOneAndUpdate(
+      { _id: ObjectId(id) },
+      { $set: { name, quantity } }
     ));
-  return result;
 };
 
 /**
  * Remove produto do cadastro 
  * @param {*} String Id do produto a ser removido
  */
-const removeProduct = async (id) => {
-  if (!ObjectId.isValid) return null;
-  const result = connection
-    .then((db) => db.collection('products')
-      .fidOneAndDelete({ _id: ObjectId(id) }));
+const removeProduct = async (product) => {
+  const { _id } = product;
+  const result = connection()
+    .then((db) => db.collection('products').deleteOne());
   return result['value'];
 };
 

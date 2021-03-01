@@ -79,5 +79,5 @@ const validingId = (req, res, next) => {
 module.exports = {
   validingName,
   validingQuantity,
-  validingId
+  validingId,
 };
