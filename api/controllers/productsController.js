@@ -63,6 +63,33 @@ app.post('/', async (req, res) => {
   }
 });
 
+app.put('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, quantity } = req.body;
+    const productUpdated = await Service.updateProduct(id, name, quantity);
+    
+    if (productUpdated.message) throw new Error(productUpdated.message);
+
+    res
+      .status(statusCode.OK)
+      .json(productUpdated);
+
+      
+
+  } catch (error) {
+    console.error(error);
+    res
+      .status(statusCode.UNPROCESSABLE_ENTITY)
+      .json(
+        { err: {
+          code: 'invalid_data',
+          message: error.message
+        }}
+      );
+  }  
+});
+
 app.post('/teste', async (req, res) => {
   const { name, quantity } = req.body;
   const products = await Service.registerManyProducts(name, quantity);

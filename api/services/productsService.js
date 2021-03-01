@@ -30,10 +30,12 @@ const registerProduct = async (name, quantity) => {
   if (!isEmptyArray(nameExists)) return {code, message: 'Product already exists'};
   if(lessThan((name).length, CINCO)) {
     return {code, message:'"name" length must be at least 5 characters long'};
-  } 
+  }
+
   if (lessThanEqual(quantity, ZERO)) {
     return {code, message:'"quantity" must be larger than or equal to 1'};
-  } 
+  }
+
   if (notIsNumber(quantity)) return {code, message: '"quantity" must be a number'};
 
   const product = await Model.registerOneProduct(name, quantity);
@@ -46,9 +48,32 @@ const registerManyProducts = async (name, quantity) => {
   return products;
 };
 
+const updateProduct = async (id, name, quantity) => {
+  
+  if(lessThan((name).length, CINCO)) {
+    return {code, message:'"name" length must be at least 5 characters long'};
+  }
+
+  if (lessThanEqual(quantity, ZERO)) {
+    return {code, message:'"quantity" must be larger than or equal to 1'};
+  } 
+
+  if (notIsNumber(quantity)) return {code, message: '"quantity" must be a number'};
+
+  const resultOfUpdate = await Model.updateProduct(id, name, quantity);
+  
+  return {
+    _id: id,
+    name,
+    quantity,
+  };
+};
+
+
 module.exports = {
   getAllProducts,
   registerProduct,
   registerManyProducts,
   findProductById,
+  updateProduct,
 }; 

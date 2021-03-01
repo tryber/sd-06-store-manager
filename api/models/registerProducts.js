@@ -46,12 +46,23 @@ const registerManyProducts = async (name, quantity) => {
   };
 };
 
+const updateProduct = async (id, name, quantity) => {
+  return await connection()
+    .then((db) => db.collection('products').updateOne(
+      {_id: ObjectId(id) },
+      { $set: {name, quantity} }, 
+    ))
+    .then((res) => res.modifiedCount)
+    .catch((err) => console.error(err));
+};
+
 module.exports = {
   getAll,
   registerOneProduct,
   findByName,
   registerManyProducts,
   findProductById,
+  updateProduct,
 };
 
 
