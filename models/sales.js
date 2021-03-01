@@ -41,6 +41,6 @@ module.exports = {
   findById,
   findByName,
   create,
-  // update,
+  update,
   deleteProduct,
 };
