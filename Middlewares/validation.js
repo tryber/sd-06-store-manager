@@ -1,6 +1,8 @@
 const productsService = require('../Service/productsService');
+const salesService = require('../Service/salesService');
 const { ObjectId } = require('mongodb');
 const Unauthorized = 422;
+const NotFound = 404;
 
 const validateNameSize = (req, _res, next) => {
   const { name } = req.body;
@@ -19,8 +21,8 @@ const validateNameSize = (req, _res, next) => {
 
 const productAlreadyExits = async(req, _res, next) => {
   const { name } = req.body;
-  const newProduct = await productsService.productByNameService(name);
-  if (newProduct) 
+  const newSale = await productsService.productByNameService(name);
+  if (newSale) 
     return next({
       status: Unauthorized,  
       err: 
@@ -114,6 +116,33 @@ const quantityNotAStringSales = (req, _res, next) => {
   next();
 };
 
+const validateIdSale = (req, _res, next) => {
+  const { id } = req.params;
+  if (!ObjectId.isValid(id)) 
+    return next({
+      status: NotFound,  
+      err: {
+        code: 'not_found',
+        message: 'Sale not found'
+      }
+    });
+  next();
+};
+
+const wrongIdSale = async(req, _res, next) => {
+  const { id } = req.params;
+  const newSale = await salesService.saleByIdService(id);
+  if (!newSale) 
+    return next({
+      status: NotFound,  
+      err: {
+        code: 'not_found',
+        message: 'Sale not found'
+      }
+    });
+  next();
+};
+
 module.exports = {
   validateNameSize,
   productAlreadyExits,
@@ -122,5 +151,7 @@ module.exports = {
   validateId,
   wrongId,
   quantityNotNegativeOrZeroSales,
-  quantityNotAStringSales
+  quantityNotAStringSales,
+  validateIdSale,
+  wrongIdSale
 };
