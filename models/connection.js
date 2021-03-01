@@ -1,7 +1,7 @@
 const { MongoClient, connect } = require('mongodb');
 
 const DB_NAME = 'StoreManager';
-const MONGODB_URL = 'mongodb://127.0.0.1:27017';
+const MONGODB_URL = 'mongodb://mongodb:27017/StoreManager';
 const connection = () => {
   return MongoClient.connect(MONGODB_URL, {
     useNewUrlParser: true,

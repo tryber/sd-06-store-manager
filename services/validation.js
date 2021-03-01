@@ -1,4 +1,6 @@
 const yup = require('yup');
+const Product = require('../models/Product');
+const Sales = require('../models/Sales');
 const nameMinLength = 5;
 const minQuantity = 1;
 
@@ -15,6 +17,8 @@ const SalesSchema = yup.object().shape({
   quantity: yup.number().typeError('Wrong product ID or invalid quantity')
     .min(minQuantity, 'Wrong product ID or invalid quantity').required()  
 });
+
+
 
 module.exports = {
   ProductSchema,
