@@ -11,6 +11,7 @@ const router = new Router();
 router.use(bodyParser.json());
 
 const SUCCESS = 200;
+const NOT_FOUND = 404;
 
 router.post('/', validateSales, rescue(async (req, res) => {
   const objectSales = req.body;
@@ -26,7 +27,7 @@ router.get('/', rescue(async (_req, res) => {
 }),
 );
 
-router.get('/:id',validateIdSales, rescue(async (req, res) => {
+router.get('/:id', validateIdSales, rescue(async (req, res) => {
   const { id } = req.params;
   const allSales = await Sales.getById(id);
 
@@ -40,6 +41,16 @@ router.get('/:id',validateIdSales, rescue(async (req, res) => {
   }
 
   res.status(SUCCESS).json(allSales);
+}),
+);
+
+router.put('/:id', validateSales, validateIdSales,rescue(async (req, res) => {
+  const { id } = req.params;
+  const arraySales = req.body;
+  const { productId, quantity } = arraySales[0];
+  const updateSales = await Sales.update(id, productId, quantity);
+
+  res.status(SUCCESS).json(updateSales);
 }),
 );
 

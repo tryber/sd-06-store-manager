@@ -1,4 +1,5 @@
 const connection = require('./connection');
+const { ObjectId } = require('mongodb');
 
 const DB_COLECTION = 'sales';
 
@@ -20,8 +21,14 @@ const getAllSales = async () =>
 const getByIdSales = async (id) =>
   connection().then((db) => db.collection(DB_COLECTION).findOne(ObjectId(id)));
 
+const updateSales = async (id, productId, quantity) =>
+  connection().then((db) => db.collection(DB_COLECTION).updateOne(
+    { _id: ObjectId(id) }, { $set: { itensSold:[ { productId, quantity } ] } }
+  ));
+
 module.exports = {
   createNewSale,
   getAllSales,
-  getByIdSales
+  getByIdSales,
+  updateSales
 };

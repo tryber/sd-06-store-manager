@@ -9,8 +9,14 @@ const getAll = async () =>
 const getById = async (id) =>
   await Sales.getByIdSales(id);
 
+const update = async (id, productId, quantity) => {
+  await Sales.updateSales(id, productId, quantity);
+  return await Sales.getByIdSales(id);
+};
+
 module.exports = {
   create,
   getAll,
-  getById
+  getById,
+  update
 };
