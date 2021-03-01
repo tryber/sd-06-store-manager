@@ -57,5 +57,23 @@ router.put('/:id', validateSales, validateIdSales,rescue(async (request, respons
 }),
 );
 
+router.delete('/:id', validateIdSalesRemove, rescue(async (request, response) => {
+  const { id } = request.params;
+  const allSales = await Sales.getById(id);
+
+  if (!allSales) {
+    return response.status(UNPROCESSABLE).json(
+      {err: {
+        code: 'invalid_data',
+        message: 'Wrong sale ID format',
+      }}
+    );
+  }
+  
+  await Sales.remove(id);
+
+  return response.status(SUCCESS).json(allSales);
+}),
+);
 
 module.exports = router;
