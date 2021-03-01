@@ -3,9 +3,7 @@ const products = require('../models/products');
 
 const nullQuantity = 0;
 const idMongoLength = 24;
-const notExists = 'Product does not exist';
-const quantityErrorMessage = '"quantity" must be larger than or equal to 1';
-const quantityTypeErrorMessage = '"quantity" must be a number';
+const quantityErrorMessage = 'Wrong product ID or invalid quantity';
 
 const isInt = (quantity) => {
   if (!Number.isInteger(quantity)) return false;
@@ -20,11 +18,13 @@ const isPositive = (quantity) => {
 };
 
 const isRegistered = async (id) => {
-  const checkRegistry = await products.findById(id);
+  if (id.length === idMongoLength) {
+    const checkRegistry = await products.findById(id);
+    
+    if (checkRegistry) return true;
+  }
 
-  if (!checkRegistry) return false;
-
-  return true;
+  return false;
 };
 
 const getAll = async () => {
@@ -52,46 +52,34 @@ const findById = async (id) => {
 };
 
 const create = async (sale) => {
-  const checkProducts = await sale.map((item) => isRegistered(item.productId));
-  const allAreProducts = checkProducts.filter((check) => !check).length === nullQuantity;
+  const checkProducts = await Promise.all(sale
+    .map((item) => isRegistered(item.productId)));
+  const allAreProducts = checkProducts
+    .filter((check) => !check).length === nullQuantity;
+
   const checkQuantityType = await sale.map((item) => isInt(item.quantity));
   const allQuantitiesInt = checkQuantityType
     .filter((check) => !check).length === nullQuantity;
+    
   const checkQuantityPositive = await sale.map((item) => isPositive(item.quantity));
   const allQuantitiesPositive = checkQuantityPositive
     .filter((check) => !check).length === nullQuantity;
 
-  switch (false) {
-  case allQuantitiesInt:
-    return {
-      err: {
-        code: 'invalid_data',
-        message: quantityTypeErrorMessage,
-      },
-    };
-  case allQuantitiesPositive:
+  if (!allQuantitiesInt || !allQuantitiesPositive || !allAreProducts) {
     return {
       err: {
         code: 'invalid_data',
         message: quantityErrorMessage,
       },
     };
-  case allAreProducts:
-    return {
-      err: {
-        code: 'invalid_data',
-        message: notExists,
-      },
-    };
-  default:
-    const { insertedId } = await sales.create({ itensSold: sale });
-  
-    return {
-      _id: insertedId,
-      itensSold: sale,
-    };
-
   }
+
+  const { insertedId } = await sales.create({ itensSold: sale });
+
+  return {
+    _id: insertedId,
+    itensSold: sale,
+  };
 };
 
 // const update = async (id, updateSale) => {
