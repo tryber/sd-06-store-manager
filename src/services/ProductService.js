@@ -22,9 +22,16 @@ const update = async (name, quantity, id) => {
   return product;
 };
 
+const remove = async (id) => {
+  const delProduct = await Product.remove(id);
+  
+  return delProduct;
+};
+
 module.exports = {
   getAll,
   create,
   findById,
   update,
+  remove,
 };

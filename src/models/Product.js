@@ -50,10 +50,27 @@ const update = async (name, quantity, id) => {
   };
 };
 
+const remove = async (id) => {
+  const exists = await findById(id);
+  
+  if (!exists) return false;
+  
+  await connection()
+    .then((db) => db.collection('products')
+      .deleteOne({_id: ObjectId(id)}));
+      
+  return {
+    _id: id,
+    name: exists.name,
+    quantity: exists.quantity
+  };
+};
+
 module.exports = {
   getAll,
   create,
   findByName,
   findById,
   update,
+  remove,
 };

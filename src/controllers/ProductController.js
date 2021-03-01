@@ -67,6 +67,30 @@ router.put('/:id', validateProduct, rescue (async (req, res) => {
   return res.status(v.OK).json(product);
 }));
 
+router.delete('/:id', rescue (async (req, res) => {
+  const { id } = req.params;
+  
+  if (id.length !== v.TWENTY_FOUR) return res.status(v.UNPROCESSABLE_ENTITY)
+    .json({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format'
+      }
+    });
+  
+  const delProduct = await ProductService.remove(id);
+  
+  if (!delProduct) return res.status(v.UNPROCESSABLE_ENTITY)
+    .json({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format'
+      }
+    });
+  
+  return res.status(v.OK).json(delProduct);
+}));
+
 router.get('/', rescue (async (req, res) => {
   const products = await ProductService.getAll();
   
