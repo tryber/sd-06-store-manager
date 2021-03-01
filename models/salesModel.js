@@ -35,4 +35,4 @@ const updateSales = (id, newSales) =>
     .collection('sales')
     .updateOne({ _id: ObjectId(id) }, { $set: { itensSold: newSales }}));
 
-module.exports = { addSales, allSales, salesById, updateSales, deleteSales };
+module.exports = { addSales, allSales, salesById, updateSales };
