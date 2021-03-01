@@ -19,6 +19,7 @@ app.use((err, req, res, next) => {
   res.status(internalError).json({ message: 'Erro interno' });
 });
 
+const PORT = 3000;
 app.listen(process.env.PORT, () => {
-  console.log(`Listening on ${process.env.PORT}`);
+  console.log(`Listening on ${PORT}`);
 });
