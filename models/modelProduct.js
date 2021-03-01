@@ -21,7 +21,7 @@ const createProduct = async ({ name, quantity }) => {
 
 const updateProduct = async ({ id, name, quantity }) => {
   // if(!ObjectId.isValid(id)) return null;
-  console.log(id, name, quantity);
+  // console.log(id, name, quantity);
   const product = await getCollection('products').then((product) =>
     product.updateOne({ _id: ObjectId(id)}, { $set: { name, quantity}}));
 

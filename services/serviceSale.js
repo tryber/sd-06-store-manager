@@ -21,22 +21,26 @@ const getByIdSale = async (id) => {
 const createSale = async (product) => {
 
   const newSale = await model.createSale(product);
-  console.log('newSale', newSale);
-  console.log('product', product);
+  // console.log('newSale', newSale);
+  // console.log('product', product);
   return newSale;
 };
 
-const updateSale = async({ quantity }) => {
-  const update = await model.updateSale({quantity});
+const updateSale = async(id, productId, quantity) => {
+  await model.updateSale(id, productId, quantity);
 
+  const update = {
+    _id: id,
+    itensSold: [
+      {productId,
+        quantity},
+    ]
+  };
+  // console.log('update', update);
   return update;
 };
 
-const excludeSale = async (id) => {
-  const exclude = await model.excludeSale(id);
-
-  return exclude;
-};
+const excludeSale = async (id) => await model.excludeSale(id);
 
 module.exports = {
   excludeSale,

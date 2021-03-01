@@ -6,7 +6,7 @@ const getAllProducts = async () => {
 
 const getByIdProduct = async (id) => {
   const product = await model.getByIdProduct(id);
-  console.log(product);
+  // console.log(product);
   // if(!product){
   //   return {
   //     error:{
