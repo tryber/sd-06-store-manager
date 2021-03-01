@@ -15,7 +15,7 @@ const addSales = async (newSales) => {
   
   return {
     _id: insertedId,
-    itensSold: newSale,
+    itensSold: newSales,
   };
 };
 
