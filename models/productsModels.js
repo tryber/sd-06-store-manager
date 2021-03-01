@@ -42,14 +42,24 @@ const updateUnitProduct = async (id, name, quantity) => {
   if(result) return { _id, name, quantity };
 
   return { message: 'Nothing... 404' };
-}
+};
 
-;
+// DELETE PRODUCT UNIT
+const deleteUnitProduct = async (id) => {
+  const result = await connection().
+    then(mongodb => mongodb.collection('products').findOneAndDelete(
+      {_id: ObjectId(id)},
+      {returnOriginal:false}
+    ));
+
+  return result.value;
+};
 
 // EXPORT MODELS FUNCTIONS 
 module.exports = {
   create,
   updateUnitProduct,
+  deleteUnitProduct,
   findById,
   findByName,
   getAllProducts,

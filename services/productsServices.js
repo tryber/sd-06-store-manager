@@ -2,7 +2,8 @@ const { create,
   findByName, 
   getAllProducts, 
   findById,
-  updateUnitProduct } = require('../models/productsModels');
+  updateUnitProduct,
+  deleteUnitProduct } = require('../models/productsModels');
 const { status, Messages } = require('../util/dataStatus');
 
 
@@ -40,14 +41,23 @@ const allProducts = async (_req, res) => {
 const updateProduct = async (req, res) => {
   const { id } = req.params;
   const { name, quantity } = req.body;
-  console.log(name, id , quantity);
+
   const result = await updateUnitProduct(id, name, quantity);
+
+  return res.status(status.OK).json(result);
+};
+
+const deleteProduct = async (req, res) => {
+  const { id } = req.params;
+
+  const result = await deleteUnitProduct(id);
 
   return res.status(status.OK).json(result);
 };
 
 module.exports = {
   idProduct,
+  deleteProduct,
   updateProduct,
   createProduct,
   allProducts,
