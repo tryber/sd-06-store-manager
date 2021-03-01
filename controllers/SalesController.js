@@ -4,6 +4,7 @@ const {
   getSales,
   getSaleById,
   updateSale,
+  deleteSale,
 } = require('../models/Sales');
 const { validateInsertData } = require('../services/SalesServices');
 
@@ -75,6 +76,25 @@ SalesRouter.put('/:id', async (req, res) => {
     const updateResponse = await updateSale(id, newSoldList);
     
     return res.status(OK).json(updateResponse);
+  }
+});
+
+SalesRouter.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deleted = await deleteSale(id);
+
+    return res.status(OK).json(deleted);
+  } catch (error) {
+    console.log(error);
+
+    return res.status(UNPROCESSABLE_ENTITY).json({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong sale ID format',
+      }
+    });    
   }
 });
 

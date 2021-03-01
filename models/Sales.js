@@ -23,7 +23,11 @@ const getSaleById = async (id) => {
   const sale = await connection()
     .then((db) => db.collection('sales').findOne(ObjectId(id)));
 
-  return sale;
+  if (sale) {
+    return sale;
+  }
+
+  throw 'sale not found';
 };
 
 const updateSale = async (id, itensSold) => {
@@ -39,9 +43,23 @@ const updateSale = async (id, itensSold) => {
   };
 };
 
+const deleteSale = async (id) => {
+  const sale = await connection()
+    .then((db) => db.collection('sales').findOne(ObjectId(id)));
+
+  if (sale) {
+    await connection()
+      .then((db) => db.collection('sales').deleteOne({ _id: ObjectId(id) }));
+    console.log('OK')
+    return sale;
+  }
+  throw 'sale not found';
+};
+
 module.exports = {
   registerSale,
   getSales,
   getSaleById,
   updateSale,
+  deleteSale,
 };
