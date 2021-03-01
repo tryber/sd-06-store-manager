@@ -6,39 +6,39 @@ require('../../.env');
 const router = Router();
 
 // middleware de validação
-const validateProduct = (req, res, next) => {
-  const { name, quantity } = req.body;
+// const validateProduct = (req, res, next) => {
+//   const { name, quantity } = req.body;
   
-  if (name === null || quantity === null) return res.status(unprocessableEntity)
-    .json({ message: 'Product must have the keys "name" and "quantity"' });
-  else if (name.length < five) return res.status(unprocessableEntity)
-    .send({ 
-      err: {
-        code: 'invalid_data',
-        message: '"name" length must be at least 5 characters long'
-      } 
-    });
-  else if (quantity < 1 || quantity === zero) res.status(unprocessableEntity)
-    .json({ 
-      err: {
-        code: 'invalid_data',
-        message: '"quantity" must be larger than or equal to 1'
-      }
-    });
-  else if (typeof quantity !== 'number') res.status(unprocessableEntity)
-    .json({ 
-      err: {
-        code: 'invalid_data',
-        message: '"quantity" must be a number'
-      }
-    });
-  else {
-    next();
-  }
-};
+//   if (name === null || quantity === null) return res.status(unprocessableEntity)
+//     .json({ message: 'Product must have the keys "name" and "quantity"' });
+//   else if (name.length < five) return res.status(unprocessableEntity)
+//     .send({ 
+//       err: {
+//         code: 'invalid_data',
+//         message: '"name" length must be at least 5 characters long'
+//       } 
+//     });
+//   else if (quantity < 1 || quantity === zero) res.status(unprocessableEntity)
+//     .json({ 
+//       err: {
+//         code: 'invalid_data',
+//         message: '"quantity" must be larger than or equal to 1'
+//       }
+//     });
+//   else if (typeof quantity !== 'number') res.status(unprocessableEntity)
+//     .json({ 
+//       err: {
+//         code: 'invalid_data',
+//         message: '"quantity" must be a number'
+//       }
+//     });
+//   else {
+//     next();
+//   }
+// };
 
 // '/' aqui na verdade é '/products' 
-router.post('/', validateProduct, rescue (async (req, res) => {
+router.post('/', rescue (async (req, res) => {
   const { name, quantity } = req.body;
   const store = await ProductService.create(name, quantity);
   
