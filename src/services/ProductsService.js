@@ -1,5 +1,12 @@
-const { create, update, exclude } = require('../models/ProductModel');
-const { getProductCount, getAll, getById } = require('../models/ProductModel');
+const { 
+  createProduct,
+  updateProduct,
+  getProductCount, 
+  getAllProducts, 
+  getProductById,
+  deleteProduct 
+} = require('../models/ProductModel');
+
 const { ObjectId } = require('mongodb');
 
 const STATUS_UNPROCESSABLE= 422;
@@ -9,106 +16,119 @@ const ZERO = 0;
 const createValidation = async (name, quantity) => {
   const countProduct = await getProductCount(name);
   if (name.length <= MIN_LENGTH) {
-    return res.status(STATUS_UNPROCESSABLE).json({ 
+    return { 
       err: {
         code: 'invalid_data',
         message: '"name" length must be at least 5 characters long'
-      }
-    });
+      },
+      code: 422
+    };
   } 
   if (countProduct > ZERO) {
-    return res.status(STATUS_UNPROCESSABLE).json({ 
+    return { 
       err: {
         code: 'invalid_data',
         message: 'Product already exists'
-      }
-    });
+      },
+      code: 422
+    };
   }
   if (quantity <= ZERO) {
-    return res.status(STATUS_UNPROCESSABLE).json({ 
+    return { 
       err: {
         code: 'invalid_data',
         message: '\"quantity\" must be larger than or equal to 1'
-      }
-    });
-  }  
+      },
+      code: 422
+    };
+  }
   if (isNaN(quantity)) {
-    return res.status(STATUS_UNPROCESSABLE).json({ 
+    return { 
       err: {
         code: 'invalid_data',
         message: '\"quantity\" must be a number'
-      }
-    });
+      },
+      code: 422
+    };
   }
-  
-  return await create(name, quantity);
+  const create = await createProduct(name, quantity);
+  return { code: 201, create };
 };
 
 const getValidation = async () => {
-  await getAll();
+  const getAll = await getAllProducts();
+  return { code: 200, getAll };
 };
 
 const getByIdValidation = async (id) => {
   if (!ObjectId.isValid(id)) {
-    return res.status(STATUS_UNPROCESSABLE)
-      .json({
-        err: {
-          code: 'invalid_data',
-          message: 'Wrong id format'
-        }});
+    return { 
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format'
+      },
+      code: 422
+    };
   }
-  const product = await getById(id);
-  if (!product) {
-    return res.status(STATUS_UNPROCESSABLE)
-      .json({
-        err: {
-          code: 'invalid_data',
-          message: 'Wrong id format'
-        }});
+  const getById = await getProductById(id);
+  if (!getById) {
+    return { 
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format'
+      },
+      code: 422
+    };
   }
+  return { code: 200, getById };
 };
 
 const editValidation = async (id, name, quantity) => {
   if (name.length <= MIN_LENGTH) {
-    return res.status(STATUS_UNPROCESSABLE).json({ 
+    return { 
       err: {
         code: 'invalid_data',
         message: '"name" length must be at least 5 characters long'
-      }
-    });
+      },
+      code: 422
+    };
   }
   if (quantity <= ZERO) {
-    return res.status(STATUS_UNPROCESSABLE).json({ 
+    return { 
       err: {
         code: 'invalid_data',
         message: '\"quantity\" must be larger than or equal to 1'
-      }
-    });
-  }  
+      },
+      code: 422
+    };
+  }
   if (isNaN(quantity)) {
-    return res.status(STATUS_UNPROCESSABLE).json({ 
+    return { 
       err: {
         code: 'invalid_data',
         message: '\"quantity\" must be a number'
-      }
-    });
+      },
+      code: 422
+    };
   }
-  await update(id, name, quantity);
-  return await getById(id);
+  await updateProduct(id, name, quantity);
+  const update = await getProductById(id);
+  return { code: 200, update };
 };
 
 const deleteValidation = async (id) => {
   if (!ObjectId.isValid(id)) {
-    return res.status(STATUS_UNPROCESSABLE)
-      .json({
-        err: {
-          code: 'invalid_data',
-          message: 'Wrong id format'
-        }});
+    return { 
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format'
+      },
+      code: 422
+    };
   }
-  const deletedProduct = await getById(id);
-  await exclude(id);
-  return deletedProduct;
+  const exclude = await getProductById(id);
+  await deleteProduct(id);
+  return {code: 200, exclude};
 };
 
 module.exports = {

@@ -7,26 +7,26 @@ const getProductCount = async (name) => {
   return result;
 };
 
-const create = async (name, quantity) => {
+const createProduct = async (name, quantity) => {
   const { insertedId } = await connection()
     .then((db) => db.collection('products').insertOne({ name, quantity }));
   return ({_id: insertedId, name, quantity});
 };
 
-const getAll = async () => {
+const getAllProducts = async () => {
   const products = await connection()
     .then((db) => db.collection('products').find().toArray());
   return products;
 };
 
-const getById = async (id) => {
+const getProductById = async (id) => {
   const product = await connection()
     .then((db) => db.collection('products').findOne({_id: ObjectId(id) }));
   return product;
 
 };
 
-const update = async (id, name, quantity ) => {
+const updateProduct = async (id, name, quantity ) => {
   const product = await connection()
     .then((db) => db.collection('products').updateOne(
       db.collection('products').findOne({_id: ObjectId(id) }),
@@ -34,17 +34,17 @@ const update = async (id, name, quantity ) => {
   return product;
 };
 
-const exclude = async (id) => {
+const deleteProduct = async (id) => {
   const product = await connection()
     .then((db) => db.collection('products').deleteOne({_id: ObjectId(id) }));
   return product;
 };
 
 module.exports = {
-  create,
+  createProduct,
   getProductCount,
-  getAll,
-  getById,
-  update,
-  exclude,
+  getAllProducts,
+  getProductById,
+  updateProduct,
+  deleteProduct,
 };

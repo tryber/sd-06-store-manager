@@ -1,4 +1,4 @@
-const { create, getAll, getById, update, exclude } = require('../models/SalesModel');
+const { createSale, getAll, getById, update, exclude } = require('../models/SalesModel');
 const { ObjectId } = require('mongodb');
 
 const STATUS_NOTFOUND= 404;
@@ -6,80 +6,86 @@ const STATUS_UNPROCESSABLE= 422;
 const ZERO = 0;
 
 const createValidation = async (itens) => {
+  const validation = {};
   itens.forEach((item) => {
     if (item.quantity <= ZERO || isNaN(item.quantity)) {
-      return res.status(STATUS_UNPROCESSABLE).json({ 
-        err: {
-          code: 'invalid_data',
-          message: 'Wrong product ID or invalid quantity'
-        }
-      });
-    }  
+      validation.err = {
+        code: 'invalid_data',
+        message: 'Wrong product ID or invalid quantity'
+      };
+      validation.code = 422;
+    } 
   });
-  
-  return await create(itens);
+  if (validation.err) return validation;
+  const create = await createSale(itens);
+  return {code: 200, create};
 };
 
 const getAllValidation = async () => {
-  await getAll();
+  const sales = await getAll();
+  return {code: 200, sales};;
 };
 
 const getByIdValidation = async (id) => {
   if (!ObjectId.isValid(id)) {
-    return res.status(STATUS_NOTFOUND)
-      .json({
-        err: {
-          code: 'not_found',
-          message: 'Sale not found'
-        }});
+    return {
+      err: {
+        code: 'not_found',
+        message: 'Sale not found'
+      },
+      code: 404
+    };
   }
   const sale = await getById(id);
   if (!sale) {
-    return res.status(STATUS_NOTFOUND)
-      .json({
-        err: {
-          code: 'not_found',
-          message: 'Sale not found'
-        }});
+    return {
+      err: {
+        code: 'not_found',
+        message: 'Sale not found'
+      },
+      code: 404
+    };
   }
 };
 
 const editValidation = async (id, updatedItens) => {
+  const validation = {};
   updatedItens.forEach((item) => {
     if (item.quantity <= ZERO) {
-      return res.status(STATUS_UNPROCESSABLE).json({ 
-        err: {
-          code: 'invalid_data',
-          message: 'Wrong product ID or invalid quantity'
-        }
-      });
+      validation.err = {
+        code: 'invalid_data',
+        message: 'Wrong product ID or invalid quantity'
+      };
+      validation.code = 422;
     }
     if (isNaN(item.quantity)) {
-      return res.status(STATUS_UNPROCESSABLE).json({ 
-        err: {
-          code: 'invalid_data',
-          message: 'Wrong product ID or invalid quantity'
-        }
-      });
+      validation.err = {
+        code: 'invalid_data',
+        message: 'Wrong product ID or invalid quantity'
+      };
+      validation.code = 422;
     }
   });
 
+  if (validation.err) return validation;
   await update(id, updatedItens);
-  return await getById(id);
+  const updateSale = await getById(id);
+  return { code: 200, updateSale };
 };
 
 const deleteValidation = async (id) => {
   if (!ObjectId.isValid(id)) {
-    return res.status(STATUS_UNPROCESSABLE)
-      .json({
-        err: {
-          code: 'invalid_data',
-          message: 'Wrong sale ID format'
-        }});
+    return {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong sale ID format'
+      },
+      code: 422
+    };
   }
   const deletedSale = await getById(id);
   await exclude(id);
-  return deletedSale;
+  return {code: 200, deletedSale};;
 };
 
 module.exports = {

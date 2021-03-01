@@ -10,39 +10,52 @@ const {
 const SalesController = new Router();
 
 const STATUS_OK = 200;
+const STATUS_INTERNAL_ERROR = 500;
 
 // Requisito 5
 SalesController.post('/', async (req, res) => {
-  const itens = req.body;
-  const register = await createValidation(itens);
-  return res.status(STATUS_OK).json(register);
+  try {
+    const itens = req.body;
+    const {err, code, create} = await createValidation(itens);
+    if (!create) return res.status(code).json({ err });
+    return res.status(code).json(create);
+  } catch (error) {
+    return res.status(STATUS_INTERNAL_ERROR).json({message: error.message});
+  }
 });
 
 // Requisito 6
 SalesController.get('/', async (_req, res) => {
-  const sales = await getAllValidation();
-  return res.status(STATUS_OK).json({sales});
+  const {code, sales} = await getAllValidation();
+  
+  return res.status(code).json({sales: sales});
 });
 
 SalesController.get('/:id', async (req, res) => {
   const id = req.params.id;
-  const sale = await getByIdValidation(id);
-  return res.status(STATUS_OK).json(sale);
+  const {err, code, sale} = await getByIdValidation(id);
+  
+  if (!sale) return res.status(code).json({ err });
+  return res.status(code).json(sale);
 });
 
 // Requisito 7
 SalesController.put('/:id', async (req, res) => {
   const updatedItens = req.body;
   const id = req.params.id;
-  const updateSale = await editValidation(id, updatedItens);
-  return res.status(STATUS_OK).json(updateSale);
+  const { err, code, updateSale} = await editValidation(id, updatedItens);
+  
+  if (!updateSale) res.status(code).json({err});
+  return res.status(code).json(updateSale);
 });
 
 // Requisito 8
 SalesController.delete('/:id', async (req, res) => {
   const id = req.params.id;
-  const deleteSale = await deleteValidation(id);
-  return res.status(STATUS_OK).json(deleteSale);
+  const {err, code, deleteSale} = await deleteValidation(id);
+
+  if (!deleteSale) return res.status(code).json({err});
+  return res.status(code).json(deleteSale);
 });
 
 module.exports = SalesController;

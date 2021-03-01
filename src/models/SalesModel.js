@@ -1,7 +1,7 @@
 const connection = require('./connection');
 const { ObjectId } = require('mongodb');
 
-const create = async (itens) => {
+const createSale = async (itens) => {
   const { insertedId } = await connection()
     .then((db) => db.collection('sales').insertOne({ 
       itensSold: itens
@@ -39,7 +39,7 @@ const exclude = async (id) => {
 
 
 module.exports = {
-  create,
+  createSale,
   getAll,
   getById,
   update,
