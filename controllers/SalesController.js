@@ -3,11 +3,12 @@ const {
   registerSale,
   getSales,
   getSaleById,
+  updateSale,
 } = require('../models/Sales');
 const { validateInsertData } = require('../services/SalesServices');
 
 const SalesRouter = new Router();
-const SUCCESS = 200;
+const OK = 200;
 const UNPROCESSABLE_ENTITY = 422;
 const NOT_FOUND = 404;
 const EMPTY = 0;
@@ -20,20 +21,16 @@ SalesRouter.post('/', async (req, res) => {
   if (itensSold.length === EMPTY) {
     return res.status(UNPROCESSABLE_ENTITY).json({ message: 'no sales to register'});
   } else {
-    let foundAnError = false;
-
     for (let i = FIRST_INDEX_TO_ITERATE; i < itensSold.length; i += ITERATION_VALUE) {
       const { productId, quantity } = itensSold[i];
       const validationResult = await validateInsertData(productId, quantity);
-      console.log(validationResult);
       if (validationResult !== 'is valid') {
-        foundAnError = true;
         return res.status(UNPROCESSABLE_ENTITY).json(validationResult);
       }
     }
     const registerResponse = await registerSale(itensSold);
     
-    return res.status(SUCCESS).json(registerResponse);
+    return res.status(OK).json(registerResponse);
   }
 });
 
@@ -41,7 +38,7 @@ SalesRouter.get('/', async (_req, res) => {
   const sales = await getSales();
   const result = { sales };
 
-  return res.status(SUCCESS).json(result);
+  return res.status(OK).json(result);
 });
 
 SalesRouter.get('/:id', async (req, res) => {
@@ -49,7 +46,7 @@ SalesRouter.get('/:id', async (req, res) => {
 
   try {
     const sale = await getSaleById(id);
-    return res.status(SUCCESS).json(sale);
+    return res.status(OK).json(sale);
   } catch (error) {
     console.log(error);
     return res.status(NOT_FOUND).json({
@@ -58,6 +55,26 @@ SalesRouter.get('/:id', async (req, res) => {
         message: 'Sale not found',
       }
     });    
+  }
+});
+
+SalesRouter.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  const newSoldList = req.body;
+
+  if (newSoldList.length === EMPTY) {
+    return res.status(UNPROCESSABLE_ENTITY).json({ message: 'no sales to register'});
+  } else {
+    for (let i = FIRST_INDEX_TO_ITERATE; i < newSoldList.length; i += ITERATION_VALUE) {
+      const { productId, quantity } = newSoldList[i];
+      const validationResult = await validateInsertData(productId, quantity);
+      if (validationResult !== 'is valid') {
+        return res.status(UNPROCESSABLE_ENTITY).json(validationResult);
+      }
+    }
+    const updateResponse = await updateSale(id, newSoldList);
+    
+    return res.status(OK).json(updateResponse);
   }
 });
 
