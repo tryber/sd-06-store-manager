@@ -5,7 +5,7 @@ const rescue = require('express-rescue');
 const OK = 200;
 // const CREATED = 201;
 // const BAD_REQUEST = 400;
-// const NOT_FOUND = 404;
+const NOT_FOUND = 404;
 const UNPROCESSABLE_ENTITY = 422;
 
 
@@ -16,7 +16,7 @@ routes.route('/:id')
     const searchedSale = await sales.findById(id);
 
     if (searchedSale === null || searchedSale.err)
-      return res.status(UNPROCESSABLE_ENTITY).json(searchedSale);
+      return res.status(NOT_FOUND).json(searchedSale);
 
     res.status(OK).json(searchedSale);
   }))
