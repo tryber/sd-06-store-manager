@@ -1,5 +1,5 @@
 const { ObjectId } = require('mongodb');
-const productModel = require('../models/salesModel');
+const salesModel = require('../models/salesModel');
 
 const HTTP422 = 422;
 
