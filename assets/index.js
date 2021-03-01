@@ -17,8 +17,14 @@ const verifyEqualProduct = (name, product) => {
   return sameName;
 };
 
+const verifyProductId = (sale, products) => {
+  const result = sale.filter((prId) => products.filter((prod) => prod._id === prId._id));
+  return result;
+};
+
 module.exports = {
   verifyName,
   verifyQuantity,
-  verifyEqualProduct
+  verifyEqualProduct,
+  verifyProductId,
 };

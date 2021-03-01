@@ -4,7 +4,7 @@ const MONGODB_URL_LOCAL = 'mongodb://localhost:127.0.0.1.27017/StoreManager';
 const MONGODB_URL_EVALUATOR = 'mongodb://mongodb:27017/StoreManager';
 const DB_NAME = 'StoreManager';
 
-const connection = () => MongoClient.connect(MONGODB_URL_EVALUATOR, {
+const connection = () => MongoClient.connect(MONGODB_URL_LOCAL, {
   useUnifiedTopology: true,
   useNewUrlParser: true
 })
