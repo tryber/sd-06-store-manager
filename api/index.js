@@ -1,14 +1,10 @@
-// Referencia ao site: -->>
-https://blog.rocketseat.com.br/variaveis-ambiente-nodejs/#:~:text=Dotenv,composto%20de%20chaves%20e%20valores.
-require('dotenv').config({
-  path: process.env.NODE_ENV === 'development_env' ? '.env.dev' : '.env'
-});
+require('dotenv').config();
 const app = require('express')();
 const routes = require('./routes');
 const log = require('./middlewares/logger');
 const statusCode = require('./utils/errorCodes');
-
-const PORT = process.env.PORT;
+const TRES_MIL = 3000;
+const PORT = process.env.PORT || TRES_MIL;
 const bodyParser = require('body-parser');
 
 
