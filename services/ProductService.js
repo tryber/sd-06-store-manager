@@ -3,8 +3,9 @@ const Product = require('../models/Product');
 const minQuantity = 0;
 const minLength = 5;
 
-const validation = async(name, quantity) => {
-  nameExists = await Product.findByName(name);
+const validation = async(obj) => {
+  nameExists = await Product.findByName(obj.name);
+  console.log(nameExists);
   const error = {
     err: {
       code: 'invalid_data', 
@@ -12,7 +13,7 @@ const validation = async(name, quantity) => {
   };
   const { err } = error;
 
-  if(name.length < minLength) {
+  if(obj.name && obj.name.length < minLength) {
     err.message = '"name" length must be at least 5 characters long';
     return error;
   }
@@ -22,24 +23,38 @@ const validation = async(name, quantity) => {
     return error;
   }
 
-  if(quantity <= minQuantity) {
+  if(obj.quantity <= minQuantity) {
     err.message = '"quantity" must be larger than or equal to 1';
     return error;
   }
 
-  if(!Number(quantity)) {
+  if(obj.quantity &&  !Number(obj.quantity)) {
     err.message = '"quantity" must be a number';
+    return error;
+  }
+  if(obj.id === false) {
+    err.message = 'Wrong id format';
     return error;
   }
 };
 
 const create = async (name, quantity) => {
-  const notValid = await validation(name, quantity);
+  const notValid = await validation({ name, quantity });
   if (notValid) return notValid;
 
   return await Product.create(name, quantity);
 };
 
+const getById = async (id) => {
+  try {
+    return await Product.getById(id);
+  }
+  catch (e) {
+    return await validation({ id: false });
+  }
+};
+
 module.exports = {
-  create
+  create,
+  getById
 };
