@@ -37,4 +37,19 @@ ProductController.get('/', rescue(async (request, response) => {
   response.status(statusCodes.OK).json({ products });
 }));
 
+ProductController.put(
+  '/:id',
+  validateName,
+  validateQuantity,
+  rescue(async (request, response) => {
+    const product = request.body;
+    const { id } = request.params;
+    product['_id'] = id;
+
+    await ProductService.updateProduct(product);
+    // console.log("updatedProduct", updatedProduct)
+
+    response.status(statusCodes.OK).json(product);
+  }));
+
 module.exports = ProductController;

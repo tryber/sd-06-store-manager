@@ -25,7 +25,7 @@ const validateName = async (request, response, next) => {
   const productsFound = await ProductService.findProductByName(product.name);
   const isTheNameInUse = productsFound.length > MINIMUM_LENGTH;
 
-  if (isTheNameInUse) {
+  if (isTheNameInUse && request.method !== 'PUT') {
     return response.status(statusCodes.UNPROCESSABLE_ENTITY).json(
       {
         err: {
