@@ -44,6 +44,24 @@ SalesController.get('/:id', async (req, res) => {
     }});
 });
 
+SalesController.put('/:id', async (req, res) => {
+  const id = req.params.id;
+  const itens = req.body;
+  itens.forEach((item) => {
+    if (item.quantity <= ZERO || isNaN(item.quantity)) {
+      return res.status(STATUS_UNPROCESSABLE).json({ 
+        err: {
+          code: 'invalid_data',
+          message: 'Wrong product ID or invalid quantity'
+        }
+      });
+    }  
+  });
+  await updateSale(id, itens);
+  const updatedSale = await getSaleById(id);
+  return res.status(STATUS_OK).json(updatedSale);
+ 
+});
 SalesController.delete('/:id', async (req, res) => {
   const id = req.params.id;
   if(ObjectId.isValid(id)){
