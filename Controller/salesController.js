@@ -89,7 +89,9 @@ const create = async (req, res) => {
 
 const update = async (req, res) => {
   const {id} = req.params;
+  
   const body = req.body;
+  
 
   /* const findById = await salesConnection.findById(id); */
 
@@ -117,7 +119,9 @@ const update = async (req, res) => {
   };
 
   const update = await salesConnection.update(id, body);
-
+  /* console.log(update); */
+  /* console.log(id);
+  console.log(body); */
 
   res.status(OK).json({_id: id, itensSold: body});
 };

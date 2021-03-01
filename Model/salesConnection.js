@@ -9,25 +9,26 @@ const getAll = async () => {
 };
 
 const findById = async (id) => {
-  const getId = connection()
+  const getId = await connection()
     .then((db) => db.collection('sales').findOne(ObjectId(id)));
   return getId;
 };
 
 const create = async (itensSold) => {
-  const creation = connection()
+  const creation = await connection()
     .then((db) => db.collection('sales').insertOne({itensSold}));
   return creation;
 };
 
 const update = async (id, itensSold) => {
-  const update = connection()
-    .then((db)=> db.collection('sales').updateOne({_id: ObjectId(id), $set: itensSold}));
+  const update = await connection()
+    .then((db)=> db.collection('sales')
+      .updateOne({ _id: ObjectId(id)}, { $set: { itensSold } }));
   return update;
 };
 
 const remove = async (id) => {
-  const removing = connection()
+  const removing = await connection()
     .then((db) => db.collection('sales').deleteOne({ _id: ObjectId(id)}));
   return removing;
 };
