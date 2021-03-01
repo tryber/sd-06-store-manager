@@ -8,55 +8,46 @@ const NO_QUANTITY = 0;
 const ID_24_HEX = 24;
 
 // No Majik Status NUMBERS:
-const UNPROCESSABLE_ENTITY =  422;
+const UNPROCESSABLE_E =  422;
 const SUCCESS_CREATED = 201;
 const SUCCESS = 200;
+
+
+const isLengthLessThan = (value, number) => (value.length < number);
+const isQuantityZero = (value, number) => ( value <= number);
+const isQuantityNumber = (value, typeOfValue) => (typeof value !== typeOfValue);
+const code = 'invalid_data';
+const errorMessages = {
+  nameLength:'"name" length must be at least 5 characters long',
+  plusEual1:'"quantity" must be larger than or equal to 1',
+  mustBeNumber: '"quantity" must be a number',
+  replicantProd: 'Product already exists',
+  idFormat:'Wrong id format' ,
+};
 
 // req 1
 const creatingValidProduct = async(request, response) => {
   const { name, quantity } = request.body;
 
-  if (name.length < NAME_MIN_LENGTH) {
-    return response.status(UNPROCESSABLE_ENTITY).json({
-      err:
-      {
-        code: 'invalid_data',
-        message: '"name" length must be at least 5 characters long',
-      }
-    });
-  }
+  switch(true) {
 
-  if ( quantity <= NO_QUANTITY) {
-    return response.status(UNPROCESSABLE_ENTITY).json({
-      err:
-      {
-        code: 'invalid_data',
-        message: '"quantity" must be larger than or equal to 1',
-      }
-    });
-  }
+  case (isLengthLessThan(name, NAME_MIN_LENGTH)):
+    return response.status(UNPROCESSABLE_E)
+      .json({ err: { code, message: errorMessages.nameLength }});
 
-  if (typeof quantity !== 'number') {
-    return response.status(UNPROCESSABLE_ENTITY).json({
-      err:
-      {
-        code: 'invalid_data',
-        message: '"quantity" must be a number',
-      }
-    });
-  }
+  case (isQuantityZero(quantity, NO_QUANTITY)):
+    return response.status(UNPROCESSABLE_E)
+      .json({ err:{ code, message: errorMessages.plusEual1}});
 
+  case (isQuantityNumber(quantity, 'number')):
+    return response.status(UNPROCESSABLE_E)
+      .json({ err: { code, message: errorMessages.mustBeNumber }});
+
+  }
   const isReplicant = await Products.findByName(name);
-  if (isReplicant) {
-    return response.status(UNPROCESSABLE_ENTITY).json({
-      err:
-      {
-        code: 'invalid_data',
-        message: 'Product already exists',
-      }
-    });
+  if (isReplicant) { return response.status(UNPROCESSABLE_E)
+    .json({ err: { code, message: errorMessages.replicantProd }});
   }
-
   // para receber o ID gerado automaticamente pelo cadastro desse produto
   const { insertedId } = await Products.createProduct(name, quantity);
 
@@ -66,33 +57,22 @@ const creatingValidProduct = async(request, response) => {
   return response.status(SUCCESS_CREATED).send(freshProduct);
 };
 
-// req2
 const displayingAllProducts = async (_request, response) => {
   const allProductsList = await Products.getAllProducts();
-  console.log('all products List:', allProductsList);
+
   return response.status(SUCCESS).send({products: allProductsList});
 };
 
 const displayThisSpecificProduct = async (request, response) => {
   const { id } = request.params;
 
-  if (id.length !== ID_24_HEX ) return response.status(UNPROCESSABLE_ENTITY)
-    .json({err:
-      {
-        code: 'invalid_data',
-        message: 'Wrong id format'
-      }
-    });
+  if (id.length !== ID_24_HEX ) return response.status(UNPROCESSABLE_E)
+    .json({err: { code, message: errorMessages.idFormat }});
 
   const thisProductOnly = await Products.getProductById(id);
   if(thisProductOnly === null || thisProductOnly === {})
-    return response.status(UNPROCESSABLE_ENTITY)
-      .json({
-        err: {
-          code: 'invalid_data',
-          message: 'Wrong id format',
-        }
-      });
+    return response.status(UNPROCESSABLE_E)
+      .json({err: { code, message: errorMessages.idFormat } });
 
   return response.status(SUCCESS).send(thisProductOnly);
 };
@@ -102,44 +82,25 @@ const updatingValidProduct = async (request, response) => {
   const { id } = request.params;
   const { name, quantity} = request.body;
 
-  if (name.length < NAME_MIN_LENGTH) {
-    return response.status(UNPROCESSABLE_ENTITY).json({
-      err:
-      {
-        code: 'invalid_data',
-        message: '"name" length must be at least 5 characters long',
-      }
-    });
+  if (isLengthLessThan(name, NAME_MIN_LENGTH)) {
+    return response.status(UNPROCESSABLE_E)
+      .json({ err: { code, message: errorMessages.nameLength }});
   };
 
-  if ( quantity <= NO_QUANTITY) {
-    return response.status(UNPROCESSABLE_ENTITY).json({
-      err:
-      {
-        code: 'invalid_data',
-        message: '"quantity" must be larger than or equal to 1',
-      }
-    });
+  if (isQuantityZero(quantity, NO_QUANTITY)) {
+    return response.status(UNPROCESSABLE_E)
+      .json({ err: { code, message: errorMessages.plusEual1 }});
   };
 
-  if (typeof quantity !== 'number') {
-    return response.status(UNPROCESSABLE_ENTITY).json({
-      err:
-      {
-        code: 'invalid_data',
-        message: '"quantity" must be a number',
-      }
-    });
-  }
+  if (isQuantityNumber(quantity, 'number')) {
+    return response.status(UNPROCESSABLE_E)
+      .json({ err: { code, message: errorMessages.mustBeNumber }});
+  };
 
 
   await Products.updateProduct(id, name, quantity);;
 
-  const updatedProduct = {
-    _id: id,
-    name,
-    quantity
-  };
+  const updatedProduct = {_id: id, name, quantity };
 
   return response.status(SUCCESS).send(updatedProduct);
 };
@@ -149,23 +110,13 @@ const updatingValidProduct = async (request, response) => {
 const removingValidProduct = async (request, response) => {
   const { id } = request.params;
 
-  if (id.length !== ID_24_HEX ) return response.status(UNPROCESSABLE_ENTITY)
-    .json({err:
-      {
-        code: 'invalid_data',
-        message: 'Wrong id format'
-      }
-    });
+  if (id.length !== ID_24_HEX ) return response.status(UNPROCESSABLE_E)
+    .json({err: { code, message: errorMessages.idFormat } });
 
   const thisProductOnly = await Products.getProductById(id);
   if(thisProductOnly === null || thisProductOnly === {})
-    return response.status(UNPROCESSABLE_ENTITY)
-      .json({
-        err: {
-          code: 'invalid_data',
-          message: 'Wrong id format',
-        }
-      });
+    return response.status(UNPROCESSABLE_E)
+      .json({err: { code, message: errorMessages.idFormat } });
 
   await Products.deleteProduct(id);
   return response.status(SUCCESS).send(thisProductOnly);

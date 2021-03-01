@@ -1,14 +1,11 @@
 // aqui organizar os endpoints relativos aos produtos
 // realizar todo tratamento das requisições
 // CRUD com GET, GET :id, POST, PUT :id, DELETE :id
-const { Router } = require('express');
 const express = require('express');
 
 // usando  o routes;
 const routes = express.Router();
 
-// importando as queries do Model
-const Products = require('../models/Products') ;
 // importando do Service
 const ProductsService = require('../service/ProductsServices');
 
