@@ -47,7 +47,6 @@ ProductController.put(
     product['_id'] = id;
 
     await ProductService.updateProduct(product);
-    // console.log("updatedProduct", updatedProduct)
 
     response.status(statusCodes.OK).json(product);
   }));
