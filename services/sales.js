@@ -117,7 +117,7 @@ const deleteSale = async (id) => {
   const errorObject = {
     err: {
       code: 'invalid_data',
-      message: 'Wrong id format',
+      message: 'Wrong sale ID format',
     }
   };
 
