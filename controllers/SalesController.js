@@ -75,6 +75,7 @@ SalesController.put('/:id', async (req, res) => {
     return res.status(STATUS_OK).json(newItens);
  
   }});
+
 SalesController.delete('/:id', async (req, res) => {
   const id = req.params.id;
   if(ObjectId.isValid(id)){
@@ -85,16 +86,13 @@ SalesController.delete('/:id', async (req, res) => {
           code: 'not_found',
           message: 'Sale not found'
         }}); 
-      
     await deleteSale(id);
     return res.status(STATUS_OK).json(deletedSale);
   }
-  return res.status(STATUS_UNPROCESSABLE)
-    .json({
-      err: {
-        code: 'invalid_data',
-        message: 'Wrong sale ID format'
-      }});
+  return res.status(STATUS_UNPROCESSABLE).json({
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong sale ID format'
+    }});
 });
-
 module.exports = SalesController;
