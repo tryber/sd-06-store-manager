@@ -59,10 +59,18 @@ router.post('/', validateProduct, rescue (async (req, res) => {
   }
 }));
 
+router.put('/:id', validateProduct, rescue (async (req, res) => {
+  const { name, quantity } = req.body;
+  const { id } = req.params;
+  const product = await ProductService.update(name, quantity, id);
+  
+  return res.status(v.OK).json(product);
+}));
+
 router.get('/', rescue (async (req, res) => {
   const products = await ProductService.getAll();
   
-  return res.status(v.OK).json({products});
+  return res.status(v.OK).json({ products });
 }));
 
 router.get('/:id', rescue (async (req, res) => {
