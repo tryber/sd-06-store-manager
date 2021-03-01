@@ -28,4 +28,16 @@ router.get('/:id', validateIdSale, wrongIdSale, async(req, res) => {
   const sale = await salesService.saleByIdService(id);
   return res.status(OK).json(sale);
 });
+
+//Requisito-7
+router.put('/:id', quantityNotNegativeOrZeroSales,
+  quantityNotAStringSales, async(req, res) => {
+    const { id } = req.params;
+    const salesSoldBody = req.body;
+    await salesService.updateSaleService(id, salesSoldBody);
+
+    const saleUpdated = await salesService.saleByIdService(id);
+    return res.status(OK).json(saleUpdated);
+  });
+
 module.exports = router;

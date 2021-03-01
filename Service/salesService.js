@@ -12,8 +12,13 @@ const saleByIdService = async (id) => {
   return sales.saleById(id);
 };
 
+const updateSaleService = async (id, itensSold) => {
+  return sales.updateSale(id, itensSold);
+};
+
 module.exports = {
   createSaleService,
   listSalesService,
-  saleByIdService
+  saleByIdService,
+  updateSaleService
 };

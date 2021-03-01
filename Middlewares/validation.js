@@ -89,6 +89,8 @@ const wrongId = async(req, _res, next) => {
   next();
 };
 
+//SALES
+
 const quantityNotNegativeOrZeroSales = (req, _res, next) => {
   const [{ quantity }] = req.body;
   const Zero = 0;
@@ -142,6 +144,7 @@ const wrongIdSale = async(req, _res, next) => {
     });
   next();
 };
+
 
 module.exports = {
   validateNameSize,
