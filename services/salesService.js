@@ -58,6 +58,5 @@ module.exports = {
   allSales,
   salesById,
   checkId,
-  updateSales,
-  deleteSales
+  updateSales
 };
