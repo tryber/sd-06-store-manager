@@ -4,8 +4,6 @@ const errorMessages = require('../dictionary/errorMessages');
 const codeMessages = require('../dictionary/codeMessages');
 const statusCodes = require('../dictionary/statusCodes');
 
-
-
 const validateName = async (request, response, next) => {
   const product = request.body;
   const MAXIMUM_LENGTH = 5;
@@ -98,9 +96,45 @@ const validateQuantity = (request, response, next) => {
   next();
 };
 
+const validateItensSoldQuantity = (request, response, next) => {
+  const sale = request.body;
+  const MINIMUM_QUANTITY = 1;
+
+  // console.log("sale", sale)
+
+
+  const invalidQuantity = sale
+    .find(item => item.quantity < MINIMUM_QUANTITY || typeof item.quantity === 'string');
+
+  if (invalidQuantity) {
+    return response.status(statusCodes.UNPROCESSABLE_ENTITY).json(
+      {
+        err: {
+          message: errorMessages.WRONG_PRODUCT_ID_OR_INVALID_QUANTITY,
+          code: codeMessages.INVALID_DATA,
+        }
+      }
+    );
+  }
+
+  // if (product.quantity < MINIMUM_LENGTH) {
+  //   return response.status(statusCodes.UNPROCESSABLE_ENTITY).json(
+  //     {
+  //       err: {
+  //         message: errorMessages.QUANTITY_BIGGER_THAN_ONE,
+  //         code: codeMessages.INVALID_DATA,
+  //       }
+  //     }
+  //   );
+  // }
+
+  next();
+};
+
 
 module.exports = {
   validateName,
+  validateItensSoldQuantity,
   validateProductExistence,
   validateQuantity,
 };

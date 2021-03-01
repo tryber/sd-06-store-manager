@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const ProductController = require('./src/controller/ProductController');
+const SaleController = require('./src/controller/SaleController');
 
 const app = express();
 const PORT = 3000;
@@ -13,5 +14,6 @@ app.get('/', (_request, response) => {
 });
 
 app.use('/products', ProductController);
+app.use('/sales', SaleController);
 
 app.listen(PORT, () => console.log('App listening on PORT %s', PORT));
