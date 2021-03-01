@@ -54,7 +54,7 @@ routes.route('/')
     if (createdSale.err) return res.status(UNPROCESSABLE_ENTITY)
       .json(createdSale);
 
-    res.status(CREATED).json(createdSale);
+    res.status(OK).json(createdSale);
   }));
 
 module.exports = routes;
