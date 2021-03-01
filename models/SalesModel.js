@@ -16,7 +16,7 @@ const getAll = async () => {
 
 const getSaleById = async (id) => {
   const result = await connection()
-    .then((db) => db.collection('sale').findOne({_id: ObjectId(id) }));
+    .then((db) => db.collection('sales').findOne({_id: ObjectId(id) }));
   return result;
 };
 
