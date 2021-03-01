@@ -50,6 +50,7 @@ SalesRouter.get('/:id', async (req, res) => {
     return res.status(OK).json(sale);
   } catch (error) {
     console.log(error);
+
     return res.status(NOT_FOUND).json({
       err: {
         code: 'not_found',

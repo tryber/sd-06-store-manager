@@ -42,6 +42,7 @@ ProductsRouter.get('/:id', async (req, res) => {
     return res.status(OK).json(product);
   } catch (error) {
     console.log(error);
+
     return res.status(UNPROCESSABLE_ENTITY).json({
       err: {
         code: 'invalid_data',

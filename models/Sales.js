@@ -50,7 +50,6 @@ const deleteSale = async (id) => {
   if (sale) {
     await connection()
       .then((db) => db.collection('sales').deleteOne({ _id: ObjectId(id) }));
-    console.log('OK')
     return sale;
   }
   throw 'sale not found';
