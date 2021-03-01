@@ -1,6 +1,7 @@
 const { ObjectId } = require('mongodb');
 const Model = require('../models/registerProducts');
 
+const OK = 200;
 const code = 422;
 const ZERO = 0;
 const CINCO = 5;
@@ -60,13 +61,23 @@ const updateProduct = async (id, name, quantity) => {
 
   if (notIsNumber(quantity)) return {code, message: '"quantity" must be a number'};
 
-  const resultOfUpdate = await Model.updateProduct(id, name, quantity);
+  await Model.updateProduct(id, name, quantity);
   
   return {
     _id: id,
     name,
     quantity,
   };
+};
+
+const deleteProduct = async (id) => {
+  if (!isIdValid(id)) return {code, message: 'Wrong id format'};
+
+  const resultOfDelete = await Model.deleteProduct(id);
+
+  if (!resultOfDelete.value) return {OK, message: 'Nada foi alterado'};
+
+  return resultOfDelete.value;
 };
 
 
@@ -76,4 +87,5 @@ module.exports = {
   registerManyProducts,
   findProductById,
   updateProduct,
+  deleteProduct,
 }; 

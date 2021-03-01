@@ -2,7 +2,8 @@ const app = require('express')();
 const Service  =require('../services/productsService');
 const statusCode = require('../utils/errorCodes');
 const bodyParser = require('body-parser');
-
+const { ObjectId } = require('mongodb');
+const isIdValid = (id) => ObjectId.isValid(id);
 
 app.use(bodyParser.json());
 
@@ -95,6 +96,28 @@ app.post('/teste', async (req, res) => {
   const products = await Service.registerManyProducts(name, quantity);
   
   res.send(products);
+});
+
+app.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const resultOfDelete = await Service.deleteProduct(id);
+    
+    if (resultOfDelete.message) throw new Error(resultOfDelete.message);
+
+    res.send(resultOfDelete);
+
+  } catch (error) {
+    console.error(error);
+    res
+      .status(statusCode.UNPROCESSABLE_ENTITY)
+      .json(
+        { err: {
+          code: 'invalid_data',
+          message: error.message
+        }}
+      );
+  }
 });
 
 module.exports = app;

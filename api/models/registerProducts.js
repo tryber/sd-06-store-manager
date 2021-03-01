@@ -18,8 +18,8 @@ const findByName = async (name) => {
 const findProductById = async (id) => {
   return await connection()
     .then((db) => db.collection('products').findOne(ObjectId(id)))
-    .then((res) => res);
-   
+    .then((res) => res)
+    .catch((err) => console.error(err));
 };
 
 const registerOneProduct= async (name, quantity) => {
@@ -56,6 +56,15 @@ const updateProduct = async (id, name, quantity) => {
     .catch((err) => console.error(err));
 };
 
+const deleteProduct = async (id) => {
+  return await connection()
+    .then((db) => db.collection('products').findOneAndDelete(
+      {_id: ObjectId(id)}
+    ))
+    .then((res) => res)
+    .catch((err) => console.error(err));
+};
+
 module.exports = {
   getAll,
   registerOneProduct,
@@ -63,6 +72,7 @@ module.exports = {
   registerManyProducts,
   findProductById,
   updateProduct,
+  deleteProduct,
 };
 
 

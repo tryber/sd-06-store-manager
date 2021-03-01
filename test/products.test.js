@@ -424,7 +424,7 @@ describe('4 - Crie um endpoint para deletar um produto', () => {
   it('Será validado que não é possível deletar um produto com sucesso', async () => {
     let result;
     let resultProductId;
-
+    console.log(`${url}/products/`)
     await frisby
       .get(`${url}/products/`)
       .expect('status', 200)
