@@ -16,7 +16,7 @@ app.get('/', (_request, response) => {
 
 // middleware de erro
 app.use((err, req, res, next) => {
-  res.status(process.env.INTERNAL_ERROR).json({ message: 'Erro interno' });
+  return res.status(process.env.INTERNAL_ERROR).json({ message: 'Erro interno' });
 });
 
 const PORT = 3000;
