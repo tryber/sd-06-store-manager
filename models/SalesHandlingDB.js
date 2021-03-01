@@ -3,7 +3,7 @@ const { ObjectId } = require('mongodb');
 
 const create = async (itensSold) => {
   const { insertedId } = await connection()
-    .then(db => db.collection('sales').insertOne( { itensSold } )); 
+    .then(db => db.collection('sales').insertOne( { itensSold } ));
   return  {
     _id: insertedId,
     itensSold
@@ -28,13 +28,13 @@ const update = async (id, itensSold) => {
       {$set: { itensSold }}
     ));
   const _id =id;
-  return {_id, itensSold };  
+  return {_id, itensSold };
 };
 
 const deleteSale = async (id) => {
   const resulDelete =  await connection().then(db => db.collection('sales')
-    .findOneAndDelete( 
-      { _id: ObjectId(id) },   
+    .findOneAndDelete(
+      { _id: ObjectId(id) },
       { returnOriginal: false }));
   return resulDelete.value;
 };
