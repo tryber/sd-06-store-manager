@@ -3,7 +3,7 @@ const products = require('../models/products');
 
 const nullQuantity = 0;
 const idMongoLength = 24;
-const notExists = "Product doesn't exist";
+const notExists = 'Product does not exist';
 const quantityErrorMessage = '"quantity" must be larger than or equal to 1';
 const quantityTypeErrorMessage = '"quantity" must be a number';
 

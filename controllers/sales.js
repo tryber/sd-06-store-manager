@@ -25,8 +25,8 @@ routes.route('/:id')
   //   const updateSale = req.body;
   //   const saleToUpdate = await sales.update(id, updateSale);
 
-  //   if (saleToUpdate.err) return res.status(UNPROCESSABLE_ENTITY)
-  //     .json(saleToUpdate);
+//    if (saleToUpdate.err) return res.status(UNPROCESSABLE_ENTITY)
+//       .json(saleToUpdate);
 
   //   res.status(OK).json(saleToUpdate);
   // }))
