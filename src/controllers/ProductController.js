@@ -67,7 +67,7 @@ router.get('/', rescue (async (req, res) => {
 router.get('/:id', rescue (async (req, res) => {
   const { id } = req.params;
   
-  if (id.length !== twentyFour) 
+  if (id.length !== process.env.TWENTY_FOUR) 
     return res.status(process.env.UNPROCESSABLE_ENTITY)
       .json({
         err: {
