@@ -47,5 +47,15 @@ router.get('/:id',validateIdSales, rescue(async (request, response) => {
 }),
 );
 
+router.put('/:id', validateSales, validateIdSales,rescue(async (request, response) => {
+  const { id } = request.params;
+  const arraySales = request.body;
+  const { productId, quantity } = arraySales[0];
+  const updateSales = await Sales.update(id, productId, quantity);
+
+  response.status(SUCCESS).json(updateSales);
+}),
+);
+
 
 module.exports = router;
