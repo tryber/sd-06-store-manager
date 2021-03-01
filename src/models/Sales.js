@@ -14,6 +14,14 @@ const createNewSale = async (objectSales) => {
   };
 };
 
+const getAllSales = async () =>
+  connection().then((db) => db.collection(DB_COLECTION).find().toArray());
+
+const getByIdSales = async (id) =>
+  connection().then((db) => db.collection(DB_COLECTION).findOne(ObjectId(id)));
+
 module.exports = {
   createNewSale,
+  getAllSales,
+  getByIdSales
 };
