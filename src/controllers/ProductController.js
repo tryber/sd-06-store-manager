@@ -60,4 +60,27 @@ router.get('/', rescue (async (req, res) => {
   res.status(ok).json(products);
 }));
 
+router.get('/:id', rescue (async (req, res) => {
+  const { id } = req.params;
+  
+  if (id.length !== twentyFour) return res.status(unprocessableEntity)
+    .json({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format'
+      }
+    });
+  
+  const product = await ProductService.findById(id);
+  
+  if (!product) return res.status(unprocessableEntity)
+    .json({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format'
+      }
+    });
+  else return res.status(ok).json(product);
+}));
+
 module.exports = router;
