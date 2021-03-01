@@ -1,4 +1,4 @@
 module.exports = {
-  lista: require('./controllers/productsController'),
-  productsController: require('./controllers/productsController')
+  productsController: require('./controllers/productsController'),
+  salesController: require('./controllers/salesController'),
 };

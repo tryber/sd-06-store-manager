@@ -4,15 +4,15 @@ const connection = require('../database/connection');
 const getAll = async () => {
   return connection()
     .then((db) => db.collection('products').find().toArray())
-    .then((products) => {
-      return products;
-    });
+    .then((products) => products)
+    .catch((err) => console.error(err));
 };
 
 const findByName = async (name) => {
   return await connection()
     .then((db) => db.collection('products').find({name: name}).toArray())
-    .then((res) => res);
+    .then((res) => res)
+    .catch((err) => console.error(err));
 };
 
 const findProductById = async (id) => {
@@ -25,22 +25,11 @@ const findProductById = async (id) => {
 const registerOneProduct= async (name, quantity) => {
   const { insertedId } = await connection()
     .then((db) => db.collection('products').insertOne({name, quantity}))
-    .then((result) => result);
+    .then((result) => result)
+    .catch((err) => console.error(err));
 
   return {
     _id: insertedId,
-    name,
-    quantity,
-  };
-};
-
-const registerManyProducts = async (name, quantity) => {
-  const { insertedId } = await connection()
-    .then((db) => db.collection('products').insertMany({name, quantity}))
-    .then((result) => result);
-
-  return {
-    id: insertedId,
     name,
     quantity,
   };
@@ -69,7 +58,6 @@ module.exports = {
   getAll,
   registerOneProduct,
   findByName,
-  registerManyProducts,
   findProductById,
   updateProduct,
   deleteProduct,

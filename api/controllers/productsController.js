@@ -1,13 +1,12 @@
 const app = require('express')();
 const Service  =require('../services/productsService');
-const statusCode = require('../utils/errorCodes');
+const statusCode = require('../utils/statusCode');
 const bodyParser = require('body-parser');
-const { ObjectId } = require('mongodb');
-const isIdValid = (id) => ObjectId.isValid(id);
+
 
 app.use(bodyParser.json());
 
-app.get('/', async (req, res) => {
+app.get('/', async (_req, res) => {
   try {
     const products = await Service.getAllProducts();
     
@@ -89,13 +88,6 @@ app.put('/:id', async (req, res) => {
         }}
       );
   }  
-});
-
-app.post('/teste', async (req, res) => {
-  const { name, quantity } = req.body;
-  const products = await Service.registerManyProducts(name, quantity);
-  
-  res.send(products);
 });
 
 app.delete('/:id', async (req, res) => {

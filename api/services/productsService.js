@@ -1,5 +1,5 @@
 const { ObjectId } = require('mongodb');
-const Model = require('../models/registerProducts');
+const Model = require('../models/productsModel');
 
 const OK = 200;
 const code = 422;
@@ -25,7 +25,8 @@ const findProductById = async (id) => {
   return product;
 };
 
-const registerProduct = async (name, quantity) => { 
+const registerProduct = async (name, quantity) => {
+  console.log(name, quantity);
   const nameExists =  await Model.findByName(name);
   
   if (!isEmptyArray(nameExists)) return {code, message: 'Product already exists'};
