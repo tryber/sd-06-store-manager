@@ -1,13 +1,12 @@
 const { MongoClient } = require('mongodb');
 
-const MONGO_DB_URL = 'mongodb://localhost:27017/StoreManager';
-// const MONGO_DB_URL = 'mongodb://mongodb:27017/StoreManager';
-
+const host = process.env.HOST || 'mongodb';
+const DB_URL = `mongodb://${host}:27017/StoreManager`;
 const DB_NAME = 'StoreManager';
 
 const connection = () => {
   return MongoClient
-    .connect(MONGO_DB_URL, {
+    .connect(DB_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })

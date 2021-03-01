@@ -8,9 +8,9 @@ const nameValidation = (name) => name.length > NAME_MIN_SIZE;
 const quantityValidation = (quantity) => quantity > ZERO;
 
 const createProduct = async (productName, productQuantity) => {
-  const isDuplicate = await products.getByName(productName) !== null;
+  const isUnique = await products.getByName(productName) === null;
   
-  if (!isDuplicate) return products.insertProduct(productName, productQuantity);
+  if (isUnique) return products.insertProduct(productName, productQuantity);
 
   return false;
 };
