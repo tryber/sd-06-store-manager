@@ -37,7 +37,7 @@ const validateProduct = (req, res, next) => {
   }
 };
 
-// '/' aqui na verdade é '/products'
+// '/' aqui na verdade é '/products' 
 router.post('/', validateProduct, rescue (async (req, res) => {
   const { name, quantity } = req.body;
   const store = await ProductService.create(name, quantity);
