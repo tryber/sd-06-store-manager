@@ -38,7 +38,18 @@ const getById = async(id) => {
   }
 };
 
+const change = async(id, array) => {
+  let notValid;
+  array.forEach(element => {
+    const { quantity } = element;
+    notValid = validation({ quantity });
+  });
+  if (notValid) return notValid;
+  return await Sale.change(id, array);
+};
+
 module.exports = {
   create,
-  getById
+  getById,
+  change
 };

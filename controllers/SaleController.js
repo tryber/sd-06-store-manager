@@ -28,4 +28,14 @@ router.get('/:id', async(req, res) => {
   return res.status(statusOk).send(answer);
 });
 
+router.put('/:id', async(req, res) => {
+  const { id } = req.params;
+
+  const answer = await Sale.change(id, req.body);
+  
+  if(answer.err) return res.status(statusError).json(answer);
+
+  return res.status(statusOk).json({ _id: id, itensSold: req.body });
+});
+
 module.exports = router;

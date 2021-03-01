@@ -14,7 +14,13 @@ const getById = async (id) => {
   return await connection().then((db) => db.collection('sales').find().toArray());
 };
 
+const change = async(id, array) => {
+  return await connection().then((db) => db.collection('sales')
+    .updateOne({ _id: id }, { $set: { itensSold: array } }));
+};
+
 module.exports = {
   create,
-  getById
+  getById,
+  change
 };
