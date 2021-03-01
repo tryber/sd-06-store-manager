@@ -31,7 +31,7 @@ ProductController.get(
     response.status(statusCodes.OK).json(foundProduct);
   }));
 
-ProductController.get('/', rescue(async (request, response) => {
+ProductController.get('/', rescue(async (_request, response) => {
   const products = await ProductService.findAllProducts();
 
   response.status(statusCodes.OK).json({ products });
@@ -49,6 +49,18 @@ ProductController.put(
     await ProductService.updateProduct(product);
 
     response.status(statusCodes.OK).json(product);
+  }));
+
+ProductController.delete(
+  '/:id',
+  validateProductExistence,
+  rescue(async (request, response) => {
+    const { id } = request.params;
+
+    const recoveredProduct = await ProductService.findProductById(id);
+    await ProductService.removeProduct(id);
+
+    response.status(statusCodes.OK).json(recoveredProduct);
   }));
 
 module.exports = ProductController;
