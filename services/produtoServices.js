@@ -1,4 +1,4 @@
-const produtoController = require('../controller/produtoController');
+// const produtoController = require('../controller/produtoController');
 const produtoModel = require('../model/produtoModel'); //importa as funçoes
 
 const getAllProduct = () => produtoModel.getAll();
@@ -10,7 +10,6 @@ const getListId = async (id) => {
 
 const putEditListId = async (id, name, quantity) => {
   const returnPutEditId = await produtoModel.putId(id, name, quantity);
-  console.log('service', returnPutEditId);
   return returnPutEditId;
 };
 

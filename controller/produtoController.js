@@ -1,10 +1,11 @@
-const { Router, request, response } = require('express');
+const { Router } = require('express');
 const produtoServices = require('../services/produtoServices');
 const {
   verifyNameExists,
   verifyProducts,
-  validateId,
+  validateIdProduct,
 } = require('../services/middleware/verifyValidate');
+
 const produtoController = new Router();
 const statusNumberSucess = 201;
 const statusSucess = 200;
@@ -15,7 +16,7 @@ produtoController.get('/', async (_request, response) => {
   return response.status(statusSucess).json({ products: returnAll });
 });
 
-produtoController.get('/:id', validateId, async (request, response) => {
+produtoController.get('/:id', validateIdProduct, async (request, response) => {
   const { id } = request.params;
   const returnIdProduto = await produtoServices.getListId(id);
   if (!returnIdProduto)
@@ -25,7 +26,7 @@ produtoController.get('/:id', validateId, async (request, response) => {
   return response.status(statusSucess).json(returnIdProduto);
 });
 
-produtoController.delete('/:id', validateId, async(request, response) => {
+produtoController.delete('/:id', validateIdProduct, async(request, response) => {
   const { id } = request.params;
   const { name, quantity } = request.body;
   const productDel = {
@@ -37,18 +38,20 @@ produtoController.delete('/:id', validateId, async(request, response) => {
   return response.status(statusSucess).json(productDel);
 });
 
-produtoController.put('/:id', validateId, verifyProducts, async (request, response) => {
-  const { id } = request.params;
-  const { name, quantity } = request.body;
-  const productEdit = {
-    _id: id,
-    name,
-    quantity,
-  };
-  const returnEditProduct = await produtoServices.putEditListId(id, name, quantity);
-  console.log(returnEditProduct);
-  return response.status(statusSucess).json(productEdit);
-});
+produtoController.put('/:id', validateIdProduct,
+  verifyProducts,
+  async (request, response) => {
+    const { id } = request.params;
+    const { name, quantity } = request.body;
+
+    const productEdit = {
+      _id: id,
+      name,
+      quantity,
+    };
+    const returnEditProduct = await produtoServices.putEditListId(id, name, quantity);
+    return response.status(statusSucess).json(productEdit);
+  });
 
 produtoController.post('/', verifyProducts,
   verifyNameExists, async (request, response) => {
