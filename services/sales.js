@@ -36,8 +36,8 @@ const getAll = async () => {
 const findById = async (id) => {
   const errorObject = {
     err: {
-      code: 'invalid_data',
-      message: 'Wrong id format',
+      code: 'not_found',
+      message: 'Sale not found',
     }
   };
 
@@ -60,7 +60,7 @@ const create = async (sale) => {
   const checkQuantityType = await sale.map((item) => isInt(item.quantity));
   const allQuantitiesInt = checkQuantityType
     .filter((check) => !check).length === nullQuantity;
-    
+
   const checkQuantityPositive = await sale.map((item) => isPositive(item.quantity));
   const allQuantitiesPositive = checkQuantityPositive
     .filter((check) => !check).length === nullQuantity;
