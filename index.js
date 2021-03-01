@@ -1,7 +1,7 @@
 const express = require('express');
 const ProductController = require('./src/controllers/ProductController');
 const bodyParser = require('body-parser');
-require('dotenv').config();
+const { v } = require('./variables');
 
 const app = express();
 
@@ -16,10 +16,9 @@ app.get('/', (_request, response) => {
 
 // middleware de erro
 app.use((err, req, res, next) => {
-  return res.status(process.env.INTERNAL_ERROR).json({ message: 'Erro interno' });
+  return res.status(v.INTERNAL_ERROR).json({ message: 'Erro interno' });
 });
 
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`Listening on ${PORT}`);
+app.listen(v.PORT, () => {
+  console.log(`Listening on ${v.PORT}`);
 });

@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const ProductService = require('../services/ProductService');
 const rescue = require('express-rescue');
+const { v } = require('../../variables');
 
 
 const router = Router();
@@ -10,18 +11,18 @@ const validateProduct = (req, res, next) => {
   const { name, quantity } = req.body;
   
   if (name === null || quantity === null) 
-    return res.status(process.env.UNPROCESSABLE_ENTITY)
+    return res.status(v.UNPROCESSABLE_ENTITY)
       .json({ message: 'Product must have the keys "name" and "quantity"' });
-  else if (name.length < process.env.FIVE) 
-    return res.status(process.env.UNPROCESSABLE_ENTITY)
+  else if (name.length < v.FIVE) 
+    return res.status(v.UNPROCESSABLE_ENTITY)
       .send({ 
         err: {
           code: 'invalid_data',
           message: '"name" length must be at least 5 characters long'
         } 
       });
-  else if (quantity < 1 || quantity === process.env.ZERO) 
-    return res.status(process.env.UNPROCESSABLE_ENTITY)
+  else if (quantity < 1 || quantity === v.ZERO) 
+    return res.status(v.UNPROCESSABLE_ENTITY)
       .json({ 
         err: {
           code: 'invalid_data',
@@ -29,7 +30,7 @@ const validateProduct = (req, res, next) => {
         }
       });
   else if (typeof quantity !== 'number') 
-    return res.status(process.env.UNPROCESSABLE_ENTITY)
+    return res.status(v.UNPROCESSABLE_ENTITY)
       .json({ 
         err: {
           code: 'invalid_data',
@@ -46,7 +47,7 @@ router.post('/', validateProduct, rescue (async (req, res) => {
   const { name, quantity } = req.body;
   const store = await ProductService.create(name, quantity);
   
-  if (!store) return res.status(process.env.UNPROCESSABLE_ENTITY)
+  if (!store) return res.status(v.UNPROCESSABLE_ENTITY)
     .json({ 
       err: {
         code: 'invalid_data',
@@ -54,21 +55,21 @@ router.post('/', validateProduct, rescue (async (req, res) => {
       }
     });
   else {
-    return res.status(created).json(store);    
+    return res.status(v.CREATED).json(store);    
   }
 }));
 
 router.get('/', rescue (async (req, res) => {
   const products = await ProductService.getAll();
   
-  return res.status(process.env.OK).json(products);
+  return res.status(v.OK).json(products);
 }));
 
 router.get('/:id', rescue (async (req, res) => {
   const { id } = req.params;
   
-  if (id.length !== process.env.TWENTY_FOUR) 
-    return res.status(process.env.UNPROCESSABLE_ENTITY)
+  if (id.length !== v.TWENTY_FOUR) 
+    return res.status(v.UNPROCESSABLE_ENTITY)
       .json({
         err: {
           code: 'invalid_data',
@@ -79,14 +80,14 @@ router.get('/:id', rescue (async (req, res) => {
   const product = await ProductService.findById(id);
   
   if (!product) 
-    return res.status(process.env.UNPROCESSABLE_ENTITY)
+    return res.status(v.UNPROCESSABLE_ENTITY)
       .json({
         err: {
           code: 'invalid_data',
           message: 'Wrong id format'
         }
       });
-  else return res.status(process.env.OK).json(product);
+  else return res.status(v.OK).json(product);
 }));
 
 module.exports = router;
