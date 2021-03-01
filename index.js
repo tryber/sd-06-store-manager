@@ -2,7 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const productsControl = require('./controllers/productsControll');
 
-const SUCCESS = 200;
 const DOOR = 3000;
 
 const app = express();
