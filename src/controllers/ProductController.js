@@ -9,6 +9,7 @@ router.use(bodyParser.json());
 
 const SUCCESS = 200;
 const CREATED = 201;
+const UNPROCESSABLE = 422;
 
 router.post('/', validateProduct, rescue(async (req, res) => {
   const { name, quantity } = req.body;
@@ -47,6 +48,24 @@ router.put('/:id', validateProduct, validateId, rescue(async (req, res) => {
   const updateProduct = await Products.update(id, name, quantity);
 
   res.status(SUCCESS).json(updateProduct);
+}),
+);
+
+router.delete('/:id', validateId, rescue(async (req, res) => {
+  const { id } = req.params;
+  const allProducts = await Products.getById(id);
+
+  if (!allProducts) {
+    return res.status(UNPROCESSABLE).json(
+      {err: {
+        code: 'invalid_data',
+        message: 'Wrong id format',
+      }}
+    );
+  }
+
+  await Products.remove(id);
+  return res.status(SUCCESS).json(allProducts);
 }),
 );
 
