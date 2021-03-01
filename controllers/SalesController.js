@@ -18,4 +18,19 @@ SalesController.post('/', async (request, response) => {
   }  
 });
 
+SalesController.get('/', async (_request, response) => {
+  const allSales = await SalesService.getSales();
+  return response.status(STATUS_200).json({ sales: allSales });
+});
+
+SalesController.get('/:id', async (request, response) => {
+  const { id } = request.params;
+  const allSales = await SalesService.getSales();
+  const veriRes = await SalesService.middlewareVerificationGetId(response, id, allSales);
+  if(veriRes === null) {
+    const sale = await SalesService.getSaleById(id);
+    return response.status(STATUS_200).json(sale);
+  }
+});
+
 module.exports = SalesController;
