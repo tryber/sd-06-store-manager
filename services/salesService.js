@@ -1,6 +1,7 @@
 const { ObjectId } = require('mongodb');
 const salesModel = require('../models/salesModel');
 
+const HTTP404 = 404;
 const HTTP422 = 422;
 
 const allSales = async () => {
@@ -20,9 +21,9 @@ const updateSales = async (id, newSales) => {
 };
 
 const validateSales = async (request, response, next) => {
-  const sales = request.body;
-  sales?.forEach((el) => {
-    if (el.quantity < 1 || typeof el.quantity !== 'number') {
+  const sale = request.body;
+  sale.forEach((sale) => {
+    if (sale.quantity < 1 || typeof sale.quantity !== 'number') {
       return response.status(HTTP422)
         .json( { err: {
           code: 'invalid_data',
@@ -37,7 +38,7 @@ const validateSales = async (request, response, next) => {
 
 const checkId = async (request, response, next) => {
   const id = request.params.id || null;
-  if (!ObjectId.isValid(id)) return response.status(HTTP422).json({
+  if (!ObjectId.isValid(id)) return response.status(HTTP404).json({
     err: {
       code: 'not_found',
       message: 'Sale not found',
