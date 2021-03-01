@@ -5,6 +5,7 @@ const rescue = require('express-rescue');
 const {
   validateSales,
   validateIdSales,
+  validateIdSalesRemove
 } = require('../middlewares');
 
 const router = new Router();
@@ -12,6 +13,7 @@ router.use(bodyParser.json());
 
 const SUCCESS = 200;
 const NOT_FOUND = 404;
+const UNPROCESSABLE = 422;
 
 router.post('/', validateSales, rescue(async (req, res) => {
   const objectSales = req.body;
@@ -51,6 +53,24 @@ router.put('/:id', validateSales, validateIdSales,rescue(async (req, res) => {
   const updateSales = await Sales.update(id, productId, quantity);
 
   res.status(SUCCESS).json(updateSales);
+}),
+);
+
+router.delete('/:id', validateIdSalesRemove, rescue(async (req, res) => {
+  const { id } = req.params;
+  const allSales = await Sales.getById(id);
+
+  if (!allSales) {
+    return res.status(UNPROCESSABLE).json(
+      {err: {
+        code: 'invalid_data',
+        message: 'Wrong sale ID format',
+      }}
+    );
+  }
+
+  await Sales.remove(id);
+  return res.status(SUCCESS).json(allSales);
 }),
 );
 
