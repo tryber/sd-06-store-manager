@@ -41,4 +41,13 @@ router.put('/:id', async(req, res) => {
   return res.status(statusOk).json({ _id: answer.insertedId, name, quantity });
 });
 
+router.delete('/:id', async(req, res) => {
+  const { id } = req.params;
+  const answer = await Product.deleteProduct(id);
+
+  if(answer.err) return res.status(statusError).json(answer);
+  
+  return res.status(statusOk).json(answer);
+});
+
 module.exports = router;

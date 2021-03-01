@@ -51,7 +51,7 @@ const change = async (id, name, quantity) => {
   return await Product.change(id, name, quantity);
 };
 
-const getById = async (id) => {
+const getById = async(id) => {
   try {
     return await Product.getById(id);
   }
@@ -60,8 +60,15 @@ const getById = async (id) => {
   }
 };
 
+const deleteProduct = async(id) => {
+  const answer = await getById(id);
+  if(!answer.err) await Product.deleteProduct(id);
+  return answer;
+};
+
 module.exports = {
   create,
   getById,
-  change
+  change,
+  deleteProduct
 };
