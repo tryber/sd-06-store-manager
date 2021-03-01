@@ -1,4 +1,3 @@
-const connection = require('../models/connection');
 const { ObjectId } = require('mongodb');
 const Products = require('../models/Products');
 
@@ -8,6 +7,17 @@ const {
 
 const charactersSix = 6;
 const zero = 0;
+const success = 200;
+const UnprocessableEntity = 402;
+const successCreated = 201;
+
+const error = {
+  err: {
+    code: 'invalid_data',
+    message: ''
+  }
+};
+
 const createProduct = async (req, res) => {
   const data = req.body;
   const { name, quantity } = data;
