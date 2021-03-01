@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 
 app.use('/products', ProductController);
 
-// não remova esse endpoint, e para o avaliador funcionar
+// não remova esse endpoint, e para o avaliador funcionar 
 app.get('/', (_request, response) => {
   response.send();
 });
