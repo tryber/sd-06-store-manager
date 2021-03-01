@@ -47,21 +47,30 @@ SalesController.get('/:id', async (req, res) => {
 SalesController.put('/:id', async (req, res) => {
   const id = req.params.id;
   const itensToUpdate = req.body;
-  itensToUpdate.forEach((itens) => {
-    if (itens.quantity <= ZERO || isNaN(itens.quantity)) {
-      return res.status(STATUS_UNPROCESSABLE).json({ 
+
+  if(ObjectId.isValid(id)){
+    const updatedItens = await getSaleById(id);
+    if (!updatedItens) res.status(STATUS_NOT_FOUND)
+      .json({
         err: {
-          code: 'invalid_data',
-          message: 'Wrong product ID or invalid quantity'
-        }
-      });
-    }  
-  });
-  await updateSale(id, itensToUpdate);
-  const updatedSale = await getSaleById(id);
-  return res.status(STATUS_OK).json(updatedSale);
+          code: 'not_found',
+          message: 'Sale not found'
+        }}); 
+    itensToUpdate.forEach((itens) => {
+      if (itens.quantity <= ZERO || isNaN(itens.quantity)) {
+        return res.status(STATUS_UNPROCESSABLE).json({ 
+          err: {
+            code: 'invalid_data',
+            message: 'Wrong product ID or invalid quantity'
+          }
+        });
+      }  
+    });
+    await updateSale(id, itensToUpdate);
+    const newItens = await getSaleById(id);
+    return res.status(STATUS_OK).json(newItens);
  
-});
+  }});
 SalesController.delete('/:id', async (req, res) => {
   const id = req.params.id;
   if(ObjectId.isValid(id)){
