@@ -1,12 +1,12 @@
 const { MongoClient } = require('mongodb');
 
 //Avaliador
-const MONGO_DB_URL = 'mongodb://mongodb:27017/StoreManager';
+// const MONGO_DB_URL = 'mongodb://mongodb:27017/StoreManager';
 // const MONGO_DB_URL = 'mongodb://localhost:27017/StoreManager';
-// const MONGO_DB_URL = IS_LOCAL ? 
-//   'mongodb://localhost:27017/StoreManager'
-//   : 
-//   'mongodb://mongodb:27017/StoreManager';
+const MONGO_DB_URL = process.env.IS_LOCAL ? 
+  'mongodb://localhost:27017/StoreManager'
+  : 
+  'mongodb://mongodb:27017/StoreManager';
 const DB_NAME = 'StoreManager';
 
 const connection = async () => {

@@ -1,5 +1,4 @@
 const Product = require('../models/Product');
-require('../../.env');
 
 const getAll = async () => {
   return await Product.getAll();
