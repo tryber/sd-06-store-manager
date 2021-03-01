@@ -29,8 +29,9 @@ ProductsRouter.post('/', async (req, res) => {
 
 ProductsRouter.get('/', async (_req, res) => {
   const products = await getProducts();
+  const result = { products };
 
-  return res.status(OK).json(products);
+  return res.status(OK).json(result);
 });
 
 ProductsRouter.get('/:id', async (req, res) => {
@@ -53,19 +54,26 @@ ProductsRouter.get('/:id', async (req, res) => {
 ProductsRouter.put('/:id', async (req, res) => {
   const { id } = req.params;
   const { name, quantity } = req.body;
+  const validationResult = await validateInsertData(name, quantity);
+  
+  if (validationResult === 'is valid') {
+    try {
+      const updated = await updateProduct(name, quantity, id);
+      
+      return res.status(OK).json(updated);
+    } catch (error) {
+      console.log(error);
 
-  try {
-    const updated = await updateProduct(name, quantity, id);
-    return res.status(OK).json(updated);    
-  } catch (error) {
-    console.log(error);
-    return res.status(UNPROCESSABLE_ENTITY).json({
-      err: {
-        code: 'invalid_data',
-        message: 'Wrong id format',
-      }
-    });    
+      return res.status(UNPROCESSABLE_ENTITY).json({
+        err: {
+          code: 'invalid_data',
+          message: 'Wrong id format',
+        }
+      });    
+    }
   }
+
+  return res.status(UNPROCESSABLE_ENTITY).json(validationResult);
 });
 
 ProductsRouter.delete('/:id', async (req, res) => {
@@ -73,9 +81,11 @@ ProductsRouter.delete('/:id', async (req, res) => {
 
   try {
     const deleted = await deleteProduct(id);
+
     return res.status(OK).json(deleted);
   } catch (error) {
     console.log(error);
+
     return res.status(UNPROCESSABLE_ENTITY).json({
       err: {
         code: 'invalid_data',

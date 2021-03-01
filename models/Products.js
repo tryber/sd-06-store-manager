@@ -13,13 +13,17 @@ const registerProduct = async (name, quantity) => {
 };
 
 const getProducts = async () => {
-  return await connection()
+  const products = await connection()
     .then((db) => db.collection('products').find().toArray());
+
+  return products;
 };
 
 const getProductById = async (id) => {
-  return await connection()
+  const product = await connection()
     .then((db) => db.collection('products').findOne(ObjectId(id)));
+
+  return product;
 };
 
 const updateProduct = async (name, quantity, id) => {

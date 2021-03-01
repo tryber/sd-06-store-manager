@@ -34,15 +34,6 @@ const validateInsertData = async (name, quantity) => {
       },
     };
   }
-  const isUnique = await uniqueNameValidator(name);
-  if (!isUnique) {
-    return {
-      err: {
-        code: 'invalid_data',
-        message: 'Product already exists',
-      },
-    };
-  }
   if (!quantityFormatValidator(quantity)) {
     return {
       err: {
@@ -56,6 +47,15 @@ const validateInsertData = async (name, quantity) => {
       err: {
         code: 'invalid_data',
         message: '"quantity" must be larger than or equal to 1',
+      },
+    };
+  }
+  const isUnique = await uniqueNameValidator(name);
+  if (!isUnique) {
+    return {
+      err: {
+        code: 'invalid_data',
+        message: 'Product already exists',
       },
     };
   }
