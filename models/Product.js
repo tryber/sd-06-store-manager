@@ -9,6 +9,11 @@ const getById = async (id) => {
   return await connection().then((db) => db.collection('products').find().toArray());
 };
 
+const change = async (id, name, quantity) => {
+  return await connection().then((db) => db.collection('products')
+    .updateOne({ _id: id }, { $set: { name, quantity } }));
+};
+
 const findByName = async (name) => {
   return await connection().then((db) => db.collection('products').findOne({ name }));
 };
@@ -21,5 +26,6 @@ const create = async (name, quantity) => {
 module.exports = {
   getById,
   findByName,
-  create
+  create,
+  change
 };

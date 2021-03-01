@@ -5,7 +5,6 @@ const minLength = 5;
 
 const validation = async(obj) => {
   nameExists = await Product.findByName(obj.name);
-  console.log(nameExists);
   const error = {
     err: {
       code: 'invalid_data', 
@@ -18,7 +17,7 @@ const validation = async(obj) => {
     return error;
   }
 
-  if(nameExists !== null) {
+  if(nameExists !== null && obj.create === true) {
     err.message = 'Product already exists';
     return error;
   }
@@ -39,10 +38,17 @@ const validation = async(obj) => {
 };
 
 const create = async (name, quantity) => {
-  const notValid = await validation({ name, quantity });
+  const notValid = await validation({ name, quantity, create: true });
   if (notValid) return notValid;
 
   return await Product.create(name, quantity);
+};
+
+const change = async (id, name, quantity) => {
+  const notValid = await validation({ name, quantity, create: false });
+  if (notValid) return notValid;
+
+  return await Product.change(id, name, quantity);
 };
 
 const getById = async (id) => {
@@ -56,5 +62,6 @@ const getById = async (id) => {
 
 module.exports = {
   create,
-  getById
+  getById,
+  change
 };
