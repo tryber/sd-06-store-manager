@@ -46,9 +46,9 @@ SalesController.get('/:id', async (req, res) => {
 
 SalesController.put('/:id', async (req, res) => {
   const id = req.params.id;
-  const itens = req.body;
-  itens.forEach((item) => {
-    if (item.quantity <= ZERO || isNaN(item.quantity)) {
+  const itensToUpdate = req.body;
+  itensToUpdate.forEach((itens) => {
+    if (itens.quantity <= ZERO || isNaN(itens.quantity)) {
       return res.status(STATUS_UNPROCESSABLE).json({ 
         err: {
           code: 'invalid_data',
@@ -57,7 +57,7 @@ SalesController.put('/:id', async (req, res) => {
       });
     }  
   });
-  await updateSale(id, itens);
+  await updateSale(id, itensToUpdate);
   const updatedSale = await getSaleById(id);
   return res.status(STATUS_OK).json(updatedSale);
  
