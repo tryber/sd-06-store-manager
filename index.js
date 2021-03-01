@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const ProductsController = require('./controller/ProductsController');
+const SalesController = require('./controller/SalesController');
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.get('/', (_request, response) => {
 });
 
 app.use('/products', ProductsController);
+app.use('/sales', SalesController);
 
 const PORT = 3000;
 
