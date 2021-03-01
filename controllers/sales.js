@@ -3,9 +3,9 @@ const routes = require('express').Router();
 const rescue = require('express-rescue');
 
 const OK = 200;
-const CREATED = 201;
-const BAD_REQUEST = 400;
-const NOT_FOUND = 404;
+// const CREATED = 201;
+// const BAD_REQUEST = 400;
+// const NOT_FOUND = 404;
 const UNPROCESSABLE_ENTITY = 422;
 
 
