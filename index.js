@@ -20,4 +20,4 @@ app.get('/products', rescue(productsController.getAll));
 
 app.use(error);
 
-app.listen(port, () => console.log(`Example app listening on port ${port} in ${process.env.HOST || 'mongodb'}!`));
+app.listen(port, () => console.log(`Example app listening on port ${port}!`));
