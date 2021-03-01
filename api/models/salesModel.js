@@ -8,8 +8,24 @@ const registerManySales = async (itensSold) => {
     .catch((err) => console.error(err));
 };
 
+const findAllSales = async () => {
+  return await connection()
+    .then((db) => db.collection('sales').find().toArray())
+    .then((res) => res)
+    .catch((err) => console.error(err));
+};
+
+const findById = async (id) => {
+  return await connection()
+    .then((db) => db.collection('sales').findOne(ObjectId(id)))
+    .then((res) => res)
+    .catch((err) => err);
+};
+
 module.exports = {
   registerManySales,
+  findAllSales,
+  findById,
 };
 
 

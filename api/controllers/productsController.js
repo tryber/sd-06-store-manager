@@ -9,12 +9,16 @@ app.use(bodyParser.json());
 app.get('/', async (_req, res) => {
   try {
     const products = await Service.getAllProducts();
-    
-    if (!products) throw Error;
+    if (!products) throw Error('No sales found');
+    res
+      .status(statusCode.OK)
+      .json({products});
 
-    res.status(statusCode.OK).json({products});
   } catch (error) {
     console.log(error);
+    res
+      .status(statusCode.OK)
+      .json({message: error.message});
   }
 });
 
