@@ -12,6 +12,15 @@ app.use(bodyParser.json());
 app.get('/', (_request, response) => {
   response.send();
 });
+// app.use((req, _res, next) => {
+//   console.log({
+//     date: new Date(),
+//     method: req.method,
+//     endpoint: req.originalUrl,
+//   });
+//   next();
+// });
+
 app.use('/products', productRouter);
 app.use('/sales', saleRouter);
 app.use((err, _req, res, _next) => {

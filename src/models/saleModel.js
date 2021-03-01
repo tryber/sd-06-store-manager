@@ -31,6 +31,16 @@ const getSaleById = async (id) => {
   return sale;
 };
 
+const getSaleByIdToDelete = async (id) => {
+  const sale = await connection()
+    .then((db) => db.collection(collection).findOne({ _id: ObjectId(id) }))
+    .catch((error) => {
+      throw new throwError(status.unprocessableEntity, errors.wrongSaleID);
+    });
+
+  return sale;
+};
+
 const updateSale = async (id, sale) => {
   const {
     result: { nModified },
@@ -43,21 +53,23 @@ const updateSale = async (id, sale) => {
   return nModified;
 };
 
-// const deleteSale = async (id) => {
-//   const deletedSale = await connection()
-//     .then((db) => {
-//       db.collection(collection).deleteOne({ _id: ObjectId(id) });
-//     })
-//     .catch((err) => {
-//       throw new throwError(status.unprocessableEntity, errors.wrongId);
-//     });
+const deleteSale = async (id) => {
+  const deletedSale = await connection()
+    .then((db) => {
+      db.collection(collection).deleteOne({ _id: ObjectId(id) });
+    })
+    .catch((err) => {
+      throw new throwError(status.unprocessableEntity, errors.wrongId);
+    });
 
-//   return deletedSale;
-// };
+  return deletedSale;
+};
 
 module.exports = {
   createSale,
   getAllSales,
   getSaleById,
   updateSale,
+  deleteSale,
+  getSaleByIdToDelete,
 };

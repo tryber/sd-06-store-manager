@@ -40,21 +40,22 @@ const updateSale = async (id, sale) => {
   }
 };
 
-// const deleteSale = async (id) => {
-//   const deletedSale = await saleModel.deletedSale(id);
+const deleteSale = async (id) => {
+  const deletedSale = await saleModel.getSaleByIdToDelete(id);
 
-//   if (!deletedSale) {
-//     throw new throwError(status.notFound, errors.wrongSaleID);
-//   }
+  if (!deletedSale) {
+    throw new throwError(status.notFound, errors.wrongSaleID);
+  }
 
-//   await saleModel.deleteSale(id);
+  await saleModel.deleteSale(id);
 
-//   return id;
-// };
+  return deletedSale;
+};
 
 module.exports = {
   createSale,
   getAllSales,
   getSaleById,
   updateSale,
+  deleteSale,
 };
