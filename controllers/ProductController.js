@@ -60,7 +60,7 @@ const createProduct = async (req, res) => {
   const product = { '_id': ObjectId(), ...data };
   await Products.create(product);
 
-  return res.status(successCreated).json({ products });
+  return res.status(successCreated).json({ product });
 };
 
 const getProducts = async (_req, res) => {
@@ -98,6 +98,7 @@ const updateProduct = async (req, res) => {
     error.err.message = '"name" length must be at least 5 characters long';
     return res.status(UnprocessableEntity).json(error);
   }
+
   const vQuantity = verifyQuantity(quantity);
   if (!vQuantity.isValid) return res.status(vQuantity.status).json(vQuantity.error);
 
@@ -134,9 +135,9 @@ const deleteProduct = async (req, res) => {
 };
 
 module.exports = {
-  createProduct,
   getProducts,
   getById,
+  createProduct,
   updateProduct,
   deleteProduct,
 };

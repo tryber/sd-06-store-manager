@@ -1,5 +1,6 @@
 const express = require('express');
-const { createProduct,
+const { 
+  createProduct,
   getProducts,
   getById,
   updateProduct,
