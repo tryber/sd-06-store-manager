@@ -2,12 +2,12 @@ const { ObjectId } = require('mongodb');
 const connection = require('./connection');
 
 
-const addSales = async (newSale) => {
+const addSales = async (newSales) => {
   const sale =  await connection()
     .then((db) => db
       .collection('sales')
       .insertOne({ 
-        itensSold: newSale 
+        itensSold: newSales
       })
     );
   
@@ -30,16 +30,9 @@ const salesById = async (id) => connection()
     .findOne(ObjectId(id))
   );
   
-const updateSales = async (id, name, quantity) => connection()
-  .then((db) => db.collection('sales')
-    .updateOne({ _id: ObjectId(id) },
-      { $set: { name, quantity } }
-    ));
-
-const deleteSales = async (id) => connection()
-  .then((db) => db
+const updateSales = (id, newSales) =>
+  connection().then((db) => db
     .collection('sales')
-    .deleteOne({ _id: ObjectId(id) })
-  );
+    .updateOne({ _id: ObjectId(id) }, { $set: { itensSold: newSales }}));
 
 module.exports = { addSales, allSales, salesById, updateSales, deleteSales };

@@ -1,16 +1,15 @@
 const { Router } = require('express');
 const { ObjectId } = require('mongodb');
 const salesRouter = new Router();
-const { addSales,
+const { 
+  addSales,
   validateSales,
   allSales,
-  saleById,
+  salesById,
   checkId,
-  updateSale,
-  deleteSale
+  updateSales
 } = require('../services/salesService');
 
-const HTTP201 = 201;
 const HTTP200 = 200;
 const HTTP404 = 404;
 
@@ -21,13 +20,13 @@ salesRouter.post('/', validateSales, async (request, response) =>  {
 
 
 salesRouter.get('/', async (_request, response) => {
-  const salesList = await getAllSales();
+  const salesList = await allSales();
   response.status(HTTP200).json({ sales: salesList });
 });
 
 salesRouter.get('/:id', checkId, async (request, response) => {
   const id = request.params.id;
-  const sales = await saleById(id);
+  const sales = await salesById(id);
   if (!sales) return response.status(HTTP404).json({
     err: {
       code: 'not_found',
@@ -37,5 +36,16 @@ salesRouter.get('/:id', checkId, async (request, response) => {
   response.status(HTTP200).json(sales);
 });
 
+salesRouter.put('/:id', checkId, validateSales, async (request, response) => {
+  const id = request.params.id;
+  const data = request.body;
+  await updateSales(id, data);
+  const updatedSales = {
+    _id: ObjectId(id),
+    itensSold: data,
+  };
+
+  response.status(HTTP200).json(updatedSales);
+});
 
 module.exports = salesRouter;
