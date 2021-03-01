@@ -8,7 +8,7 @@ const {
 const charactersSix = 6;
 const zero = 0;
 const success = 200;
-const UnprocessableEntity = 402;
+const UnprocessableEntity = 422;
 const successCreated = 201;
 
 const error = {
