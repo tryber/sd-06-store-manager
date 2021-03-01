@@ -6,8 +6,10 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
 const productController = require('./controllers/ProductController');
+const saleController = require('./controllers/SaleController');
 
 app.use('/products', productController);
+app.use('/sales', saleController);
 
 app.get('/', (_request, response) => {
   response.send();
