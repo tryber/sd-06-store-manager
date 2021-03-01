@@ -20,16 +20,16 @@ routes.route('/:id')
 
     res.status(OK).json(searchedSale);
   }))
-  // .put(rescue(async (req, res) => {
-  //   const { id } = req.params;
-  //   const updateSale = req.body;
-  //   const saleToUpdate = await sales.update(id, updateSale);
+  .put(rescue(async (req, res) => {
+    const { id } = req.params;
+    const updateSale = req.body;
+    const saleToUpdate = await sales.update(id, updateSale);
 
-//    if (saleToUpdate.err) return res.status(UNPROCESSABLE_ENTITY)
-//       .json(saleToUpdate);
+    if (saleToUpdate.err) return res.status(UNPROCESSABLE_ENTITY)
+      .json(saleToUpdate);
 
-  //   res.status(OK).json(saleToUpdate);
-  // }))
+    res.status(OK).json(saleToUpdate);
+  }))
   .delete(rescue(async (req, res) => {
     const { id } = req.params;
     const saleToDelete = await sales.deleteSale(id);

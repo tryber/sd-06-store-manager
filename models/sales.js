@@ -18,17 +18,16 @@ const create = async (sale) =>
     )
     .then((result) => result);
 
-// const update = async (id, newProduct, newQuantity) =>
-//   connection()
-//     .then((db) => db.collection('sales').findOneAndUpdate(
-//       { _id: ObjectId(id) },
-//       { $set: {
-//         productId: newProduct,
-//         quantity: newQuantity,
-//       } },
-//       { returnOriginal: false },
-//     ))
-//     .then((result) => result.value);
+const update = async (id, newSale) =>
+  connection()
+    .then((db) => db.collection('sales').findOneAndUpdate(
+      { _id: ObjectId(id) },
+      { $set: {
+        itensSold: newSale,
+      } },
+      { returnOriginal: false },
+    ))
+    .then((result) => result.value);
 
 const deleteProduct = async (id) => 
   connection()

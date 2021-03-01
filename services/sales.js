@@ -82,29 +82,36 @@ const create = async (sale) => {
   };
 };
 
-// const update = async (id, updateSale) => {
-//   const { name, quantity } = updateSale;
-//   const validOrErrorMessage = isValid(name, quantity);
-//   const errorObject = {
-//     err: {
-//       code: 'invalid_data',
-//       message: 'Wrong id format',
-//     }
-//   };
+const update = async (id, updateSale) => {
+  const errorObject = {
+    err: {
+      code: 'invalid_data',
+      message: quantityErrorMessage,
+    },
+  };
+  const checkProducts = await Promise.all(updateSale
+    .map((item) => isRegistered(item.productId)));
+  const allAreProducts = checkProducts
+    .filter((check) => !check).length === nullQuantity;
 
-//   if (validOrErrorMessage !== true) return {
-//     err: {
-//       code: 'invalid_data',
-//       message: validOrErrorMessage,
-//     }
-//   };
+  const checkQuantityType = await updateSale.map((item) => isInt(item.quantity));
+  const allQuantitiesInt = checkQuantityType
+    .filter((check) => !check).length === nullQuantity;
 
-//   const updatedSale = await sales.update(id, name, quantity);
+  const checkQuantityPositive = await updateSale.map((item) => isPositive(item.quantity));
+  const allQuantitiesPositive = checkQuantityPositive
+    .filter((check) => !check).length === nullQuantity;
 
-//   if (!updatedSale) return errorObject;
+  if (!allQuantitiesInt || !allQuantitiesPositive || !allAreProducts) {
+    return errorObject;
+  }
 
-//   return updatedSale;
-// };
+  const updatedSale = await sales.update(id, updateSale);
+
+  if (!updatedSale) return errorObject;
+
+  return updatedSale;
+};
 
 const deleteSale = async (id) => {
   const errorObject = {
@@ -127,6 +134,6 @@ module.exports = {
   getAll,
   findById,
   create,
-  // update,
+  update,
   deleteSale,
 };
