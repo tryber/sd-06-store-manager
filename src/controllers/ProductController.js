@@ -62,7 +62,7 @@ router.post('/', validateProduct, rescue (async (req, res) => {
 router.get('/', rescue (async (req, res) => {
   const products = await ProductService.getAll();
   
-  return res.status(v.OK).json(products);
+  return res.status(v.OK).json({products});
 }));
 
 router.get('/:id', rescue (async (req, res) => {
