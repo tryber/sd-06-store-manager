@@ -21,7 +21,7 @@ const updateSales = async (id, newSales) => {
 
 const validateSales = async (request, response, next) => {
   const sales = request.body;
-  sales.forEach((el) => {
+  sales?.forEach((el) => {
     if (el.quantity < 1 || typeof el.quantity !== 'number') {
       return response.status(HTTP422)
         .json( { err: {
