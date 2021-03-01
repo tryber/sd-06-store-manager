@@ -15,7 +15,19 @@ const createNewSale = async (objectSales) => {
   };
 };
 
+const getAllSales = async () => {
+  return connection()
+    .then((db) => db.collection(DB_COLECTION).find().toArray());
+};
+
+const getByIdSales = async (id) => {
+  return connection()
+    .then((db) => db.collection(DB_COLECTION).findOne(ObjectId(id)));
+};
+
 
 module.exports = {
-  createNewSale
+  createNewSale,
+  getAllSales,
+  getByIdSales
 };

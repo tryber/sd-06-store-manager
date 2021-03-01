@@ -23,4 +23,29 @@ router.post('/', validateSales, rescue(async (request, response) => {
 }),
 );
 
+router.get('/', rescue(async (request, response) => {
+  const allSales = await Sales.getAll();
+  response.status(SUCCESS).json({sales: allSales});
+}),
+);
+
+router.get('/:id',validateIdSales, rescue(async (request, response) => {
+  const { id } = request.params;
+
+  const allSales = await Sales.getById(id);
+
+  if (!allSales) {
+    return response.status(NOT_FOUND).json(
+      {err: {
+        code: 'not_found',
+        message: 'Sale not found',
+      }}
+    );
+  }
+
+  response.status(SUCCESS).json(allSales);
+}),
+);
+
+
 module.exports = router;
