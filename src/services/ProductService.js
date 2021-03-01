@@ -8,8 +8,19 @@ const getName = async (name) => {
   return await Product.getNameProduct(name);
 };
 
+const getAll = async () => {
+  return await Product.getAllProducts();
+};
+
+const getById = async (id) => {
+  return await Product.getByIdProduct(id);
+};
+
+
 
 module.exports = {
   create,
-  getName
+  getName,
+  getAll,
+  getById
 };

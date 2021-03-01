@@ -19,4 +19,29 @@ router.post('/', validateProduct, rescue(async (request, response) => {
 }),
 );
 
+router.get('/', rescue(async (request, response) => {
+  const allProducts = await Products.getAll();
+  response.status(SUCCESS).json({products: allProducts});
+}),
+);
+
+router.get('/:id', validateId, rescue(async (request, response) => {
+  const { id } = request.params;
+
+  const allProducts = await Products.getById(id);
+
+  if (!allProducts) {
+    return response.status(UNPROCESSABLE).json(
+      {err: {
+        code: 'invalid_data',
+        message: 'Wrong id format',
+      }}
+    );
+  }
+
+  response.status(SUCCESS).json(allProducts);
+}),
+);
+
+
 module.exports = router;
