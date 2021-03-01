@@ -12,9 +12,15 @@ const getAll = async () =>
 const getById = async (id) =>
   await Product.getByIdProduct(id);
 
+const update = async (id, name, quantity) => {
+  await Product.updateProduct(id, name, quantity);
+  return await Product.getByIdProduct(id);
+};
+
 module.exports = {
   create,
   getName,
   getAll,
-  getById
+  getById,
+  update
 };
