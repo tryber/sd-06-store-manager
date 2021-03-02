@@ -1,17 +1,40 @@
-// const connection = require('./connection');
-// const { ObjectId } = require('mongodb');
+const { ObjectId } = require('mongodb');
+const connection = require('./connection');
 
-// const addNewSale = async (newSale) => { 
-//   return await connection().then((db) => db.collection(('sales')).insertMany(
-//     {
-//       'itensSold': [ newSale ]
-//     }
-//   ));
-// };
+const getAllSales = async () => {
+  return await connection().then((db) => db.collection('sales').find({}).toArray());
+};
 
+const getSaleById = async (id) => {
+  return await connection()
+    .then((db) => db.collection('sales').findOne({ _id: ObjectId(id) }));
+};
 
-// //{'_id': ObjectId("603d653a006aadee5b8d02ed")},{ $push:{"fields":{ $each: [4,5,6] }}}
+const addSale = async (product) => {
+  return await connection()
+    .then((db) => db.collection('sales').insertOne({ itensSold: product }));
+};
 
-// module.exports = {
-//   addNewSale,
-// };
+const updateSale = async (id, productId, quantity) => {
+  if (ObjectId.isValid(id)) {
+    return connection()
+      .then((db) => db.collection('sales').updateOne(
+        { _id: ObjectId(id) }, { $set: { itensSold: [{ productId, quantity }] } },
+      ));
+  }
+};
+
+const deleteSale = async (id) => {
+  if (ObjectId.isValid(id)) {
+    return connection()
+      .then((db) => db.collection('sales').deleteOne({ _id: ObjectId(id) }));
+  }
+};
+
+module.exports = {
+  addSale,
+  getAllSales,
+  getSaleById,
+  updateSale,
+  deleteSale,
+};
