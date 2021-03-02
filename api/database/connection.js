@@ -4,8 +4,8 @@ require('dotenv').config({
 const { MongoClient } = require('mongodb');
 
 const { MONGO_DB_URL, DB_NAME } = process.env;
-console.log(process.env.NODE_ENV)
-console.log(MONGO_DB_URL)
+console.log(process.env.NODE_ENV);
+console.log(MONGO_DB_URL);
 
 const connection = () => {
   return MongoClient
