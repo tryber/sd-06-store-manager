@@ -1,22 +1,19 @@
 const { MongoClient } = require('mongodb');
 
-// const MONGO_DB_URL = 'mongodb://localhost:27017/StoreManager'; // local
-const MONGO_DB_URL = 'mongodb://mongodb:27017/StoreManager';
+let connection;
+
 const DB_NAME = 'StoreManager';
+const DB_URI = `mongodb://mongodb:27017/${DB_NAME}`;
+// const DB_URI = 'mongodb://localhost:27017/StoreManager'; // local
 
-const connection = async () => {
-  return await MongoClient.connect(MONGO_DB_URL, {
-    useNewUrlParser:true,
-    useUnifiedTopology: true,
-  })
-    .then((conn) => conn.db(DB_NAME))
-    .catch((err) => {
-      console.error(err);
-      process.exit();
-    });
+module.exports = async function (collection) {
+  connection =
+    connection || (await MongoClient.connect(DB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }));
+  return connection.db(DB_NAME).collection(collection);
 };
-
-module.exports = connection;
 
 /*
 const { MongoClient } = require('mongodb');
