@@ -7,11 +7,13 @@ const UNPROCESABLE_ENTITY = 422;
 const validation = rescue(async (request, response, next) => {
   const quantity = request.body.map((item) => item.quantity);
 
-  const validationQuantity = quantity
-    .every((item) => item = INVALID_QUANTITY)
-    .some((item) => Number.isInteger(item) || typeof item != 'string');
+  const parse = (obj) => !Number.isInteger(parseInt(obj));
 
-  if (!validationQuantity) {
+  const invalidQuantity = quantity
+    .every((item) => item == INVALID_QUANTITY)
+    .some((item) => parse(item) || typeof parseInt(item) === 'string');
+
+  if (invalidQuantity) {
     return response.status(UNPROCESABLE_ENTITY).json({
       err: {
         code: 'invalid_data',
