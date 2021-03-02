@@ -44,26 +44,51 @@ app
     }
   });
   
-app.get('/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const sales  = await Service.findById(id);
+app
+  .route('/:id')
+  .get(async (req, res) => {
+    try {
+      const { id } = req.params;
+      const sales  = await Service.findById(id);
     
-    if (sales.message) throw Error(sales.message);
-    res
-      .status(statusCode.OK)
-      .json(sales);
-  } catch (error) {
-    console.error(error);
-    res
-      .status(statusCode.NOT_FOUND)
-      .json(
-        { err: {
-          code: 'not_found',
-          message: error.message
-        }}
-      );
-  }
-});
+      if (sales.message) throw Error(sales.message);
+      res
+        .status(statusCode.OK)
+        .json(sales);
+    } catch (error) {
+      console.error(error);
+      res
+        .status(statusCode.NOT_FOUND)
+        .json(
+          { err: {
+            code: 'not_found',
+            message: error.message
+          }}
+        );
+    }
+  })
+  .put(async (req, res) => {
+    try {
+      const { id } = req.params;
+      const arraySales = req.body;
+      const saleUpdated = await Service.updateSale(id, arraySales);
+
+      if(saleUpdated.message) throw Error(saleUpdated.message);
+   
+      res
+        .status(statusCode.OK)
+        .json(saleUpdated);
+    } catch (error) {
+      console.error(error);
+      res
+        .status(statusCode.UNPROCESSABLE_ENTITY)
+        .json(
+          { err: {
+            code: 'invalid_data',
+            message: error.message
+          }}
+        );
+    }
+  });
 
 module.exports = app;

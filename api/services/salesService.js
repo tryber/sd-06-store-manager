@@ -36,8 +36,27 @@ const findById = async (id) => {
   return findSalesById;
 };
 
+const updateSale = async (id, itensSold) => {
+  const quantityLessThanOrEqualZero = itensSold
+    .some((el) => lessThanEqual(el.quantity, ZERO));
+
+  if (quantityLessThanOrEqualZero) {
+    return {message: 'Wrong product ID or invalid quantity'};
+  };
+
+  const quantityNotIsNumber = itensSold.some((el) => notIsNumber(el.quantity));
+  if (quantityNotIsNumber) return {message: 'Wrong product ID or invalid quantity'};
+
+  await Model.updateSale(id, itensSold);
+  return {
+    _id: id,
+    itensSold,
+  };
+};
+
 module.exports = {
   registerManySales,
   findAllSales,
   findById,
+  updateSale,
 };
