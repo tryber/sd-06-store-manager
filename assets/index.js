@@ -2,7 +2,7 @@ const NAME_SIZE = 5;
 const QUANTITY_SIZE = 0;
 
 const verifyName = (name) => {
-  const verified = typeof(name) === 'string' && name.length > NAME_SIZE;
+  const verified = typeof(name) === 'string' && name.length >= NAME_SIZE;
   return verified;
 };
 

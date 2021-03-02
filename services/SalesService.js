@@ -9,12 +9,14 @@ const errID = { err:
 
 
 const middlewareVerification = async (response, sale) => {
-  sale.forEach((product) => {
-    if(product.quantity < MIN_SALE || !Number.isInteger(product.quantity)) {
+  const resul = sale.map((product) => {
+    if (product.quantity < MIN_SALE || !Number.isInteger(product.quantity)) {
       return response.status(STATUS_422).json(err);
+    } else {
+      return null;
     }
   });
-  return null;
+  return resul;
 };
 
 const middlewareVerificationGetId = async (reponse, id, allSales) => {
@@ -35,10 +37,15 @@ const getSaleById = async (id) => {
   return await Sales.getSalesById(id);
 };
 
+const updateSaleId = async (id, quantity, prodId) => {
+  return await Sales.updateSaleById(id, quantity, prodId);
+};
+
 module.exports = {
   salesAdded,
   getSales,
   getSaleById,
+  updateSaleId,
   middlewareVerification,
   middlewareVerificationGetId,
 };
