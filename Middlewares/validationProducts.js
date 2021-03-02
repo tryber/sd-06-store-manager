@@ -89,72 +89,11 @@ const wrongId = async(req, _res, next) => {
   next();
 };
 
-//SALES
-
-const quantityNotNegativeOrZeroSales = (req, _res, next) => {
-  const [{ quantity }] = req.body;
-  const Zero = 0;
-  if (quantity <= Zero) 
-    return next({
-      status: Unauthorized,  
-      err: {
-        code: 'invalid_data',
-        message: 'Wrong product ID or invalid quantity'
-      }
-    });
-  next();
-};
-
-const quantityNotAStringSales = (req, _res, next) => {
-  const [{ quantity }] = req.body;
-  if (typeof quantity === 'string') 
-    return next({
-      status: Unauthorized,  
-      err: {
-        code: 'invalid_data',
-        message: 'Wrong product ID or invalid quantity'
-      }
-    });
-  next();
-};
-
-const validateIdSale = (req, _res, next) => {
-  const { id } = req.params;
-  if (!ObjectId.isValid(id)) 
-    return next({
-      status: NotFound,  
-      err: {
-        code: 'not_found',
-        message: 'Sale not found'
-      }
-    });
-  next();
-};
-
-const wrongIdSale = async(req, _res, next) => {
-  const { id } = req.params;
-  const newSale = await salesService.saleByIdService(id);
-  if (!newSale) 
-    return next({
-      status: NotFound,  
-      err: {
-        code: 'not_found',
-        message: 'Sale not found'
-      }
-    });
-  next();
-};
-
-
 module.exports = {
   validateNameSize,
   productAlreadyExits,
   quantityNotNegativeOrZero,
   quantityNotAString,
   validateId,
-  wrongId,
-  quantityNotNegativeOrZeroSales,
-  quantityNotAStringSales,
-  validateIdSale,
-  wrongIdSale
+  wrongId
 };

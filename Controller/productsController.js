@@ -1,7 +1,8 @@
 const productsService = require('../Service/productsService');
 const { Router } = require('express');
 const { validateNameSize, productAlreadyExits, quantityNotNegativeOrZero,
-  quantityNotAString, validateId, wrongId } = require('../Middlewares/validation');
+  quantityNotAString,
+  validateId, wrongId } = require('../Middlewares/validationProducts');
 
 const router = Router();
 const Created = 201;

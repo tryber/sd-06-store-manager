@@ -2,7 +2,9 @@ const salesService = require('../Service/salesService');
 const { Router } = require('express');
 const {  quantityNotNegativeOrZeroSales,
   quantityNotAStringSales,
-  validateIdSale, wrongIdSale } = require('../Middlewares/validation');
+  validateIdSale, wrongIdSale,
+  validateIdSaleDelete,
+  wrongIdSaleDelete } = require('../Middlewares/validationSales');
 
 const router = Router();
 const Created = 201;
@@ -39,5 +41,13 @@ router.put('/:id', quantityNotNegativeOrZeroSales,
     const saleUpdated = await salesService.saleByIdService(id);
     return res.status(OK).json(saleUpdated);
   });
+
+// Requisito-8
+router.delete('/:id',validateIdSaleDelete, wrongIdSaleDelete, async(req, res) => {
+  const { id } = req.params;
+  const saleDeleted = await salesService.saleByIdService(id);
+  await salesService.deleteSaleService(id);
+  return res.status(OK).json(saleDeleted);
+});
 
 module.exports = router;
