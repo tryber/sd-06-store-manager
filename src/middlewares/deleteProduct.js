@@ -7,7 +7,7 @@ module.exports = async (req, res, next) => {
 
   const product = await Products.findById(id)
     .then((data) => data)
-    .catch((err) => err)
+    .catch((err) => err);
 
   if (!product) {
     return res

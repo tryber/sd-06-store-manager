@@ -33,7 +33,11 @@ const create = async (name, quantity) => {
 
 const update = async (id, name, quantity) => {
   return await connection()
-    .then((db) => db.collection('products').updateOne({ _id: ObjectId(id) }, { $set: { "name": name, "quantity": quantity } }));
+    .then((db) => db.collection('products')
+      .updateOne(
+        { id: ObjectId(id) },
+        { $set: { 'name': name, 'quantity': quantity } }
+      ));
 };
 
 const deleteProduct = async (id) => {
