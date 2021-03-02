@@ -37,37 +37,6 @@ const listProductById = rescue(async (req, res, _next) => {
   return res.status(SUCCESS).json(await searchForProductId(id));
 });
 
-const deleteProductById = rescue(async (req, res, _next) => {
-  const { id } = req.params;
-  if(!Object(id)) {
-    return res.status(ENTITY).json({
-      err: {
-        code: 'invalid_data',
-        message: 'Wrong id format',
-      },
-    });
-  }
-
-  const foundProduct = await searchForProductId(id);
-
-  if(foundProduct === null) {
-    return res.status(ENTITY).json({
-      err: {
-        code: 'invalid_data',
-        message: 'Wrong id format',
-      },
-    });
-  }
-
-  await deleteProduct(id);
-  return res.status(SUCCESS).json(foundProduct);
-});
-
-const getProductByName = rescue(async (req, res, next) => {
-  const { name } = req.query;
-  return res.status(SUCCESS).json(await getProductByName(name));
-});
-
 const addProduct = rescue(async (req, res, next) => {
 
   const { name, quantity } = req.body;
@@ -125,6 +94,7 @@ const addProduct = rescue(async (req, res, next) => {
       }
     );
   }
+
 
   if(productAlreadyExists) {
     return res.status(ENTITY).json(
@@ -203,11 +173,36 @@ const updateProducts = rescue(async (req, res, next) => {
   next();
 });
 
+const deleteProductById = rescue(async (req, res, _next) => {
+  const { id } = req.params;
+  if(!Object(id)) {
+    return res.status(ENTITY).json({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format',
+      },
+    });
+  }
+
+  const foundProduct = await searchForProductId(id);
+
+  if(foundProduct === null) {
+    return res.status(ENTITY).json({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format',
+      },
+    });
+  }
+
+  await deleteProduct(id);
+  return res.status(SUCCESS).json(foundProduct);
+});
+
 module.exports = {
   listAllProducts,
   listProductById,
   deleteProductById,
-  getProductByName,
   addProduct,
   updateProducts,
 };
