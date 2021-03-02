@@ -31,23 +31,24 @@ salesController.delete('/:id', validateIdSales, async(request, response) => {
     itensSold,
   };
   salesDeleted = await salesServices.deleteOneSales (id, itensSold);
-  if (!id)
+  if (!id || !itensSold)
     return response
       .status(statusNumberError)
       .json({ err: { code: 'invalid_data', message: 'Wrong sale ID format' } });
   return response.status(statusSucess).json(salesDel);
 });
 
-salesController.put('/:id', validateIdSales, async(request, response) => {
-  const { id } = request.params;
-  const  itensSold  = request.body;
-  const salesEdit = {
-    _id: id,
-    itensSold,
-  };
-  const returnEditListIdSales = await salesServices.putEditListIdSales(id, itensSold);
-  return response.status(statusSucess).json(salesEdit);
-});
+salesController.put('/:id', validateIdSales, verifySales,
+  async(request, response) => {
+    const { id } = request.params;
+    const  itensSold  = request.body;
+    const salesEdit = {
+      _id: id,
+      itensSold,
+    };
+    const returnEditListIdSales = await salesServices.putEditListIdSales(id, itensSold);
+    return response.status(statusSucess).json(salesEdit);
+  });
 
 salesController.post('/', verifySales, async (request, response) => {
   const  itensSold = request.body;
