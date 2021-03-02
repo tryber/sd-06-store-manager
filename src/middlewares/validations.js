@@ -120,20 +120,30 @@ const validateItensSoldQuantity = (request, response, next) => {
 
 const validateSaleExistence = async (request, response, next) => {
   const { id } = request.params;
-  const error = response.status(statusCodes.NOT_FOUND).json(
-    {
-      err: {
-        message: errorMessages.SALE_NOT_FOUND,
-        code: codeMessages.NOT_FOUND,
-      }
-    }
-  );
 
-  const idIsInvalid = !ObjectId.isValid(id);
-  if (idIsInvalid) return error;
+  if (!ObjectId.isValid(id)) {
+    return response.status(statusCodes.UNPROCESSABLE_ENTITY).json(
+      {
+        err: {
+          message: errorMessages.WRONG_SALE_ID_FORMAT,
+          code: codeMessages.INVALID_DATA,
+        }
+      }
+    );
+  }
 
   const saleFound = await SaleService.findSaleById(id);
-  if (!saleFound) return error;
+
+  if (!saleFound) {
+    return response.status(statusCodes.NOT_FOUND).json(
+      {
+        err: {
+          message: errorMessages.SALE_NOT_FOUND,
+          code: codeMessages.NOT_FOUND,
+        }
+      }
+    );
+  }
 
   next();
 };

@@ -36,4 +36,16 @@ SaleController.get(
     response.status(statusCodes.OK).json(foundSale);
   }));
 
+SaleController.delete(
+  '/:id',
+  validateSaleExistence,
+  rescue(async (request, response) => {
+    const { id } = request.params;
+    const recoveredSale = await SaleService.findSaleById(id);
+
+    await SaleService.removeSale(id);
+
+    return response.status(statusCodes.OK).json(recoveredSale);
+  }));
+
 module.exports = SaleController;
