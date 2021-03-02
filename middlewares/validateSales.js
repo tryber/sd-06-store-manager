@@ -10,8 +10,8 @@ const validation = rescue(async (request, response, next) => {
   const parse = (obj) => !Number.isInteger(parseInt(obj));
 
   const invalidQuantity = quantity
-    .every((item) => item == INVALID_QUANTITY)
-    .some((item) => parse(item) || typeof parseInt(item) === 'string');
+    .every((item) => item <= INVALID_QUANTITY)
+    .some((item) => parse(item) || typeof item != 'number');
 
   if (invalidQuantity) {
     return response.status(UNPROCESABLE_ENTITY).json({
