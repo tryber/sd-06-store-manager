@@ -75,6 +75,7 @@ function verifySales(request, response, next) {
         .json({ err:
            { code: 'invalid_data', message: 'Wrong product ID or invalid quantity' } });
     console.log(verifySalesQuantity, 'verifysales');
+    
     if (!Number.isInteger(verifySalesQuantity.quantity))
       return response
         .status(statusNumberError)

@@ -3,9 +3,9 @@ const salesServices = require('../services/salesServices');
 const { verifySales, validateIdSales } = require('../services/middleware/verifyValidate');
 
 const salesController = new Router();
-const statusNumberSucess = 201;
+// const statusNumberSucess = 201;
 const statusSucess = 200;
-const statusNumberError = 422;
+// const statusNumberError = 422;
 const statusError = 404;
 
 salesController.get('/:id', validateIdSales, async (request, response) => {
@@ -23,19 +23,12 @@ salesController.get('/', async (_request, response) => {
   return response.status(statusSucess).json(returnAllSales);
 });
 
-salesController.delete('/:id', validateIdSales, async(request, response) => {
+salesController.delete('/:id', validateIdSales,  async(request, response) => {
   const  { id }  = request.params;
-  const  itensSold  = request.body;
-  const salesDel = {
-    _id: id,
-    itensSold,
-  };
-  salesDeleted = await salesServices.deleteOneSales (id, itensSold);
-  if (!id || !itensSold)
-    return response
-      .status(statusNumberError)
-      .json({ err: { code: 'invalid_data', message: 'Wrong sale ID format' } });
-  return response.status(statusSucess).json(salesDel);
+  const { itensSold } = request.body;
+
+  salesDeleted = await salesServices.deleteOneSales (id);
+  return response.status(statusSucess).json({ id });
 });
 
 salesController.put('/:id', validateIdSales, verifySales,
@@ -53,7 +46,6 @@ salesController.put('/:id', validateIdSales, verifySales,
 salesController.post('/', verifySales, async (request, response) => {
   const  itensSold = request.body;
   const createSales = await salesServices.registerSales(itensSold);
-  console.log(itensSold, 'newSale');
   return response.status(statusSucess).json(createSales);
 });
 

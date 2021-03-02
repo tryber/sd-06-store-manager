@@ -2,7 +2,8 @@ const getconnection = require('./connection');
 const { ObjectId } = require('mongodb');
 
 const getAll = async () => {
-  return await getconnection('sales').then((db) => db.find().toArray());
+  const listaSales = await getconnection('sales').then((db) => db.find().toArray());
+  return ({sales: listaSales});
 };
 
 const getId = async (id) => {
@@ -24,12 +25,13 @@ const create = async (itensSold) => {
     _id: insertedId,
     itensSold
   };
-  console.log(newSale, 'create');
   return newSale;
 };
 
 const deleteSales = async (id) => {
-  await getconnection('sales').then((db) => db.deleteOne({ _id: ObjectId(id) }));
+  const itemDeleted = await getconnection('sales')
+    .then((db) => db.deleteOne({ _id: ObjectId(id) }));
+  return (itemDeleted );
 };
 
 
