@@ -67,7 +67,18 @@ const createNewSale = rescue(async (req, res, _next) => {
 
 const updateSaleById = rescue(async (req, res, _next) => {
   const { id } = req.params;
-  const [{ productId, quantity }] = req.body;
+  const { productId, quantity } = req.body;
+  // const requestArray = req.body;
+  // requestArray.map((request) => {
+  //   if(quantityIsLessThanZero(request.quantity) || !quantityIsNumber(quantity)) {
+  //     return  res.status(ENTITY).json({
+  //       err: {
+  //         code: 'invalid_data',
+  //         message: 'Wrong product ID or invalid quantity',
+  //       },
+  //     });
+  //   }
+  // });
   if (quantityIsLessThanZero(quantity)) {
     return res.status(ENTITY).json({
       err: {
@@ -115,4 +126,4 @@ module.exports = {
   createNewSale,
   updateSaleById,
   deleteSaleById,
-};
+}; 

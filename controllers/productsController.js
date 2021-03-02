@@ -19,10 +19,11 @@ const {
 const SUCCESS = 200;
 const ENTITY = 422;
 const CREATED = 201;
+const NOTFOUND = 404;
 
-const listAllProducts = rescue(async (_req, res, next) => {
+const listAllProducts = rescue(async (_req, res, _next) => {
   res.status(SUCCESS).json({ products: await getAllProducts()});
-  next();
+  // next();
 });
 
 const listProductById = rescue(async (req, res, _next) => {
@@ -113,7 +114,9 @@ const addProduct = rescue(async (req, res, next) => {
 
   if(!productAlreadyExists) {
     await addNewProduct(name, quantity);
-    res.status(CREATED).json(await searchForProductName(name));
+    const [result] = await searchForProductName(name); // estava vindo como array
+    //console.log(result);
+    res.status(CREATED).json(result);
   }
   next();
 });
