@@ -33,7 +33,6 @@ const creatingValidSale = async(request, response) => {
       return false;
     }
     return true;
-
   });
 
   if (!quantityOk) return response.status(UNPROCESSABLE_E)
@@ -64,29 +63,25 @@ const displayThisSpecificSale = async (request, response) => {
   return response.status(SUCCESS).send(thisSaleOnly);
 };
 
+function quantityOk(item) {
+  return typeof item.quantity === 'number' && item.quantity > NO_QUANTITY;
+};
+
 const updatingValidSale = async (request, response) => {
   const { id } = request.params;
   const itensSold = request.body;
 
-  const quantityOk = itensSold.every((item) => {
-    if ( item.quantity <= NO_QUANTITY || typeof item.quantity !== 'number') {
-      return false;
-    }
-    return true;
+  if (itensSold.every(quantityOk)) {
+    await Sales.updateSale(id, itensSold);
+    // const updatedSale = await Sales.getSaleById(id);
+    return response.status(SUCCESS).json({ _id: id, itensSold });
+  }
 
-  });
-
-  if (!quantityOk) return response.status(UNPROCESSABLE_E)
-    .json({ err: {code: codeType.invalid, message: errMsg.notProduct}
-    });
-
-  const updatedSale = await Sales.updateSale(id, itensSold);
-  console.log(updatedSale.result);
-  return response.status(SUCCESS).json({_id: id, itensSold});
+  return response.status(UNPROCESSABLE_E).json(
+    { err: { code: codeType.invalid, message: errMsg.notProduct } }
+  );
 };
 
-
-// req 4
 const removingValidSale = async (request, response) => {
   const { id } = request.params;
 
