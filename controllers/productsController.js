@@ -3,14 +3,11 @@ const Products = require('../models/Products');
 
 const {
   verifyQuantity,
-} = require('../middlewares/verifications');
+} = require('../aux/verifications');
 
-const charactersSix = 6;
-const zero = 0;
-const success = 200;
-const UnprocessableEntity = 422;
-const successCreated = 201;
-
+const status_ue = 422;
+const status_c = 201;
+const status_s = 200;
 const error = {
   err: {
     code: 'invalid_data',
@@ -18,33 +15,15 @@ const error = {
   }
 };
 
-const createProduct = async (req, res) => {
+const saveProduct = async (req, res) => {
   const data = req.body;
   const { name, quantity } = data;
 
-  if(name.length < charactersSix) {
-    error.err.message = '\"name\" length must be at leas 5 characters long';
-    return res.status(UnprocessableEntity).json(error);
-  };
-
-  if(quantity <= zero) {
-    error.err.message = '"quantity" must be larger than or equal to 1';
-    return res.status(UnprocessableEntity).json(error);
-  };
-
-  if(typeof(quantity) === String) {
-    error.err.message = '"quantity" must be a number';
-    return res.status(UnprocessableEntity).json(error);
-  };
-
-  const getProducts = async (_req, res) => {
-    const products = await Products.getAll();
-
-    if (!products) {
-      error.err.message = 'Couldn\'t find any product';
-      return res.status(UnprocessableEntity).json(error);
-    }
-  };
+  const SIX = 6;
+  if (name.length < SIX) {
+    error.err.message = '"name" length must be at least 5 characters long';
+    return res.status(status_ue).json(error);
+  }
 
   const vQuantity = verifyQuantity(quantity);
   if (!vQuantity.isValid) return res.status(vQuantity.status).json(vQuantity.error);
@@ -54,13 +33,13 @@ const createProduct = async (req, res) => {
   const productsNames = products.map((p) => p.name);
   if (productsNames.includes(name)) {
     error.err.message = 'Product already exists';
-    return res.status(UnprocessableEntity).json(error);
+    return res.status(status_ue).json(error);
   }
 
   const product = { '_id': ObjectId(), ...data };
   await Products.create(product);
 
-  return res.status(successCreated).json({ product });
+  return res.status(status_c).json(product);
 };
 
 const getProducts = async (_req, res) => {
@@ -68,24 +47,24 @@ const getProducts = async (_req, res) => {
 
   if (!products) {
     error.err.message = 'Couldn\'t find any product';
-    return res.status(UnprocessableEntity).json(error);
+    return res.status(status_ue).json(error);
   }
 
-  return res.status(success).json({ products });
+  return res.status(status_s).json({ products });
 };
 
-const getById = async (req, res) => {
+const getProductById = async (req, res) => {
   const { id } = req.params;
 
   const validId = ObjectId.isValid(id);
   if (!validId) {
     error.err.message = 'Wrong id format';
-    return res.status(UnprocessableEntity).json(error);
+    return res.status(status_ue).json(error);
   }
 
   const product = await Products.find(id);
 
-  return res.status(success).json(product);
+  return res.status(status_s).json(product);
 };
 
 const updateProduct = async (req, res) => {
@@ -96,7 +75,7 @@ const updateProduct = async (req, res) => {
   const SIX = 6;
   if (name.length < SIX) {
     error.err.message = '"name" length must be at least 5 characters long';
-    return res.status(UnprocessableEntity).json(error);
+    return res.status(status_ue).json(error);
   }
 
   const vQuantity = verifyQuantity(quantity);
@@ -105,17 +84,17 @@ const updateProduct = async (req, res) => {
   const validId = ObjectId.isValid(id);
   if (!validId) {
     error.err.message = 'Wrong id format';
-    return res.status(UnprocessableEntity).json(error);
+    return res.status(status_ue).json(error);
   }
 
   const updatedProduct = await Products.update(id, name, quantity);
 
   if (!updatedProduct) {
     error.err.message = 'Product not found';
-    return res.status(UnprocessableEntity).json(error);
+    return res.status(status_ue).json(error);
   }
 
-  return res.status(success).json(data);
+  return res.status(status_s).json(data);
 };
 
 const deleteProduct = async (req, res) => {
@@ -124,20 +103,20 @@ const deleteProduct = async (req, res) => {
   const validId = ObjectId.isValid(id);
   if (!validId) {
     error.err.message = 'Wrong id format';
-    return res.status(UnprocessableEntity).json(error);
+    return res.status(status_ue).json(error);
   }
 
   const productToDelete = await Products.find(id);
 
   await Products.remove(id);
 
-  return res.status(success).json(productToDelete);
+  return res.status(status_s).json(productToDelete);
 };
 
 module.exports = {
+  saveProduct,
   getProducts,
-  getById,
-  createProduct,
+  getProductById,
   updateProduct,
   deleteProduct,
 };
