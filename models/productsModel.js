@@ -1,17 +1,15 @@
 const connection = require('./connection');
-const { ObjectId } = require('mongodb');
+const { ObjectID } = require('mongodb');
 
 const getAllProducts = async () => { 
   return await connection().then((db) => db.collection(('products')).find({}).toArray());
 };
 
 const searchForProductId = async (id) => {
-  if(ObjectId.isValid(id)) {
+  if(ObjectID.isValid(id)) {
     return await connection().then((db) => db.collection(('products'))
-      .findOne(ObjectId(id)));
+      .findOne(ObjectID(id)));
   }
-
-  return false;
 };
 
 const searchForProductName = async (name) => { 
@@ -30,7 +28,7 @@ const addNewProduct = async (name, quantity) => {
 const updateProduct = async (id, name, quantity) => {
   return await connection().then((db) => db.collection('products').updateOne(
     {
-      '_id': ObjectId(id)
+      '_id': ObjectID(id)
     },
     {
       $set: {
@@ -44,7 +42,7 @@ const updateProduct = async (id, name, quantity) => {
 const deleteProduct = async (id) => {
   return await connection().then((db) => db.collection('products').findOneAndDelete(
     {
-      '_id' : ObjectId(id)
+      '_id' : ObjectID(id)
     },
   ));
 };

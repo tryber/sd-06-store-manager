@@ -1,4 +1,5 @@
 const rescue = require('express-rescue');
+const { ObjectID } = require('mongodb');
 const {
   getAllProducts,
   addNewProduct,
@@ -26,7 +27,9 @@ const listAllProducts = rescue(async (_req, res, next) => {
 
 const listProductById = rescue(async (req, res, _next) => {
   const { id } = req.params;
-  if(!Object(id)) {
+  const foundProduct = await searchForProductId(id);
+
+  if(!ObjectID.isValid(id) || !foundProduct) {
     return res.status(ENTITY).json({
       err: {
         code: 'invalid_data',
@@ -175,7 +178,7 @@ const updateProducts = rescue(async (req, res, next) => {
 
 const deleteProductById = rescue(async (req, res, _next) => {
   const { id } = req.params;
-  if(!Object(id)) {
+  if(!ObjectID.isValid(id)) {
     return res.status(ENTITY).json({
       err: {
         code: 'invalid_data',
@@ -186,7 +189,7 @@ const deleteProductById = rescue(async (req, res, _next) => {
 
   const foundProduct = await searchForProductId(id);
 
-  if(foundProduct === null) {
+  if(!foundProduct) {
     return res.status(ENTITY).json({
       err: {
         code: 'invalid_data',
