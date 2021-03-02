@@ -1,4 +1,3 @@
-require('dotenv').config();
 const app = require('express')();
 const routes = require('./routes');
 const log = require('./middlewares/logger');
