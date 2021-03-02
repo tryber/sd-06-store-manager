@@ -1,10 +1,11 @@
-const { Router } = require('express');
+const { Router, response } = require('express');
 const SalesService = require('../services/SalesService');
 const ProductService = require('../services/ProductsService');
 const { verifyProductId } = require('../assets');
 const SalesController = new Router();
 
 const STATUS_200 = 200;
+const STATUS_404 = 404;
 
 SalesController.post('/', async (request, response) => {
   const itensSale = request.body;
@@ -40,6 +41,15 @@ SalesController.put('/:id', async (request, response) => {
   if (checkError === null) {
     const saleUpdated = await SalesService.updateSaleId(id, quantity, productId);
     return response.status(STATUS_200).json(saleUpdated);
+  }
+});
+
+SalesController.delete('/:id', async (request, response) => {
+  const { id } = request.params;
+  const prodDeleted = await SalesService.middlewareVerificationDelete(response, id);
+  if (prodDeleted._id) {
+    await SalesService.deleteSaleId(id);
+    response.status(STATUS_200).json(prodDeleted);
   }
 });
 
