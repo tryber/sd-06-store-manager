@@ -1,19 +1,32 @@
 const express = require('express');
-const bodyParse = require('body-parser');
+const bodyParser = require('body-parser');
 const productsController = require('./controllers/productsController');
-const app = express();
+// const salesController = require('./controllers/salesControllers');
 
 const PORT = 3000;
 
-// Para o avaliador funcionar, não remover.
+const app = express();
+app.use(bodyParser.json());
+
+// não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (request, response) => {
   response.send();
 });
 
-app.use(bodyParse.json());
+//Products Endpoints
+app.get('/products', productsController.listAllProducts);
 
-app.use('/products', productsController);
+app.get('/products/:id', productsController.listProductById);
 
+app.delete('/products/:id', productsController.deleteProductById);
+
+app.get('/products/get-name', productsController.getProductByName);
+
+app.post('/products', productsController.addProduct);
+
+app.put('/products/:id', productsController.updateProducts);
+
+//Sales Endpoints
 app.listen(PORT, () => {
-  console.log(`Ouvindo na porta ${PORT}`);
+  console.log(`Listening on port ${PORT}`);
 });
