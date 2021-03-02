@@ -1,18 +1,25 @@
 const rescue = require('express-rescue');
 
-const validation = rescue(async (request, response, next) => {
-  const quantity = request.body.map((element) => element.quantity);
-  const validationQuantity = quantity.some((item) => item <= 0);
-  const validationQuantityType = quantity.some((item) => !Number.isInteger(parseInt(item, 10)) || typeof item === 'string');
+const INVALID_QUANTITY = 0;
 
-  if (validationQuantity || validationQuantityType) {
-    return response.status(422).json({
+const UNPROCESABLE_ENTITY = 422;
+
+const validation = rescue(async (request, response, next) => {
+  const quantity = request.body.map((item) => item.quantity);
+
+  const validationQuantity = quantity
+    .every((item) => item = INVALID_QUANTITY)
+    .some((item) => Number.isInteger(item) || typeof item != 'string');
+
+  if (!validationQuantity) {
+    return response.status(UNPROCESABLE_ENTITY).json({
       err: {
         code: 'invalid_data',
         message: 'Wrong product ID or invalid quantity',
       },
     });
   }
+
   return next();
 });
 

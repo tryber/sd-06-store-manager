@@ -20,19 +20,27 @@ const getProducts = async () => {
 const getProductById = async (id) => {
   if (!ObjectId.isValid(id)) return null;
 
-  return connect.then((item) => item.findOne(ObjectId(id)));
+  const result = await connect
+    .then((products) => products)
+    .then((product) => product.findOne({ _id: ObjectId(id) }));
+
+  return result;
 };
 
 const updateProduct = async (id, name, quantity) => {
   if (!ObjectId.isValid(id)) return null;
 
-  const result = connect
+  const result = await connect
     .then((item) => item.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }));
 
   return { _id: result.insertedId, name, quantity };
 };
 
-const deleteProduct = async (id) => connect.then((e) => e.deleteOne({ _id: ObjectId(id) }));
+const deleteProduct = async (id) => {
+  const products = await connect.then((product) => product);
+
+  return products.deleteOne({ _id: ObjectId(id) });
+};
 
 module.exports = {
   createProduct,
