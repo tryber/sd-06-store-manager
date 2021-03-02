@@ -31,4 +31,6 @@ app.delete('/products/:id', deleteProduct);
 app.get('/products', findProducts);
 
 
+// app.post('/sales',);
+
 app.listen(PORT, () => console.log('App rodando na porta 3000'));
