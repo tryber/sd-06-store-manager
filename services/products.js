@@ -1,4 +1,10 @@
-const { create, findName, getProducts } = require('../models/products');
+const {
+  create,
+  findName,
+  getProducts,
+  changeProduct,
+  deleteProduct 
+} = require('../models/products');
 
 const nameFind = async (name) => {
   const prod = await findName(name);
@@ -15,8 +21,20 @@ const Products = async (id) => {
   return products;
 };
 
+const productChange = async (product) => {
+  const prod = await changeProduct(product);
+  return prod;
+};
+
+const productDelete = async (id) => {
+  const prod = await deleteProduct(id);
+  return prod;
+};
+
 module.exports = { 
   nameFind,
   createNewProduct,
-  Products
+  Products,
+  productChange,
+  productDelete
 };

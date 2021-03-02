@@ -26,10 +26,6 @@ const create = async (product) => {
   };
 };
 
-// const getProducts = async () => {
-
-// };
-
 const getProducts = async (id) => {
   if (id) {
     return await connection()
@@ -39,8 +35,23 @@ const getProducts = async (id) => {
     .then((item) => item.collection('products').find().toArray());
 };
 
+const changeProduct = async (product) => {
+  const { id, name, quantity } = product;
+  return await connection()
+    .then((item) => item.collection('products')
+      .updateOne({ _id: id }, { $set: { name: name, quantity: quantity } }));
+};
+
+const deleteProduct = async (id) => {
+  return await connection()
+    .then((item) => item.collection('products')
+      .deleteOne({ _id: ObjectID(id) }));
+};
+
 module.exports = {
   findName,
   create,
-  getProducts
+  getProducts,
+  changeProduct,
+  deleteProduct
 };

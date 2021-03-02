@@ -1,7 +1,12 @@
 const { Router } = require('express');
 const newProductValidate = require('../middlewares/newProductValidate');
 const duplicatedProductsValidate = require('../middlewares/duplicatedProductsValid');
-const { createNewProduct, Products } = require('../services/products');
+const {
+  createNewProduct, 
+  Products, 
+  productChange,
+  productDelete
+} = require('../services/products');
 
 const router = Router();
 
@@ -54,7 +59,36 @@ router.get('/:id', async (req, res) => {
         message: 'Wrong id format'
       }
     });
-    
+  }
+});
+
+router.put('/:id', newProductValidate, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, quantity } = req.body;
+  
+    const result = await productChange({ id, name, quantity });
+    res.status(SUCESS).send({  _id: result.insertedId, name, quantity });
+  } catch (err) {
+    console.log(err);
+    res.status(ERROR).send(err);
+  }
+});
+
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await productDelete(id);
+    res.status(SUCESS).send(result);
+  } catch (err) {
+    console.log(err);
+    res.status(ERROR).send({ 
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format'
+      }
+    });
   }
 });
 
