@@ -8,9 +8,36 @@ const router = Router();
 
 // '/' aqui na verdade é '/sales' 
 router.get('/', rescue (async (req, res) => {
-  const products = await SalesService.getAll();
+  const sales = await SalesService.getAll();
   
-  return res.status(v.OK).json(products);
+  return res.status(v.OK).json({ sales });
+}));
+
+router.get('/:id', rescue (async (req, res) => {
+  const { id } = req.params;
+  
+  if (id.length !== v.TWENTY_FOUR) {
+    return res.status (v.NOT_FOUND)
+      .json({
+        err: {
+          code: 'not_found',
+          message: 'Sale not found'
+        }
+      });
+  }
+  
+  const sale = await SalesService.findById(id);
+  
+  if (!sale) {
+    return res.status (v.NOT_FOUND)
+      .json({
+        err: {
+          code: 'not_found',
+          message: 'Sale not found'
+        }
+      });
+  }
+  return res.status(v.OK).json({ sale });
 }));
 
 // middleware de validação
