@@ -4,7 +4,10 @@ const {
   createProducts,
   validateProduct,
   findProduct,
-  findProducts
+  findProducts,
+  updateProduct,
+  checkName,
+  deleteProduct
 } = require('./src/middlewares/');
 
 const app = express();
@@ -17,9 +20,13 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
-app.post('/products', validateProduct, createProducts);
+app.post('/products', validateProduct, checkName, createProducts);
 
 app.get('/products/:id', findProduct);
+
+app.put('/products/:id', validateProduct, updateProduct);
+
+app.delete('/products/:id', deleteProduct);
 
 app.get('/products', findProducts);
 

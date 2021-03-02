@@ -1,4 +1,4 @@
-const Products = require('../models/products');
+const Products = require('../services/products');
 const SUCCESS = 201;
 
 module.exports = async (req, res, next) => {

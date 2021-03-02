@@ -1,4 +1,4 @@
-const Products = require('../models/products');
+const Products = require('../services/products');
 const ERRORCODE = 422;
 const ZERO = 0;
 const TAMANHO_NOME = 5;
@@ -20,11 +20,7 @@ module.exports = async (req, res, next) => {
           }
         });
   }
-  if (products.find(product => product.name === name)) {
-    return res
-      .status(ERRORCODE)
-      .json({ err: { code: 'invalid_data', message: 'Product already exists' } });
-  }
+
   if (quantity <= ZERO) {
     return res
       .status(ERRORCODE)
