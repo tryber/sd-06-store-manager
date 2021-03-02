@@ -4,13 +4,13 @@ const { status, errors } = require('../utils/status');
 const { response } = require('express');
 const { throwError } = require('../utils/errorHandler');
 
-const createSale = async (req, res) => {
+const createSale = rescue(async (req, res) => {
   const { body } = req;
 
   const createdSale = await saleService.createSale(body);
 
   res.status(status.ok).json(createdSale);
-};
+});
 
 const getAllSales = async (req, res) => {
   const sales = await saleService.getAllSales();

@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const saleController = require('../controllers/saleController');
+const saleService = require('../services/saleService');
 const { validateCreateSale } = require('../utils/validationErrors');
 
 const saleRouter = new Router();

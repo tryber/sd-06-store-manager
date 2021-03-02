@@ -1,4 +1,5 @@
 const saleModel = require('../models/saleModel');
+const productModel = require('../models/productModel');
 const { throwError } = require('../utils/errorHandler');
 const { status, errors } = require('../utils/status');
 

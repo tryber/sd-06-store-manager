@@ -9,6 +9,7 @@ const status = {
   notFound: 404,
   unprocessableEntity: 422,
   internalServerError: 500,
+  stockProblem: 405,
 };
 
 const errors = {
@@ -20,12 +21,14 @@ const errors = {
   wrongIdOrQuantity: 'Wrong product ID or invalid quantity',
   saleNotFound: 'Sale not found',
   wrongSaleID: 'Wrong sale ID format',
+  amountNotPermitted: 'Such amount is not permitted to sell',
 };
 
 const codeStatus = {
   404: 'not_found',
   422: 'invalid_data',
   500: 'internal_server_error',
+  405: 'stock_problem',
 };
 
 module.exports = { status, errors, codeStatus };
