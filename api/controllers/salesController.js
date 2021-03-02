@@ -89,6 +89,28 @@ app
           }}
         );
     }
+  })
+  .delete(async(req, res) => {
+    try {
+      const { id } = req.params;
+      const deletedsale = await Service.deleteSale(id);
+
+      if (deletedsale.message) throw Error(deletedsale.message);
+      res
+        .status(statusCode.OK)
+        .send(deletedsale);
+      
+    } catch (error) {
+      console.error(error);
+      res
+        .status(statusCode.UNPROCESSABLE_ENTITY)
+        .json(
+          { err: {
+            code: 'invalid_data',
+            message: error.message
+          }}
+        );
+    }
   });
 
 module.exports = app;

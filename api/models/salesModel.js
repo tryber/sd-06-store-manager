@@ -32,9 +32,19 @@ const updateSale = async (id, arraySales) => {
     .catch((err) => console.error(err));
 };
 
+const deleteSale = async (id) => {
+  return await connection()
+    .then((db) => db.collection('sales').findOneAndDelete(
+      {_id: ObjectId(id)}
+    ))
+    .then((res) => res)
+    .catch((err) => console.error(err));
+};
+
 module.exports = {
   registerManySales,
   findAllSales,
   findById,
   updateSale,
+  deleteSale,
 };
