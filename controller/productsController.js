@@ -7,12 +7,13 @@ const {
 
 const Product = new Router();
 const SUCCESS = 200;
+const CREATED = 201;
 
 Product.post('/', validateName, validateQuantity, async (req, res) => {
   const product = { ...req.body };
 
   await createNewProduct(product);
-  return res.status(SUCCESS).json(product);
+  return res.status(CREATED).json(product);
 });
 
 Product.get('/', async (_req, res) => {

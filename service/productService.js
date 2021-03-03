@@ -6,7 +6,7 @@ const {
   createProduct,
 } = require('../models/productModel');
 
-const createNewProduct = async (product) => createProduct(product);
+const createNewProduct = async (product) => await createProduct(product);
 
 const validateName = async (req, res, next) => {
   const { name } = req.body;

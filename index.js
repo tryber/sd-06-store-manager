@@ -12,6 +12,6 @@ const { Product } = require('./controller/productsController');
 
 app.use(bodyParser.json());
 
-app.use('/product', Product);
+app.use('/products', Product);
 
 app.listen(port, () => console.log(`Listening to port ${port}`));
