@@ -3,6 +3,7 @@ const {
   validateName,
   createNewProduct,
   validateQuantity,
+  getAllProductsService,
 } = require('../service/productService');
 
 const Product = new Router();
@@ -17,7 +18,8 @@ Product.post('/', validateName, validateQuantity, async (req, res) => {
 });
 
 Product.get('/', async (_req, res) => {
-  res.status(SUCCESS).send('products');
+  const allProducts = await getAllProductsService();
+  res.status(SUCCESS).json({ products: allProducts });
 });
 
 module.exports = { Product };

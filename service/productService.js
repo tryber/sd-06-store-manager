@@ -2,7 +2,7 @@ const MIN_NAME_LENGTH = 5;
 const UNPROCESSABLE = 422;
 const MIN_QUANTITY = 0;
 const {
-  getAllProduct,
+  getAllProducts,
   createProduct,
 } = require('../models/productModel');
 
