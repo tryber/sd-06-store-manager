@@ -1,5 +1,6 @@
 const FIVE = 5;
 const UNPROCESSABLE = 422;
+const MIN_QUANTITY = 0;
 const {
   getAllProduct,
   createProduct,
@@ -34,7 +35,7 @@ const validateName = async (req, res, next) => {
 
 const validateQuantity = async (req, res, next) => {
   const { productQuantity } = req.body.quantity;
-  if (!productQuantity || productQuantity <= 0) {
+  if (!productQuantity || productQuantity <= MIN_QUANTITY) {
     return res.status(UNPROCESSABLE).json({
       err: {
         code: 'invalid_data',
@@ -42,6 +43,15 @@ const validateQuantity = async (req, res, next) => {
       }
     });
   }
+  if (typeof productQuantity === 'string'){
+    return res.status(UNPROCESSABLE).json({
+      err: {
+        code: 'invalid_data',
+        message: '\"quantity\" must be a number'
+      }
+    });
+  }
+  next();
 };
 
 module.exports = {
