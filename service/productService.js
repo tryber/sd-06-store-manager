@@ -34,7 +34,7 @@ const validateName = async (req, res, next) => {
 };
 
 const validateQuantity = async (req, res, next) => {
-  const {quantity } = req.body;
+  const { quantity } = req.body;
   if (!quantity || quantity <= MIN_QUANTITY) {
     return res.status(UNPROCESSABLE).json({
       err: {
@@ -43,7 +43,7 @@ const validateQuantity = async (req, res, next) => {
       }
     });
   }
-  if (typeof quantity === 'string'){
+  else if (typeof quantity !== 'number'){
     return res.status(UNPROCESSABLE).json({
       err: {
         code: 'invalid_data',
