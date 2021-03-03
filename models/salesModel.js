@@ -44,7 +44,7 @@ const updateSale = async (id, query) => {
     ));
 
   return {
-    _id: result.insertedId,
+    _id: id,
     itensSold: query,
   };
 };
