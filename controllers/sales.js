@@ -1,4 +1,5 @@
 const { Router } = require('express');
+const { ObjectId } = require('mongodb');
 
 const router = Router();
 
@@ -63,8 +64,11 @@ router.put('/:id', saleValidate, async (req, res) => {
 });
 
 router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  const valid = ObjectId.isValid(id);
+  console.log(valid);
   try {
-    const { id } = req.params;
+    
 
     const result = await saleDelete(id);
     return res.status(SUCESS).send(result);

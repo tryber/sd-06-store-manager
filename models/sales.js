@@ -26,7 +26,7 @@ const changeSales = async (id, sale) => {
 const deleteSale = async (id) => {
   return await connection()
     .then((item) => item.collection('sales')
-      .deleteOne({ _id: ObjectId(id) }));
+      .deleteOne({ _id: ObjectID(id) }));
 };
 
 module.exports = {
