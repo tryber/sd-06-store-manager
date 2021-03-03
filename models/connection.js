@@ -1,7 +1,7 @@
 const { MongoClient } = require('mongodb');
 
-//const URLLOCAL = 'mongodb://localhost:27017/StoreManager';
-const URLLOCAL = 'mongodb://mongodb:27017/StoreManager';
+const URLLOCAL = 'mongodb://localhost:27017/StoreManager';
+//const URLLOCAL = 'mongodb://mongodb:27017/StoreManager';
 const DB_NAME = 'StoreManager';
 
 

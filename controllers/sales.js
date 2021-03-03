@@ -3,7 +3,7 @@ const { Router } = require('express');
 const router = Router();
 
 const saleValidate = require('../middlewares/saleValidate');
-const { createNewSale, Sales, saleChange } = require('../services/sales');
+const { createNewSale, Sales, saleChange, saleDelete } = require('../services/sales');
 
 const ERROR = 422;
 const SUCESS = 200;
@@ -64,6 +64,23 @@ router.put('/:id', saleValidate, async (req, res) => {
   } catch (err) {
     console.log(err);
     return res.status(ERROR).send(err);
+  }
+});
+
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await saleDelete(id);
+    res.status(SUCESS).send(result);
+  } catch (err) {
+    console.log(err);
+    res.status(ERROR).send({ 
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong sale ID format'
+      }
+    });
   }
 });
 

@@ -1,7 +1,8 @@
 const {
   create,
   getSales,
-  changeSales
+  changeSales,
+  deleteSale
 } = require('../models/sales');
 
 const createNewSale = async (sales) => {
@@ -19,8 +20,15 @@ const saleChange = async (id, sale) => {
   return sales;
 };
 
+const saleDelete = async (id) => {
+  const sales = await deleteSale(id);
+  return sales;
+};
+
+
 module.exports = { 
   createNewSale,
   Sales,
-  saleChange
+  saleChange,
+  saleDelete
 };
