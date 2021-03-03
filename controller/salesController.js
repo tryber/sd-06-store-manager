@@ -16,7 +16,7 @@ salesController.post('/', validation, rescue(async (request, response) => {
 
   if (result.err) return response.status(UNPROCESABLE_ENTITY).json(result);
 
-  response.status(CREATED).json(result);
+  response.status(OK).json(result);
 }));
 
 module.exports = {
