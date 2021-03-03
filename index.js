@@ -8,7 +8,7 @@ app.get('/', (_request, response) => {
 });
 
 const bodyParser = require('body-parser');
-const { Product } = require('./controller/products');
+const { Product } = require('./controller/productsController');
 
 app.use(bodyParser.json());
 
