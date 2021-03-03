@@ -13,10 +13,10 @@ Product.get('/', async (req, res) => {
 });
 
 Product.post('/', validateName, validateQuantity, async (req, res) => {
-  const product = { ...req.body, role:'product' };
+  const product = { ...req.body };
 
   await createNewProduct(product);
-  return res.status(SUCCESS).json({ product });
+  return res.status(SUCCESS).json(product);
 });
 
 module.exports = { Product };
