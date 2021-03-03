@@ -25,7 +25,6 @@ let errorMessage = {
 app.use((err, _req, res, _next) => {
   const { status, message } = err;
   errorMessage.err.message = message;
-  console.log('message error:', message);
   return res.status(status).json(errorMessage);
 });
 
