@@ -6,7 +6,6 @@ const UNPROCESABLE_ENTITY = 422;
 
 const validation = rescue(async (request, response, next) => {
   const quantity = request.body.map((item) => item.quantity);
-  console.log(quantity)
   const parse = (obj) => !Number.isInteger(parseInt(obj));
 
   const invalidQuantity = quantity.every((item) => item <= INVALID_QUANTITY);
