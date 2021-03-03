@@ -16,7 +16,7 @@ const UNPROCESABLE_ENTITY = 422;
 const NOT_FOUND = 404;
 const OK = 200;
 
-salesController.post('/:id', validation, rescue(async (request, response) => {
+salesController.put('/:id', validation, rescue(async (request, response) => {
   const { id } = request.params;
   const sales = request.body;
 
