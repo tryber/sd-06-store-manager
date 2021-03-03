@@ -4,10 +4,12 @@ const MIN_QUANTITY = 0;
 const {
   getAllProducts,
   createProduct,
+  getProduct,
 } = require('../models/productModel');
 
 const createNewProduct = async (product) => await createProduct(product);
 const getAllProductsService = async () => await getAllProducts();
+const getProductById = async (id) => await getProduct(id);
 
 const validateName = async (req, res, next) => {
   const { name } = req.body;
@@ -20,7 +22,7 @@ const validateName = async (req, res, next) => {
         }
       });
   }
-  const productList = await getAllProduct();
+  const productList = await getAllProducts();
   const checkUnique = await productList.find((product) => product.name === name);
   if (checkUnique) {
     return res.status(UNPROCESSABLE)
@@ -60,4 +62,5 @@ module.exports = {
   createNewProduct,
   validateQuantity,
   getAllProductsService,
+  getProductById,
 };
