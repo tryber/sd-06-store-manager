@@ -1,12 +1,18 @@
 const { Router } = require('express');
+const { validateName } = require('../service/productService');
 
 const Product = new Router();
+const SUCCESS = 200;
 
 Product.get('/', async (req, res) => {
-  const sucesso = 200;
-  res.status(sucesso).send('products');
+  res.status(SUCCESS).send('products');
 });
 
-Product.post('/', async (req, res) => {});
+Product.post('/', validateName, async (req, res) => {
+  const product = { ...req.body, role:'product' };
+
+  await createProduct(product);
+  return res.status(SUCCESS).json({ product });
+});
 
 module.exports = { Product };
