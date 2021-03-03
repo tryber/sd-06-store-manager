@@ -4,14 +4,13 @@ const connect = getCollection('sales');
 
 const createSale = async (query) => {
   const insertedSale = await connect
-    .then((item) => item.insertOne({ query }));
+    .then((item) => item.insertOne({ itensSold: query }));
 
   return {
     _id: insertedSale.insertedId,
-    itensSold: [{
-      query,
-    }],
+    itensSold: query,
   };
+
 };
 
 module.exports = {

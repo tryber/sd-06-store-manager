@@ -8,7 +8,8 @@ const validation = rescue(async (request, response, next) => {
   const quantity = request.body.map((item) => item.quantity);
   const parse = (obj) => !Number.isInteger(parseInt(obj));
 
-  const invalidQuantity = quantity.every((item) => item <= INVALID_QUANTITY);
+  const invalidQuantity = quantity
+    .every((item) => item <= INVALID_QUANTITY);
 
   const invalidQuantityType = quantity
     .some((item) => parse(item) || typeof item != 'number');
