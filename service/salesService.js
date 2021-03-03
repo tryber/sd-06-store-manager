@@ -19,7 +19,6 @@ const createSaleValidation = async (query) => {
   return result;
 };
 
-
 const getSaleValidation = async () => {
   const allSales = await getSales();
   return allSales;
@@ -36,7 +35,6 @@ const getSaleByIdValidation = async (id) => {
         message: 'Sale not found'
       },
     };
-
   }
 
   return saleById;
@@ -52,11 +50,11 @@ const updateSaleValidation = async (id, query) => {
         message: 'Sale not found'
       },
     };
-
   };
 
   return update;
 };
+
 module.exports = {
   createSaleValidation,
   getSaleValidation,
