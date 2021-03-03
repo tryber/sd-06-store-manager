@@ -1,7 +1,12 @@
 const connection = require('./conection');
 
-const createProduct = async (product) => {connection()
+const createProduct = async (product) => connection()
   .then((db) => db.collection('products').insertOne(product));
-};
 
-module.exports = { createProduct };
+const getAllProduct = async () => connection()
+  .then((db) => db.collection('products').find().toArray());
+
+module.exports = {
+  createProduct,
+  getAllProduct,
+};
