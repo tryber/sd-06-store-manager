@@ -12,6 +12,18 @@ const findById = async (id) => {
   return sale;
 };
 
+const findProductId = async (id) => {
+  const sale = await Sales.findProductId(id);
+  
+  return sale;
+};
+
+const update = async (productId, quantity, id) => {
+  const sale = await Sales.update(productId, quantity, id);
+  
+  return sale;
+};
+
 const create = async (products) => { 
   const sales = await Sales.create(products);
   
@@ -22,5 +34,7 @@ module.exports = {
   getAll,
   create,
   findById,
+  findProductId,
+  update,
 };
 

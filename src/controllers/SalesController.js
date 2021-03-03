@@ -72,6 +72,15 @@ const validateProduct = async (req, res, next) => {
   }
 };
 
+router.put('/:id', validateProduct, rescue (async (req, res) => {
+  const { productId, quantity } = req.body[0];
+  const { id } = req.params;
+  
+  const sale = await SalesService.update(productId, quantity, id);
+  
+  return res.status(v.OK).json(sale);
+}));
+
 router.post('/', validateProduct,  rescue (async (req, res) => {
   const sale = await SalesService.create(req.body);
   
