@@ -1,5 +1,8 @@
 const { Router } = require('express');
-const { validateName } = require('../service/productService');
+const {
+  validateName,
+  createNewProduct,
+} = require('../service/productService');
 
 const Product = new Router();
 const SUCCESS = 200;
@@ -11,7 +14,7 @@ Product.get('/', async (req, res) => {
 Product.post('/', validateName, async (req, res) => {
   const product = { ...req.body, role:'product' };
 
-  await createProduct(product);
+  await createNewProduct(product);
   return res.status(SUCCESS).json({ product });
 });
 
