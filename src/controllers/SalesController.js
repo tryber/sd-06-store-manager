@@ -109,8 +109,7 @@ router.delete('/:id', rescue (async (req, res) => {
         message: 'Wrong sale ID format'
       }
     });
-  
-  res.status(v.OK).json(sale);
+  else return res.status(v.OK).json(sale);
 }));
 
 module.exports = router;
