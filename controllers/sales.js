@@ -13,8 +13,9 @@ const NOTFOUND = 404;
 router.post('/', saleValidate, async (req, res) => {
   try {
     const newSale = await createNewSale(req.body);
+    const insID = newSale.insertedId;
 
-    return res.status(SUCESS).send({ itensSold: req.body });
+    return res.status(SUCESS).send({ _id: insID, itensSold: req.body });
   } catch(err) {
     console.log(err);
     res.status(ERROR).send(err);
@@ -38,12 +39,6 @@ router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const sales = await Sales(id);
-    if (!sales) return res.status(ERROR).send({
-      err: {
-        code: 'not_found',
-        message: 'Sale not found'
-      }
-    });
     return res.status(SUCESS).send(sales);
   } catch(e) {
     console.log(e);
@@ -72,10 +67,10 @@ router.delete('/:id', async (req, res) => {
     const { id } = req.params;
 
     const result = await saleDelete(id);
-    res.status(SUCESS).send(result);
+    return res.status(SUCESS).send(result);
   } catch (err) {
     console.log(err);
-    res.status(ERROR).send({ 
+    return res.status(ERROR).send({ 
       err: {
         code: 'invalid_data',
         message: 'Wrong sale ID format'

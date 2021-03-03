@@ -6,8 +6,8 @@ const {
 } = require('../models/sales');
 
 const createNewSale = async (sales) => {
-  await create(sales);
-  return sales;
+  const createSale = await create(sales);
+  return createSale;
 };
 
 const Sales = async (id) => {
