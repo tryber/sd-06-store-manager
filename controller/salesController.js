@@ -6,7 +6,8 @@ const { getSaleById } = require('../models/salesModel');
 const {
   createSaleValidation,
   getSaleValidation,
-  getSaleByIdValidation
+  getSaleByIdValidation,
+  updateSaleValidation,
 } = require('../service/salesService');
 
 const salesController = express.Router();
@@ -14,8 +15,17 @@ const salesController = express.Router();
 const UNPROCESABLE_ENTITY = 422;
 const NOT_FOUND = 404;
 const OK = 200;
-// const CREATED = 201;
 
+salesController.post('/:id', validation, rescue(async (request, response) => {
+  const { id } = request.params;
+  const sales = request.body;
+
+  const updatedSale = await updateSaleValidation(id, sales);
+
+  if (updatedSale.err) return response.status(UNPROCESABLE_ENTITY).json(updatedSale);
+
+  response.status(OK).json(updatedSale);
+}));
 
 salesController.post('/', validation, rescue(async (request, response) => {
   const sales = request.body;

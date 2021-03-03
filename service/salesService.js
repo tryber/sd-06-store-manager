@@ -1,5 +1,5 @@
 const { getProductById } = require('../models/productsModel');
-const { createSale, getSaleById, getSales } = require('../models/salesModel');
+const { createSale, getSaleById, getSales, updateSale } = require('../models/salesModel');
 
 const createSaleValidation = async (query) => {
   const getByID = query.map(async (e) => getProductById(e.productId));
@@ -19,6 +19,7 @@ const createSaleValidation = async (query) => {
   return result;
 };
 
+
 const getSaleValidation = async () => {
   const allSales = await getSales();
   return allSales;
@@ -35,13 +36,30 @@ const getSaleByIdValidation = async (id) => {
         message: 'Sale not found'
       },
     };
+
   }
 
   return saleById;
 };
 
+const updateSaleValidation = async (id, query) => {
+  const update = await updateSale(id, query);
+
+  if (!update) {
+    return {
+      err: {
+        code: 'not_found',
+        message: 'Sale not found'
+      },
+    };
+
+  };
+
+  return update;
+};
 module.exports = {
   createSaleValidation,
   getSaleValidation,
   getSaleByIdValidation,
+  updateSaleValidation
 };

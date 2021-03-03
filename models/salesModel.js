@@ -27,13 +27,31 @@ const getSaleById = async (id) => {
     .then((sales) => sales)
     .then((sale) => sale.findOne({ _id: ObjectId(id) }));
 
-  console.log(saleById);
-
   return saleById;
+};
+
+const updateSale = async (id, query) => {
+  if (!ObjectId.isValid(id)) return null;
+
+  const result = await connect
+    .then((item) => item.updateOne(
+      { _id: ObjectId(id) },
+      {
+        $set: {
+          itensSold: query[0]
+        }
+      }
+    ));
+
+  return {
+    _id: result.insertedId,
+    itensSold: query,
+  };
 };
 
 module.exports = {
   createSale,
   getSales,
   getSaleById,
+  updateSale,
 };
