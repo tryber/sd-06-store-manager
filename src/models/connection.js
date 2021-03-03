@@ -1,10 +1,11 @@
 
 const { MongoClient } = require('mongodb');
+
 //local test
-// const MONGO_DB_URL = 'mongodb://localhost:27017/StoreManager'
+ const MONGO_DB_URL = 'mongodb://localhost:27017/StoreManager'
 
 //remote test
-const MONGO_DB_URL = 'mongodb://mongodb:27017/StoreManager';
+//const MONGO_DB_URL = 'mongodb://mongodb:27017/StoreManager';
 
 const DBNAME = 'StoreManager';
 

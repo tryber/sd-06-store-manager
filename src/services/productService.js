@@ -67,7 +67,7 @@ async function setValidationID (req, res, next) {
   next();
 };
 
-async function ifExists (req, res, next) {
+async function ifExist (req, res, next) {
   const { name } = req.body;
   const products = await getAll();
   const findProduct = await products.find((product) => product.name === name);
@@ -86,7 +86,7 @@ async function ifExists (req, res, next) {
 };
 
 module.exports = {
-  ifExists,
+  ifExist,
   setValidation,
   setValidationID,
 };
