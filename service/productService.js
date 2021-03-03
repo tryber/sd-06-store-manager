@@ -32,7 +32,20 @@ const validateName = async (req, res, next) => {
   next();
 };
 
+const validateQuantity = async (req, res, next) => {
+  const { productQuantity } = req.body.quantity;
+  if (!productQuantity || productQuantity <= 0) {
+    return res.status(UNPROCESSABLE).json({
+      err: {
+        code: 'invalid_data',
+        message: '\"quantity\" must be larger than or equal to 1'
+      }
+    });
+  }
+};
+
 module.exports = {
   validateName,
   createNewProduct,
+  validateQuantity,
 };
