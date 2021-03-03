@@ -1,6 +1,11 @@
 const FIVE = 5;
 const UNPROCESSABLE = 422;
-const { getAllProduct } = require('../models/productModel');
+const {
+  getAllProduct,
+  createProduct,
+} = require('../models/productModel');
+
+const createNewProduct = async (product) => createProduct(product);
 
 const validateName = async (req, res, next) => {
   const { productName } = req.body.name;
@@ -17,4 +22,7 @@ const validateName = async (req, res, next) => {
   const checkUnique = await productList.find((product) => product.name === productName);
 };
 
-module.exports = { validateName };
+module.exports = {
+  validateName,
+  createNewProduct,
+};
