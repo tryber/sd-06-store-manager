@@ -7,4 +7,6 @@ Product.get('/', async (req, res) => {
   res.status(sucesso).send('products');
 });
 
+Product.post('/', async (req, res) => {});
+
 module.exports = { Product };
