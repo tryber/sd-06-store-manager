@@ -29,6 +29,7 @@ const validateName = async (req, res, next) => {
         }
       });
   }
+  next();
 };
 
 module.exports = {
