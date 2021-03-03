@@ -48,7 +48,7 @@ async function setValidation (req, res, next) {
           code: 'invalid_data',
           message: '"quantity" must be larger than or equal to 1'
         },
-     }
+      }
     );
   }
   next();

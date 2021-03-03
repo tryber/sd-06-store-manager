@@ -15,7 +15,8 @@ const getById = async (id) =>
 
 const update = async (id, name, quantity) =>
   connection()
-    .then((db) => db.collection('products').updateOne({ _id: ObjectId(id) }, { $set: { name: name, quantity: quantity } }
+    .then((db) => db.collection('products')
+    .updateOne({ _id: ObjectId(id) }, { $set: { name: name, quantity: quantity } }
     ));
 
 const destroy = async (id) =>

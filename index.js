@@ -10,9 +10,15 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
+
+//const { SalesRouter } = require('./controller/sales');
+
 app.use(bodyParser.json());
+
 app.use('/', products);
 
+//app.use('/', SalesRouter);
+
 app.listen(port, () => {
- console.log(`Ouvindo na porta ${port}`)
+  console.log(`Ouvindo na porta ${port}`);
 });
