@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { getAll, create, getById, update } = require('../models/salesModels');
+const { getAll, createSale, getById, update } = require('../models/salesModels');
 const { setValidation, setValidationID } = require('../services/salesService');
 
 const sales = new Router();
@@ -28,7 +28,7 @@ sales.get(
 
 sales.post(
   '/sales', setValidation, async (req, res) => {
-    const newSale = await create(req.body);
+    const newSale = await createSale(req.body);
     return res.status(SUCCESS).json(newSale);
   }
 );

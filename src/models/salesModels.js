@@ -5,7 +5,7 @@ const getAll = async () =>
   connection()
     .then((db) => db.collection('sales').find().toArray());
 
-const create = async (data) => {
+const createSale = async (data) => {
   const sale = await connection()
     .then((db) => db.collection('sales').insertOne({itensSold: data }));
   const {insertedID } = sale;
@@ -24,9 +24,10 @@ const update = async (id, data) =>
     .then((db) => db.collection('sales')
       .updateOne({ _id: ObjectId(id) }, { $set: { intesSold: data } }));
 
+
 module.exports = {
   getAll,
-  create,
+  createSale,
   getById,
   update,
 };
