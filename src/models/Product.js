@@ -19,13 +19,19 @@ const findByName = async (productName) => {
   return result;
 };
 
-const updateQuantity = async (id, num) => {
-  await connection()
-    .then((db) => db.collection('sales')
-      .updateMany({ '_id': ObjectId(id) }, 
-        { $set: { quantity: quantity - num } }));
-
-// return await findById(id);
+const updateQuantity = async (id, num, operation) => {
+  
+  if (operation === '-') {
+    await connection()
+      .then((db) => db.collection('products')
+        .updateOne({ '_id': ObjectId(id) }, 
+          { $inc: { quantity: - num } })); 
+  }else if (operation === '+') {
+    await connection()
+      .then((db) => db.collection('products')
+        .updateOne({ '_id': ObjectId(id) }, 
+          { $inc: { quantity: num } })); 
+  }
 };
 
 const create = async (name, quantity) => {

@@ -11,15 +11,6 @@ const findById = async (id) => {
     .then((db) => db.collection('sales').findOne({ _id: ObjectId(id) }));
 };
 
-// const findProductId = async (id) => {
-//   const { itensSold } = await connection()
-//     .then((db) => db.collection('sales').findOne({ 'itensSold.productId': id }));
-  
-//   const product = itensSold.filter((sale) => sale.productId === id);
-  
-//   return product[0];
-// };
-
 const update = async (productId, quantity, id) => {
   await connection()
     .then((db) => db.collection('sales')

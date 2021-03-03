@@ -87,13 +87,19 @@ router.post('/', validateProduct,  rescue (async (req, res) => {
   const myProductId = req.body[0].productId;
   
   const myProduct = await Product.findById(myProductId);
-  console.log(myProduct);
+  
+  const newQuantity = req.body[0].quantity;
+  Product.updateQuantity(myProduct._id, newQuantity, '-');
   
   if (sale) return res.status(v.OK).json(sale);
 }));
 
 router.delete('/:id', rescue (async (req, res) => {
   const { id } = req.params;
+  const mySale = await SalesService.findById(id);
+  const { quantity } = mySale.itensSold[0];
+  const { productId } = mySale.itensSold[0];
+  const myProduct = await Product.findById(productId);
   
   if (id.length !== v.TWENTY_FOUR) {
     return res.status (v.UNPROCESSABLE_ENTITY)
@@ -114,7 +120,11 @@ router.delete('/:id', rescue (async (req, res) => {
         message: 'Wrong sale ID format'
       }
     });
-  else return res.status(v.OK).json(sale);
+  else { 
+    Product.updateQuantity(myProduct._id, quantity, '+');
+    
+    return res.status(v.OK).json(sale);
+  }
 }));
 
 module.exports = router;
