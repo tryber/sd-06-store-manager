@@ -1,5 +1,7 @@
 const express = require('express');
 const ProductsController = require('./controllers/ProductsController');
+const SalesController = require('./controllers/SalesController');
+
 const bodyParser = require('body-parser');
 
 const app = express();
@@ -12,5 +14,7 @@ app.get('/', (_request, response) => {
 });
 
 app.use('/products', ProductsController);
+
+app.use('/sales', SalesController);
 
 app.listen(port, () => console.log(`Executando na ${port}`));

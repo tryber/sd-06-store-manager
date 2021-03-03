@@ -5,10 +5,10 @@ const { create, getByName, getAll, getById, update, remove }
 const { ObjectId } = require('mongodb');
 
 const router = Router();
+
 const CREATED = 201;
 const UNPROCESSABLE= 422;
 const OK = 200;
-const NOT_FOUND = 400;
 // Magic Number
 const MIN_CHARS = 5;
 const ZERO = 0;
