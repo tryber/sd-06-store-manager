@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { create, getAll, getById } = require('../models/SalesModel');
+const { create, getAll, getById, update } = require('../models/SalesModel');
 const { ObjectId } = require('mongodb');
 
 const router = Router();
@@ -58,5 +58,35 @@ router.get('/:id', async (req, res) => {
   }
   return res.status(OK).json(sale);
 });
+
+// Req 7
+router.put('/:id', async (req, res) => {
+  const updated = req.body;
+  const { id } = req.params;
+
+  updated.forEach((item) => {
+    if (item.quantity <= ZERO) {
+      return res.status(UNPROCESSABLE).json({ 
+        err: {
+          code: 'invalid_data',
+          message: 'Wrong product ID or invalid quantity'
+        }
+      });
+    }
+    if (isNaN(item.quantity)) {
+      return res.status(UNPROCESSABLE).json({ 
+        err: {
+          code: 'invalid_data',
+          message: 'Wrong product ID or invalid quantity'
+        }
+      });
+    }
+  });
+
+  await update(id, updated);
+  const updatedSale = await getById(id);
+  return res.status(OK).json(updatedSale);
+});
+
 
 module.exports = router;
