@@ -8,15 +8,15 @@ const {
 const Product = new Router();
 const SUCCESS = 200;
 
-Product.get('/', async (req, res) => {
-  res.status(SUCCESS).send('products');
-});
-
 Product.post('/', validateName, validateQuantity, async (req, res) => {
   const product = { ...req.body };
 
   await createNewProduct(product);
   return res.status(SUCCESS).json(product);
+});
+
+Product.get('/', async (_req, res) => {
+  res.status(SUCCESS).send('products');
 });
 
 module.exports = { Product };
