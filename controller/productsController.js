@@ -2,6 +2,7 @@ const { Router } = require('express');
 const {
   validateName,
   createNewProduct,
+  validateQuantity,
 } = require('../service/productService');
 
 const Product = new Router();
@@ -11,7 +12,7 @@ Product.get('/', async (req, res) => {
   res.status(SUCCESS).send('products');
 });
 
-Product.post('/', validateName, async (req, res) => {
+Product.post('/', validateName, validateQuantity, async (req, res) => {
   const product = { ...req.body, role:'product' };
 
   await createNewProduct(product);
