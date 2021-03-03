@@ -1,4 +1,4 @@
-const FIVE = 5;
+const MIN_NAME_LENGTH = 5;
 const UNPROCESSABLE = 422;
 const MIN_QUANTITY = 0;
 const {
@@ -9,8 +9,8 @@ const {
 const createNewProduct = async (product) => createProduct(product);
 
 const validateName = async (req, res, next) => {
-  const { productName } = req.body.name;
-  if (!productName || productName.length < FIVE) {
+  const { name } = req.body;
+  if (!name || name.length < MIN_NAME_LENGTH) {
     return res.status(UNPROCESSABLE)
       .json({
         err: {
@@ -20,7 +20,7 @@ const validateName = async (req, res, next) => {
       });
   }
   const productList = await getAllProduct();
-  const checkUnique = await productList.find((product) => product.name === productName);
+  const checkUnique = await productList.find((product) => product.name === name);
   if (checkUnique) {
     return res.status(UNPROCESSABLE)
       .json({
@@ -34,8 +34,8 @@ const validateName = async (req, res, next) => {
 };
 
 const validateQuantity = async (req, res, next) => {
-  const { productQuantity } = req.body.quantity;
-  if (!productQuantity || productQuantity <= MIN_QUANTITY) {
+  const {quantity } = req.body;
+  if (!quantity || quantity <= MIN_QUANTITY) {
     return res.status(UNPROCESSABLE).json({
       err: {
         code: 'invalid_data',
@@ -43,7 +43,7 @@ const validateQuantity = async (req, res, next) => {
       }
     });
   }
-  if (typeof productQuantity === 'string'){
+  if (typeof quantity === 'string'){
     return res.status(UNPROCESSABLE).json({
       err: {
         code: 'invalid_data',
