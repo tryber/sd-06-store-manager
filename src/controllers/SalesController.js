@@ -84,6 +84,11 @@ router.put('/:id', validateProduct, rescue (async (req, res) => {
 router.post('/', validateProduct,  rescue (async (req, res) => {
   const sale = await SalesService.create(req.body);
   
+  const myProductId = req.body[0].productId;
+  
+  const myProduct = await Product.findById(myProductId);
+  console.log(myProduct);
+  
   if (sale) return res.status(v.OK).json(sale);
 }));
 

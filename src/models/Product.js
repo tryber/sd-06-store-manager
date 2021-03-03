@@ -19,6 +19,15 @@ const findByName = async (productName) => {
   return result;
 };
 
+const updateQuantity = async (id, num) => {
+  await connection()
+    .then((db) => db.collection('sales')
+      .updateMany({ '_id': ObjectId(id) }, 
+        { $set: { quantity: quantity - num } }));
+
+// return await findById(id);
+};
+
 const create = async (name, quantity) => {
   const alreadyExists = await findByName(name);
   if (alreadyExists) return false;
@@ -73,4 +82,5 @@ module.exports = {
   findById,
   update,
   remove,
+  updateQuantity,
 };

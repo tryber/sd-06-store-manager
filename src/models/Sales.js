@@ -36,6 +36,9 @@ const create = async (products) => {
   const { insertedId } = await connection()
     .then((db) => db.collection('sales').insertOne({ itensSold: products }));
   
+  // const productId = products[0].productId;
+  
+  
   return {
     _id: insertedId,
     itensSold: products,

@@ -32,6 +32,7 @@ const create = async (products) => {
 
 const remove = async (id) => {
   const myProduct = await findById(id);
+  
   if (!myProduct) return false;
   
   const sales = await Sales.remove(id);
