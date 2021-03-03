@@ -30,11 +30,21 @@ const create = async (products) => {
   return sales;
 };
 
+const remove = async (id) => {
+  const myProduct = await findById(id);
+  if (!myProduct) return false;
+  
+  const sales = await Sales.remove(id);
+  
+  return sales;
+};
+
 module.exports = {
   getAll,
   create,
   findById,
   findProductId,
   update,
+  remove,
 };
 

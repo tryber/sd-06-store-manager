@@ -87,4 +87,30 @@ router.post('/', validateProduct,  rescue (async (req, res) => {
   if (sale) return res.status(v.OK).json(sale);
 }));
 
+router.delete('/:id', rescue (async (req, res) => {
+  const { id } = req.params;
+  
+  if (id.length !== v.TWENTY_FOUR) {
+    return res.status (v.UNPROCESSABLE_ENTITY)
+      .json({
+        err: {
+          code: 'invalid_data',
+          message: 'Wrong sale ID format'
+        }
+      });
+  }
+  
+  const sale = await SalesService.remove(id);
+  
+  if (!sale) return res.status(v.UNPROCESSABLE_ENTITY)
+    .json({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong sale ID format'
+      }
+    });
+  
+  res.status(v.OK).json(sale);
+}));
+
 module.exports = router;
