@@ -137,7 +137,7 @@ describe('1 - Crie um endpoint para o cadastro de produtos', () => {
   });
 });
 
-describe.skip('2 - Crie um endpoint para listar os produtos', () => {
+describe.only('2 - Crie um endpoint para listar os produtos', () => {
   let connection;
   let db;
 
@@ -174,6 +174,7 @@ describe.skip('2 - Crie um endpoint para listar os produtos', () => {
       .expect('status', 200)
       .then((res) => {
         let { body } = res;
+        console.log(res)
         body = JSON.parse(body);
         const firstProductName = body.products[0].name;
         const firstQuantityProduct = body.products[0].quantity;

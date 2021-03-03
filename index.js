@@ -18,6 +18,8 @@ app.post('/products', rescue(productsController.createNewProduct));
 
 app.get('/products', rescue(productsController.getAll));
 
+app.get('/products/:id', rescue(productsController.getById));
+
 app.use(error);
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
