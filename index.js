@@ -8,7 +8,15 @@ const {
   updateProduct,
   checkName,
   deleteProduct
-} = require('./src/middlewares/');
+} = require('./src/middlewares/Products');
+
+const {
+  createSale,
+  getSales,
+  getSingle,
+  removeSale,
+  updateSale,
+} = require('./src/middlewares/Sales');
 
 const app = express();
 
@@ -31,6 +39,15 @@ app.delete('/products/:id', deleteProduct);
 app.get('/products', findProducts);
 
 
-// app.post('/sales',);
+app.get('/sales', getSales);
+
+app.get('/sales/:id', getSingle);
+
+app.post('/sales', createSale);
+
+app.put('/sales/:id', updateSale);
+
+app.delete('/sales/:id', removeSale);
+
 
 app.listen(PORT, () => console.log('App rodando na porta 3000'));

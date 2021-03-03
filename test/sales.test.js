@@ -23,8 +23,8 @@ describe('5 - Crie um endpoint para cadastrar vendas', () => {
     await db.collection('products').deleteMany({});
     await db.collection('sales').deleteMany({});
     const products = [{ name: 'Martelo de Thor', quantity: 10 },
-      { name: 'Traje de encolhimento', quantity: 20 },
-      { name: 'Escudo do Capitão América', quantity: 30 }];
+    { name: 'Traje de encolhimento', quantity: 20 },
+    { name: 'Escudo do Capitão América', quantity: 30 }];
     await db.collection('products').insertMany(products);
   });
 
@@ -208,8 +208,8 @@ describe('6 - Crie um endpoint para listar as vendas', () => {
     await db.collection('products').deleteMany({});
     await db.collection('sales').deleteMany({});
     const products = [{ name: 'Martelo de Thor', quantity: 10 },
-      { name: 'Traje de encolhimento', quantity: 20 },
-      { name: 'Escudo do Capitão América', quantity: 30 }];
+    { name: 'Traje de encolhimento', quantity: 20 },
+    { name: 'Escudo do Capitão América', quantity: 30 }];
     await db.collection('products').insertMany(products);
   });
 
@@ -354,8 +354,8 @@ describe('7 - Crie um endpoint para atualizar uma venda', () => {
     await db.collection('products').deleteMany({});
     await db.collection('sales').deleteMany({});
     const products = [{ name: 'Martelo de Thor', quantity: 10 },
-      { name: 'Traje de encolhimento', quantity: 20 },
-      { name: 'Escudo do Capitão América', quantity: 30 }];
+    { name: 'Traje de encolhimento', quantity: 20 },
+    { name: 'Escudo do Capitão América', quantity: 30 }];
     await db.collection('products').insertMany(products);
   });
 
@@ -577,8 +577,8 @@ describe('8 - Crie um endpoint para deletar uma venda', () => {
     await db.collection('products').deleteMany({});
     await db.collection('sales').deleteMany({});
     const products = [{ name: 'Martelo de Thor', quantity: 10 },
-      { name: 'Traje de encolhimento', quantity: 20 },
-      { name: 'Escudo do Capitão América', quantity: 30 }];
+    { name: 'Traje de encolhimento', quantity: 20 },
+    { name: 'Escudo do Capitão América', quantity: 30 }];
     await db.collection('products').insertMany(products);
   });
 

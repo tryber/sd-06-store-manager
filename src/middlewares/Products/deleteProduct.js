@@ -1,4 +1,4 @@
-const Products = require('../services/products');
+const Products = require('../../services/products');
 const SUCCESS = 200;
 const ERROR = 422;
 

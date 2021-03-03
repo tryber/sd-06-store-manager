@@ -1,11 +1,11 @@
-const Products = require('../services/products');
+const Sales = require('../../services/sales');
 const SUCCESS = 200;
-const ERROR = 422;
+const ERROR = 404;
 
 module.exports = async (req, res, _next) => {
   const { id } = req.params;
 
-  const products = await Products.findById(id)
+  const products = await Sales.findSaleById(id)
     .then((data) => data)
     .catch((err) => err);
 
@@ -14,8 +14,8 @@ module.exports = async (req, res, _next) => {
       .status(ERROR)
       .json({
         err: {
-          code: 'invalid_data',
-          message: 'Wrong id format'
+          code: 'not_found',
+          message: 'Sale not found'
         }
       });
   }

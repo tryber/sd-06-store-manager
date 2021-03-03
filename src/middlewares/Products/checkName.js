@@ -1,4 +1,4 @@
-const Products = require('../services/products');
+const Products = require('../../services/products');
 const ERRORCODE = 422;
 
 module.exports = async (req, res, next) => {

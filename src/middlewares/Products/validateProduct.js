@@ -1,4 +1,4 @@
-const Products = require('../services/products');
+const Products = require('../../services/products');
 const ERRORCODE = 422;
 const ZERO = 0;
 const TAMANHO_NOME = 5;
