@@ -4,7 +4,9 @@ const { create,
   findById,
   updateUnitProduct,
   deleteUnitProduct } = require('../models/productsModels');
+  
 const { status, Messages } = require('../util/dataStatus');
+const { ObjectId } = require('mongodb');
 
 
 const createProduct = async (req, res) => {
@@ -22,8 +24,8 @@ const createProduct = async (req, res) => {
 
 const idProduct = async (req, res) => {
   const { id } = req.params;
-
-  const result = await findById(id);
+  
+  const result = await findById(ObjectId(id));
 
   if (result === null) {
     return res.status(status.notFormated).json(Messages.invalidId);

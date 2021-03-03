@@ -1,5 +1,5 @@
 const connection = require('./connection');
-const { ObjectId } = require('mongodb');
+
 
 // FIND ALL PRODUCTS
 const getAllProducts = async () => {
@@ -23,7 +23,7 @@ const create = async (name,quantity) => {
 // FIND PRODUCT BY ID
 const findById = async (id) => {
   return await connection()
-    .then(mongodb => mongodb.collection('products').findOne(ObjectId(id)));
+    .then(mongodb => mongodb.collection('products').findOne((id)));
 };
 
 // FIND PRODUCT BY NAME
@@ -55,9 +55,18 @@ const deleteUnitProduct = async (id) => {
   return result.value;
 };
 
+// UPDATE SERVER 
+const updateServer = async (id, value) => {
+  await connection().then(db => db.collection('products').updateOne(
+    { _id: ObjectId(id) },
+    { $inc: { quantity: value } },      
+  ));
+};
+
 // EXPORT MODELS FUNCTIONS 
 module.exports = {
   create,
+  updateServer,
   updateUnitProduct,
   deleteUnitProduct,
   findById,

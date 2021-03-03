@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const productsControl = require('./controllers/productsControll');
+const salesControl = require('./controllers/salesControl');
 
 const DOOR = 3000;
 
@@ -15,6 +16,8 @@ app.get('/', (_request, response) => {
 });
 
 app.use('/products', productsControl);
+
+app.use('/sales', salesControl);
 
 app.listen(DOOR,() => {
   console.log('server On');
