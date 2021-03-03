@@ -8,8 +8,6 @@ const { InvalidQuantity, invalidId } = Messages;
 const salesValited = async (req, res, next) => {
   const products = req.body;
 
-
-
   magicNumbers = {
     zero: 0,
     idformat: 24
