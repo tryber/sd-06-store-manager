@@ -1,4 +1,4 @@
-const connection = require('./conection');
+const connection = require('./connection');
 
 const createProduct = async (product) => connection()
   .then((db) => db.collection('products').insertOne(product));
