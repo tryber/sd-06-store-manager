@@ -7,6 +7,7 @@ const {
 } = require('../models/productModel');
 
 const createNewProduct = async (product) => await createProduct(product);
+const getAllProductsService = async () => await getAllProducts();
 
 const validateName = async (req, res, next) => {
   const { name } = req.body;
@@ -58,4 +59,5 @@ module.exports = {
   validateName,
   createNewProduct,
   validateQuantity,
+  getAllProductsService,
 };
