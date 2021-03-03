@@ -20,6 +20,15 @@ const validateName = async (req, res, next) => {
   }
   const productList = await getAllProduct();
   const checkUnique = await productList.find((product) => product.name === productName);
+  if (checkUnique) {
+    return res.status(UNPROCESSABLE)
+      .json({
+        err: {
+          code: 'invalid_data',
+          message: 'Product already exists'
+        }
+      });
+  }
 };
 
 module.exports = {
