@@ -26,12 +26,12 @@ sales.get(
     return res.status(SUCCESS).send(salesID);
   });
 
-  sales.post(
-    '/sales', setValidation, async (req, res) => {
-      const newSale = await create(req.body);
-      return res.status(SUCCESS).json(newSale);
-    }
-  );
+sales.post(
+  '/sales', setValidation, async (req, res) => {
+    const newSale = await create(req.body);
+    return res.status(SUCCESS).json(newSale);
+  }
+);
 
 sales.put(
   '/sales/:id', setValidationID, setValidation, async (req, res) => {

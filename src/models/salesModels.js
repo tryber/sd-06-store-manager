@@ -7,13 +7,13 @@ const getAll = async () =>
 
 const create = async (data) => {
   const sale = await connection()
-  .then((db) => db.collection('sales').insertOne({itensSold: data }));
+    .then((db) => db.collection('sales').insertOne({itensSold: data }));
   const {insertedID } = sale;
   return {
     _id: insertedID,
     itensSold: data,
-  }
-}
+  };
+};
 
 const getById = async (id) =>
   connection()
@@ -24,13 +24,9 @@ const update = async (id, data) =>
     .then((db) => db.collection('sales')
       .updateOne({ _id: ObjectId(id) }, { $set: { intesSold: data } }));
 
-//const destroy = async (id) =>
-//  connection()
-//    .then((db) => db.collection('sales').deleteOne({ _id: ObjectId(id) }));
-
-    module.exports = {
-      getAll,
-      create,
-      getById,
-      update,
-    };
+module.exports = {
+  getAll,
+  create,
+  getById,
+  update,
+};
