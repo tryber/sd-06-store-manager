@@ -22,7 +22,7 @@ const createSale = async (req, res) => {
   }
 
   const products = await Products.getAll();
-  
+
   const productsIds = products.map(p => p._id.toString());
   const ids = data.map(s => s.productId);
   const validId = ids.every(id => productsIds.includes(id));
@@ -49,6 +49,14 @@ const createSale = async (req, res) => {
   });
 
   await Sales.create(sales);
+
+  // new logic
+  const productToSale = products.find((product) => {
+    return data.map(p => p.productId == product._id);
+  });
+
+  const { _id, name, quantity } = productToSale;
+  await Products.update(_id, name, quantity - data[0].quantity);
 
   return res.status(status_s).json(sales);
 };
@@ -137,6 +145,12 @@ const deleteSale = async (req, res) => {
   }
 
   const saleToDelete = await Sales.find(id);
+
+  // new logic
+  const productToUpdate = await Products.find(saleToDelete.itensSold[0].productId);
+  const { _id, name, quantity } = productToUpdate;
+
+  await Products.update(_id, name, quantity + saleToDelete.itensSold[0].quantity);
 
   await Sales.remove(id).then(() => {
     return res.status(status_s).json(saleToDelete);
