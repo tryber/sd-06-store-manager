@@ -56,7 +56,7 @@ sales.delete(
     const { id } = req.params;
     try{
       const destroyedSales = await destroySales(id);
-      return res.status(SUCCESS).json(destroyedSales)
+      return res.status(SUCCESS).json(destroyedSales);
     } catch (error){
       res.status(UNPROCESSABLE_ENTITY).json({
         err: {
@@ -65,6 +65,6 @@ sales.delete(
         },
       });
     }
-   });
+  });
 
 module.exports = { sales };
