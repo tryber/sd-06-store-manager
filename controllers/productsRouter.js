@@ -24,6 +24,8 @@ router.get('/', productsServices.getAllProducts);
 
 router.get('/:id', productsServices.getById);
 
+router.put('/:id', productsServices.updateProduct);
+
 router.delete('/', async (request, response) => {
   const { code, message } = await productsServices.deleteAllProducts();
 

@@ -73,6 +73,26 @@ const getById = async (request, response) => {
   return response.status(statusCode.OK).json(productFound);
 };
 
+const updateProduct = async (request, response) => {
+  const { id } = request.params;
+  const { name, quantity } = request.body;
+
+  switch (true) {
+  case minLengthOf(name, compare.minSize):
+    return responseWith(statusCode.UNPROCESSABLE, message.nameLength, response);
+  case greaterThan(quantity, compare.zeroQuantity):
+    return responseWith(statusCode.UNPROCESSABLE, message.greaterThanZero, response);
+  case mustBeNumber(quantity):
+    return responseWith(statusCode.UNPROCESSABLE, message.mustBeNumber, response);
+  default:
+    break;
+  }
+
+  const productUpdate = await productsModels.updateProduct(id, name, quantity);
+
+  return await response.status(statusCode.OK).json(productUpdate);
+};
+
   
 
 const createNewProduct = async (name, quantity) => {
@@ -112,4 +132,5 @@ module.exports = {
   createNewProduct,
   deleteAllProducts,
   getById,
+  updateProduct,
 };
