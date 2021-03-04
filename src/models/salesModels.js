@@ -24,11 +24,24 @@ const updateSales = async (id, data) =>
     .then((db) => db.collection('sales')
       .updateOne({ _id: ObjectId(id) }, { $set: { itensSold: data } }));
 
+const destroySales = async (id) =>{
+  const toBeDestroyed = await connection()
+    .then((db) => db.collection('sales').findOne( ObjectId(id)));
+    if(toBeDestroyed) {
+      await connection()
+        .then((db) => db.collection('sales').deleteOne({ _id: ObjectId(id)} ));
+        return toBeDestroyed;
+    }
+    throw 'sale not found';
+
+}
+
 module.exports = {
   getAllSales,
   createSales,
   getByIdSales,
   updateSales,
+  destroySales,
 };
 
 

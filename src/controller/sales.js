@@ -1,9 +1,12 @@
 const { Router } = require('express');
+const { ObjectId } = require('mongodb');
 const {
   getAllSales,
   createSales,
   getByIdSales,
-  updateSales
+  updateSales,
+  destroySales,
+
 } = require('../models/salesModels');
 const { setValidation, setValidationID } = require('../services/salesService');
 
@@ -11,6 +14,8 @@ const sales = new Router();
 
 const SUCCESS = 200;
 const NOT_FOUND = 404;
+const UNPROCESSABLE_ENTITY = 422;
+
 
 sales.get(
   '/sales', async (_req, res) => {
@@ -45,5 +50,21 @@ sales.put(
     const updatedSales = await getByIdSales(id);
     return res.status(SUCCESS).send(updatedSales);
   });
+
+sales.delete(
+  '/sales/:id', async (req, res) => {
+    const { id } = req.params;
+    try{
+      const destroyedSales = await destroySales(id);
+      return res.status(SUCCESS).json(destroyedSales)
+    } catch (error){
+      res.status(UNPROCESSABLE_ENTITY).json({
+        err: {
+          code: 'invalid_data',
+          message: 'Wrong sale ID format',
+        },
+      });
+    }
+   });
 
 module.exports = { sales };
