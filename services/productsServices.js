@@ -4,9 +4,10 @@ const productsModels = require('../models/productsModels');
 const compare ={
   minSize: 5,
   zeroQuantity: 0,
+  hexObjectedId: 24,
 };
 
-const status = {
+const statusCode = {
   OK: 200,
   CREATED: 201,
   UNPROCESSABLE: 422,
@@ -17,6 +18,7 @@ const message = {
   alreadyExists: 'Product already exists',
   greaterThanZero: '"quantity" must be larger than or equal to 1',
   mustBeNumber: '"quantity" must be a number',
+  wrongIdFormat: 'Wrong id format',
 };
 
 const messageError = (code, message) => ({ 
@@ -26,6 +28,16 @@ const messageError = (code, message) => ({
     message
   }
 });
+
+const responseWith = (code, message, response) => {
+  const err = {
+    err: {
+      code: 'invalid_data',
+      message
+    },
+  };
+  return response.status(code).json(err);
+};
 
 // Funções de validação;
 const minLengthOf = (value, number) => (value.length < number);
@@ -37,20 +49,42 @@ const productExists = async (value) => {
 };
 
 // funções da camada de serviço;
-const getAllProducts = async () => await productsModels.getAll();
+const getAllProducts = async (_request, response) => {
+  const allProducts = await productsModels.getAll();
+  // console.log('allProducts[0]', allProducts[0]);
+  return response.status(statusCode.OK).json({products: allProducts});
+};
+
+const getById = async (request, response) => {
+  const { id } = request.params;
+  console.log('id', id);
+  
+  if (id.length !== compare.hexObjectedId) {
+    return responseWith(statusCode.UNPROCESSABLE, message.wrongIdFormat, response);
+  }
+
+  const productFound = await productsModels.getById(id);
+  console.log('productFound', productFound);
+
+  if (productFound === null) {
+    return messageError(statusCode.UNPROCESSABLE, message.wrongIdFormat);
+  }
+
+  return response.status(statusCode.OK).json(productFound);
+};
+
+  
 
 const createNewProduct = async (name, quantity) => {
-  // console.log('quantity', quantity);
-  // console.log('productExists(name)', await productExists(name));
   switch (true) {
   case minLengthOf(name, compare.minSize):
-    return messageError(status.UNPROCESSABLE, message.nameLength);
+    return messageError(statusCode.UNPROCESSABLE, message.nameLength);
   case greaterThan(quantity, compare.zeroQuantity):
-    return messageError(status.UNPROCESSABLE, message.greaterThanZero);
+    return messageError(statusCode.UNPROCESSABLE, message.greaterThanZero);
   case mustBeNumber(quantity):
-    return messageError(status.UNPROCESSABLE, message.mustBeNumber);
+    return messageError(statusCode.UNPROCESSABLE, message.mustBeNumber);
   case await productExists(name):
-    return messageError(status.UNPROCESSABLE, message.alreadyExists);
+    return messageError(statusCode.UNPROCESSABLE, message.alreadyExists);
   default:
     break;
   }
@@ -59,16 +93,16 @@ const createNewProduct = async (name, quantity) => {
   
   
   return {
-    code: status.CREATED,
+    code: statusCode.CREATED,
     product
   };
 };
 
 const deleteAllProducts = async () => {
   await productsModels.deleteAllProducts();
-  // return response.status(status.OK).json({ message: 'produtos apagados'});
+  // return response.status(statusCode.OK).json({ message: 'produtos apagados'});
   return {
-    code: status.OK,
+    code: statusCode.OK,
     message: 'Collection apagada'
   };
 };
@@ -77,4 +111,5 @@ module.exports = {
   getAllProducts,
   createNewProduct,
   deleteAllProducts,
+  getById,
 };

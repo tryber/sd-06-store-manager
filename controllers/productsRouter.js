@@ -20,15 +20,9 @@ router.post('/', async (request, response) => {
   response.status(code).json(product);
 });
 
-router.get('/', async (_request, response) => {
-  const allProducts = await productsServices.getAllProducts();
-  response.status(statusCode.OK).json(allProducts);
-});
+router.get('/', productsServices.getAllProducts);
 
-// router.get('/:id', async (_request, response) => {
-//   const allProducts = await productsServices.getAllProducts();
-//   response.status(statusCode.OK).json(allProducts);
-// });
+router.get('/:id', productsServices.getById);
 
 router.delete('/', async (request, response) => {
   const { code, message } = await productsServices.deleteAllProducts();

@@ -1,5 +1,7 @@
 const { MongoClient } = require('mongodb');
-require('dotenv').config();
+const dotenv = require('dotenv');
+dotenv.config();
+
 
 // Procedimento ensinado pelo Nato em uma thread de dúvida;
 // const MONGODB_URL = 'mongodb://localhost:27017/StoreManager';

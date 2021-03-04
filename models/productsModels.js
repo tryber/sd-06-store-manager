@@ -7,9 +7,13 @@ const getAll = async () => {
   return await connection().then((db) => db.collection(COLLECTION).find().toArray());
 };
 
-// const getById = async () => {
-//   return await connection().then((db) => db.collection(COLLECTION).find());
-// };
+const getByName = async (name) => {
+  return await connection().then((db) => db.collection(COLLECTION).findOne({ name }));
+};
+
+const getById = async (id) => {
+  return await connection().then((db) => db.collection(COLLECTION).findOne(ObjectId(id)));
+};
 
 const createNewProduct = async (name, quantity) => {
   const { insertedId } =
@@ -18,14 +22,10 @@ const createNewProduct = async (name, quantity) => {
         .insertOne({ name, quantity }));
 
   return {
-    id: insertedId,
+    _id: insertedId,
     name,
     quantity,
   };
-};
-
-const getByName = async (name) => {
-  return await connection().then((db) => db.collection(COLLECTION).findOne({ name }));
 };
 
 const deleteAllProducts = async () => {
@@ -37,4 +37,5 @@ module.exports = {
   createNewProduct,
   getByName,
   deleteAllProducts,
+  getById,
 };
