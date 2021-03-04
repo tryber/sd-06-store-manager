@@ -22,9 +22,16 @@ async function update(id, sale) {
   });
 }
 
+async function remove(id) {
+  return await connection().then((db) => {
+    return db.collection('sales').deleteOne({ _id: ObjectId(id) });
+  });
+}
+
 module.exports = {
   getAll,
   create,
   find,
   update,
+  remove,
 };
