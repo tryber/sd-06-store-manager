@@ -2,10 +2,10 @@
 const { MongoClient } = require('mongodb');
 
 //local test
-//const MONGO_DB_URL = 'mongodb://localhost:27017/StoreManager';
+const MONGO_DB_URL = 'mongodb://localhost:27017/StoreManager';
 
 //remote test
-const MONGO_DB_URL = 'mongodb://mongodb:27017/StoreManager';
+//const MONGO_DB_URL = 'mongodb://mongodb:27017/StoreManager';
 
 const DBNAME = 'StoreManager';
 
@@ -18,7 +18,7 @@ const connection = () =>
     .then((conn) => conn.db(DBNAME))
     .catch((err) => {
       console.error(err);
-      process.exit(1);
+      process.exit();
     });
 
 module.exports = connection;

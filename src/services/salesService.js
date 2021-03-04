@@ -20,7 +20,7 @@ async function setValidation (req, res, next) {
 };
 
 async function setValidationID (req, res, next) {
-  const { id } = req.params;
+  const { id } = req.params || null;
   if (!ObjectId.isValid(id)) return res.status(NOT_FOUND).json(
     {
       err: {
@@ -36,4 +36,6 @@ module.exports = {
   setValidation,
   setValidationID,
 };
+
+
 

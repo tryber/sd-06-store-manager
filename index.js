@@ -11,7 +11,7 @@ app.get('/', (_request, response) => {
 
 const bodyParser = require('body-parser');
 const { products } = require('./src/controller/products');
-const { sales } = require('./src/controller/sales');
+const  { sales }  = require('./src/controller/sales');
 
 app.use(bodyParser.json());
 app.use('/', products);
