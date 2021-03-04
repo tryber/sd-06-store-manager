@@ -39,9 +39,20 @@ const updateProduct = async (id, name, quantity) => {
   return updatedProduct;
 };
 
+const deleteProduct = async (id) => {
+  return await connection()
+    .then((db) => { db
+      .collection('products')
+      .deleteOne({_id: ObjectId(id)});
+    })
+    .then(() => true)
+    .catch(() => false);
+};
+
 module.exports = {
   getAllProducts,
   postProducts,
   findById,
-  updateProduct
+  updateProduct,
+  deleteProduct,
 };

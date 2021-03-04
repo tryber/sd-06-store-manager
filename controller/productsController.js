@@ -4,7 +4,8 @@ const {
   postProducts,
   getAllProducts,
   findById,
-  updateProduct
+  updateProduct,
+  deleteProduct
 } = require('../models/storeModel');
 const lastProductDatabase = require('../service/productServices');
 
@@ -84,6 +85,18 @@ router.put('/:id', async (req, res, next) => {
   await updateProduct(id, name, quantity);
   const productUpdate = await findById(id);
   return res.status(SUCCESS).json(productUpdate);  
+});
+
+router.delete('/:id', async (req, res, next) => {
+  const { id } = req.params;
+  const storageProduct = await findById(id);
+  const removeProduct = await deleteProduct(id);
+  console.log('o que tem em remove product?', removeProduct);
+  if (!removeProduct) {
+    err.message = 'Wrong id format';
+    return next(err);
+  }
+  return res.status(SUCCESS).json(storageProduct);
 });
 
 module.exports = router;
