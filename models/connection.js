@@ -8,7 +8,7 @@ const MONGODB_URL = process.env.IS_LOCAL ?
   'mongodb://localhost:27017/StoreManager' :
   'mongodb://mongodb:27017/StoreManager';
 
-const DB_NAME = process.env.DB_NAME;
+const DB_NAME = 'StoreManager';
 
 const connection = () => {
   return MongoClient.connect(MONGODB_URL, {
