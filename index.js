@@ -1,8 +1,13 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+
+const controlProducts = require('./control/controlProducts');
+
 const app = express();
 const port = 3000;
 
-app.get('/', (req, res) => res.send('Hello World!'));
+app.use(bodyParser.json());
+app.use('/products', controlProducts);
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
