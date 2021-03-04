@@ -82,11 +82,18 @@ router.put('/:id', validateProduct, rescue (async (req, res) => {
 }));
 
 router.post('/', validateProduct,  rescue (async (req, res) => {
-  const sale = await SalesService.create(req.body);
-  
   const myProductId = req.body[0].productId;
-  
   const myProduct = await Product.findById(myProductId);
+  
+  if (req.body[0].quantity > myProduct.quantity) return res.status(v.NOT_FOUND)
+    .json({
+      err: {
+        code: 'stock_problem',
+        message: 'Such amount is not permitted to sell'
+      }
+    });
+  
+  const sale = await SalesService.create(req.body);
   
   const newQuantity = req.body[0].quantity;
   Product.updateQuantity(myProduct._id, newQuantity, '-');
