@@ -8,24 +8,32 @@ const statusCode = {
   UNPROCESSABLE: 422,
 };
 
+
+router.post('/', async (request, response) => {
+  const { name, quantity } = request.body;
+  
+  const { code, err, product } = await productsServices.createNewProduct(name, quantity);
+  
+  // console.log('code', code);
+  if (!product) return response.status(code).json({ err });
+  
+  response.status(code).json(product);
+});
+
 router.get('/', async (_request, response) => {
   const allProducts = await productsServices.getAllProducts();
   response.status(statusCode.OK).json(allProducts);
 });
 
-router.post('/', async (request, response) => {
-  const { name, quantity } = request.body;
+// router.get('/:id', async (_request, response) => {
+//   const allProducts = await productsServices.getAllProducts();
+//   response.status(statusCode.OK).json(allProducts);
+// });
 
-  const { code, err, product } = await productsServices
-    .createNewProduct(name, quantity);
-  
-  console.log('code', code);
+router.delete('/', async (request, response) => {
+  const { code, message } = await productsServices.deleteAllProducts();
 
-  if (!product) return response.status(code).json({ err });
-
-  response.status(code).json(product);
-  
-
+  response.status(code).json(message);
 });
 
 module.exports = router;

@@ -31,13 +31,17 @@ const messageError = (code, message) => ({
 const minLengthOf = (value, number) => (value.length < number);
 const greaterThan = (value, number) => (Math.floor(value) <= number);
 const mustBeNumber = (value) => (typeof value !== 'number');
+const productExists = async (value) => {
+  const productFound = await productsModels.getByName(value);
+  if (productFound !== null) return true;
+};
 
 // funções da camada de serviço;
 const getAllProducts = async () => await productsModels.getAll();
 
 const createNewProduct = async (name, quantity) => {
   // console.log('quantity', quantity);
-  // console.log('greaterThan(quantity, compare.zeroQuantity)', greaterThan(quantity, compare.zeroQuantity));
+  // console.log('productExists(name)', await productExists(name));
   switch (true) {
   case minLengthOf(name, compare.minSize):
     return messageError(status.UNPROCESSABLE, message.nameLength);
@@ -45,6 +49,8 @@ const createNewProduct = async (name, quantity) => {
     return messageError(status.UNPROCESSABLE, message.greaterThanZero);
   case mustBeNumber(quantity):
     return messageError(status.UNPROCESSABLE, message.mustBeNumber);
+  case await productExists(name):
+    return messageError(status.UNPROCESSABLE, message.alreadyExists);
   default:
     break;
   }
@@ -53,12 +59,22 @@ const createNewProduct = async (name, quantity) => {
   
   
   return {
-    code: 200,
+    code: status.CREATED,
     product
+  };
+};
+
+const deleteAllProducts = async () => {
+  await productsModels.deleteAllProducts();
+  // return response.status(status.OK).json({ message: 'produtos apagados'});
+  return {
+    code: status.OK,
+    message: 'Collection apagada'
   };
 };
 
 module.exports = {
   getAllProducts,
   createNewProduct,
+  deleteAllProducts,
 };
