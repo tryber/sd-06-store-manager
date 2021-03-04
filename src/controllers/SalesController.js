@@ -117,7 +117,6 @@ router.delete('/:id', rescue (async (req, res) => {
       }
     });
   else {
-    console.log('oi')
     const { quantity } = mySale.itensSold[0];
     const { productId } = mySale.itensSold[0];
     const myProduct = await Product.findById(productId);
