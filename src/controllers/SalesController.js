@@ -96,10 +96,6 @@ router.post('/', validateProduct,  rescue (async (req, res) => {
 
 router.delete('/:id', rescue (async (req, res) => {
   const { id } = req.params;
-  const mySale = await SalesService.findById(id);
-  const { quantity } = mySale.itensSold[0];
-  const { productId } = mySale.itensSold[0];
-  const myProduct = await Product.findById(productId);
   
   if (id.length !== v.TWENTY_FOUR) {
     return res.status (v.UNPROCESSABLE_ENTITY)
@@ -111,16 +107,23 @@ router.delete('/:id', rescue (async (req, res) => {
       });
   }
   
-  const sale = await SalesService.remove(id);
+  const mySale = await SalesService.findById(id);
   
-  if (!sale) return res.status(v.UNPROCESSABLE_ENTITY)
+  if (!mySale) return res.status(v.UNPROCESSABLE_ENTITY)
     .json({
       err: {
         code: 'invalid_data',
         message: 'Wrong sale ID format'
       }
     });
-  else { 
+  else {
+    console.log('oi')
+    const { quantity } = mySale.itensSold[0];
+    const { productId } = mySale.itensSold[0];
+    const myProduct = await Product.findById(productId);
+    
+    const sale = await SalesService.remove(id);
+    
     Product.updateQuantity(myProduct._id, quantity, '+');
     
     return res.status(v.OK).json(sale);
