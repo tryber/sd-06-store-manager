@@ -80,7 +80,6 @@ const getSale = async (req, res) => {
   const sale = await Sales.find(id);
   
   if (!sale) {
-    console.log(id)
     error.err.code = 'not_found';
     error.err.message = 'Sale not found';
 
@@ -131,20 +130,18 @@ const deleteSale = async (req, res) => {
 
   const validId = ObjectId.isValid(id);
   if (!validId) {
-    error.err.code = "invalid_data";
+    error.err.code = 'invalid_data';
     error.err.message = 'Wrong sale ID format';
 
     return res.status(status_ue).json(error);
   }
-
-  console.log(id)
 
   const saleToDelete = await Sales.find(id);
 
   await Sales.remove(id).then(() => {
     return res.status(status_s).json(saleToDelete);
   });
-}
+};
 
 module.exports = {
   createSale,
