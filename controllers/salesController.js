@@ -56,7 +56,15 @@ const createSale = async (req, res) => {
   });
 
   const { _id, name, quantity } = productToSale;
-  await Products.update(_id, name, quantity - data[0].quantity);
+  const testQuantity = quantity - data[0].quantity;
+  if (testQuantity < ZERO) {
+    error.err.code = 'stock_problem';
+    error.err.message = 'Such amount is not permitted to sell';
+
+    return res.status(status_nf).json(error);
+  }
+  
+  await Products.update(_id, name, testQuantity);
 
   return res.status(status_s).json(sales);
 };
