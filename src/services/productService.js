@@ -81,8 +81,32 @@ const getProductByIdService = async (req, res) => {
   return res.status(SUCCESS).send(onlyOneProduct);
 };
 
+const updateProductService = async (req, res) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+
+  switch(true) {
+  case (theLengthLessThan(name, NAME_MIN_LENGTH)):
+    return res.status(UNPROCESSABLE_ENITY)
+      .json({ err: { code, message: errorMessages.nameGreaterThanFive }});
+
+  case (isBiggerThan(quantity, NULL_QUANTITY)):
+    return res.status(UNPROCESSABLE_ENITY)
+      .json({ err:{ code, message: errorMessages.biggerOrEqualOne }});
+
+  case (isTypeIs(quantity, 'number')):
+    return res.status(UNPROCESSABLE_ENITY)
+      .json({ err: { code, message: errorMessages.mustBeNumber }});
+  }
+
+  await products.updateProductModels(id, name, quantity);
+
+  return res.status(SUCCESS).send({ _id: id, name, quantity });
+};
+
 module.exports = {
   createProductService,
   getAllProductsService,
   getProductByIdService,
+  updateProductService,
 };
