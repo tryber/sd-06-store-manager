@@ -104,9 +104,32 @@ const updateProductService = async (req, res) => {
   return res.status(SUCCESS).send({ _id: id, name, quantity });
 };
 
+// Remover produto
+const deleteProductService = async (req, res) => {
+  const { id } = req.params;
+
+  if (id.length !== ID_MONGO_LENGTH ) {
+    return res.status(UNPROCESSABLE_ENITY)
+      .json({ err: { code, message: errorMessages.idFormat }});
+  };
+
+  const onlyOneProduct = await products.getProductByIdModels(id);
+
+  if(onlyOneProduct === null || onlyOneProduct === {}) { 
+    return res.status(UNPROCESSABLE_ENITY).json(
+      {err: { code, message: errorMessages.idFormat } }
+    );
+  }
+
+  await products.deleteProductModels(id);
+
+  return res.status(SUCCESS).send(onlyOneProduct);
+};
+
 module.exports = {
   createProductService,
   getAllProductsService,
   getProductByIdService,
   updateProductService,
+  deleteProductService,
 };

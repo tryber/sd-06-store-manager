@@ -34,10 +34,19 @@ const updateProductModels = async (id, name, quantity) => {
     ));
 };
 
+// Deleta um produto
+const deleteProductModels = async (id) => {
+  return await connection()
+    .then((db) => db.collection('products').deleteOne(
+      { _id: ObjectId(id) } 
+    ));
+};
+
 module.exports = {
   createProductModels,
   findProductByNameModels,
   getAllProductModels,
   getProductByIdModels,
   updateProductModels,
+  deleteProductModels,
 };
