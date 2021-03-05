@@ -29,9 +29,21 @@ const updateSaleUnit = async (id, itensSold) => {
   return {_id, itensSold};
 };
 
+const deleteSaleUnit = async (id) => {
+
+  const result = await connection()
+    .then(mongodb => mongodb.collection('sales')
+      .findOneAndDelete(
+        {_id: ObjectId(id)},
+        {returnOriginal:false}
+      ));
+  return result.value;
+};
+
 module.exports = {
   createSale,
   getAllSales,
   getSaleUnit,
-  updateSaleUnit
+  updateSaleUnit,
+  deleteSaleUnit,
 };

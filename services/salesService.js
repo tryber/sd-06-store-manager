@@ -1,7 +1,8 @@
 const { createSale,
   getAllSales,
   getSaleUnit,
-  updateSaleUnit } = require('../models/salesModels');
+  updateSaleUnit,
+  deleteSaleUnit } = require('../models/salesModels');
 const { status, Messages } = require('../util/dataStatus');
 
 const create = async (req, res)=> {
@@ -24,9 +25,10 @@ const getSales = async (_req, res) => {
 
 const getSaleId = async (req, res) => {
   const { id } = req.params;
+
   const result = await getSaleUnit(id);
 
-  if(!result) return; 
+  if(!result) return res.status(status.not_found).json(Messages.invalidId); 
   
   return res.status(status.OK).json(result);
 };
@@ -40,9 +42,18 @@ const updateSate = async (req, res) => {
   return res.status(status.OK).json(result);
 };
 
+const deleteSale = async (req, res) => {
+  const { id } = req.params;
+
+  const result = await deleteSaleUnit(id);
+
+  return res.status(status.OK).json(result);
+};
+
 module.exports = {
   create,
   getSales,
   getSaleId,
-  updateSate
+  updateSate,
+  deleteSale,
 };
