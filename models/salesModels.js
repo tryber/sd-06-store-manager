@@ -20,13 +20,13 @@ const getSaleUnit = async (id) => {
     .then(mongodb => mongodb.collection('sales').findOne(ObjectId(id)));
 };
 
-const updateSaleUnit = async (id, updateValue) => {
+const updateSaleUnit = async (id, itensSold) => {
   await connection().then(mongodb => mongodb.collection('sales').updateOne(
     {_id: ObjectId(id)},
-    {$set:{updateValue}}
+    {$set:{itensSold}}
   ));
   const _id = id;
-  return {_id, updateValue};
+  return {_id, itensSold};
 };
 
 module.exports = {
