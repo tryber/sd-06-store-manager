@@ -49,6 +49,29 @@ const productExists = async (value) => {
 };
 
 // funções da camada de serviço;
+const createNewProduct = async (name, quantity) => {
+  switch (true) {
+  case minLengthOf(name, compare.minSize):
+    return messageError(statusCode.UNPROCESSABLE, message.nameLength);
+  case greaterThan(quantity, compare.zeroQuantity):
+    return messageError(statusCode.UNPROCESSABLE, message.greaterThanZero);
+  case mustBeNumber(quantity):
+    return messageError(statusCode.UNPROCESSABLE, message.mustBeNumber);
+  case await productExists(name):
+    return messageError(statusCode.UNPROCESSABLE, message.alreadyExists);
+  default:
+    break;
+  }
+
+  const product = await productsModels.createNewProduct(name, quantity);
+  
+  
+  return {
+    code: statusCode.CREATED,
+    product
+  };
+};
+
 const getAllProducts = async (_request, response) => {
   const allProducts = await productsModels.getAll();
   // console.log('allProducts[0]', allProducts[0]);
@@ -93,44 +116,24 @@ const updateProduct = async (request, response) => {
   return await response.status(statusCode.OK).json(productUpdate);
 };
 
-  
-
-const createNewProduct = async (name, quantity) => {
-  switch (true) {
-  case minLengthOf(name, compare.minSize):
-    return messageError(statusCode.UNPROCESSABLE, message.nameLength);
-  case greaterThan(quantity, compare.zeroQuantity):
-    return messageError(statusCode.UNPROCESSABLE, message.greaterThanZero);
-  case mustBeNumber(quantity):
-    return messageError(statusCode.UNPROCESSABLE, message.mustBeNumber);
-  case await productExists(name):
-    return messageError(statusCode.UNPROCESSABLE, message.alreadyExists);
-  default:
-    break;
+const deleteProducts = async (request, response) => {
+  const { id } = request.params;
+    
+  if (id.length !== compare.hexObjectedId) {
+    return responseWith(statusCode.UNPROCESSABLE, message.wrongIdFormat, response);
   }
-
-  const product = await productsModels.createNewProduct(name, quantity);
   
-  
-  return {
-    code: statusCode.CREATED,
-    product
-  };
-};
+  const productRemoved = await productsModels.getById(id);
 
-const deleteAllProducts = async () => {
-  await productsModels.deleteAllProducts();
-  // return response.status(statusCode.OK).json({ message: 'produtos apagados'});
-  return {
-    code: statusCode.OK,
-    message: 'Collection apagada'
-  };
+  await productsModels.deleteProducts(id);
+
+  return response.status(statusCode.OK).json(productRemoved);
 };
 
 module.exports = {
   getAllProducts,
   createNewProduct,
-  deleteAllProducts,
+  deleteProducts,
   getById,
   updateProduct,
 };

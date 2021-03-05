@@ -26,10 +26,6 @@ router.get('/:id', productsServices.getById);
 
 router.put('/:id', productsServices.updateProduct);
 
-router.delete('/', async (request, response) => {
-  const { code, message } = await productsServices.deleteAllProducts();
-
-  response.status(code).json(message);
-});
+router.delete('/:id', productsServices.deleteProducts);
 
 module.exports = router;
