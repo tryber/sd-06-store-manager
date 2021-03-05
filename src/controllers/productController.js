@@ -8,4 +8,6 @@ routes.post('/', productServices.createProductService);
 
 routes.get('/' , productServices.getAllProductsService);
 
+routes.get('/:id', productServices.getProductByIdService);
+
 module.exports = routes;

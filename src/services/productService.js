@@ -3,6 +3,7 @@ const products = require('../models/productModel');
 // No Magic Numbers and Status Numbers
 const NAME_MIN_LENGTH = 5;
 const NULL_QUANTITY = 0;
+const ID_MONGO_LENGTH = 24;
 
 const SUCCESS = 200;
 const SUCCESS_CREATED = 201;
@@ -21,6 +22,7 @@ const errorMessages = {
   biggerOrEqualOne: '"quantity" must be larger than or equal to 1',
   mustBeNumber: '"quantity" must be a number',
   existingProduct: 'Product already exists',
+  idFormat:'Wrong id format',
 };
 
 // Criação do produto + validação
@@ -53,7 +55,6 @@ const createProductService = async (req, res) => {
   return res.status(SUCCESS_CREATED).send({ _id: insertedId, name, quantity });
 };
 
-
 // Lista todos os produtos
 const getAllProductsService = async (_req, res) => {
   const allProducts = await products.getAllProductModels();
@@ -61,7 +62,27 @@ const getAllProductsService = async (_req, res) => {
   return res.status(SUCCESS).send({ products: allProducts });
 };
 
+// Lista produtos por ID
+const getProductByIdService = async (req, res) => {
+  const { id } = req.params;
+
+  if (id.length !== ID_MONGO_LENGTH ) {
+    return res.status(UNPROCESSABLE_ENITY)
+      .json({ err: { code, message: errorMessages.idFormat }});
+  };
+
+  const onlyOneProduct = await products.getProductByIdModels(id);
+
+  if(onlyOneProduct === null || onlyOneProduct === {}) { 
+    return res.status(UNPROCESSABLE_ENITY)
+      .json({ err: { code, message: errorMessages.idFormat } });
+  };
+
+  return res.status(SUCCESS).send(onlyOneProduct);
+};
+
 module.exports = {
   createProductService,
   getAllProductsService,
+  getProductByIdService,
 };
