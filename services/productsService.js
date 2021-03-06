@@ -19,13 +19,13 @@ const createProduct = async (productName, productQuantity) => {
   if(!Number.isInteger(productQuantity)) 
     return {
       code: 'invalid_data',
-      message:  '"quantity" must be a number'
+      message: '"quantity" must be a number'
     };
 
   if (!quantityValidation(productQuantity)) 
     return {
       code: 'invalid_data',
-      message:  '"quantity" must be larger than or equal to 1'
+      message: '"quantity" must be larger than or equal to 1'
     };
   
   if (productExists) 
@@ -39,11 +39,9 @@ const createProduct = async (productName, productQuantity) => {
 
 const allProducts = async () => await products.getAll();
 
-const productById = async (id) => products.getById(id);
+const productById = async (id) => await products.getById(id);
 
 module.exports = {
-/*   nameValidation,
-  quantityValidation, */
   createProduct,
   allProducts,
   productById,
