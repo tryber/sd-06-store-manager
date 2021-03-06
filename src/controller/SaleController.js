@@ -48,4 +48,17 @@ SaleController.delete(
     return response.status(statusCodes.OK).json(recoveredSale);
   }));
 
+SaleController.put(
+  '/:id',
+  // validateSaleExistence,
+  rescue(async (request, response) => {
+    const { id } = request.params;
+    const saleToBeUpdated = request.body;
+
+    await SaleService.updateProductInSale(id, saleToBeUpdated);
+    const updatedSale = await SaleService.findSaleById(id);
+
+    return response.status(statusCodes.OK).json(updatedSale);
+  }));
+
 module.exports = SaleController;
