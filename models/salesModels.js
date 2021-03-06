@@ -2,7 +2,6 @@ const connection = require('./connection');
 const { ObjectId } = require('mongodb');
 
 const createSale = async (result) => {
-  console.log('estou aqui');
 
   const { insertedId } = await connection()
     .then(mongodb => mongodb.collection('sales').insertOne({

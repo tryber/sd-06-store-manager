@@ -22,7 +22,14 @@ const Messages = {
 
   salesNotFound: { err: { code: 'not_found', message: 'Sale not found' } },
 
-  invalidData: { err: { code: 'invalid_data', message: 'Wrong sale ID format' } }
+  invalidData: { err: { code: 'invalid_data', message: 'Wrong sale ID format' } },
+  stuckInvalid:
+  {
+    err: {
+      code: 'stock_problem',
+      message: 'Such amount is not permitted to sell'
+    }
+  },
 };
 
 const status = {

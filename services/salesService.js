@@ -3,11 +3,30 @@ const { createSale,
   getSaleUnit,
   updateSaleUnit,
   deleteSaleUnit } = require('../models/salesModels');
+
+const { findById, updateUnitProduct } = require('../models/productsModels');
 const { status, Messages } = require('../util/dataStatus');
 
 const create = async (req, res)=> {
-  console.log('estou aqui');
   const result = req.body; 
+
+  magicNumbers = {
+    zero: 0,
+  };
+
+  result.map(async element  => {
+    const resultFindProduct  = await findById(element.productId);
+
+    if(resultFindProduct.quantity - element.quantity < magicNumbers.zero ) return res
+      .status(status.not_found)
+      .json(Messages.stuckInvalid);
+
+    await updateUnitProduct(
+      resultFindProduct._id,
+      resultFindProduct.name,
+      resultFindProduct.quantity - element.quantity
+    );
+  });
 
   const resultSale = await createSale(result);
 
@@ -35,12 +54,11 @@ const getSaleId = async (req, res) => {
 };
 
 const updateSate = async (req, res) => {
-  console.log('oi');
   const { id } = req.params;
   const bodySale = req.body;
 
   const result = await updateSaleUnit(id, bodySale);
-
+  
   return res.status(status.OK).json(result);
 };
 
@@ -53,7 +71,18 @@ const deleteSale = async (req, res) => {
   if(!resultSaleUnit) {
     return res.status(status.notFormated).json(Messages.invalidData);
   }
+  const resultFindSale = await getSaleUnit(id);
 
+  resultFindSale.itensSold.map(async element  => {
+    const resultFindProduct = await findById(element.productId);
+
+    return await updateUnitProduct(
+      resultFindProduct._id,
+      resultFindProduct.name,
+      resultFindProduct.quantity + element.quantity
+    );
+  });
+  
   const result = await deleteSaleUnit(id);
 
   return res.status(status.OK).json(result);

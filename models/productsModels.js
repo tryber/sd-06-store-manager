@@ -23,7 +23,7 @@ const create = async (name,quantity) => {
 // FIND PRODUCT BY ID
 const findById = async (id) => {
   return await connection()
-    .then(mongodb => mongodb.collection('products').findOne((id)));
+    .then(mongodb => mongodb.collection('products').findOne(ObjectId(id)));
 };
 
 // FIND PRODUCT BY NAME
@@ -37,8 +37,9 @@ const updateUnitProduct = async (id, name, quantity) => {
   const result = await connection().
     then(mongodb => mongodb.collection('products')
       .updateOne({_id: ObjectId(id)}, {$set: {name, quantity}}));
-  
-  let _id = id;
+
+  let _id = id; 
+
   if(result) return { _id, name, quantity };
 
   return { message: 'Nothing... 404' };
