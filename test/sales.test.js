@@ -222,7 +222,7 @@ describe('6 - Crie um endpoint para listar as vendas', () => {
     await connection.close();
   });
 
-  it.skip('Será validado que todas as vendas estão sendo retornadas', async () => {
+  it('Será validado que todas as vendas estão sendo retornadas', async () => {
     let result;
     let resultProductId;
     let resultSales;
@@ -274,7 +274,7 @@ describe('6 - Crie um endpoint para listar as vendas', () => {
       });
   });
 
-  it.skip('Será validado que é possível listar uma determinada venda', async () => {
+  it('Será validado que é possível listar uma determinada venda', async () => {
     let result;
     let resultSales;
     let resultSalesId;
@@ -324,7 +324,7 @@ describe('6 - Crie um endpoint para listar as vendas', () => {
       });
   });
 
-  it.skip('Será validado que não é possível listar uma venda inexistente', async () => {
+  it('Será validado que não é possível listar uma venda inexistente', async () => {
     await frisby.get(`${url}/sales/9999`)
       .expect('status', 404)
       .then((responseOne) => {

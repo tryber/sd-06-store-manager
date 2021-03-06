@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const connection = require('./connection');
 
 const createSaleModels = async (itensSold) => {
@@ -7,6 +8,20 @@ const createSaleModels = async (itensSold) => {
     );
 };
 
+// Lista todas as vendas 
+const getAllSalesModels = async () => {
+  return await connection()
+    .then((db) => db.collection('sales').find().toArray());
+};
+
+// Lista vendas por ID
+const getSaleByIdModels = async (id) => {
+  return await connection()
+    .then((db) => db.collection('sales').findOne(ObjectId(id)));
+};
+
 module.exports = {
   createSaleModels,
+  getAllSalesModels,
+  getSaleByIdModels,
 };
