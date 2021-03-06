@@ -20,6 +20,7 @@ const validatedQuantity = (item) => {
 const errorMessages = {
   invalidProduct: 'Wrong product ID or invalid quantity',
   notFoundSale:'Sale not found',
+  wrongIDSale: 'Wrong sale ID format',
 };
 
 // Criação vendas
@@ -56,7 +57,7 @@ const getSaleByIdService = async (req, res) => {
 
   const thisSaleOnly = await sales.getSaleByIdModels(id);
   if(thisSaleOnly === null || thisSaleOnly === {})
-    return response.status(NOT_FOUND)
+    return res.status(NOT_FOUND)
       .json({err: { code: codeNotFound, message: errorMessages.notFoundSale }});
 
   return response.status(SUCCESS).send(thisSaleOnly);
@@ -77,9 +78,28 @@ const updateSaleService = async (req, res) => {
   );
 };
 
+const deleteSaleService = async (req, res) => {
+  const { id } = req.params;
+
+  if (id.length !== ID_MONGO_LENGTH ) return res.status(UNPROCESSABLE_ENITY)
+    .json({ err: { code: codeInvalidData, message: errorMessages.wrongIDSale }});
+
+  const thisSaleOnly = await sales.getSaleByIdModels(id);
+
+  if(thisSaleOnly === null || thisSaleOnly === {}) {
+    return res.status(UNPROCESSABLE_ENITY)
+      .json({ err: { code: codeInvalidData, message: errorMessages.wrongIDSale }});
+  }
+  
+  await sales.deleteSaleModels(id);
+
+  return res.status(SUCCESS).send(thisSaleOnly);
+};
+
 module.exports = {
   createSaleService,
   getAllSalesService,
   getSaleByIdService,
   updateSaleService,
+  deleteSaleService,
 };

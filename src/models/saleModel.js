@@ -28,9 +28,17 @@ const updateSaleModels = async (id, sale) => {
   ));
 };
 
+// Exclui uma venda
+const deleteSaleModels = async (id) => {
+  return await connection().then((db) => db.collection('sales').deleteOne(
+    { _id: ObjectId(id) }
+  ));
+};
+
 module.exports = {
   createSaleModels,
   getAllSalesModels,
   getSaleByIdModels,
   updateSaleModels,
+  deleteSaleModels,
 };

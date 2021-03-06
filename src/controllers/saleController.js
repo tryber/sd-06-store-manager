@@ -12,4 +12,6 @@ routes.get('/:id', saleServices.getSaleByIdService);
 
 routes.put('/:id', saleServices.updateSaleService);
 
+routes.delete('/:id', saleServices.deleteSaleService);
+
 module.exports = routes;
