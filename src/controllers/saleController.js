@@ -10,4 +10,6 @@ routes.get('/', saleServices.getAllSalesService);
 
 routes.get('/:id', saleServices.getSaleByIdService);
 
+routes.put('/:id', saleServices.updateSaleService);
+
 module.exports = routes;
