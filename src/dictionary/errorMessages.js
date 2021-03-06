@@ -1,3 +1,4 @@
+const AMOUNT_NOT_PERMITTED_TO_SELL = 'Such amount is not permitted to sell';
 const NAME_MINIMUM_LENGTH = '"name" length must be at least 5 characters long';
 const PRODUCT_ALREADY_EXISTS = 'Product already exists';
 const QUANTITY_MUST_BE_A_NUMBER = '"quantity" must be a number';
@@ -8,6 +9,7 @@ const WRONG_PRODUCT_ID_OR_INVALID_QUANTITY = 'Wrong product ID or invalid quanti
 const WRONG_SALE_ID_FORMAT = 'Wrong sale ID format';
 
 module.exports = {
+  AMOUNT_NOT_PERMITTED_TO_SELL,
   NAME_MINIMUM_LENGTH,
   PRODUCT_ALREADY_EXISTS,
   QUANTITY_MUST_BE_A_NUMBER,

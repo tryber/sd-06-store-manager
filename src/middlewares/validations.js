@@ -97,7 +97,7 @@ const validateQuantity = (request, response, next) => {
   next();
 };
 
-const validateItensSoldQuantity = (request, response, next) => {
+const validateLegalQuantity = (request, response, next) => {
   const sale = request.body;
   const MINIMUM_QUANTITY = 1;
 
@@ -148,10 +148,32 @@ const validateSaleExistence = async (request, response, next) => {
   next();
 };
 
+const validateProductQuantityForSale = async (request, response, next) => {
+  const itensSold = request.body;
+
+  itensSold.forEach(async item => {
+    const { productId } = item;
+    const productToCompareQuantity = await ProductService.findProductById(productId);
+    const notEnoughProduct = productToCompareQuantity.quantity < item.quantity;
+
+    if (notEnoughProduct) {
+      return response.status(statusCodes.NOT_FOUND).json({
+        err: {
+          code: codeMessages.STOCK_PROBLEM,
+          message: errorMessages.AMOUNT_NOT_PERMITTED_TO_SELL
+        }
+      });
+    }
+  });
+
+  next();
+};
+
 module.exports = {
   validateName,
-  validateItensSoldQuantity,
+  validateLegalQuantity,
   validateProductExistence,
+  validateProductQuantityForSale,
   validateQuantity,
   validateSaleExistence,
 };

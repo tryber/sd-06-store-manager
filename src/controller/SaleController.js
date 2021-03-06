@@ -1,9 +1,9 @@
 const { Router } = require('express');
 const rescue = require('express-rescue');
 const SaleService = require('../service/SaleService');
-const ProductService = require('../service/ProductService');
 const {
-  validateItensSoldQuantity,
+  validateLegalQuantity,
+  validateProductQuantityForSale,
   validateSaleExistence
 } = require('../middlewares/validations');
 const statusCodes = require('../dictionary/statusCodes');
@@ -12,26 +12,11 @@ const SaleController = new Router();
 
 SaleController.post(
   '/',
-  validateItensSoldQuantity,
+  validateLegalQuantity,
+  validateProductQuantityForSale,
   rescue(async (request, response) => {
     const itensSold = request.body;
     const sale = { itensSold };
-
-    itensSold.forEach(async item => {
-      const { productId } = item;
-      const productToCompareQuantity = await ProductService.findProductById(productId);
-
-      if (productToCompareQuantity.quantity < item.quantity) return response.status(404).json({
-        err: {
-          code: "stock_problem",
-          message: "Such amount is not permitted to sell"
-        }
-      })
-    }
-
-    );
-
-
     const { ops: createSale } = await SaleService.createSale(sale);
 
     response.status(statusCodes.OK).json(createSale[0]);
@@ -67,7 +52,7 @@ SaleController.delete(
 
 SaleController.put(
   '/:id',
-  validateItensSoldQuantity,
+  validateLegalQuantity,
   rescue(async (request, response) => {
     const { id } = request.params;
     const saleToBeUpdated = request.body;
