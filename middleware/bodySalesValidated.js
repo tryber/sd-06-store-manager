@@ -14,9 +14,9 @@ const BodyValidated = async (req, res, next) => {
       body.quantity === magicNumbers.zero) return true;
     if(typeof body.quantity === 'string') return true;
   });
-
-  if(result) res.status(notFormated).json(InvalidQuantity);
-
+  
+  if(result) return res.status(notFormated).json(InvalidQuantity);
+  
   next();
 };
 

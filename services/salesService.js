@@ -6,6 +6,7 @@ const { createSale,
 const { status, Messages } = require('../util/dataStatus');
 
 const create = async (req, res)=> {
+  console.log('estou aqui');
   const result = req.body; 
 
   const resultSale = await createSale(result);
@@ -34,6 +35,7 @@ const getSaleId = async (req, res) => {
 };
 
 const updateSate = async (req, res) => {
+  console.log('oi');
   const { id } = req.params;
   const bodySale = req.body;
 
@@ -43,7 +45,14 @@ const updateSate = async (req, res) => {
 };
 
 const deleteSale = async (req, res) => {
+
   const { id } = req.params;
+
+  const resultSaleUnit = await getSaleUnit(id);
+
+  if(!resultSaleUnit) {
+    return res.status(status.notFormated).json(Messages.invalidData);
+  }
 
   const result = await deleteSaleUnit(id);
 

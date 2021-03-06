@@ -12,24 +12,25 @@ const salesValited = async (req, res, next) => {
     zero: 0,
     idformat: 24
   };
+  // Testar Quantidade Negativa, Zero
+  // Testar ID Valid
 
-  products.map(async element => {
+  const resultQuantity = products.some(body => {
+    // console.log(body.quantity)
+    if(body.quantity < magicNumbers.zero ||
+      body.quantity === magicNumbers.zero) return true;
 
-    if ( element.productId.length !== magicNumbers.idformat ) { 
-      return res.status(notFormated).json(invalidId);
-    }
-    const resultValidatedId = await findById(ObjectId(element.productId));
-
-    if( resultValidatedId === null) return res.status(notFormated).json(invalidId);
-    
-    if(element.quantity < magicNumbers.zero ||
-       element.quantity === magicNumbers.zero ||
-        typeof element.quantity === 'string') {
-      return res.status(notFormated).json(InvalidQuantity);
-    };
-    
+    if(typeof body.quantity === 'string') return true;
   });
-  
+
+  if(resultQuantity) return res.status( notFormated).json(InvalidQuantity);
+
+  const resultProductId = products.some( body => {
+    if(body.productId.length !== magicNumbers.idformat) return true;
+  });
+
+  if(resultProductId) return res.status(notFormated).json(invalidId);
+
   next(); 
 };
 
