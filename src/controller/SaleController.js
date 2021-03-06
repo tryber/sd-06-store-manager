@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const rescue = require('express-rescue');
 const SaleService = require('../service/SaleService');
+const ProductService = require('../service/ProductService');
 const {
   validateItensSoldQuantity,
   validateSaleExistence
@@ -15,6 +16,22 @@ SaleController.post(
   rescue(async (request, response) => {
     const itensSold = request.body;
     const sale = { itensSold };
+
+    itensSold.forEach(async item => {
+      const { productId } = item;
+      const productToCompareQuantity = await ProductService.findProductById(productId);
+
+      if (productToCompareQuantity.quantity < item.quantity) return response.status(404).json({
+        err: {
+          code: "stock_problem",
+          message: "Such amount is not permitted to sell"
+        }
+      })
+    }
+
+    );
+
+
     const { ops: createSale } = await SaleService.createSale(sale);
 
     response.status(statusCodes.OK).json(createSale[0]);
@@ -50,7 +67,7 @@ SaleController.delete(
 
 SaleController.put(
   '/:id',
-  // validateSaleExistence,
+  validateItensSoldQuantity,
   rescue(async (request, response) => {
     const { id } = request.params;
     const saleToBeUpdated = request.body;
