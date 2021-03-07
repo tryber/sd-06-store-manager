@@ -8,13 +8,17 @@ const {
   destroySales,
 
 } = require('../models/salesModels');
-const { setValidation, setValidationID } = require('../services/salesService');
+const { setValidation, setValidationID, setValidationStock,   setValidationUpdate,
+} = require('../services/salesService');
 
 const sales = new Router();
 
 const SUCCESS = 200;
 const NOT_FOUND = 404;
 const UNPROCESSABLE_ENTITY = 422;
+
+
+const ZERO = 0;
 
 
 sales.get(
@@ -37,7 +41,8 @@ sales.get(
   });
 
 sales.post(
-  '/sales', setValidation, async (req, res) => {
+  '/sales', setValidation,   setValidationUpdate
+  , async (req, res) => {
     const newSale = await createSales(req.body);
     res.status(SUCCESS).json(newSale);
   }
@@ -52,7 +57,7 @@ sales.put(
   });
 
 sales.delete(
-  '/sales/:id', async (req, res) => {
+  '/sales/:id', setValidationStock, async (req, res) => {
     const { id } = req.params;
     try{
       const destroyedSales = await destroySales(id);
@@ -66,5 +71,6 @@ sales.delete(
       });
     }
   });
+
 
 module.exports = { sales };

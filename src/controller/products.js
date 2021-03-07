@@ -47,12 +47,14 @@ products.delete(
   '/products/:id', setValidationID, async (req, res) => {
     const { id } = req.params;
     const destroyedProduct = await getById(id);
-    if (!destroyedProduct) return res.status(UNPROCESSABLE_ENTITY ).json({
+    if (!destroyedProduct) {
+      return res.status(UNPROCESSABLE_ENTITY ).json({
       err: {
         code: 'invalid_data',
         message: 'Wrong id format',
       },
-    });
+    })
+  };
     await destroy(id);
     return res.status(SUCCESS).send(destroyedProduct);
   });

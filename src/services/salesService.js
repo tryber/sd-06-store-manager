@@ -1,8 +1,11 @@
 const { ObjectId } = require('mongodb');
+const product = require('../models/productModels');
+const { getByIdSales } = require('../models/salesModels');
 
 const UNPROCESSABLE_ENTITY = 422;
 const NOT_FOUND = 404;
 const one = 1;
+const zero = 0;
 
 async function setValidation (req, res, next) {
   const sale = req.body;
@@ -32,9 +35,39 @@ async function setValidationID (req, res, next) {
   next();
 };
 
+const setValidationUpdate = async (req, res, next) => {
+  const [{ productId, quantity }] = req.body;
+  const item = await product.getById(productId);
+  const newStockQuantity = (item.quantity - quantity);
+  if (newStockQuantity < zero){
+    return res.status(NOT_FOUND).json({
+      err: {
+        code: 'stock_problem',
+        message: 'Such amount is not permitted to sell'
+        }
+    });
+  }
+  await product.update(item._id, item.name, newStockQuantity);
+
+  next();
+};
+
+const setValidationStock = async (req, res, next) => {
+  const { id } = req.params;
+  const sales = await getByIdSales(id);
+  const { productId, quantity } = sales.itensSold['0'];
+  const item = await product.getById(productId);
+  const newStockQuantity = (item.quantity + quantity);
+  await product.update(item._id, item.name, newStockQuantity);
+
+  next();
+};
+
 module.exports = {
   setValidation,
   setValidationID,
+  setValidationUpdate,
+  setValidationStock,
 };
 
 
