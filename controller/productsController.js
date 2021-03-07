@@ -6,7 +6,7 @@ const {
   findById,
   updateProduct,
   deleteProduct
-} = require('../models/storeModel');
+} = require('../models/productModel');
 const lastProductDatabase = require('../service/productServices');
 
 const { 

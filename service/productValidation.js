@@ -1,4 +1,4 @@
-const { getAllProducts } = require('../models/storeModel');
+const { getAllProducts } = require('../models/productModel');
 
 const validateNameProduct = (name) => {
   const minCaracter = 5;
