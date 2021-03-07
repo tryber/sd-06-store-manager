@@ -1,19 +1,13 @@
 const service = require('../services/productsService');
-const { SUCCESS, CREATED, UNPROCESSABLE_ENTITY } = require('./statusCode');
+const { SUCCESS, CREATED, UNPROCESSABLE_ENTITY } = require('../dictionary/statusCode');
+const { productDuplicated } = require('../dictionary/errorMessages');
 
 const createNewProduct = async (req, res, next) => {
   const { name, quantity } = req.body; 
   const productCreated = await service.createProduct(name, quantity);
 
-  if (productCreated.code === 'invalid_data') {
-    const { code, message } = productCreated;
-
-    return next({
-      statusCode: UNPROCESSABLE_ENTITY,
-      code,
-      message,
-    });
-  }
+  if (productCreated === 'duplicated') 
+    return next({ statusCode: UNPROCESSABLE_ENTITY, ...productDuplicated });
 
   return res.status(CREATED).json(productCreated.info);
 };

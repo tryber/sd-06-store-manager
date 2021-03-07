@@ -3,6 +3,7 @@ const rescue = require('express-rescue');
 
 const productsController = require('./controllers/productsController');
 const error = require('./middlewares/error');
+const validation = require('./middlewares/validation');
 
 const app = express();
 const port = 3000;
@@ -14,7 +15,10 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
-app.post('/products', rescue(productsController.createNewProduct));
+app.post('/products', 
+  rescue(validation.name), 
+  validation.quantity,
+  rescue(productsController.createNewProduct));
 
 app.get('/products', rescue(productsController.getAll));
 
