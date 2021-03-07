@@ -8,12 +8,17 @@ const getById = async (id) => {
   return Products.getById(id);
 };
 
+const findProductByName = async (name) => {
+  console.log('service', name);
+  return Products.findProductByName(name);
+};
+
 const createProduct = async (name, quantity) => {
   return Products.createProduct(name, quantity);
 };
 
-const updateProduct = async (id, name, quantity) => {
-  return Products.updateProduct(id, name, quantity);
+const updateProduct = async (id, productData) => {
+  return Products.updateProduct(id, productData);
 };
 
 const deleteProduct = async (id) => {
@@ -24,6 +29,7 @@ module.exports = {
   createProduct,
   getAll,
   getById,
+  findProductByName,
   updateProduct,
   deleteProduct
 };
