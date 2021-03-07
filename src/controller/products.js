@@ -49,12 +49,12 @@ products.delete(
     const destroyedProduct = await getById(id);
     if (!destroyedProduct) {
       return res.status(UNPROCESSABLE_ENTITY ).json({
-      err: {
-        code: 'invalid_data',
-        message: 'Wrong id format',
-      },
-    })
-  };
+        err: {
+          code: 'invalid_data',
+          message: 'Wrong id format',
+        },
+      });
+    };
     await destroy(id);
     return res.status(SUCCESS).send(destroyedProduct);
   });

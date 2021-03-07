@@ -17,10 +17,6 @@ const SUCCESS = 200;
 const NOT_FOUND = 404;
 const UNPROCESSABLE_ENTITY = 422;
 
-
-const ZERO = 0;
-
-
 sales.get(
   '/sales', async (_req, res) => {
     const salesList = await getAllSales();

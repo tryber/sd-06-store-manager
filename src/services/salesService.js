@@ -44,9 +44,9 @@ const setValidationUpdate = async (req, res, next) => {
       err: {
         code: 'stock_problem',
         message: 'Such amount is not permitted to sell'
-        }
+      }
     });
-  }
+  };
   await product.update(item._id, item.name, newStockQuantity);
 
   next();
