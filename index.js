@@ -2,7 +2,8 @@ const
   express = require('express'),
   bodyParser = require('body-parser'),
   dotenv = require('dotenv'),
-  productsRouter = require('./controllers/productsRouter');
+  ProductsRouter = require('./controllers/ProductsRouter'),
+  SalesRouter = require('./controllers/SalesRouter');
 
 const
   app = express(),
@@ -16,7 +17,9 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
-app.use('/products', productsRouter);
+app.use('/products', ProductsRouter);
+
+app.use('/sales', SalesRouter);
 
 app.get('/test', (req, res) => res.send('Hello Project!'));
 app.listen(port, () => console.log(`MyStoreApp active and listening on port ${port}!`));
