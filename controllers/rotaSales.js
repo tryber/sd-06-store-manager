@@ -26,4 +26,6 @@ salesRouter.post('/', validateQuantityGreaterEqual0,
     return res.status(status200).json({_id: insertedId, itensSold: products });
   });
 
+salesRouter.get('/sales', async (req, res) => {});
+
 module.exports = salesRouter;
