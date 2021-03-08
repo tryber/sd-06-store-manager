@@ -1,15 +1,16 @@
 const express = require('express');
-// const status422 = 422;
 const status201 = 201;
 const status200 = 200;
-
+// import middlewares
 const {
   validateNameGreater5,
   validateProductAlredyExist,
   validateQuantityGreaterEqual0,
   validateQuantityNotString,
   validateIdExists
-} = require('../services/middlewares');
+} = require('../services/middlewaresProduct');
+// --------------------------------------
+// import querys
 const {
   createProduct,
   findProductByName,
@@ -17,8 +18,8 @@ const {
   getAll,
   updateNameQuantity,
   deleteProduct
-} = require('../models/querys');
-
+} = require('../models/querysProduct');
+// -------------------------------------------
 const productRouter = express.Router();
 
 productRouter.post('/',validateNameGreater5, validateQuantityGreaterEqual0,

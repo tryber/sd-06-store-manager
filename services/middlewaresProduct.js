@@ -1,12 +1,11 @@
 const {
   findProductByName,
   findProductById
-} = require('../models/querys');
+} = require('../models/querysProduct');
 
 const magicNumberzero = 0;
 const magicNumbercinco = 5;
 const status422 = 422;
-// const status200 = 200;
 
 
 const validateNameGreater5 = (req, res, next) => {
