@@ -66,7 +66,6 @@ const validateIdExists = async (req, res, next) => {
   try {
     const { id } = req.params;
     const [{ _id }] = await findProductById(id);
-    console.log(_id, id);
     if(JSON.stringify(_id) === id || !_id || !id) {
       return res.status(status422).json({
         err: {

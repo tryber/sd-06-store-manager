@@ -1,11 +1,11 @@
 const {
   createSales,
-  findSalesByName
+  findSalesByProduct
 } = require('../models/querysSales');
 
 const magicNumberzero = 0;
-const magicNumbercinco = 5;
 const status422 = 422;
+const status404 = 404;
 
 const validateQuantityGreaterEqual0 = (req, res, next) => {
   const [{ quantity }] = req.body;
@@ -34,7 +34,31 @@ const validateQuantityNotString = (req, res, next) => {
   next();
 };
 
+const validateIdSalesExists = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const { id } = req.params;
+    const idExists = await findSalesByProduct(id);
+    if(JSON.stringify(idExists) === id || !_id || !id) {
+      return res.status(status404).json({
+        err: {
+          code: 'not_found',
+          message: 'Sale not found'
+        }
+      });
+    };
+  } catch { return res.status(status404).json({
+    err: {
+      code: 'not_found',
+      message: 'Sale not found'
+    }
+  });
+  }
+  next();
+};
+
 module.exports = {
   validateQuantityGreaterEqual0,
-  validateQuantityNotString
+  validateQuantityNotString,
+  validateIdSalesExists
 };
