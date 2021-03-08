@@ -15,7 +15,8 @@ const {
   findProductByName,
   findProductById,
   getAll,
-  updateNameQuantity
+  updateNameQuantity,
+  deleteProduct
 } = require('../models/querys');
 
 const productRouter = express.Router();
@@ -47,5 +48,12 @@ productRouter.put('/:id',validateNameGreater5, validateQuantityGreaterEqual0,
     const findNovo = await findProductById(id);
     return res.status(status200).json(findNovo[0]);
   });
+
+productRouter.delete('/:id', validateIdExists, async (req, res) => {
+  const { id } = req.params;
+  const findDelete = await findProductById(id);
+  await deleteProduct(id);
+  return res.status(status200).json(findDelete[0]);
+});
 
 module.exports = productRouter;
