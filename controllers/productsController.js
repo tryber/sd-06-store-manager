@@ -3,7 +3,6 @@ const {
   SUCCESS,
   CREATED,
   UNPROCESSABLE_ENTITY,
-  INTERNAL_ERROR
 } = require('../dictionary/statusCode');
 const { productDuplicated, wrongIdFormat } = require('../dictionary/errorMessages');
 

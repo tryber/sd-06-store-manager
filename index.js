@@ -2,8 +2,10 @@ const express = require('express');
 const rescue = require('express-rescue');
 
 const productsController = require('./controllers/productsController');
+const salesController = require('./controllers/salesController');
 const error = require('./middlewares/error');
-const validation = require('./middlewares/validation');
+const productsValidation = require('./middlewares/productsValidation');
+const salesValidation = require('./middlewares/salesValidation');
 
 const app = express();
 const port = 3000;
@@ -16,25 +18,34 @@ app.get('/', (_request, response) => {
 });
 
 app.post('/products', 
-  validation.name, 
-  validation.quantity,
+  productsValidation.name, 
+  productsValidation.quantity,
   rescue(productsController.createNewProduct)
 );
+
 app.get('/products', 
   rescue(productsController.getAll)
 );
+
 app.get('/products/:id',
-  validation.productId,
+  productsValidation.id,
   rescue(productsController.getById)
 );
+
 app.put('/products/:id',
-  validation.name,
-  validation.quantity,
+  productsValidation.name,
+  productsValidation.quantity,
   rescue(productsController.updateProduct)
 );
+
 app.delete('/products/:id',
-  validation.productId,
+  productsValidation.id,
   rescue(productsController.deleteProduct)
+);
+
+app.post('/sales',
+  salesValidation.quantity,
+  rescue(salesController.createNewSale)
 );
 
 app.use(error);

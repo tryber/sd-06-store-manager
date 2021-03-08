@@ -39,7 +39,6 @@ const updateOne = async (id, name, quantity) => {
 const deleteOne = async (id) => {
   const { value } = await connection().then((db) => db.collection(coll).findOneAndDelete(
     { _id: mongo.ObjectID(id) },
-    { returnOriginal: false }
   ));
 
   return value;

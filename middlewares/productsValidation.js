@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const { ObjectId } = require('mongodb');
 const { UNPROCESSABLE_ENTITY } = require('../dictionary/statusCode');
 const { 
   invalidName,
@@ -29,12 +29,12 @@ const quantity = (req, res, next) => {
   next();
 };
 
-const productId = (req, res, next) => {
-  const isValid = mongoose.Types.ObjectId.isValid(req.params.id);
+const id = (req, res, next) => {
+  const isValid = ObjectId.isValid(req.params.id);
 
   if(!isValid) return res.status(UNPROCESSABLE_ENTITY).json({ err: wrongIdFormat });
 
   next();
 };
 
-module.exports = { name, quantity, productId };
+module.exports = { name, quantity, id };

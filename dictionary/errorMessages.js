@@ -18,5 +18,9 @@ module.exports = {
   wrongIdFormat: {
     code: 'invalid_data',
     message: 'Wrong id format'
+  },
+  wrongIdOrInvalidQuantity: {
+    code: 'invalid_data',
+    message: 'Wrong product ID or invalid quantity'
   }
 };
