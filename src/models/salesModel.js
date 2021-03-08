@@ -1,5 +1,5 @@
 const connection = require('./connection');
-const ObjectId = require('mongodb');
+const { ObjectId } = require('mongodb');
 
 /**
  * Criando uma venda e incluindo itens
@@ -13,7 +13,6 @@ const createSale = async (itensSold) => {
       console.log(err);
       throw new Error(err);
     });
-  console.log(result);
   return result.ops;
 };
 
@@ -25,10 +24,10 @@ const findAllSales = async () => {
 };
 
 const findSaleById = async (id) => {
-  return await connection().then((db) => db
-    .collection('sales')
-    .findOne({ _id: ObjectId(id) })
-  );
+  if (!ObjectId.isValid(id)) return null;
+  const result = await connection()
+    .then((db) => db.collection('sales').findOne(ObjectId(id)));
+  return result;
 };
 
 const removeSale = async (id) => {

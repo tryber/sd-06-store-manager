@@ -1,5 +1,6 @@
-const ObjectId = require('mongodb');
+const { ObjectId } = require('mongodb');
 const { findSaleById } = require('../models/salesModel');
+const connection = require('../models/connection');
 
 const quantityValue = 0;
 const CREATED = 201;
@@ -37,22 +38,15 @@ const validingQuantity = (req, res, next) => {
   next();
 };
 
+/**
+ * Objeto que valida se uma venda existe
+ */
 const validingSale = async (req, res, next) => {
   const { id } = req.params;
-
-  if (!ObjectId.isValid(id)) {
-    return res.status(deuRuin).json(
-      {
-        err: {
-          'code': 'not_found',
-          'message': 'Sale not found',
-        }
-      }
-    );
-  }
-
-  const result = await SaleService.findSaleById(id);
-  if (!result) {
+  const seeSale = await connection().then((db) => db
+    .collection('sales').findOne(ObjectId(id)));
+  
+  if (!seeSale) {
     return res.status(nunAchei).json(
       {
         err: {
@@ -62,7 +56,6 @@ const validingSale = async (req, res, next) => {
       }
     );
   }
-
   next();
 };
 

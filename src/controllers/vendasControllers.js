@@ -9,6 +9,7 @@ const { validingQuantity, validingSale } = require('../middlewares/validingSales
 /** abreviação de status */
 const cadastrado = 201;
 const tudoCerto = 200;
+const deuRuin = 404;
 const nunVi = 422;
 
 /** Cadastro das vendas */
@@ -25,18 +26,30 @@ vendasRouter.get('/', rescue(async (req, res) => {
 }));
 
 /** listando venda por id */
-vendasRouter.get('/:id', validingSale, rescue(async (req, res) => {
+vendasRouter.get('/:id', rescue(async (req, res) => {
   const { id } = req.params;
   const result = await findSaleById(id);
-  res.status(tudoCerto).json(result);
+  if (!result) return res.status(deuRuin).json({
+    err: {
+      'code': 'not_found',
+      'message': 'Sale not found'
+    }
+  });
+  return res.status(tudoCerto).json(result);
 }));
 
 /** apagando venda */
 vendasRouter.delete('/:id', rescue(async (req, res) => {
   const { id } = req.params;
   const sale = await findSaleById(id);
+  if (!sale) return res.status(nunVi).json({
+    err: {
+      'code': 'invalid_data',
+      'message': 'Wrong sale ID format'
+    }
+  });
   await removeSale(id);
-  return response.status(tudoCerto).json(sale);
+  return res.status(tudoCerto).json(sale);
 }));
 
 module.exports = vendasRouter;
