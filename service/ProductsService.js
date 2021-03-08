@@ -9,7 +9,6 @@ const getById = async (id) => {
 };
 
 const findProductByName = async (name) => {
-  console.log('service', name);
   return Products.findProductByName(name);
 };
 

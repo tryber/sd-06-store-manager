@@ -4,7 +4,9 @@ const { ObjectId } = require('mongodb');
 
 const router = Router();
 const SalesService = require('../service/SalesService');
-const { updateProductQuantity } = require('../middlewares/updateQuantity');
+const { updateProductQuantity,
+  updateDeletedSales
+} = require('../middlewares/updateQuantity');
 const { validateSales } = require('../middlewares/validateSalesData');
 const UNPROCESSABLE_ENTITY = 422;
 const NOT_FOUND = 404;
@@ -65,7 +67,7 @@ router.put('/sales/:id',
     return res.status(SUCCESS).json({ _id:id, itensSold:products });
   }));
 
-router.delete('/sales/:id', rescue (async (req, res) => {
+router.delete('/sales/:id', updateDeletedSales, rescue (async (req, res) => {
   const { id } = req.params;
 
   if (!ObjectId.isValid(id)) {
