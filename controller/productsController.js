@@ -18,10 +18,9 @@ const {
 const router = Router();
 const SUCCESS = 200;
 const CREATED = 201;
-const UNPROCESSABLE_ENTITY = 422;
 
 const err = {
-  status: UNPROCESSABLE_ENTITY,
+  status: 422,
   message: '',
 };
 
