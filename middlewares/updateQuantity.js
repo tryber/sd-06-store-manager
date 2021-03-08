@@ -1,13 +1,22 @@
+const { ObjectId } = require('mongodb');
 const ProductsService = require('../service/ProductsService');
 const SalesService = require('../service/SalesService');
 const NOT_FOUND = 404;
 const ZERO = 0;
+const UNPROCESSABLE_ENTITY = 422;
 
 const updateProductQuantity = async (req, res, next) => {
   const products = req.body;
 
   products.map(async (item) => {
     const { productId, quantity } = item;
+    if (!ObjectId.isValid(productId)) {
+      return res.status(UNPROCESSABLE_ENTITY)
+        .json({err: { 
+          code: 'invalid_data',  
+          message: 'Wrong sale ID format' 
+        } });
+    }
     const product = await ProductsService.getById(productId);
     const updatedProductQuantity = {
       name: product.name,
@@ -28,6 +37,14 @@ const updateProductQuantity = async (req, res, next) => {
 
 const updateDeletedSales = async (req, res, next) => {
   const { id } = req.params;
+  if (!ObjectId.isValid(id)) {
+    return res.status(UNPROCESSABLE_ENTITY)
+      .json({err: { 
+        code: 'invalid_data',  
+        message: 'Wrong sale ID format' 
+      } });
+  }
+
   const arrSales = await SalesService.getById(id);
   arrSales.itensSold.map(async (item) => {
     const { productId, quantity } = item;
