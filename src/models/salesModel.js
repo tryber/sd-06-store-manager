@@ -30,9 +30,7 @@ const createSale = async (itensSold) => {
 
     const estoqueAtual = await (connection().then((db) => db.collection('products')
       .findOne({ _id: ObjectId(item.productId) })));
-
     const quantity = estoqueAtual.quantity - item.quantity;
-
     const test = await atualizaCadastro(quantity, item.productId);
 
   });
