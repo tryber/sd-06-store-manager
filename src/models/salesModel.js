@@ -7,6 +7,27 @@ const { ObjectId } = require('mongodb');
  * @returns id da venda e produtos incluso
  */
 const createSale = async (itensSold) => {
+
+  itensSold.map( async (item) => {
+
+    const estoqueAtual = await (connection().then((db) => db.collection('products')
+      .findOne({ _id: ObjectId(item.productId) })));
+
+    console.log(estoqueAtual);
+
+    const quantity = estoqueAtual.quantity - item.quantity;
+
+    const { result } = await (connection().then((db) => db.collection('products')
+      .updateOne({
+        _id: ObjectId(item.productId)
+      },
+      {
+        $set: { quantity }
+      })
+    ));
+    console.log( result );
+  });
+
   const result = await connection()
     .then((db) => db.collection('sales').insertOne({ itensSold }))
     .catch((err) => {
@@ -44,8 +65,16 @@ const updateSale = async (id, products) => {
 };
 
 
-
+/**
+ * Remove venda
+ * @param {*} id 
+ * @returns 
+ */
 const removeSale = async (id) => {
+
+
+
+  
   return await connection().then(db => db
     .collection('sales')
     .deleteOne(

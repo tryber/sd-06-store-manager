@@ -8,12 +8,6 @@ const OK = 200;
 const deuRuin = 422;
 const nunAchei = 404;
 
-/** 
- * Função que verifica se o(s) produtos cadastrados na venda existe
- * @param {*} Array com um ou mais (id, quantidade) produtos
- */
-
-
 /**
  * Função que valida a quantidade de produtos vendidos
  * @param {*} array com id e quantidade do(s) produto(s) vendido 
