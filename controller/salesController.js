@@ -1,6 +1,5 @@
 const { Router } = require('express');
 const { ObjectId } = require('mongodb');
-const { findSaleById } = require('../models/salesModel');
 const {
   newSale,
   findAllSales,
@@ -13,6 +12,7 @@ const router = Router();
 const SUCCESS = 200;
 const NOT_FOUND = 404;
 const UNPROCESSABLE_ENTITY = 422;
+const INTERNAL_SERVER_ERROR = 500;
 
 const err = {
   code: '',
@@ -87,7 +87,7 @@ router.delete('/:id', async (req, res, next) => {
     await deleteSale(id);
     return res.status(SUCCESS).json(storageSale);
   }
-  return res.status(500)
+  return res.status(INTERNAL_SERVER_ERROR);
 });
 
 module.exports = router;
