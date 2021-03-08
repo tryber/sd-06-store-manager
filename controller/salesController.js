@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const { ObjectId } = require('mongodb');
+const { findSaleById } = require('../models/salesModel');
 const {
   newSale,
   findAllSales,
@@ -49,6 +50,12 @@ router.get('/:id', async (req, res, next) => {
     return next(err);
   }
   const searchedId = await findSale(id);
+  if (!searchedId) {
+    err.code = 'not_found';
+    err.message = 'Sale not found';
+    err.status = NOT_FOUND;
+    return next(err);
+  }
   return res.status(SUCCESS).json(searchedId);
 });
 
@@ -76,8 +83,11 @@ router.delete('/:id', async (req, res, next) => {
     return next(err);
   }
   const storageSale = await findSale(id);
-  await deleteSale(id);
-  return res.status(SUCCESS).json(storageSale);
+  if (storageSale) {
+    await deleteSale(id);
+    return res.status(SUCCESS).json(storageSale);
+  }
+  return res.status(500)
 });
 
 module.exports = router;
