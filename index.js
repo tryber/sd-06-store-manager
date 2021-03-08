@@ -27,6 +27,11 @@ app.get('/products/:id',
   validation.productId,
   rescue(productsController.getById)
 );
+app.put('/products/:id',
+  validation.name,
+  validation.quantity,
+  rescue(productsController.updateProduct)
+);
 
 app.use(error);
 

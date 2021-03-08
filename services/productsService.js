@@ -12,8 +12,13 @@ const allProducts = async () => await products.getAll();
 
 const productById = async (id) => await products.getById(id);
 
+const updateProductInfo = async (id, name, quantity) => (
+  await products.updateOne(id, name, quantity)
+);
+
 module.exports = {
   createProduct,
   allProducts,
   productById,
+  updateProductInfo,
 };
