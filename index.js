@@ -16,13 +16,17 @@ app.get('/', (_request, response) => {
 });
 
 app.post('/products', 
-  rescue(validation.name), 
+  validation.name, 
   validation.quantity,
-  rescue(productsController.createNewProduct));
-
-app.get('/products', rescue(productsController.getAll));
-
-app.get('/products/:id', rescue(productsController.getById));
+  rescue(productsController.createNewProduct)
+);
+app.get('/products', 
+  rescue(productsController.getAll)
+);
+app.get('/products/:id',
+  validation.productId,
+  rescue(productsController.getById)
+);
 
 app.use(error);
 

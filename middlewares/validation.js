@@ -1,8 +1,10 @@
+const mongoose = require('mongoose');
 const { UNPROCESSABLE_ENTITY } = require('../dictionary/statusCode');
 const { 
   invalidName,
   quantityIsNotInteger,
-  quantityIsNegative
+  quantityIsNegative,
+  wrongIdFormat
 } = require('../dictionary/errorMessages');
 
 const name = (req, res, next) => {
@@ -10,7 +12,7 @@ const name = (req, res, next) => {
   const NAME_MIN_SIZE = 5;
 
   if (name.length < NAME_MIN_SIZE) 
-    return res.status(UNPROCESSABLE_ENTITY).json({ err: invalidName});
+    return res.status(UNPROCESSABLE_ENTITY).json({ err: invalidName });
 
   next();
 };
@@ -27,4 +29,12 @@ const quantity = (req, res, next) => {
   next();
 };
 
-module.exports = { name, quantity };
+const productId = (req, res, next) => {
+  const isValid = mongoose.Types.ObjectId.isValid(req.params.id);
+
+  if(!isValid) return res.status(UNPROCESSABLE_ENTITY).json({ err: wrongIdFormat });
+
+  next();
+};
+
+module.exports = { name, quantity, productId };

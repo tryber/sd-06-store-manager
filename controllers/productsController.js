@@ -1,6 +1,11 @@
 const service = require('../services/productsService');
-const { SUCCESS, CREATED, UNPROCESSABLE_ENTITY } = require('../dictionary/statusCode');
-const { productDuplicated } = require('../dictionary/errorMessages');
+const { 
+  SUCCESS,
+  CREATED,
+  UNPROCESSABLE_ENTITY,
+  INTERNAL_ERROR
+} = require('../dictionary/statusCode');
+const { productDuplicated, wrongIdFormat } = require('../dictionary/errorMessages');
 
 const createNewProduct = async (req, res, next) => {
   const { name, quantity } = req.body; 
@@ -25,8 +30,7 @@ const getById = async (req, res) => {
   if (!product) {
     return next({
       statusCode: UNPROCESSABLE_ENTITY,
-      code: 'invalid_data',
-      message: 'Wrong id format'
+      ...wrongIdFormat
     });
   }
 

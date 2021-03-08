@@ -14,5 +14,9 @@ module.exports = {
   productDuplicated: {
     code: 'invalid_data',
     message: 'Product already exists'
+  },
+  wrongIdFormat: {
+    code: 'invalid_data',
+    message: 'Wrong id format'
   }
 };
