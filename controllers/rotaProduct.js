@@ -14,7 +14,8 @@ const {
   createProduct,
   findProductByName,
   findProductById,
-  getAll
+  getAll,
+  updateNameQuantity
 } = require('../models/querys');
 
 const productRouter = express.Router();
@@ -37,5 +38,14 @@ productRouter.get('/:id', validateIdExists, async (req, res) => {
   const obj = await findProductById(id);
   return res.status(status200).json(obj[0]);
 });
+
+productRouter.put('/:id',validateNameGreater5, validateQuantityGreaterEqual0,
+  validateQuantityNotString, async (req, res) => {
+    const { id } = req.params;
+    const { name, quantity } = req.body;
+    await updateNameQuantity(id, name, quantity);
+    const findNovo = await findProductById(id);
+    return res.status(status200).json(findNovo[0]);
+  });
 
 module.exports = productRouter;

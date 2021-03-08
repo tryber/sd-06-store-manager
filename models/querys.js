@@ -24,10 +24,17 @@ const getAll = async () => {
     .then(db => db.collection('products').find().toArray());
 };
 
+const updateNameQuantity = async (id, newName, newquantity) => {
+  await connection()
+    .then(db => db.collection('products')
+      .updateOne({ _id: ObjectId(id) },
+        { $set: { name: newName, quantity: newquantity }}));
+};
 
 module.exports = {
   createProduct,
   findProductByName,
   findProductById,
   getAll,
+  updateNameQuantity,
 };
