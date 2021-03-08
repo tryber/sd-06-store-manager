@@ -43,7 +43,15 @@ const updateProduct = async (req, res) => {
 
   const productUpdated = await service.updateProductInfo(id, name, quantity);
 
-  res.status(SUCCESS).json(productUpdated);
+  return res.status(SUCCESS).json(productUpdated);
+};
+
+const deleteProduct = async (req, res) => {
+  const { id } = req.params;
+
+  const deletedProduct = await service.deleteProductInfo(id);
+
+  return res.status(SUCCESS).json(deletedProduct);
 };
 
 module.exports = {
@@ -51,4 +59,5 @@ module.exports = {
   getAll,
   getById,
   updateProduct,
+  deleteProduct,
 };

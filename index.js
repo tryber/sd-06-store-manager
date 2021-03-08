@@ -32,6 +32,10 @@ app.put('/products/:id',
   validation.quantity,
   rescue(productsController.updateProduct)
 );
+app.delete('/products/:id',
+  validation.productId,
+  rescue(productsController.deleteProduct)
+);
 
 app.use(error);
 

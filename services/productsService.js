@@ -16,9 +16,12 @@ const updateProductInfo = async (id, name, quantity) => (
   await products.updateOne(id, name, quantity)
 );
 
+const deleteProductInfo = async (id) => await products.deleteOne(id);
+
 module.exports = {
   createProduct,
   allProducts,
   productById,
   updateProductInfo,
+  deleteProductInfo,
 };

@@ -36,10 +36,20 @@ const updateOne = async (id, name, quantity) => {
   return value;
 };
 
+const deleteOne = async (id) => {
+  const { value } = await connection().then((db) => db.collection(coll).findOneAndDelete(
+    { _id: mongo.ObjectID(id) },
+    { returnOriginal: false }
+  ));
+
+  return value;
+};
+
 module.exports = {
   insertProduct,
   getAll,
   getByName,
   getById,
   updateOne,
+  deleteOne,
 };
