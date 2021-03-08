@@ -32,8 +32,8 @@ app.use('/products', productRouter);
 
 app.use('/sales', salesRouter);
 
-app.all('*', (_req, res) => { res.status(status404.json({ 
-  message: 'Rota não Encontrada'}));
+app.all('*', (_req, res) => { res.status(status404).json({ 
+  message: 'Rota não Encontrada'});
 });
 
 app.listen(port, () => console.log(`Example app listening on ${port}!`));
