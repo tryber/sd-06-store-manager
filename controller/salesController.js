@@ -22,6 +22,7 @@ router.post('/',
     const bodyInitial = req.body;
     if (bodyInitial.some((item) => 
       typeof item.quantity === 'string' || item.quantity < 1)) {
+      err.code = 'invalid_data';
       err.message = 'Wrong product ID or invalid quantity';
       err.status = UNPROCESSABLE_ENTITY;
       return next(err);

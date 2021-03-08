@@ -20,6 +20,7 @@ const SUCCESS = 200;
 const CREATED = 201;
 
 const err = {
+  code: 'invalid_data',
   status: 422,
   message: '',
 };
@@ -90,7 +91,6 @@ router.delete('/:id', async (req, res, next) => {
   const { id } = req.params;
   const storageProduct = await findById(id);
   const removeProduct = await deleteProduct(id);
-  console.log('o que tem em remove product?', removeProduct);
   if (!removeProduct) {
     err.message = 'Wrong id format';
     return next(err);
