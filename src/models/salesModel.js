@@ -1,6 +1,24 @@
 const connection = require('./connection');
 const { ObjectId } = require('mongodb');
 
+const deuRuin = 404;
+
+/**
+ * funcao que atualiza o estoque no cadastro de produtos
+ * @param {*} Nunber Valor a ser atualizado
+ * @returns estoque atualizado
+ */
+const atualizaCadastro = async (quantity, produto) => {
+  const { result } = await (connection().then((db) => db.collection('products')
+    .updateOne({
+      _id: ObjectId(produto)
+    },
+    {
+      $set: { quantity }
+    })
+  ));
+};
+
 /**
  * Criando uma venda e incluindo itens
  * @param (*) Object Objeto contendo o id do(s) produto(s) e quantidade(s) vendida(s)
@@ -12,20 +30,22 @@ const createSale = async (itensSold) => {
 
     const estoqueAtual = await (connection().then((db) => db.collection('products')
       .findOne({ _id: ObjectId(item.productId) })));
-
-    console.log(estoqueAtual);
+    console.log(item.quantity, estoqueAtual.quantity)
+    if (item.quantity > estoqueAtual.quantity) {
+      return status(deuRuin).json(
+        {
+          err: {
+            'code': 'stock_problem',
+            'message': 'Such amount not permitted to sell'
+          }
+        }
+      );
+    }
 
     const quantity = estoqueAtual.quantity - item.quantity;
 
-    const { result } = await (connection().then((db) => db.collection('products')
-      .updateOne({
-        _id: ObjectId(item.productId)
-      },
-      {
-        $set: { quantity }
-      })
-    ));
-    console.log( result );
+    const test = await atualizaCadastro(quantity, item.productId);
+
   });
 
   const result = await connection()
@@ -72,9 +92,22 @@ const updateSale = async (id, products) => {
  */
 const removeSale = async (id) => {
 
-
-
+  const vendas = await connection().then((db) => db
+    .collection('sales').findOne({ _id: ObjectId(id) }));
   
+  console.log(vendas);
+
+  vendas.itensSold.map(async (item) => {
+
+    const estoqueAtual = await (connection().then((db) => db.collection('products')
+      .findOne({ _id: ObjectId(item.productId) })));
+
+    const quantity = estoqueAtual.quantity + item.quantity;
+
+    const teste2 = await atualizaCadastro(quantity, item.productId);
+
+  });
+ 
   return await connection().then(db => db
     .collection('sales')
     .deleteOne(
