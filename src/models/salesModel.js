@@ -30,17 +30,6 @@ const createSale = async (itensSold) => {
 
     const estoqueAtual = await (connection().then((db) => db.collection('products')
       .findOne({ _id: ObjectId(item.productId) })));
-    console.log(item.quantity, estoqueAtual.quantity)
-    if (item.quantity > estoqueAtual.quantity) {
-      return status(deuRuin).json(
-        {
-          err: {
-            'code': 'stock_problem',
-            'message': 'Such amount not permitted to sell'
-          }
-        }
-      );
-    }
 
     const quantity = estoqueAtual.quantity - item.quantity;
 
