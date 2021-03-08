@@ -5,7 +5,7 @@ const vendasRouter = express.Router();
 const { createSale, findAllSales, findSaleById, removeSale, updateSale }
   = require('../models/salesModel');
 const { validingQuantity, validingSale } = require('../middlewares/validingSales');
- 
+
 /** abreviação de status */
 const cadastrado = 201;
 const tudoCerto = 200;
@@ -40,22 +40,14 @@ vendasRouter.get('/:id', rescue(async (req, res) => {
 
 /** atualizando venda */
 vendasRouter.put('/:id', validingQuantity, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const products = req.body;
-    console.log(products);
-    await Sales.update(id, products);
-    const result = await findSaleById(id);
-    return res.status(tudoCerto).json(result);
-    
-  } catch (err) {
-    return res.status(nunVi).json({
-      err: {
-        'code': 'invalid_data',
-        'message': 'Wrong product ID or invalid quantity'
-      },
-    });
-  }
+  const { id } = req.params;
+  const products = req.body;
+  console.log(products);
+
+  await updateSale(id, products);
+  const result = await findSaleById(id);
+  return res.status(tudoCerto).json(result);
+
 });
 
 /** apagando venda */
