@@ -4,7 +4,8 @@ const {
   newSale,
   findAllSales,
   findSale,
-  saleUpdate,
+  updateSale,
+  deleteSale,
 } = require('../service/SalesServices');
 
 const router = Router();
@@ -61,9 +62,22 @@ router.put('/:id', async (req, res, next) => {
     err.status = UNPROCESSABLE_ENTITY;
     return next(err);
   };
-  await saleUpdate(id, dataToUpdate);
+  await updateSale(id, dataToUpdate);
   const saleUpdated = await findSale(id);
   return res.status(SUCCESS).json(saleUpdated);  
+});
+
+router.delete('/:id', async (req, res, next) => {
+  const { id } = req.params;
+  if (!ObjectId.isValid(id)) {
+    err.code = 'invalid_data';
+    err.message = 'Wrong sale ID format';
+    err.status = UNPROCESSABLE_ENTITY;
+    return next(err);
+  }
+  const storageSale = await findSale(id);
+  await deleteSale(id);
+  return res.status(SUCCESS).json(storageSale);
 });
 
 module.exports = router;

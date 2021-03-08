@@ -19,18 +19,22 @@ const findSaleById = async (id) => {
     .then((db) => db.collection('sales').findOne({ _id: ObjectId(id) }));
 };
 
-const updateSale = async (id, itensSold) => {
+const saleUpdate = async (id, itensSold) => {
   return connection()
-    .then((db) => {
-      db.collection('sales')
-        .updateOne({ _id: ObjectId(id) }, { $set: {itensSold} });
+    .then((db) => { db.collection('sales')
+      .updateOne({ _id: ObjectId(id) }, { $set: {itensSold} });
     });
 };
 
+const saleDelete = async (id) => {
+  return connection()
+    .then((db) => db.collection('sales').deleteOne({_id: ObjectId(id)}));
+};
 
 module.exports = {
   getAllSales,
   postSale,
   findSaleById,
-  updateSale
+  saleUpdate,
+  saleDelete,
 };
