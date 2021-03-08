@@ -80,7 +80,7 @@ router.delete('/sales/:id', updateDeletedSales, rescue (async (req, res) => {
 
   const findSale = await SalesService.getById(id);
 
-  if (!ObjectId.isValid(id)) {
+  if (!findSale) {
     return res.status(UNPROCESSABLE_ENTITY)
       .json({err: { 
         code: 'invalid_data',  
@@ -88,7 +88,7 @@ router.delete('/sales/:id', updateDeletedSales, rescue (async (req, res) => {
       } });
   }
 
-  const deleted = await SalesService.deleteSale(id);
+  await SalesService.deleteSale(id);
   res.status(SUCCESS).json(findSale);
 }));
 
