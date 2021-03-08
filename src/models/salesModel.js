@@ -30,6 +30,21 @@ const findSaleById = async (id) => {
   return result;
 };
 
+/**
+ * 
+ * @param {*} Object contendo o id e quantidade a ser atualizaxa 
+ * @returns 
+ */
+const updateSale = async (id, products) => {
+  return await connection()
+    .then((db) => db.collection('sales').updateOne(
+      { _id: ObjectId(id) },
+      { $set: { itensSold: sale } }
+    ));
+};
+
+
+
 const removeSale = async (id) => {
   return await connection().then(db => db
     .collection('sales')
@@ -42,5 +57,6 @@ module.exports = {
   createSale,
   findAllSales,
   findSaleById,
+  updateSale,
   removeSale
 };
