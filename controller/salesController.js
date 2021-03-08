@@ -3,7 +3,8 @@ const { ObjectId } = require('mongodb');
 const {
   newSale,
   findAllSales,
-  findSale
+  findSale,
+  saleUpdate,
 } = require('../service/SalesServices');
 
 const router = Router();
@@ -48,6 +49,21 @@ router.get('/:id', async (req, res, next) => {
   }
   const searchedId = await findSale(id);
   return res.status(SUCCESS).json(searchedId);
+});
+
+router.put('/:id', async (req, res, next) => {
+  const { id } = req.params;
+  const dataToUpdate = req.body;
+  if (dataToUpdate.some((item) => 
+    typeof item.quantity === 'string' || item.quantity < 1)) {
+    err.code = 'invalid_data';
+    err.message = 'Wrong product ID or invalid quantity';
+    err.status = UNPROCESSABLE_ENTITY;
+    return next(err);
+  };
+  await saleUpdate(id, dataToUpdate);
+  const saleUpdated = await findSale(id);
+  return res.status(SUCCESS).json(saleUpdated);  
 });
 
 module.exports = router;

@@ -1,4 +1,9 @@
-const { postSale, getAllSales, findSaleById } = require('../models/salesModel');
+const {
+  postSale,
+  getAllSales,
+  findSaleById,
+  updateSale,
+} = require('../models/salesModel');
 
 const newSale = async (sale) => {
   return postSale(sale);
@@ -12,8 +17,13 @@ const findSale = async (id) => {
   return findSaleById(id);
 };
 
+const saleUpdate = async (id, dataToUpdate) => {
+  return updateSale(id, dataToUpdate);
+};
+
 module.exports = {
   newSale,
   findAllSales,
-  findSale
+  findSale,
+  saleUpdate,
 };
