@@ -10,9 +10,9 @@ const sucesso = 200;
 controlProducts.post('/', validation.nameValidation, validation.quantityValidation,
   async (req, res) => {
     const { name, quantity } = req.body;
-    const { addedId } = await Products.addProduct(name, quantity);
+    const { insertedId } = await Products.addProduct(name, quantity);
     const addedProduct = {
-      _id: addedId,
+      _id: insertedId,
       name,
       quantity,
     };

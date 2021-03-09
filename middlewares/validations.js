@@ -2,7 +2,7 @@ const Products = require('../models/Products');
 const error = 422;
 const numberZero = 0;
 const NumberFive = 5;
-const NumberTFour = 24;
+const lengthSize = 24;
 
 const messageError = (string) => {
   return {
@@ -42,7 +42,7 @@ const quantityValidation = (req, res, next) => {
 const idValidation = (req, res, next) => {
   const { id } = req.params;
 
-  if (id.length < NumberTFour) { 
+  if (id.length < lengthSize) { 
     return res.status(error).json(messageError('Wrong id format'));
   }  
   next();
