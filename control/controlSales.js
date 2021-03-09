@@ -15,13 +15,13 @@ controlSales.post('/', validation.quantitySalesValidation,
     return res.status(sucesso).json(addedSale);
   });
   
-controlSales.get('/:id', validation.saleExists, 
+controlSales.get('/:id', validation.salesValidation, 
   async (req, res) => {
     const { id } = req.params;
     res.status(sucesso).json(await Sales.findSalesById(id));
   });
 
-controlSales.get('/', async (_request, res) => {
+controlSales.get('/', async (_req, res) => {
   const sales = await Sales.getSales();
   res.status(sucesso).json({ sales });
 });
