@@ -39,8 +39,7 @@ const quantityValidation = (req, res, next) => {
   next();
 };
 
-const idValidation = (req, res, next) => {
-  const { id } = req.params;
+const idValidation = (req, res, next) => { const { id } = req.params;
 
   if (id.length < lengthSize) { 
     return res.status(error).json(messageError('Wrong id format'));

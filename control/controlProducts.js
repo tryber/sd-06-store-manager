@@ -32,4 +32,25 @@ controlProducts.get('/:id', validation.idValidation, async (req, res) => {
   return res.status(sucesso).json(product);
 });
 
+controlProducts.put('/:id', validation.quantityValidation, validation.nameValidation, 
+  async (req, res) => {
+    const { id } = req.params;
+    const { name, quantity } = req.body;
+
+    await Products.productUpdated(id, name, quantity);
+
+    return res.status(sucesso) 
+      .json({ _id: id, name, quantity });
+  }
+);
+
+controlProducts.delete('/:id', validation.idValidation, async (req, res) => {
+  const { id } = req.params;
+  const product = await Products.findById(id);
+
+  await Products.deleteProduct(id);
+
+  return res.status(sucesso).json(product);
+});
+
 module.exports = controlProducts;
