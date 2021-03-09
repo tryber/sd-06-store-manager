@@ -44,8 +44,8 @@ ProductsRouter.post('/', async (req, res) => {
     return res.status(UNPROCESSABLE_ENTITY)
       .json({ err: errorInfo });
   }
-  const { id } = await ProductsModel.create(name, quantity);
-  return res.status(CREATED).json({ id, name, quantity });
+  const { _id } = await ProductsModel.create(name, quantity);
+  return res.status(CREATED).json({ _id, name, quantity });
 });
 
 ProductsRouter.get('/', async (_req, res) => {

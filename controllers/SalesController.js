@@ -20,7 +20,7 @@ SalesRouter.post('/', async (req, res) => {
     }
   });
   const { id } = await SalesModel.create({ itensSold });
-  return res.status(OK).json({ id, itensSold });
+  return res.status(OK).json({ id });
 });
 
 SalesRouter.get('/', async (_req, res) => {
