@@ -38,6 +38,7 @@ const getById = async (id) => {
     const product = await db.collection('products').findOne(ObjectId(id));
     return product;
   } catch (err) {
+    console.log(err, 'oi')
     return null;
   }
 };
@@ -54,10 +55,10 @@ const update = async ({ id, name, quantity }) => {
   }
 };
 
-// const delById = async (id) => {
-//   connection()
-//     .then((db) => db.collection('products').deleteOne({ '_id': ObjectId(id) }));
-// };
+const delById = async (id) => {
+  const db = await connection();
+  await db.collection('products').deleteOne({ '_id': ObjectId(id) });
+};
 
 module.exports = {
   create,
@@ -65,5 +66,5 @@ module.exports = {
   getAll,
   getById,
   update,
-  // delById,
+  delById,
 };

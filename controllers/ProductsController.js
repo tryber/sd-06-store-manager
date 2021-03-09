@@ -100,13 +100,20 @@ ProductsRouter.post('/:id', async (req, res) => {
   
 });
 
-// ProductsRouter.delete('/:id', async (req, res) => {
-//   const { id } = req.params;
-//   const product = await ProductsModel.getById(id);
-//   if (!product) return res.status(UNPROCESSABLE_ENTITY)
-//     .json({ message: 'wrong id format' });
-//   await ProductsModel.delById(product._id);
-//   return res.status(OK).json(product);
-// });
+ProductsRouter.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  const product = await ProductsModel.getById(id);
+  console.log(product);
+  if (!product) {
+    const errorInfo = {
+      message: 'Wrong id format',
+      code: 'invalid_data'
+    };
+    return res.status(UNPROCESSABLE_ENTITY)
+      .json({ err: errorInfo });
+  }
+  await ProductsModel.delById(product._id);
+  return res.status(OK).json(product);
+});
 
 module.exports = ProductsRouter;
