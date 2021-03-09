@@ -16,9 +16,9 @@ const {
   findSalesByMongoId,
   updateSale,
   findSalesByProductId,
-  deleteSale
+  deleteSale,
 } = require('../models/querysSales');
-const { ObjectId } = require('bson');
+const { findProductById, updateNameQuantity } = require('../models/querysProduct');
 // -------------------------------------------
 
 const salesRouter = express.Router();
@@ -27,6 +27,14 @@ salesRouter.post('/', validateQuantityGreaterEqual0,
   validateQuantityNotString, async (req, res) => {
     const products = req.body;
     const { insertedId } = await createSales(products);
+    const [{ productId, quantity }] = req.body;
+    /// atualizando valor do produto
+    const findproduct = await findProductById(productId);
+    if(findProductById !== []) {}
+    const newName = findproduct[0].name;
+    const newQuantity = findproduct[0].quantity - quantity;
+    await updateNameQuantity(productId, newName, newQuantity);
+    /////
     return res.status(status200).json({_id: insertedId, itensSold: products });
   });
 
@@ -49,13 +57,20 @@ salesRouter.put('/:id', validateQuantityGreaterEqual0, validateQuantityNotString
     const findNovo = await findSalesByMongoId(id);
     return res.status(status200).json(findNovo);
   });
-/////
+
 salesRouter.delete('/:id', validateIdSalesExistsDel, async (req, res) => {
   const { id } = req.params;
-  const algo = ObjectId.isValid(id);
-  console.log(algo);
   const findDelete = await findSalesByMongoId(id);
   await deleteSale(id);
+  /// atualizando valor do produto
+  const { itensSold } = findDelete;
+  const newId = itensSold[0].productId;
+  const deletedQuantity = itensSold[0].quantity;
+  const findproduct = await findProductById(newId);
+  const newName = findproduct[0].name;
+  const newQuantity = findproduct[0].quantity + deletedQuantity;
+  await updateNameQuantity(newId, newName, newQuantity);
+  //////
   return res.status(status200).json(findDelete);
 });
 

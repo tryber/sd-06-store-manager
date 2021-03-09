@@ -68,7 +68,7 @@ const validateIdSalesExistsDel = async (req, res, next) => {
     });
   }
   const findId = await findSalesByMongoId(id);
-  if(!findId) {
+  if(!findId || isValidId === false) {
     return res.status(status422).json({
       err: {
         code: 'invalid_data',
