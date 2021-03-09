@@ -10,7 +10,7 @@ const createSales = async (products) => {
 const findSalesByMongoId = async (salesId) => {
   return await connection()
     .then((db) => db.collection('sales')
-      .find({ _id: new ObjectId(salesId) }).toArray());
+      .findOne({ _id: ObjectId(salesId) }));
 };
 
 const getAll = async () => {
@@ -32,8 +32,8 @@ const updateSale = async (id, itensSold) => {
 };
 ///////////
 const deleteSale = async (id) => {
-  return await connection()
-    .then(db => db.collection('sales').deleteOne({ _id: new ObjectId(id) }));
+  await connection()
+    .then(db => db.collection('sales').deleteOne({ _id: ObjectId(id) }));
 };
 
 

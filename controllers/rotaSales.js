@@ -1,14 +1,12 @@
 const express = require('express');
-const status201 = 201;
 const status200 = 200;
-const magicNumberzero = 0;
-const { ObjectId } = require('mongodb');
 
 // import middlewares
 const {
   validateQuantityGreaterEqual0,
   validateQuantityNotString,
   validateIdSalesExists,
+  validateIdSalesExistsDel
 } = require('../services/middlewaresSales');
 // --------------------------------------
 // import querys
@@ -20,6 +18,7 @@ const {
   findSalesByProductId,
   deleteSale
 } = require('../models/querysSales');
+const { ObjectId } = require('bson');
 // -------------------------------------------
 
 const salesRouter = express.Router();
@@ -39,24 +38,22 @@ salesRouter.get('/', async (_req, res) => {
 salesRouter.get('/:id', validateIdSalesExists, async (req, res) => {
   const { id } = req.params;
   const venda = await findSalesByMongoId(id);
-  return res.status(status200).json(venda[0]);
+  return res.status(status200).json(venda);
 });
 
 salesRouter.put('/:id', validateQuantityGreaterEqual0, validateQuantityNotString,
   async (req, res) => {
     const { id } = req.params;
     const itensSolds = req.body;
-
     await updateSale(id,itensSolds);
-    
-
     const findNovo = await findSalesByMongoId(id);
-    console.log(findNovo[0]);
-    return res.status(status200).json(findNovo[0]);
+    return res.status(status200).json(findNovo);
   });
 /////
-salesRouter.delete('/:id', async (req, res) => {
+salesRouter.delete('/:id', validateIdSalesExistsDel, async (req, res) => {
   const { id } = req.params;
+  const algo = ObjectId.isValid(id);
+  console.log(algo);
   const findDelete = await findSalesByMongoId(id);
   await deleteSale(id);
   return res.status(status200).json(findDelete);
