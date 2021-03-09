@@ -12,8 +12,8 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
-app.use('/products', rescue(ProductsRouter));
-app.use('/sales', rescue(SalesRouter));
+app.use('/products',ProductsRouter);
+// app.use('/sales', SalesRouter);
 
 app.use('*', (req, res) => res.status(NOT_FOUND).json({ message: 'Page not found' }));
 
