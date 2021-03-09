@@ -36,6 +36,16 @@ const responseWith = (code, message, response) => {
   return response.status(code).json(err);
 };
 
+const responseWithNotFound = (response) => {
+  return response.status(statusCode.NOT_FOUND)
+    .json({
+      err: {
+        code: 'not_found',
+        message: message.saleNotFound
+      }
+    });
+};
+
 module.exports = {
   compare,
   statusCode,
@@ -43,4 +53,5 @@ module.exports = {
   greaterThan,
   mustBeNumber,
   responseWith,
+  responseWithNotFound,
 };

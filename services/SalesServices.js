@@ -7,6 +7,7 @@ const {
   greaterThan,
   mustBeNumber,
   responseWith,
+  responseWithNotFound,
 } = require('./Helpers');
 
 const registerSale = async (request, response) => {
@@ -40,16 +41,14 @@ const getById = async (request, response) => {
   const idNotHexObjectId = (id.length !== compare.hexObjectedId);
 
   if (idNotExist || idNotHexObjectId) {
-    return response.status(statusCode.NOT_FOUND)
-      .json({
-        err: {
-          code: 'not_found',
-          message: message.saleNotFound
-        }
-      });
+    return responseWithNotFound(response);
   }
 
   const saleFound = await SalesModels.getById(id);
+
+  if (!saleFound) {
+    return responseWithNotFound(response);
+  }
 
   return response.status(statusCode.OK).json(saleFound);
 };
@@ -80,9 +79,29 @@ const updateSale = async (request, response) => {
    
 };
 
+const removeSale = async (request, response) => {
+  const { id } = request.params;
+  const idNotHexObjectId = (id.length !== compare.hexObjectedId);
+  
+  if (idNotHexObjectId) {
+    responseWith(statusCode.UNPROCESSABLE, message.wrongSaleId, response);
+  }
+  
+  const removedSale = await SalesModels.getById(id);
+
+  if (!removedSale) {
+    return responseWith(statusCode.UNPROCESSABLE, message.wrongSaleId, response);
+  }
+
+  await SalesModels.removeSale(id);
+
+  return response.status(statusCode.OK).json(removedSale);
+};
+
 module.exports = {
   registerSale,
   getAllSales,
   getById,
   updateSale,
+  removeSale,
 };
