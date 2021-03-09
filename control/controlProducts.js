@@ -46,9 +46,9 @@ controlProducts.put('/:id', validation.quantityValidation, validation.nameValida
 
 controlProducts.delete('/:id', validation.idValidation, async (req, res) => {
   const { id } = req.params;
-  const product = await Products.findById(id);
+  const product = await Products.getById(id);
 
-  await Products.deleteProduct(id);
+  await Products.productDeleted(id);
 
   return res.status(sucesso).json(product);
 });
