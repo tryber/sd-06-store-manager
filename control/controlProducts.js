@@ -1,9 +1,7 @@
 const { Router } = require('express');
 const Products = require('../models/Products');
 const validation = require('../middlewares/validations');
-
 const controlProducts = new Router();
-
 const falha = 201;
 const sucesso = 200;
 
