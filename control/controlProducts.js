@@ -53,4 +53,16 @@ controlProducts.delete('/:id', validation.idValidation, async (req, res) => {
   return res.status(sucesso).json(product);
 });
 
+controlProducts.post('/', validation.quantitySalesValidation, 
+  async (req, res) => {
+    const sales = req.body;
+    const { insertedId } = await Products.addSales(sales);
+    const addSales = {
+      _id: insertedId,
+      itensSold: sales,
+    };
+
+    return res.status(sucesso).json(addSales);
+  });
+
 module.exports = controlProducts;

@@ -8,6 +8,7 @@ const port = 3000;
 
 app.use(bodyParser.json());
 app.use('/products', controlProducts);
+app.use('/sales', controlProducts);
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
