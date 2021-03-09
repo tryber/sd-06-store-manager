@@ -1,6 +1,6 @@
 const {
   createSales,
-  findSalesByProduct
+  findSalesByMongoId
 } = require('../models/querysSales');
 
 const magicNumberzero = 0;
@@ -38,8 +38,8 @@ const validateIdSalesExists = async (req, res, next) => {
   const { id } = req.params;
   try {
     const { id } = req.params;
-    const idExists = await findSalesByProduct(id);
-    if(JSON.stringify(idExists) === id || !_id || !id) {
+    const idExists = await findSalesByMongoId(id);
+    if(JSON.stringify(idExists) === id || !id) {
       return res.status(status404).json({
         err: {
           code: 'not_found',
@@ -57,8 +57,30 @@ const validateIdSalesExists = async (req, res, next) => {
   next();
 };
 
+// const validateIdSalesExistsDel = async (req, res, next) => {
+//   try {
+//     const { id } = req.params;
+//     const [{_id}] = await findSalesByMongoId(id);
+//     if(_id != id || !id || !_id) {
+//       return res.status(status422).json({
+//         err: {
+//           code: 'invalid_data',
+//           message: 'Wrong sale ID format'
+//         }
+//       });
+//     };
+//   } catch { return res.status(status422).json({
+//     err: {
+//       code: 'invalid_data',
+//       message: 'Wrong sale ID format'
+//     }
+//   });
+//   }
+//   next();
+// };
+
 module.exports = {
   validateQuantityGreaterEqual0,
   validateQuantityNotString,
-  validateIdSalesExists
+  validateIdSalesExists,
 };
