@@ -38,7 +38,6 @@ const getById = async (id) => {
     const product = await db.collection('products').findOne(ObjectId(id));
     return product;
   } catch (err) {
-    console.log(err, 'oi')
     return null;
   }
 };
