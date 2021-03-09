@@ -13,7 +13,7 @@ app.get('/', (_request, response) => {
 });
 
 app.use('/products',ProductsRouter);
-// app.use('/sales', SalesRouter);
+app.use('/sales', SalesRouter);
 
 // app.use('*', (req, res) => res.status(NOT_FOUND).json({ message: 'Page not found' }));
 
