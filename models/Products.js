@@ -29,18 +29,10 @@ const productDeleted = async (id) =>
       { _id: ObjectId(id) }
     ));
 
-const addSales = async (sales) => 
-  await connection()
-    .then((db) => db.collection('sales').insertOne(
-      { itensSold: sales }
-    ));
-
-
 module.exports = {
   addProduct,
   getProducts,
   getById,
   productUpdated,
   productDeleted,
-  addSales,
 };
