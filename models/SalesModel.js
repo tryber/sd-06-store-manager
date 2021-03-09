@@ -3,33 +3,55 @@ const { ObjectId } = require('mongodb');
 
 const create = async (itensSold) => {
   const db = await connection();
-  const { insertedId } = await db.collection('sales').insertOne({ itensSold });
-
-  return ({
-    id: insertedId,
-    itensSold,
-  }); 
+  try {
+    const { insertedId } = await db.collection('sales').insertOne({ itensSold });
+    return ({
+      id: insertedId,
+      itensSold,
+    }); 
+  } catch (err) {
+    console.log(err);
+  }
+  
 };
 
-// const getAll = async () => {
-//   return await connection()
-//     .then((db) => db.collection('sales').find().toArray());
-// };
+const getAll = async () => {
+  const db = await connection();
+  const products = await db.collection('sales').find().toArray();
+  return products;
+};
 
-// const getById = async (id) => {
-//   const product = await connection()
-//     .then((db) => db.collection('sales').findOne(ObjectId(id)));
-//   return product;
-// };
+const getById = async (id) => {
+  const db = await connection();
+  try {
+    const sale = await db.collection('sales').findOne(ObjectId(id));
+    return sale;
+  } catch (err) {
+    return null;
+  }
+  
+};
 
-// const delById = async (id) => {
-//   connection()
-//     .then((db) => db.collection('sales').deleteOne({ '_id': ObjectId(id) }));
-// };
+const update = async ({ id, sales }) => {
+  const db = await connection();
+  try {
+    const sale = await db.collection('sales').updateOne({_id: ObjectId(id)},
+      { $set: {itensSold: sales} },
+    );
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const delById = async (id) => {
+  const db = await connection();
+  await db.collection('sales').deleteOne({ '_id': ObjectId(id) });
+};
 
 module.exports = {
   create,
-  // getAll,
-  // getById,
-  // delById,
+  getAll,
+  getById,
+  update,
+  delById,
 };
