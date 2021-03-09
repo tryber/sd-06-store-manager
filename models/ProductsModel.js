@@ -26,17 +26,33 @@ const getByName = async (name) => {
   }
 };
   
+const getAll = async () => {
+  const db = await connection();
+  const products = await db.collection('products').find().toArray();
+  return products;
+};
 
-// const getAll = async () => {
-//   return await connection()
-//     .then((db) => db.collection('products').find().toArray());
-// };
+const getById = async (id) => {
+  const db = await connection();
+  try {
+    const product = await db.collection('products').findOne(ObjectId(id));
+    return product;
+  } catch (err) {
+    return null;
+  }
+};
 
-// const getById = async (id) => {
-//   const product = await connection()
-//     .then((db) => db.collection('products').findOne(ObjectId(id)));
-//   return product;
-// };
+const update = async ({ id, name, quantity }) => {
+  const db = await connection();
+  try {
+    const product = await db.collection('products').updateOne({_id: ObjectId(id)},
+      { $set: {name, quantity} },
+    );
+    return product;
+  } catch (err) {
+    return null;
+  }
+};
 
 // const delById = async (id) => {
 //   connection()
@@ -46,7 +62,8 @@ const getByName = async (name) => {
 module.exports = {
   create,
   getByName,
-  // getAll,
-  // getById,
+  getAll,
+  getById,
+  update,
   // delById,
 };

@@ -15,6 +15,6 @@ app.get('/', (_request, response) => {
 app.use('/products',ProductsRouter);
 // app.use('/sales', SalesRouter);
 
-app.use('*', (req, res) => res.status(NOT_FOUND).json({ message: 'Page not found' }));
+// app.use('*', (req, res) => res.status(NOT_FOUND).json({ message: 'Page not found' }));
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
