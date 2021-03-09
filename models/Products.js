@@ -21,4 +21,3 @@ module.exports = {
   getProducts,
   getById,
 };
-s
