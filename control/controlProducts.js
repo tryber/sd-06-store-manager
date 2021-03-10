@@ -9,7 +9,7 @@ controlProducts.post('/', validation.nameValidation, validation.quantityValidati
   async (req, res) => {
     const { name, quantity } = req.body;
     const { insertedId } = await Products
-      .insertProduct(name, quantity);
+      .addProduct(name, quantity);
     const addedProduct = {
       _id: insertedId,
       name,
