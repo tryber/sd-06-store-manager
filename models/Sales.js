@@ -11,7 +11,7 @@ const addSales = async (sales) =>
     .then((db) => db.collection('sales')
       .insertOne({ itensSold: sales }));
 
-const findSalesById = async (id) => 
+const getById = async (id) => 
   await connection()
     .then((db) => db.collection('sales') 
       .findOne(ObjectId(id)));
@@ -31,7 +31,7 @@ const salesDelete = async (id) =>
 module.exports = {
   getSales,
   addSales,
-  findSalesById,
+  getById,
   salesUpdated,
   salesDelete,
 };

@@ -12,7 +12,7 @@ const saleUpdateStock = async (id, arrSale) => {
   arrSale.forEach(async (sale) => {
     const itenToSale = findSales.itensSold.filter((found) => 
       found.productId === sale.productId);
-    
+
     if (itenToSale) {
       const value = itenToSale.quantity - sale.quantity;
       await Products.updateStock(sale.productId, value);
@@ -31,4 +31,4 @@ module.exports = {
   stockUpdate,
   saleUpdateStock,
   deleteStock,
-};
+}; 
