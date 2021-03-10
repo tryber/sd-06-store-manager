@@ -58,4 +58,24 @@ router.get('/:id', async (req, res, next) => {
   return res.status(SUCCESS).json(findId);
 });
 
+router.put('/:id', async (req, res, next) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+  if (!validateNameProduct(name)) {
+    err.message = '"name" length must be at least 5 characters long';
+    return next(err);
+  }
+  if (validateProductQuantity(quantity) === 'Not valid quantity') {
+    err.message = '"quantity" must be larger than or equal to 1';
+    return next(err);
+  }
+  if (validateProductQuantity(quantity) === 'Not number') {
+    err.message = '"quantity" must be a number';
+    return next(err);
+  }
+  await updateProduct(id, name, quantity);
+  const productUpdate = await findById(id);
+  return res.status(SUCCESS).json(productUpdate);  
+});
+
 module.exports = router;
