@@ -38,4 +38,15 @@ controlSales.put('/:id',
     res.status(sucesso).json(result);
   });
 
+controlSales.put('/:id', 
+  validation.idSalesValidation, 
+  async (req, res) => {
+    const { id } = req.params;
+    const result = await Sales.findSalesById(id);
+
+    await Sales.salesDelete(id);
+
+    res.status(sucesso).json(result);
+  });
+
 module.exports = controlSales;

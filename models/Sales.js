@@ -23,9 +23,15 @@ const salesUpdated = async (id, itensSold) =>
         { $set: { itensSold } }
       ));
 
+const salesDelete = async (id) => 
+  await connection()
+    .then((db) => db.collection('sales')
+      .deleteOne({ _id: ObjectId(id) }));
+
 module.exports = {
   getSales,
   addSales,
   findSalesById,
   salesUpdated,
+  salesDelete,
 };
