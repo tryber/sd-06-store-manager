@@ -57,6 +57,11 @@ app.get('/sales/:id',
   rescue(salesController.getById)
 );
 
+app.put('/sales/:id',
+  salesValidation.quantity,
+  rescue(salesController.updateSale)
+);
+
 app.use(error);
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));

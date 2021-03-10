@@ -20,8 +20,19 @@ const getById = async (id) => {
     .then((db) => db.collection(coll).findOne({ _id: mongo.ObjectId(id) }));
 };
 
+const updateOne = async (id, sale) => {
+  const { value } = await connection().then((db) => db.collection(coll).findOneAndUpdate(
+    { _id: mongo.ObjectID(id) },
+    { $set: { itensSold: sale } },
+    { returnOriginal: false }
+  ));
+
+  return value;
+};
+
 module.exports = {
   insertSale, 
   getAll, 
   getById,
+  updateOne
 };
