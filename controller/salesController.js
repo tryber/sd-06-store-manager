@@ -36,8 +36,7 @@ router.post('/',
 );
 
 router.get('/', async (_req, res, _next) => {
-  const allSales = await findAllSales();
-  const sales = allSales;
+  const sales = await findAllSales();
   return res.status(SUCCESS).json({sales});
 });
 

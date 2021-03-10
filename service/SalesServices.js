@@ -26,7 +26,6 @@ const deleteSale = async (id) => {
   return saleDelete(id);
 };
 
-
 module.exports = {
   newSale,
   findAllSales,
