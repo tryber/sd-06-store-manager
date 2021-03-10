@@ -24,14 +24,11 @@ const getAll = async () => {
 const getById = async (id) => {
   const db = await connection();
   try {
-    console.log(ObjectId(id));
     const sale = await db.collection('sales').findOne(ObjectId(id));
-    console.log(sale, 'delete model')
     return sale;
   } catch (err) {
     return null;
   }
-  
 };
 
 const update = async ({ id, itensSold }) => {

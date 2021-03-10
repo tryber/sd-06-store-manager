@@ -67,7 +67,7 @@ ProductsRouter.get('/:id', async (req, res) => {
   return res.status(OK).json(product);
 });
 
-ProductsRouter.post('/:id', async (req, res) => {
+ProductsRouter.put('/:id', async (req, res) => {
   const { name, quantity } = req.body;
   const { id } = req.params;
 
@@ -103,7 +103,6 @@ ProductsRouter.post('/:id', async (req, res) => {
 ProductsRouter.delete('/:id', async (req, res) => {
   const { id } = req.params;
   const product = await ProductsModel.getById(id);
-  console.log(product);
   if (!product) {
     const errorInfo = {
       message: 'Wrong id format',

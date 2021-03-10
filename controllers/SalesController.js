@@ -41,7 +41,7 @@ SalesRouter.get('/:id', async (req, res) => {
   return res.status(OK).json(sale);
 });
 
-SalesRouter.post('/:id', async (req, res) => {
+SalesRouter.put('/:id', async (req, res) => {
   const itensSold = req.body;
   const id = req.params;
   itensSold.forEach(async (i) => {
