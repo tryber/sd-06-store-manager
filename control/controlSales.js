@@ -26,4 +26,16 @@ controlSales.get('/', async (_req, res) => {
   res.status(sucesso).json({ sales });
 });
 
+controlSales.put('/:id', 
+  validation.quantitySalesValidation, 
+  async (req, res) => {
+    const { id } = req.params;
+    const sale = req.body;
+
+    await Sales.salesUpdated(id, sale);
+    const result = await Sales.findSalesById(id);
+
+    res.status(sucesso).json(result);
+  });
+
 module.exports = controlSales;
