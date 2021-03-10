@@ -19,8 +19,7 @@ const quantity = (req, res, next) => {
 
 const saleId = (req, res, next) => {
   const isValid = ObjectId.isValid(req.params.id);
-  console.log({ id: req.params.id, isValid})
-  
+    
   if(!isValid) return res.status(NOT_FOUND).json({ err: saleNotFound });
 
   next();
