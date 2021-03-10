@@ -39,22 +39,22 @@ const quantityValidation = (req, res, next) => {
   if (typeof quantity !== 'number') 
     return res.status(error)
       .json(messageError('"quantity" must be a number'));
-  
+
   next();
 };
 
-const idValidation = (req, res, next) => { 
+const validateId = (req, res, next) => {
   const { id } = req.params;
 
-  if (id.length < lengthSize) { 
-    return res.status(error)  
+  if (id.length < lengthSize) 
+    return res.status(error)
       .json(messageError('Wrong id format'));
-  }  
+
   next();
 };
 
 module.exports = {
   nameValidation,
   quantityValidation,
-  idValidation,
+  validateId,
 };

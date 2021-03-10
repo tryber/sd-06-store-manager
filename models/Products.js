@@ -11,7 +11,7 @@ const getProducts = async () =>
     .then((db) => 
       db.collection('products').find().toArray());
 
-const getById = async (id) =>  
+const getById = async (id) => 
   await connection()
     .then((db) => 
       db.collection('products').findOne(ObjectId(id)));
@@ -23,18 +23,16 @@ const productUpdated = async (id, name, quantity) =>
       { $set: { name, quantity } }
     ));
 
-const productDeleted = async (id) =>
+const updateStock = async (id, value) => 
   await connection()
-    .then((db) => db.collection('products').deleteOne(
-      { _id: ObjectId(id) }
+    .then((db) => db.collection('products').updateOne(
+      { _id: ObjectId(id) },
+      { $inc: { quantity: -value } }
     ));
 
-const updateStock = async (id, value) => await connection()
-  .then((db) => db.collection('products').updateOne(
-    { _id: ObjectId(id) },
-    { $inc: { quantity: -value } }
-  ));
-
+const productDeleted = async (id) => 
+  await connection()
+    .then((db) => db.collection('products').deleteOne({ _id: ObjectId(id) }));
 
 module.exports = {
   addProduct,

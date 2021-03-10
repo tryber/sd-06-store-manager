@@ -8,7 +8,8 @@ const sucesso = 200;
 controlProducts.post('/', validation.nameValidation, validation.quantityValidation,
   async (req, res) => {
     const { name, quantity } = req.body;
-    const { insertedId } = await Products.addProduct(name, quantity);
+    const { insertedId } = await Products
+      .insertProduct(name, quantity);
     const addedProduct = {
       _id: insertedId,
       name,
@@ -20,23 +21,25 @@ controlProducts.post('/', validation.nameValidation, validation.quantityValidati
 
 controlProducts.get('/', async (_req, res) => {
   const everyProducts = await Products.getProducts();
-  return res.status(sucesso).json({ products: everyProducts });
+  return res.status(sucesso)
+    .json({ products: everyProducts });
 });
 
-controlProducts.get('/:id', validation.idValidation, async (req, res) => {
-  const { id } = req.params;
-  const product = await Products.getById(id);
-  return res.status(sucesso).json(product);
-});
+controlProducts.get('/:id', validation.idValidation, 
+  async (req, res) => {
+    const { id } = req.params;
+    const product = await Products.getById(id);
+    return res.status(sucesso).json(product);
+  });
 
-controlProducts.put('/:id', validation.quantityValidation, validation.nameValidation, 
+controlProducts.put('/:id', validation.quantityValidation, validation.nameValidation,
   async (req, res) => {
     const { id } = req.params;
     const { name, quantity } = req.body;
 
     await Products.productUpdated(id, name, quantity);
 
-    return res.status(sucesso) 
+    return res.status(sucesso)
       .json({ _id: id, name, quantity });
   }
 );
@@ -44,10 +47,11 @@ controlProducts.put('/:id', validation.quantityValidation, validation.nameValida
 controlProducts.delete('/:id', validation.idValidation, async (req, res) => {
   const { id } = req.params;
   const product = await Products.getById(id);
-
+    
   await Products.productDeleted(id);
 
   return res.status(sucesso).json(product);
-});
+}
+);
 
 module.exports = controlProducts;
