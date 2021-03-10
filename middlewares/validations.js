@@ -43,7 +43,7 @@ const quantityValidation = (req, res, next) => {
   next();
 };
 
-const validateId = (req, res, next) => {
+const idValidation = (req, res, next) => {
   const { id } = req.params;
 
   if (id.length < lengthSize) 
@@ -56,5 +56,5 @@ const validateId = (req, res, next) => {
 module.exports = {
   nameValidation,
   quantityValidation,
-  validateId,
+  idValidation,
 };

@@ -35,7 +35,7 @@ const salesValidation = async (req, res, next) => {
   next();
 };
 
-const idSalesValidation = async (req, res, next) => {
+const idValidation = async (req, res, next) => {
   const { id } = req.params;
 
   if (id.length !== lengthSize)
@@ -64,6 +64,6 @@ const stockFlow = async (req, res, next) => {
 module.exports = {
   quantitySalesValidation,
   salesValidation,
-  idSalesValidation,
+  idValidation,
   stockFlow,
 };
