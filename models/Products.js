@@ -29,10 +29,18 @@ const productDeleted = async (id) =>
       { _id: ObjectId(id) }
     ));
 
+const updateStock = async (id, value) => await connection()
+  .then((db) => db.collection('products').updateOne(
+    { _id: ObjectId(id) },
+    { $inc: { quantity: -value } }
+  ));
+
+
 module.exports = {
   addProduct,
   getProducts,
   getById,
   productUpdated,
   productDeleted,
+  updateStock,
 };

@@ -1,10 +1,11 @@
 const { Router } = require('express');
 const Sales = require('../models/Sales');
+const Stock = require('../Stock/stockCenter');
 const validation = require('../middlewares/validationsSales');
 const controlSales = new Router();
 const sucesso = 200;
 
-controlSales.post('/', validation.quantitySalesValidation, 
+controlSales.post('/', validation.quantitySalesValidation, validation.stockFlow,
   async (req, res) => {
     const Sold = req.body;
     const { insertedId } = await Sales.addSales(Sold);
@@ -12,6 +13,9 @@ controlSales.post('/', validation.quantitySalesValidation,
       _id: insertedId,
       itensSold,
     };
+
+    await service.stockUpdate(itensSold);
+
     return res.status(sucesso).json(addedSale);
   });
   
@@ -32,18 +36,20 @@ controlSales.put('/:id', validation.quantitySalesValidation,
   async (req, res) => {
     const { id } = req.params;
     const sale = req.body;
-
+    
+    await Stock.saleUpdateStock(id, sale);
     await Sales.salesUpdated(id, sale);
     const result = await Sales.findSalesById(id);
 
     res.status(sucesso).json(result);
   });
 
-controlSales.put('/:id', validation.idSalesValidation, 
+controlSales.delete('/:id', validation.idSalesValidation, 
   async (req, res) => {
     const { id } = req.params;
     const result = await Sales.findSalesById(id);
-
+    
+    await Stock.deleteStock(result); 
     await Sales.salesDelete(id);
 
     res.status(sucesso).json(result);

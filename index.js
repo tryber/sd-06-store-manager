@@ -3,7 +3,6 @@ const bodyParser = require('body-parser');
 
 const controlProducts = require('./control/controlProducts');
 const controlSales = require('./control/controlSales');
-
 const app = express();
 const port = 3000;
 
