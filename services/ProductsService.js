@@ -1,4 +1,4 @@
-const { createProducts, getByNameProducts, getAllProducts, 
+const { createProducts, getByNameProducts, 
   getByIdProducts, updateProducts, removeProducts } 
   = require('../models/ProductsModel');
 const { ObjectId } = require('mongodb');
@@ -8,77 +8,68 @@ const UNPROCESSABLE = 422;
 const MIN_CHARS = 5;
 const ZERO = 0;
 
-const createValidation = async (name, quantity) => {
+const createValidation = async (req, res, next) => {
+  const { name, quantity } = req.body;
   const findProduct = await getByNameProducts(name);
   // validations
   if (name.length <= MIN_CHARS) {
-    return {
+    return res.status(UNPROCESSABLE).json({
       err: {
         code: 'invalid_data',
         message: '"name" length must be at least 5 characters long',
       },
-      code: UNPROCESSABLE
-    };
+    });
   }
   if (findProduct) {
-    return {
+    return res.status(UNPROCESSABLE).json({
       err: {
         code: 'invalid_data',
         message: 'Product already exists',
       },
-      code: UNPROCESSABLE
-    };
+    });
   }
   if (quantity <= ZERO) {
-    return {
+    return res.status(UNPROCESSABLE).json({
       err: {
         code: 'invalid_data',
         message: '"quantity" must be larger than or equal to 1',
       },
-      code: UNPROCESSABLE
-    };
+    });
   }
-  if (isNaN(quantity)) {
-    return {
-      err: {
-        code: 'invalid_data',
-        message: '"quantity" must be a number',
-      },
-      code: UNPROCESSABLE
-    };
+  if (typeof name !== 'string') {
+    return res.status(UNPROCESSABLE).json(
+      {
+        err: {
+          code: 'invalid_data',
+          message: '"name" must be a string'
+        },
+      }
+    );
   }
-
-  const insert = await createProducts(name, quantity);
-  return { code: 201, insert };
+  if (!Number.isInteger(quantity)) {
+    return res.status(UNPROCESSABLE).json(
+      {
+        err: {
+          code: 'invalid_data',
+          message: '"quantity" must be a number'
+        },
+      }
+    );
+  }
+  next();
 };
 
-const getAllValidation = async () => {
-  const getAll = await getAllProducts();
-  return { code: 200, getAll }; 
-};
-
-const getByIdValidation = async (id) => {
-  // Validations
-  if (!ObjectId.isValid(id)) {
-    return {
+const getByIdValidation = async (req, res, next) => {
+  const { id } = req.params;
+  if (!ObjectId.isValid(id)) return res.status(UNPROCESSABLE).json(
+    {
       err: {
         code: 'invalid_data',
-        message: 'Wrong id format'
+        message: 'Wrong id format',
       },
-      code: UNPROCESSABLE
-    };
-  }
-  const item = await getByIdProducts(id);
-  if(!item) {
-    return {
-      err: {
-        code: 'invalid_data',
-        message: 'Wrong id format'
-      },
-      code: UNPROCESSABLE
-    };
-  }
-  return { code: 200, item };
+    }
+  );
+  next();
 };
 
 const updateValidation = async (id, name, quantity) => {
@@ -133,7 +124,6 @@ const removeValidation = async (id) => {
 
 module.exports = {
   createValidation,
-  getAllValidation,
   getByIdValidation,
   updateValidation,
   removeValidation

@@ -1,28 +1,37 @@
 const { Router } = require('express');
-const { createValidation, getAllValidation, 
-  getByIdValidation, updateValidation, removeValidation } 
+const { createValidation, getByIdValidation, updateValidation, removeValidation } 
   = require('../services/ProductsService');
+const { getAllProducts, getByIdProducts, createProducts } 
+= require('../models/ProductsModel');
 
 const router = Router();
 
-router.post('/', async (req, res) => {
-  const { name, quantity } = req.body;
-  const {insert, err, code} = await createValidation(name, quantity);
-  if (!insert) res.status(code).json({ err });
-  return res.status(code).json(insert);
+const OK = 200;
+const UNPROCESSABLE = 422;
+const CREATED = 201;
+
+router.post('/', createValidation, async (req, res) => {
+  await createProducts(req.body);
+  return res.status(CREATED).json(req.body);
+ 
 });
 
 // // Req 2
 router.get('/', async (_req, res) => {
-  const { code, getAll } = await getAllValidation();
-  return res.status(code).json({ products: getAll });
+  const productsList = await getAllProducts();
+  return res.status(OK).send({ products: productsList });
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', getByIdValidation, async (req, res) => {
   const { id } = req.params;
-  const { code, err, item } = await getByIdValidation(id);
-  if (!item) res.status(code).json({ err });
-  return res.status(code).json(item);
+  const productId = await getByIdProducts(id);
+  if (!productId) return res.status(UNPROCESSABLE).json({
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    },
+  });
+  return res.status(OK).send(productId);
 });
 
 // Req 3
