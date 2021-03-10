@@ -2,10 +2,14 @@ const { Router } = require('express');
 const rescue = require('express-rescue');
 const SaleService = require('../service/SaleService');
 const {
+  validateInvalidSaleId,
+  validateSaleIdNotFound,
   validateLegalQuantity,
   validateProductQuantityForSale,
   validateSaleExistence
 } = require('../middlewares/validations');
+const errorMessages = require('../dictionary/errorMessages');
+const codeMessages = require('../dictionary/codeMessages');
 const statusCodes = require('../dictionary/statusCodes');
 
 const SaleController = new Router();
@@ -30,16 +34,24 @@ SaleController.get('/', rescue(async (_request, response) => {
 
 SaleController.get(
   '/:id',
-  validateSaleExistence,
+  validateSaleIdNotFound,
   rescue(async (request, response) => {
     const { id } = request.params;
     const foundSale = await SaleService.findSaleById(id);
+
+    if (!foundSale) response.status(statusCodes.NOT_FOUND).json({
+      err: {
+        message: errorMessages.SALE_NOT_FOUND,
+        code: codeMessages.NOT_FOUND,
+      }
+    });
 
     response.status(statusCodes.OK).json(foundSale);
   }));
 
 SaleController.delete(
   '/:id',
+  validateInvalidSaleId,
   validateSaleExistence,
   rescue(async (request, response) => {
     const { id } = request.params;

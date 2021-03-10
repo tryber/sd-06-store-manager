@@ -148,6 +148,34 @@ const validateSaleExistence = async (request, response, next) => {
   next();
 };
 
+const validateInvalidSaleId = async (request, response, next) => {
+  const { id } = request.params;
+
+  if (!ObjectId.isValid(id)) {
+    return response.status(statusCodes.UNPROCESSABLE_ENTITY).json({
+      err: {
+        code: codeMessages.INVALID_DATA,
+        message: errorMessages.WRONG_SALE_ID_FORMAT
+      }
+    });
+  }
+
+  next();
+};
+
+const validateSaleIdNotFound = async (request, response, next) => {
+  const { id } = request.params;
+
+  if (!ObjectId.isValid(id)) return response.status(statusCodes.NOT_FOUND).json({
+    err: {
+      code: codeMessages.NOT_FOUND,
+      message: errorMessages.SALE_NOT_FOUND,
+    }
+  });
+
+  next();
+};
+
 const validateProductQuantityForSale = async (request, response, next) => {
   const itensSold = request.body;
 
@@ -170,10 +198,12 @@ const validateProductQuantityForSale = async (request, response, next) => {
 };
 
 module.exports = {
+  validateInvalidSaleId,
   validateName,
   validateLegalQuantity,
   validateProductExistence,
   validateProductQuantityForSale,
   validateQuantity,
   validateSaleExistence,
+  validateSaleIdNotFound,
 };
