@@ -1,27 +1,21 @@
 const express = require('express');
-const parser = require('body-parser');
+const bodyParser = require('body-parser');
 const productsController = require('./controller/productsController');
 
 const app = express();
+const PORT = 3000;
 
-const port = 3000;
-const sucess = 200;
-
-app.get('/we', (_req, res) => {
-  res.status(sucess).send('weeeeeee!');
-});
-
-app.use(parser.json());
+app.use(bodyParser.json());
 
 app.use('/products', productsController);
 
 // não remova esse endpoint, e para o avaliador funcionar
-app.get('//', (_request, response) => {
+app.get('/', (_request, response) => {
   response.send();
+
 });
 
-
-let errorMessage = {
+let errorMessage = { 
   'err': {
     'code': 'invalid_data',
     'message': ''
@@ -29,12 +23,10 @@ let errorMessage = {
 };
 
 app.use((err, _req, res, _next) => {
-  const { status, message} = err;
+  const { status, message } = err;
   errorMessage.err.message = message;
-  console.log('mensagem de erro é:', message);
-  console.log('status de erro é:', status);
+  console.log('message error:', message);
   return res.status(status).json(errorMessage);
 });
 
-// listen
-app.listen(port, () => console.log('node weeeeee!'));
+app.listen(PORT, () => console.log('Tô na porta 3000'));

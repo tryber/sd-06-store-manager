@@ -1,7 +1,7 @@
 const { getAllProducts } = require('../models/storeModel');
 
 const validateNameProduct = (name) => {
-  const minCaracter = 5;
+  const minCaracter = 3;
   if (typeof name !== 'string' || name.length <= minCaracter) {
     return false;
   }

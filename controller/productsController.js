@@ -1,18 +1,17 @@
 const { Router } = require('express');
 
-const { postProducts, getAllProducts } = require('../models/storeModel');
-const { 
-  validateNameProduct,
+const { postProducts, getAllProducts, findById } = require('../models/storeModel');
+const { validateNameProduct,
   validateProductQuantity,
   verifyNameProductExist
 } = require('../service/productValidation');
 
 const router = Router();
+const SUCCESS = 200;
 const CREATED = 201;
 const UNPROCESSABLE_ENTITY = 422;
 
-const err = {
-  status: UNPROCESSABLE_ENTITY,
+const err = { status: UNPROCESSABLE_ENTITY,
   message: '',
 };
 
@@ -42,5 +41,21 @@ router.post('/',
     return res.status(CREATED).json(allProducts[indexLastProductAdd]);
   }
 );
+
+router.get('/', async (_req, res,) => {
+  const allProducts = await getAllProducts();
+  const products = allProducts;
+  return res.status(SUCCESS).json({ products });
+});
+
+router.get('/:id', async (req, res, next) => {
+  const { id } = req.params;
+  const findId = await findById(id);
+  if (!findId) {
+    err.message = 'Wrong id format';
+    return next(err);
+  }
+  return res.status(SUCCESS).json(findId);
+});
 
 module.exports = router;
