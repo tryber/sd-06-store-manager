@@ -1,62 +1,35 @@
 const { Router } = require('express');
-const { create, getAll, getById, update, remove } = require('../models/SalesModel');
-const { ObjectId } = require('mongodb');
-
+const { createValidation, getAllValidation, 
+  getByIdValidation, updateValidation, removeValidation, setValidation, stockValidation } 
+  = require('../services/SalesService');
 const router = Router();
 
-// const CREATED = 201;
-const UNPROCESSABLE= 422;
-const OK = 200;
-const NOT_FOUND =404;
-// Magic Number
-// const MIN_CHARS = 5;
-const ZERO = 0;
-// const ID_LENGTH = 24;
+const INTERNAL_ERROR = 500;
 
-router.post('/', async (req, res) => {
-  const itensSold = req.body;
-
-  itensSold.forEach((item) => {
-    if (item.quantity <= ZERO || isNaN(item.quantity)) {
-      return res.status(UNPROCESSABLE).json({ 
-        err: {
-          code: 'invalid_data',
-          message: 'Wrong product ID or invalid quantity'
-        }
-      });
-    }  
-  });
-
-  const newSale = await create(itensSold);
-
-  return res.status(OK).json(newSale);
+router.post('/', setValidation, async (req, res) => {
+  try {
+    const itensSold = req.body;
+    const {err, code, newSale} = await createValidation(itensSold);
+    if (!newSale) return res.status(code).json({ err });
+    return res.status(code).json(newSale); 
+  } catch (e) {
+    return res.status(INTERNAL_ERROR).json({message: e.message});
+  }
 });
 
 // Req 6
 router.get('/', async (_req, res) => {
-  const sales = await getAll();
+  const {code, sales } = await getAllValidation();
 
-  return res.status(OK).json({sales});
+  return res.status(code).json({sales: sales});
 });
 
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
-  if (!ObjectId.isValid(id)) {
-    return res.status(NOT_FOUND).json({
-      err: {
-        code: 'not_found',
-        message: 'Sale not found'
-      }});
-  }
-  const sale = await getById(id);
-  if (!sale) {
-    return res.status(NOT_FOUND).json({
-      err: {
-        code: 'not_found',
-        message: 'Sale not found'
-      }});
-  }
-  return res.status(OK).json(sale);
+  const {err, code, sale} = await getByIdValidation(id);
+  
+  if (!sale) return res.status(code).json({ err });
+  return res.status(code).json(sale);
 });
 
 // Req 7
@@ -64,44 +37,19 @@ router.put('/:id', async (req, res) => {
   const updated = req.body;
   const { id } = req.params;
 
-  updated.forEach((item) => {
-    if (item.quantity <= ZERO) {
-      return res.status(UNPROCESSABLE).json({ 
-        err: {
-          code: 'invalid_data',
-          message: 'Wrong product ID or invalid quantity'
-        }
-      });
-    }
-    if (isNaN(item.quantity)) {
-      return res.status(UNPROCESSABLE).json({ 
-        err: {
-          code: 'invalid_data',
-          message: 'Wrong product ID or invalid quantity'
-        }
-      });
-    }
-  });
-
-  await update(id, updated);
-  const updatedSale = await getById(id);
-  return res.status(OK).json(updatedSale);
+  const { err, code, updateSale} = await updateValidation(id, updated);
+  
+  if (!updateSale) res.status(code).json({err});
+  return res.status(code).json(updateSale);
 });
 
 // Req 8
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', stockValidation, async (req, res) => {
   const { id } = req.params;
-  if (!ObjectId.isValid(id)) {
-    return res.status(UNPROCESSABLE)
-      .json({
-        err: {
-          code: 'invalid_data',
-          message: 'Wrong sale ID format'
-        }});
-  }
-  const deleteSale = await getById(id);
-  await remove(id);
-  return res.status(OK).json(deleteSale);
+  const {err, code, delSale} = await removeValidation(id);
+
+  if (!delSale) return res.status(code).json({err});
+  return res.status(code).json(delSale);
 });
 
 module.exports = router;
