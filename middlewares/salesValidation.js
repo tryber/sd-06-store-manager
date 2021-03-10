@@ -1,6 +1,7 @@
-const { UNPROCESSABLE_ENTITY } = require('../dictionary/statusCode');
+const { ObjectId } = require('mongodb');
+const { UNPROCESSABLE_ENTITY, NOT_FOUND } = require('../dictionary/statusCode');
 const {
-  wrongIdOrInvalidQuantity
+  wrongIdOrInvalidQuantity, saleNotFound
 } = require('../dictionary/errorMessages');
 
 const quantity = (req, res, next) => {
@@ -16,6 +17,16 @@ const quantity = (req, res, next) => {
   next();
 };
 
+const saleId = (req, res, next) => {
+  const isValid = ObjectId.isValid(req.params.id);
+  console.log({ id: req.params.id, isValid})
+  
+  if(!isValid) return res.status(NOT_FOUND).json({ err: saleNotFound });
+
+  next();
+};
+
 module.exports = {
   quantity,
+  saleId
 };

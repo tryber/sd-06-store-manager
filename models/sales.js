@@ -11,6 +11,17 @@ const insertSale = async (sale) => {
   return insertedSale;
 };
 
+const getAll = async () => {
+  return await connection().then((db) => db.collection(coll).find().toArray());
+};
+
+const getById = async (id) => {
+  return await connection()
+    .then((db) => db.collection(coll).findOne({ _id: mongo.ObjectId(id) }));
+};
+
 module.exports = {
-  insertSale
+  insertSale, 
+  getAll, 
+  getById,
 };

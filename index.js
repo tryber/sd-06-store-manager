@@ -48,6 +48,15 @@ app.post('/sales',
   rescue(salesController.createNewSale)
 );
 
+app.get('/sales',
+  rescue(salesController.getAll)
+);
+
+app.get('/sales/:id',
+  salesValidation.saleId,
+  rescue(salesController.getById)
+);
+
 app.use(error);
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));

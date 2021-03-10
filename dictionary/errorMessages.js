@@ -22,5 +22,9 @@ module.exports = {
   wrongIdOrInvalidQuantity: {
     code: 'invalid_data',
     message: 'Wrong product ID or invalid quantity'
+  },
+  saleNotFound: {
+    code: 'not_found',
+    message: 'Sale not found'
   }
 };

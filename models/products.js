@@ -12,8 +12,7 @@ const insertProduct = async (name, quantity) => {
 };
 
 const getAll = async () => {
-  return await connection()
-    .then((db) => db.collection(coll).find().toArray());
+  return await connection().then((db) => db.collection(coll).find().toArray());
 };
 
 const getByName = async (name) => {
