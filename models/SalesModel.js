@@ -6,7 +6,7 @@ const create = async (itensSold) => {
   try {
     const { insertedId } = await db.collection('sales').insertOne({ itensSold });
     return ({
-      id: insertedId,
+      _id: insertedId,
       itensSold,
     }); 
   } catch (err) {
@@ -24,7 +24,9 @@ const getAll = async () => {
 const getById = async (id) => {
   const db = await connection();
   try {
+    console.log(ObjectId(id));
     const sale = await db.collection('sales').findOne(ObjectId(id));
+    console.log(sale, 'delete model')
     return sale;
   } catch (err) {
     return null;
@@ -32,11 +34,11 @@ const getById = async (id) => {
   
 };
 
-const update = async ({ id, sales }) => {
+const update = async ({ id, itensSold }) => {
   const db = await connection();
   try {
     const sale = await db.collection('sales').updateOne({_id: ObjectId(id)},
-      { $set: {itensSold: sales} },
+      { $set: { itensSold } },
     );
   } catch (err) {
     console.log(err);

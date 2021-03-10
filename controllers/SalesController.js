@@ -19,8 +19,8 @@ SalesRouter.post('/', async (req, res) => {
         .json({ err: errorInfo });
     }
   });
-  const { id } = await SalesModel.create({ itensSold });
-  return res.status(OK).json({ id });
+  const { _id } = await SalesModel.create(itensSold);
+  return res.status(OK).send({ _id, itensSold });
 });
 
 SalesRouter.get('/', async (_req, res) => {
@@ -56,7 +56,7 @@ SalesRouter.post('/:id', async (req, res) => {
     }
   });
   await SalesModel.update({ id, itensSold });
-  return res.status(OK).json({ id, itensSold });
+  return res.status(OK).send({ id, itensSold });
 });
 
 SalesRouter.delete('/:id', async (req, res) => {
@@ -67,10 +67,10 @@ SalesRouter.delete('/:id', async (req, res) => {
       message: 'Wrong sale ID format',
       code: 'invalid_data'
     };
-    return res.status(NOT_FOUND).json({ err: errorInfo });
+    return res.status(UNPROCESSABLE_ENTITY).json({ err: errorInfo });
   }
   await SalesModel.delById(sale._id);
-  return res.status(UNPROCESSABLE_ENTITY).json(sale);
+  return res.status(OK).json(sale);
 });
 
 module.exports = SalesRouter;
