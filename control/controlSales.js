@@ -6,11 +6,11 @@ const sucesso = 200;
 
 controlSales.post('/', validation.quantitySalesValidation, 
   async (req, res) => {
-    const sales = req.body;
-    const { insertedId } = await Sales.addSales(sales);
+    const Sold = req.body;
+    const { insertedId } = await Sales.addSales(Sold);
     const addedSale = {
       _id: insertedId,
-      itensSold: sales,
+      itensSold,
     };
     return res.status(sucesso).json(addedSale);
   });
@@ -18,7 +18,9 @@ controlSales.post('/', validation.quantitySalesValidation,
 controlSales.get('/:id', validation.salesValidation, 
   async (req, res) => {
     const { id } = req.params;
-    res.status(sucesso).json(await Sales.findSalesById(id));
+    const sale = await Sales.findSalesById(id);
+
+    response.status(sucesso).json(sale);
   });
 
 controlSales.get('/', async (_req, res) => {
@@ -26,8 +28,7 @@ controlSales.get('/', async (_req, res) => {
   res.status(sucesso).json({ sales });
 });
 
-controlSales.put('/:id', 
-  validation.quantitySalesValidation, 
+controlSales.put('/:id', validation.quantitySalesValidation, 
   async (req, res) => {
     const { id } = req.params;
     const sale = req.body;
@@ -38,8 +39,7 @@ controlSales.put('/:id',
     res.status(sucesso).json(result);
   });
 
-controlSales.put('/:id', 
-  validation.idSalesValidation, 
+controlSales.put('/:id', validation.idSalesValidation, 
   async (req, res) => {
     const { id } = req.params;
     const result = await Sales.findSalesById(id);
