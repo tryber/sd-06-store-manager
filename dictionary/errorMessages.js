@@ -26,5 +26,9 @@ module.exports = {
   saleNotFound: {
     code: 'not_found',
     message: 'Sale not found'
+  },
+  WrongIdSaleFormat: {
+    code: 'invalid_data',
+    message: 'Wrong sale ID format'
   }
 };

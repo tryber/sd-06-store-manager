@@ -62,6 +62,11 @@ app.put('/sales/:id',
   rescue(salesController.updateSale)
 );
 
+app.delete('/sales/:id',
+  salesValidation.saleIdToDelete,
+  rescue(salesController.deleteSale)
+);
+
 app.use(error);
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));

@@ -1,7 +1,7 @@
 const { ObjectId } = require('mongodb');
 const { UNPROCESSABLE_ENTITY, NOT_FOUND } = require('../dictionary/statusCode');
 const {
-  wrongIdOrInvalidQuantity, saleNotFound
+  wrongIdOrInvalidQuantity, saleNotFound, WrongIdSaleFormat
 } = require('../dictionary/errorMessages');
 
 const quantity = (req, res, next) => {
@@ -25,7 +25,16 @@ const saleId = (req, res, next) => {
   next();
 };
 
+const saleIdToDelete = (req, res, next) => {
+  const isValid = ObjectId.isValid(req.params.id);
+    
+  if(!isValid) return res.status(UNPROCESSABLE_ENTITY).json({ err: WrongIdSaleFormat });
+
+  next();
+};
+
 module.exports = {
   quantity,
-  saleId
+  saleId,
+  saleIdToDelete,
 };

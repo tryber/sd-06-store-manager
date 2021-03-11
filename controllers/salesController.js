@@ -1,6 +1,6 @@
 const service = require('../services/salesServices');
 const { SUCCESS, NOT_FOUND } = require('../dictionary/statusCode');
-const { saleNotFound } = require('../dictionary/errorMessages');
+const { saleNotFound, WrongIdSaleFormat } = require('../dictionary/errorMessages');
 
 const createNewSale = async (req, res, next) => {
   const sale = req.body;
@@ -15,7 +15,7 @@ const getAll = async (req, res, next) => {
   return res.status(SUCCESS).json({ sales: allSales });
 };
 
-const getById = async (req, res) => {
+const getById = async (req, res, next) => {
   const { id } = req.params;
   const sale = await service.saleById(id);
 
@@ -38,9 +38,25 @@ const updateSale = async (req, res) => {
   return res.status(SUCCESS).json(saleUpdated);
 };
 
+const deleteSale = async (req, res) => {
+  const { id } = req.params;
+
+  const deletedSale = await service.deleteSaleInfo(id);
+
+  if (!deletedSale) {
+    return next({
+      statusCode: UNPROCESSABLE_ENTITY,
+      ...WrongIdSaleFormat
+    });
+  }
+
+  return res.status(SUCCESS).json(deletedSale);
+};
+
 module.exports = {
   createNewSale,
   getAll,
   getById,
-  updateSale
+  updateSale,
+  deleteSale
 };
