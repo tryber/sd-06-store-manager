@@ -17,7 +17,8 @@ const messageError = (string) => {
 const nameValidation = async (req, res, next) => {
   const { name } = req.body;
   const getProducts = await Products.getProducts();
-  const failToFind = getProducts.filter((product) => product.name === name);
+  const failToFind = getProducts
+    .filter((product) => product.name === name);
 
   if (failToFind.length > numberZero) 
     return res.status(error).json(messageError('Product already exists'));

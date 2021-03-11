@@ -23,7 +23,7 @@ const productUpdated = async (id, name, quantity) =>
       { $set: { name, quantity } }
     ));
 
-const updateStock = async (id, value) => 
+const updateQuantity = async (id, value) => 
   await connection()
     .then((db) => db.collection('products').updateOne(
       { _id: ObjectId(id) },
@@ -40,5 +40,5 @@ module.exports = {
   getById,
   productUpdated,
   productDeleted,
-  updateStock,
+  updateQuantity,
 };

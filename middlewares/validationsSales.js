@@ -57,6 +57,7 @@ const stockFlow = async (req, res, next) => {
       if (!values[0])
         return res.status(salesNotFound)
           .json(messageError('stock_problem', 'Such amount is not permitted to sell'));
+          
       next();
     });
 };
