@@ -44,7 +44,7 @@ controlSales.put('/:id', validation.quantitySalesValidation,
     res.status(sucesso).json(result);
   });
 
-controlSales.delete('/:id', validation.idFormat, 
+controlSales.delete('/:id', validation.idValidation, 
   async (req, res) => {
     const { id } = req.params;
     const result = await Sales.getById(id);
