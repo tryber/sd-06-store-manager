@@ -8,17 +8,19 @@ const ZERO = 0;
 
 SalesRouter.post('/', async (req, res) => {
   const itensSold = req.body;
-  itensSold.forEach(async (item) => {
-    const product = await ProductsModel.getById(item.productId);
-    if (!product || item.quantity <= ZERO || typeof item.quantity !== 'number') {
-      const errorInfo = {
-        message: 'Wrong product ID or invalid quantity',
-        code: 'invalid_data'
-      };
-      return res.status(UNPROCESSABLE_ENTITY)
-        .json({ err: errorInfo });
-    }
+  const checkBadData = itensSold.some((item) => {
+    const product = ProductsModel.getById(item.productId);
+    return (!product || item.quantity <= ZERO || typeof item.quantity !== 'number');
   });
+  if (checkBadData) {
+    const errorInfo = {
+      message: 'Wrong product ID or invalid quantity',
+      code: 'invalid_data'
+    };
+    return res.status(UNPROCESSABLE_ENTITY)
+      .json({ err: errorInfo });
+    
+  }
   const { _id } = await SalesModel.create(itensSold);
   return res.status(OK).send({ _id, itensSold });
 });
@@ -44,24 +46,26 @@ SalesRouter.get('/:id', async (req, res) => {
 SalesRouter.put('/:id', async (req, res) => {
   const itensSold = req.body;
   const id = req.params;
-  itensSold.forEach(async (i) => {
-    const product = await ProductsModel.getById(i.productId);
-    if (!product || i.quantity <= ZERO || typeof i.quantity !== 'number') {
-      const errorInfo = {
-        message: 'Wrong product ID or invalid quantity',
-        code: 'invalid_data'
-      };
-      return res.status(UNPROCESSABLE_ENTITY)
-        .json({ err: errorInfo });
-    }
+  const checkBadData = itensSold.some((item) => {
+    const product = ProductsModel.getById(item.productId);
+    return (!product || item.quantity <= ZERO || typeof item.quantity !== 'number');
   });
-  await SalesModel.update({ id, itensSold });
-  return res.status(OK).send({ id, itensSold });
+  if (checkBadData) {
+    const errorInfo = {
+      message: 'Wrong product ID or invalid quantity',
+      code: 'invalid_data'
+    };
+    return res.status(UNPROCESSABLE_ENTITY)
+      .json({ err: errorInfo });
+  }
+  const { _id } = SalesModel.getById(id);
+  SalesModel.update({id, itensSold});
+  return res.status(OK).json({ _id, itensSold });
 });
 
 SalesRouter.delete('/:id', async (req, res) => {
   const { id } = req.params;
-  const sale = await SalesModel.getById(id);
+  const sale = SalesModel.getById(id);
   if (!sale) {
     const errorInfo = {
       message: 'Wrong sale ID format',
@@ -69,7 +73,7 @@ SalesRouter.delete('/:id', async (req, res) => {
     };
     return res.status(UNPROCESSABLE_ENTITY).json({ err: errorInfo });
   }
-  await SalesModel.delById(sale._id);
+  SalesModel.delById(sale._id);
   return res.status(OK).json(sale);
 });
 

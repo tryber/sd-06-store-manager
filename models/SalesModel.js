@@ -33,9 +33,11 @@ const getById = async (id) => {
 
 const update = async ({ id, itensSold }) => {
   const db = await connection();
+  console.log(itensSold, ObjectId(id));
+
   try {
-    const sale = await db.collection('sales').updateOne({_id: ObjectId(id)},
-      { $set: { itensSold } },
+    const sale = await db.collection('sales').updateOne({ _id: ObjectId(id) },
+      { $set: itensSold },
     );
   } catch (err) {
     console.log(err);
@@ -44,7 +46,7 @@ const update = async ({ id, itensSold }) => {
 
 const delById = async (id) => {
   const db = await connection();
-  await db.collection('sales').deleteOne({ '_id': ObjectId(id) });
+  await db.collection('sales').deleteOne({ _id: ObjectId(id) });
 };
 
 module.exports = {
