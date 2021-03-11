@@ -8,7 +8,7 @@ const stockUpdate = async (arrSale) => {
 };
 
 const saleUpdateStock = async (id, arrSale) => {
-  const findSales = await Sales.findById(id);
+  const findSales = await Sales.getById(id);
   arrSale.forEach(async (sale) => {
     const itensSold = findSales.itensSold.filter((found) => 
       found.productId === sale.productId);
