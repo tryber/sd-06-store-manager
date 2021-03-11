@@ -29,6 +29,7 @@ const findById = async (id) => {
 };
 
 const updateProduct = async (id, name, quantity) => {
+  console.log('linha 31',id, name, quantity);
   const updatedProduct = await connection()
     .then((db) => { db
       .collection('products')
@@ -37,6 +38,7 @@ const updateProduct = async (id, name, quantity) => {
         {$set: {name, quantity}}
       );
     });
+  console.log('linha 41',updatedProduct);
   return updatedProduct;
 };
 

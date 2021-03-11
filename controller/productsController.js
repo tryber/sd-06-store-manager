@@ -1,6 +1,13 @@
 const { Router } = require('express');
 
-const { postProducts, getAllProducts, findById } = require('../models/storeModel');
+const {
+  postProducts,
+  getAllProducts,
+  findById,
+  updateProduct
+} = require('../models/storeModel');
+const lastProductDatabase = require('../service/productServices');
+
 const { validateNameProduct,
   validateProductQuantity,
   verifyNameProductExist
@@ -36,9 +43,8 @@ router.post('/',
       return next(err);
     }
     await postProducts({ name, quantity });
-    const allProducts = await getAllProducts();
-    const indexLastProductAdd = allProducts.length -1;
-    return res.status(CREATED).json(allProducts[indexLastProductAdd]);
+    const lastProduct = await lastProductDatabase();
+    return res.status(CREATED).json(lastProduct);
   }
 );
 
@@ -61,6 +67,7 @@ router.get('/:id', async (req, res, next) => {
 router.put('/:id', async (req, res, next) => {
   const { id } = req.params;
   const { name, quantity } = req.body;
+  console.log('name:', name);
   if (!validateNameProduct(name)) {
     err.message = '"name" length must be at least 5 characters long';
     return next(err);
